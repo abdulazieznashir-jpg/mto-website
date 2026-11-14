@@ -135,9 +135,15 @@
   .testi-name { font-weight: 600; font-size: 16px; }
   .testi-city { font-size: 14px; color: var(--text-tertiary); }
   .testi-link { color: var(--primary); font-weight: 500; }
-  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-  .testi-grid .testi-single, .testi-page .testi-single { max-width: none; margin: 0; padding: 28px; }
-  .testi-grid .testi-quote, .testi-page .testi-quote { font-size: 18px; }
+  .testi-slider { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 8px 4px 16px; scrollbar-width: none; }
+  .testi-slider::-webkit-scrollbar { display: none; }
+  .testi-slider .testi-single { flex: 0 0 min(340px, 86%); scroll-snap-align: start; max-width: none; margin: 0; padding: 28px; }
+  .testi-slider .testi-quote { font-size: 18px; }
+  .testi-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 12px; }
+  .testi-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.35); background: transparent; color: white; font-size: 22px; cursor: pointer; }
+  .testi-dots { display: flex; gap: 8px; align-items: center; }
+  .testi-dots button { width: 8px; height: 8px; border-radius: 4px; border: 0; padding: 0; background: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.3s; }
+  .testi-dots button.on { background: #BE966A; width: 22px; }
   .testimonial-stars { color: #E0A526; letter-spacing: 2px; margin-top: 12px; font-size: 14px; }
 
   /* PROGRAM (TAHSIN / TAHFIDZ) */
@@ -521,37 +527,50 @@
       <div class="eyebrow">Kesan Peserta</div>
       <h2 style="color: white;">Ini kata mereka yang sudah bergabung.</h2>
     </div>
-    <div class="testi-grid">
-    <div class="testi-single reveal">
-      <p class="testi-quote">"Maasya Allah ini adalah tempat tahfidz online yg paling nyaman menurut saya. Selain ustadzahnya juga sudah terjamin kualitasnya bahkan sudah mempunyai sanad, program setor disesuaikan dengan kemampuan. Cocok untuk saya yg menghafal sambil bekerja"</p>
-      <div class="testi-name">Citra Atrina Sari</div>
-      <div class="testi-city">Depok</div>
-      <div class="testimonial-stars">★★★★★</div>
-    </div>
-    <div class="testi-single reveal">
-      <p class="testi-quote">"Alhamdulillah saya sudah mengikuti program ini 6 periode, Alhamdulillah bisa memperbaiki kualitas bacaan Al-Qur'an saya dan menambah jumlah halan saya. Jazaakumullahu Khairan utk program MTO"</p>
-      <div class="testi-name">Anisa Rizki Rahmayani</div>
-      <div class="testi-city">Bogor</div>
-      <div class="testimonial-stars">★★★★★</div>
-    </div>
-    <div class="testi-single reveal">
-      <p class="testi-quote">"Alhamdulillah, setelah mengikuti program MTO selama dua bulan, saya bisa membaca Al-Qur'an dengan lebih baik dan kekuatan Hapalan Alquran saya juga lebih baik."</p>
-      <div class="testi-name">Sarlina</div>
-      <div class="testi-city">Bekasi</div>
-      <div class="testimonial-stars">★★★★★</div>
-    </div>
-    <div class="testi-single reveal">
-      <p class="testi-quote">"Alhamdulillah setelah ana mengikuti program mahkota tahfidz online ini ana bisa menambah hafalan di tengah kesibukan, bisa mengatur waktu luang untuk muroja'ah"</p>
-      <div class="testi-name">Arika Al Fadiyah</div>
-      <div class="testi-city">Sidayu, Gresik, Jawa timur</div>
-      <div class="testimonial-stars">★★★★★</div>
-    </div>
-    <div class="testi-single reveal">
-      <p class="testi-quote">"Alhamdulillah ustazahnya sangat mutqin dalam membimbing ana, jadi hafalan ana benar-benar mantap dari segi tajwid panjang pendek makharijul dst."</p>
-      <div class="testi-name">Aanisah Hani Sharfina</div>
-      <div class="testi-city">Batam</div>
-      <div class="testimonial-stars">★★★★★</div>
-    </div>
+    <div class="testi-slider-wrap">
+      <div class="testi-slider" id="testiSlider">
+      <div class="testi-single">
+        <p class="testi-quote">"Maasya Allah ini adalah tempat tahfidz online yg paling nyaman menurut saya. Selain ustadzahnya juga sudah terjamin kualitasnya bahkan sudah mempunyai sanad, program setor disesuaikan dengan kemampuan. Cocok untuk saya yg menghafal sambil bekerja"</p>
+        <div class="testi-name">Citra Atrina Sari</div>
+        <div class="testi-city">Depok</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah saya sudah mengikuti program ini 6 periode, Alhamdulillah bisa memperbaiki kualitas bacaan Al-Qur'an saya dan menambah jumlah halan saya. Jazaakumullahu Khairan utk program MTO"</p>
+        <div class="testi-name">Anisa Rizki Rahmayani</div>
+        <div class="testi-city">Bogor</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah, setelah mengikuti program MTO selama dua bulan, saya bisa membaca Al-Qur'an dengan lebih baik dan kekuatan Hapalan Alquran saya juga lebih baik."</p>
+        <div class="testi-name">Sarlina</div>
+        <div class="testi-city">Bekasi</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah setelah ana mengikuti program mahkota tahfidz online ini ana bisa menambah hafalan di tengah kesibukan, bisa mengatur waktu luang untuk muroja'ah"</p>
+        <div class="testi-name">Arika Al Fadiyah</div>
+        <div class="testi-city">Sidayu, Gresik, Jawa timur</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah ustazahnya sangat mutqin dalam membimbing ana, jadi hafalan ana benar-benar mantap dari segi tajwid panjang pendek makharijul dst."</p>
+        <div class="testi-name">Aanisah Hani Sharfina</div>
+        <div class="testi-city">Batam</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah merasa terbantu sekali untuk menjaga hafalan saya setelah mengikuti program ini.Tidak hanya itu, saya juga mendapat perbaikan bacaan agar bacaan saya jauh lebih baik lagi.Dan saya juga mendapatkan teman seperjuangan yang sama-sama berjuang untuk menjaga hafalannya. Dan itu adalah sebuah anugerah."</p>
+        <div class="testi-name">Afifah</div>
+        <div class="testi-city">Bogor</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      </div>
+      <div class="testi-nav">
+        <button type="button" class="testi-prev" aria-label="Testimoni sebelumnya">&#8249;</button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button type="button" class="testi-next" aria-label="Testimoni berikutnya">&#8250;</button>
+      </div>
     </div>
     <div style="text-align: center; margin-top: 32px;">
       <a href="testimoni.html" class="btn-ghost testi-link">Lihat ratusan testimoni lainnya</a>
@@ -1205,6 +1224,35 @@
 })();
 </script>
 <script src="js/main.js"></script>
+<script>
+(function () {
+  var sl = document.getElementById('testiSlider');
+  if (!sl) return;
+  var cards = sl.querySelectorAll('.testi-single');
+  var dots = document.getElementById('testiDots');
+  var prev = document.querySelector('.testi-prev'), next = document.querySelector('.testi-next');
+  var timer = null;
+  cards.forEach(function (_, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Testimoni ' + (i + 1));
+    b.addEventListener('click', function () { go(i); pause(); });
+    dots.appendChild(b);
+  });
+  function step() { return cards[0].offsetWidth + 20; }
+  function idx() { return Math.round(sl.scrollLeft / step()); }
+  function go(i) { i = (i + cards.length) % cards.length; sl.scrollTo({ left: i * step(), behavior: 'smooth' }); }
+  function mark() { var c = idx(); Array.prototype.forEach.call(dots.children, function (d, i) { d.classList.toggle('on', i === c); }); }
+  function play() { timer = setInterval(function () { go(idx() + 1); }, 6000); }
+  function pause() { clearInterval(timer); }
+  sl.addEventListener('scroll', mark, { passive: true });
+  sl.addEventListener('touchstart', pause, { passive: true });
+  sl.addEventListener('mouseenter', pause);
+  prev.addEventListener('click', function () { go(idx() - 1); pause(); });
+  next.addEventListener('click', function () { go(idx() + 1); pause(); });
+  mark(); play();
+})();
+</script>
 <script>
 (function () {
   var cek = document.getElementById('cek');
