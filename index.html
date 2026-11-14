@@ -310,7 +310,7 @@
   <div class="hero-ornament"></div>
   <div class="container">
     <div class="hero-content">
-      <img class="hero-image" src="hero.jpg" alt="Ilustrasi seorang muslimah membaca Al-Qur'an dengan lentera dan ikon WhatsApp" width="828" height="641" style="display:block;width:min(100%,420px);height:auto;margin:0 auto 24px">
+      <img class="hero-image" src="hero.png" alt="Ilustrasi seorang muslimah membaca Al-Qur'an dengan lentera dan ikon WhatsApp" width="828" height="641" style="display:block;width:min(100%,420px);height:auto;margin:0 auto 24px">
       <div class="hero-badge">
         <span class="dot"></span>
         Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
@@ -323,7 +323,6 @@
         <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
         <a href="#program" class="btn btn-secondary btn-lg">Lihat Program</a>
       </div>
-      <div class="hero-arabic">وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ</div>
       <div class="hero-features">
         <div class="hero-feature">
           <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
@@ -595,7 +594,6 @@
 <section class="cta-section" id="daftar">
   <div class="container">
     <div class="cta-content">
-      <div class="cta-arabic">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</div>
       <h2>Segera daftarkan diri Anda.</h2>
       <p class="lead">Jadwal setiap pengajar terbatas, jadi amankan waktu belajar Anda sekarang.</p>
       <div class="cta-buttons">
@@ -758,7 +756,28 @@
     </div>
 
     <!-- Langkah 3: Durasi -->
-    <!-- Langkah Jadwal (khusus Tahfidz) -->
+    <!-- Langkah Jenis Tahsin -->
+    <div class="flow-step" data-step="jenisTahsin">
+      <div class="flow-crumb">Tahsin</div>
+      <h3>Pilih jenis Tahsin</h3>
+      <p>Pilih program yang sesuai dengan kebutuhan Anda.</p>
+      <div class="flow-options">
+        <button class="flow-option" data-choose="jenis" data-value="reguler">
+          <span class="flow-option-body">
+            <span class="flow-option-title">Tahsin Reguler</span>
+            <span class="flow-option-desc">Program Tahsin standar, tersedia untuk paket Silver, Gold, dan Platinum.</span>
+          </span>
+        </button>
+        <button class="flow-option" data-choose="jenis" data-value="pratahsin">
+          <span class="flow-option-body">
+            <span class="flow-option-title">Pratahsin</span>
+            <span class="flow-option-desc">Program persiapan, tersedia untuk paket Gold dan Platinum.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Langkah Jadwal -->
     <div class="flow-step" data-step="jadwal">
       <h3>Pilih jadwal sesi</h3>
       <p>Pilih jadwal yang paling sesuai dengan kesibukan Anda.</p>
@@ -807,7 +826,15 @@
       </div>
     </div>
 
-        <!-- Langkah 4: Ringkasan -->
+        <!-- Langkah Jam sesi -->
+    <div class="flow-step" data-step="waktu">
+      <h3>Pilih jam sesi</h3>
+      <p>Pilih jam mulai sesi (WIB).</p>
+      <select id="flowTime" aria-label="Jam mulai sesi" style="width:100%;padding:14px 16px;border-radius:12px;border:1px solid #d2d2d7;font-size:16px;background:#fff;margin-bottom:16px"></select>
+      <button class="btn btn-primary btn-lg" id="flowTimeNext" style="width:100%">Lanjut</button>
+    </div>
+
+    <!-- Langkah 4: Ringkasan -->
     <div class="flow-step" data-step="summary">
       <div class="flow-crumb">Hampir selesai</div>
       <h3>Pilihan Anda</h3>
@@ -824,12 +851,13 @@
 
 <script src="js/main.js"></script>
 <script>
-// Alur pendaftaran: Program → (Jenis Tahfidz) → Durasi → WhatsApp
+// Alur pendaftaran: Program → Jenis → Jadwal → Paket → Jam → WhatsApp
 (function () {
   var WA_NUMBER = '6285727533000';
   var LABEL = {
     tahsin: 'Tahsin', tahfidz: 'Tahfidz',
     ziyadah: 'Ziyadah', murojaah: "Muroja'ah",
+    reguler: 'Tahsin Reguler', pratahsin: 'Pratahsin',
     silver: 'Silver', gold: 'Gold', platinum: 'Platinum',
     weekday: 'Weekday (15 pertemuan)', weekend: 'Weekend (8 pertemuan)'
   };
@@ -838,10 +866,14 @@
     gold:     { menit: 20, harga: 'Rp349.000' },
     platinum: { menit: 30, harga: 'Rp499.000' }
   };
+  var JAM_MULAI = 8 * 60;    // 08.00 WIB (menit sejak 00.00)
+  var JAM_SELESAI = 21 * 60; // 21.00 WIB
 
   var flow = document.getElementById('flow');
   var backBtn = document.getElementById('flowBack');
   var dotsEl = document.getElementById('flowDots');
+  var timeSel = document.getElementById('flowTime');
+  var timeNext = document.getElementById('flowTimeNext');
   var steps = {};
   flow.querySelectorAll('.flow-step').forEach(function (el) { steps[el.dataset.step] = el; });
 
@@ -849,17 +881,29 @@
   var history = [];
   var lastFocus = null;
 
+  // Tahfidz dan Tahsin sama-sama punya pilihan jenis, tetapi isinya berbeda.
+  function jenisStep() { return state.program === 'tahsin' ? 'jenisTahsin' : 'jenis'; }
+
   function path() {
-    return state.program === 'tahfidz'
-      ? ['program', 'jenis', 'jadwal', 'tier', 'summary']
-      : ['program', 'tier', 'jadwal', 'summary'];
+    return ['program', jenisStep(), 'jadwal', 'tier', 'waktu', 'summary'];
   }
 
   function renderDots(current) {
-    var p = path();
-    dotsEl.innerHTML = p.map(function (s) {
+    dotsEl.innerHTML = path().map(function (s) {
       return '<span class="' + (s === current ? 'on' : '') + '"></span>';
     }).join('');
+  }
+
+  function fillTimes() {
+    var menit = TIER[state.tier].menit;
+    var html = '';
+    for (var m = JAM_MULAI; m + menit <= JAM_SELESAI; m += menit) {
+      var hh = Math.floor(m / 60), mm = m % 60;
+      var v = (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
+      html += '<option value="' + v + '">' + v.replace(':', '.') + ' WIB</option>';
+    }
+    timeSel.innerHTML = html;
+    steps.waktu.querySelector('p').textContent = 'Sesi ' + menit + ' menit. Pilih jam mulai (WIB).';
   }
 
   function show(name, push) {
@@ -869,42 +913,50 @@
     renderDots(name);
 
     if (name === 'tier') {
-      var crumb = LABEL[state.program] + (state.jenis ? ' · ' + LABEL[state.jenis] : '');
-      document.getElementById('flowTierCrumb').textContent = crumb;
+      // Pratahsin hanya tersedia untuk Gold dan Platinum.
+      var pratahsin = state.jenis === 'pratahsin';
       steps.tier.querySelectorAll('[data-choose="tier"]').forEach(function (b) {
-        b.classList.toggle('suggested', b.dataset.value === state.suggestTier);
+        b.style.display = (pratahsin && b.dataset.value === 'silver') ? 'none' : '';
       });
+      steps.tier.querySelector('p').textContent = pratahsin
+        ? 'Pratahsin tersedia untuk paket Gold dan Platinum.'
+        : 'Pilih durasi yang realistis untuk Anda jalani setiap hari.';
     }
+    if (name === 'waktu') fillTimes();
     if (name === 'summary') renderSummary();
 
-    var first = steps[name].querySelector('.flow-option, .btn-wa');
+    var first = steps[name].querySelector('button, select');
     if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 50);
   }
 
   function next() {
     if (!state.program) return show('program');
-    if (state.program === 'tahfidz' && !state.jenis) return show('jenis');
-    if (state.program === 'tahfidz' && !state.jadwal) return show('jadwal');
+    if (!state.jenis) return show(jenisStep());
+    if (!state.jadwal) return show('jadwal');
     if (!state.tier) return show('tier');
+    if (!state.waktu) return show('waktu');
     show('summary');
   }
 
   function renderSummary() {
     var t = TIER[state.tier];
-    var program = LABEL[state.program] + (state.jenis ? ' · ' + LABEL[state.jenis] : '');
+    var program = LABEL[state.program] + ' · ' + LABEL[state.jenis];
     var paket = LABEL[state.tier] + ' · ' + t.menit + ' menit per sesi';
+    var waktu = state.waktu.replace(':', '.') + ' WIB';
     document.getElementById('flowSummary').innerHTML =
       '<div class="flow-summary-row"><span>Program</span><span>' + program + '</span></div>' +
       '<div class="flow-summary-row"><span>Paket</span><span>' + paket + '</span></div>' +
-      (state.jadwal ? '<div class="flow-summary-row"><span>Jadwal</span><span>' + LABEL[state.jadwal] + '</span></div>' : '') +
+      '<div class="flow-summary-row"><span>Jadwal</span><span>' + LABEL[state.jadwal] + '</span></div>' +
+      '<div class="flow-summary-row"><span>Jam</span><span>' + waktu + '</span></div>' +
       '<div class="flow-summary-row"><span>Biaya</span><span>' + t.harga + ' / bulan</span></div>';
 
     var msg = "Assalamu'alaikum, saya ingin mendaftar di Mahkota Tahfidz Online.\n\n" +
       'Program: ' + program + '\n' +
       'Paket: ' + paket + '\n' +
-      (state.jadwal ? 'Jadwal: ' + LABEL[state.jadwal] + '\n' : '') +
+      'Jadwal: ' + LABEL[state.jadwal] + '\n' +
+      'Jam: ' + waktu + '\n' +
       'Biaya: ' + t.harga + ' / bulan\n\n' +
-      'Mohon info jadwal yang tersedia. Jazakumullahu khairan.';
+      'Mohon konfirmasi jadwal yang tersedia. Jazakumullahu khairan.';
     document.getElementById('flowWa').href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
   }
 
@@ -913,15 +965,13 @@
     history = [];
     if (preset.program) state.program = preset.program;
     if (preset.jenis) state.jenis = preset.jenis;
-    // Jika dibuka dari kartu paket, durasinya ditandai tetapi tetap bisa diganti.
-    if (preset.tier) state.suggestTier = preset.tier;
     lastFocus = document.activeElement;
     document.getElementById('mobileMenu').classList.remove('open');
     flow.classList.add('open');
     flow.setAttribute('aria-hidden', 'false');
     document.body.classList.add('flow-lock');
     if (state.program) history.push('program');
-    if (state.jenis) history.push('jenis');
+    if (state.jenis) history.push(jenisStep());
     next();
   }
 
@@ -937,8 +987,10 @@
     history.pop();
     var target = history[history.length - 1];
     // Kembali ke sebuah langkah = batalkan pilihan di langkah itu dan sesudahnya.
-    var order = ['program', 'jenis', 'jadwal', 'tier'];
-    order.slice(order.indexOf(target)).forEach(function (k) { delete state[k]; });
+    var order = ['program', 'jenis', 'jenisTahsin', 'jadwal', 'tier', 'waktu'];
+    order.slice(order.indexOf(target)).forEach(function (k) {
+      delete state[k === 'jenisTahsin' ? 'jenis' : k];
+    });
     show(target, false);
   }
 
@@ -946,16 +998,21 @@
     el.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      open({ program: el.dataset.program, jenis: el.dataset.jenis, tier: el.dataset.tier });
+      open({ program: el.dataset.program, jenis: el.dataset.jenis });
     }, true);
   });
 
   flow.querySelectorAll('[data-choose]').forEach(function (b) {
     b.addEventListener('click', function () {
       state[b.dataset.choose] = b.dataset.value;
-      if (b.dataset.choose === 'program' && b.dataset.value === 'tahsin') delete state.jenis;
       next();
     });
+  });
+
+  timeNext.addEventListener('click', function () {
+    if (!timeSel.value) return;
+    state.waktu = timeSel.value;
+    next();
   });
 
   backBtn.addEventListener('click', back);
@@ -963,20 +1020,16 @@
   flow.addEventListener('click', function (e) { if (e.target === flow) close(); });
   document.addEventListener('keydown', function (e) {
     if (!flow.classList.contains('open')) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'Tab') {
-      var f = Array.prototype.filter.call(
-        flow.querySelectorAll('button, a[href]'),
-        function (el) { return el.offsetParent !== null && !el.hidden; }
-      );
-      if (!f.length) return;
-      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
-      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
-    }
+    if (e.key === 'Escape') { close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = Array.prototype.filter.call(flow.querySelectorAll('button, select, a[href]'), function (el) {
+      return el.offsetParent !== null && !el.disabled && el.style.display !== 'none';
+    });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
-
-  // Tautan langsung: mahkotatahfizh.com/#daftar membuka alur pendaftaran.
-  if (location.hash === '#daftar') open({});
 })();
 </script>
 </body>

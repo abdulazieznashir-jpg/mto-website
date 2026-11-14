@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/mahkot18/public_html/
-    - /bin/cp index.html hero.jpg $DEPLOYPATH
+    - /bin/cp index.html hero.png $DEPLOYPATH
