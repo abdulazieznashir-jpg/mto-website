@@ -313,9 +313,8 @@
   .cek-verify { background: #fbf5ec; border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--text-primary); }
   .cek-verify p { margin: 0 0 10px; }
   .cek-wa > span { display: block; font-size: 15px; margin-bottom: 6px; }
-  .cek-wa-row { display: flex; gap: 8px; }
-  .cek-wa-row .cek-kode { width: 38%; flex-shrink: 0; padding-left: 10px; padding-right: 8px; }
-  .cek-wa-row input { flex: 1; min-width: 0; }
+  .cek-wa-row { display: grid; gap: 8px; }
+  .cek-wa-row .cek-kode { width: 100%; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -994,6 +993,13 @@
     ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
     ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
   ];
+  // Daftar negara: Indonesia dulu, lalu negara terdekat, lalu yang terkenal, sisanya urut abjad.
+  var NEG_ATAS = [["ID", "Indonesia", "62"], ["MY", "Malaysia", "60"], ["SG", "Singapura", "65"], ["BN", "Brunei", "673"], ["TL", "Timor Leste", "670"], ["PH", "Filipina", "63"], ["TH", "Thailand", "66"], ["VN", "Vietnam", "84"], ["KH", "Kamboja", "855"], ["LA", "Laos", "856"], ["MM", "Myanmar", "95"], ["US", "Amerika Serikat", "1"], ["AU", "Australia", "61"], ["SA", "Arab Saudi", "966"], ["GB", "Inggris", "44"], ["JP", "Jepang", "81"], ["KR", "Korea Selatan", "82"], ["CN", "Tiongkok", "86"], ["HK", "Hong Kong", "852"], ["TW", "Taiwan", "886"], ["IN", "India", "91"], ["PK", "Pakistan", "92"], ["BD", "Bangladesh", "880"], ["TR", "Turki", "90"], ["EG", "Mesir", "20"], ["AE", "Uni Emirat Arab", "971"], ["QA", "Qatar", "974"], ["KW", "Kuwait", "965"], ["OM", "Oman", "968"], ["BH", "Bahrain", "973"], ["JO", "Yordania", "962"], ["NL", "Belanda", "31"], ["DE", "Jerman", "49"], ["FR", "Prancis", "33"], ["IT", "Italia", "39"], ["ES", "Spanyol", "34"], ["CA", "Kanada", "1"], ["NZ", "Selandia Baru", "64"], ["BR", "Brasil", "55"], ["MX", "Meksiko", "52"], ["RU", "Rusia", "7"], ["SE", "Swedia", "46"], ["CH", "Swiss", "41"]];
+  var NEG_LAIN = [["AF", "Afghanistan", "93"], ["ZA", "Afrika Selatan", "27"], ["AL", "Albania", "355"], ["DZ", "Aljazair", "213"], ["AO", "Angola", "244"], ["AR", "Argentina", "54"], ["AM", "Armenia", "374"], ["AT", "Austria", "43"], ["AZ", "Azerbaijan", "994"], ["BE", "Belgia", "32"], ["BT", "Bhutan", "975"], ["BO", "Bolivia", "591"], ["BA", "Bosnia dan Herzegovina", "387"], ["BG", "Bulgaria", "359"], ["CM", "Kamerun", "237"], ["CL", "Chili", "56"], ["CO", "Kolombia", "57"], ["CR", "Kosta Rika", "506"], ["HR", "Kroasia", "385"], ["CU", "Kuba", "53"], ["CZ", "Ceko", "420"], ["DK", "Denmark", "45"], ["EC", "Ekuador", "593"], ["ET", "Ethiopia", "251"], ["FI", "Finlandia", "358"], ["GE", "Georgia", "995"], ["GH", "Ghana", "233"], ["GR", "Yunani", "30"], ["GT", "Guatemala", "502"], ["HU", "Hungaria", "36"], ["IS", "Islandia", "354"], ["IQ", "Irak", "964"], ["IR", "Iran", "98"], ["IE", "Irlandia", "353"], ["KZ", "Kazakhstan", "7"], ["KE", "Kenya", "254"], ["LB", "Lebanon", "961"], ["LY", "Libya", "218"], ["MG", "Madagascar", "261"], ["MV", "Maladewa", "960"], ["MA", "Maroko", "212"], ["MU", "Mauritius", "230"], ["MN", "Mongolia", "976"], ["MZ", "Mozambik", "258"], ["NP", "Nepal", "977"], ["NG", "Nigeria", "234"], ["NO", "Norwegia", "47"], ["PS", "Palestina", "970"], ["PA", "Panama", "507"], ["PG", "Papua Nugini", "675"], ["PE", "Peru", "51"], ["PL", "Polandia", "48"], ["PT", "Portugal", "351"], ["RO", "Rumania", "40"], ["RW", "Rwanda", "250"], ["SN", "Senegal", "221"], ["RS", "Serbia", "381"], ["CY", "Siprus", "357"], ["LK", "Sri Lanka", "94"], ["SD", "Sudan", "249"], ["SY", "Suriah", "963"], ["TZ", "Tanzania", "255"], ["TN", "Tunisia", "216"], ["UG", "Uganda", "256"], ["UA", "Ukraina", "380"], ["UY", "Uruguay", "598"], ["UZ", "Uzbekistan", "998"], ["VE", "Venezuela", "58"], ["YE", "Yaman", "967"], ["ZM", "Zambia", "260"], ["ZW", "Zimbabwe", "263"], ["CI", "Pantai Gading", "225"], ["FJ", "Fiji", "679"]];
+  NEG_LAIN.sort(function (a, b) { return a[1].localeCompare(b[1], 'id'); });
+  var NEG_SEMUA = NEG_ATAS.concat(NEG_LAIN);
+  function flagOf(iso) { return String.fromCodePoint.apply(null, iso.split('').map(function (c) { return 127397 + c.charCodeAt(0); })); }
+  function dialOf(iso) { for (var i = 0; i < NEG_SEMUA.length; i++) { if (NEG_SEMUA[i][0] === iso) return NEG_SEMUA[i][2]; } return '62'; }
   var STAGE_NAME = { 1: 'Kenali kebutuhan', 2: 'Atur jadwal', 3: 'Daftar' };
   var STAGE_OF = {
     program: 1, jenisTahsin: 1, jenisTahfidz: 1, untuk: 1, kondisi: 1, harapan: 1, rekom: 1,
@@ -1014,7 +1020,7 @@
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
   function isAnak() { return S.untuk === 'anak'; }
   function normWa(v) { return String(v || '').replace(/\D/g, '').replace(/^0+/, ''); }
-  function waFull() { return (S.kodeNeg || '62') + normWa(S.wa); }
+  function waFull() { return dialOf(S.kodeNeg || 'ID') + normWa(S.wa); }
   function waValid() { return normWa(S.wa).length >= 8; }
   function waCocok() { return waValid() && normWa(S.wa) === normWa(S.wa2); }
   function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
@@ -1268,11 +1274,8 @@
     var radio = function (name, v, t, cur) {
       return '<label><input type="radio" name="' + name + '" value="' + v + '"' + (cur === v ? ' checked' : '') + '> ' + t + '</label>';
     };
-    var kodes = [['62', '+62 ID'], ['60', '+60 MY'], ['65', '+65 SG'], ['966', '+966 SA'],
-      ['971', '+971 UAE'], ['1', '+1 US'], ['44', '+44 UK'], ['61', '+61 AU'],
-      ['81', '+81 JP'], ['63', '+63 PH']];
-    var sel = kodes.map(function (o) {
-      return '<option value="' + o[0] + '"' + ((S.kodeNeg || '62') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+    var sel = NEG_SEMUA.map(function (o) {
+      return '<option value="' + o[0] + '"' + ((S.kodeNeg || 'ID') === o[0] ? ' selected' : '') + '>' + flagOf(o[0]) + ' ' + o[1] + ' (+' + o[2] + ')</option>';
     }).join('');
     document.getElementById('dataForm').innerHTML =
       '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
