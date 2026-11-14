@@ -135,6 +135,10 @@
   .testi-name { font-weight: 600; font-size: 16px; }
   .testi-city { font-size: 14px; color: var(--text-tertiary); }
   .testi-link { color: var(--primary); font-weight: 500; }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .testi-grid .testi-single, .testi-page .testi-single { max-width: none; margin: 0; padding: 28px; }
+  .testi-grid .testi-quote, .testi-page .testi-quote { font-size: 18px; }
+  .testimonial-stars { color: #E0A526; letter-spacing: 2px; margin-top: 12px; font-size: 14px; }
 
   /* PROGRAM (TAHSIN / TAHFIDZ) */
   .program-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -517,12 +521,37 @@
       <div class="eyebrow">Kesan Peserta</div>
       <h2 style="color: white;">Ini kata mereka yang sudah bergabung.</h2>
     </div>
+    <div class="testi-grid">
     <div class="testi-single reveal">
-      <svg class="testimonial-quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zM15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
-      <p class="testi-quote">"Alhamdulillah bisa mendapat lingkungan yang mendukung dalam proses menghafal Al-Qur'an, dan dari segi waktu pelaksanaan tahfidz online."</p>
-      <div class="testi-name">Muhamad Faizal</div>
-      <div class="testi-city">Kab. Bogor</div>
+      <p class="testi-quote">"Maasya Allah ini adalah tempat tahfidz online yg paling nyaman menurut saya. Selain ustadzahnya juga sudah terjamin kualitasnya bahkan sudah mempunyai sanad, program setor disesuaikan dengan kemampuan. Cocok untuk saya yg menghafal sambil bekerja"</p>
+      <div class="testi-name">Citra Atrina Sari</div>
+      <div class="testi-city">Depok</div>
       <div class="testimonial-stars">★★★★★</div>
+    </div>
+    <div class="testi-single reveal">
+      <p class="testi-quote">"Alhamdulillah saya sudah mengikuti program ini 6 periode, Alhamdulillah bisa memperbaiki kualitas bacaan Al-Qur'an saya dan menambah jumlah halan saya. Jazaakumullahu Khairan utk program MTO"</p>
+      <div class="testi-name">Anisa Rizki Rahmayani</div>
+      <div class="testi-city">Bogor</div>
+      <div class="testimonial-stars">★★★★★</div>
+    </div>
+    <div class="testi-single reveal">
+      <p class="testi-quote">"Alhamdulillah, setelah mengikuti program MTO selama dua bulan, saya bisa membaca Al-Qur'an dengan lebih baik dan kekuatan Hapalan Alquran saya juga lebih baik."</p>
+      <div class="testi-name">Sarlina</div>
+      <div class="testi-city">Bekasi</div>
+      <div class="testimonial-stars">★★★★★</div>
+    </div>
+    <div class="testi-single reveal">
+      <p class="testi-quote">"Alhamdulillah setelah ana mengikuti program mahkota tahfidz online ini ana bisa menambah hafalan di tengah kesibukan, bisa mengatur waktu luang untuk muroja'ah"</p>
+      <div class="testi-name">Arika Al Fadiyah</div>
+      <div class="testi-city">Sidayu, Gresik, Jawa timur</div>
+      <div class="testimonial-stars">★★★★★</div>
+    </div>
+    <div class="testi-single reveal">
+      <p class="testi-quote">"Alhamdulillah ustazahnya sangat mutqin dalam membimbing ana, jadi hafalan ana benar-benar mantap dari segi tajwid panjang pendek makharijul dst."</p>
+      <div class="testi-name">Aanisah Hani Sharfina</div>
+      <div class="testi-city">Batam</div>
+      <div class="testimonial-stars">★★★★★</div>
+    </div>
     </div>
     <div style="text-align: center; margin-top: 32px;">
       <a href="testimoni.html" class="btn-ghost testi-link">Lihat ratusan testimoni lainnya</a>
