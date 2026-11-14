@@ -276,6 +276,13 @@
   .cek-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 52vh; overflow-y: auto; padding: 2px; }
   .cek-slot { padding: 12px 0; border-radius: 12px; border: 1px solid #d2d2d7; background: #fff; font-size: 15px; cursor: pointer; }
   .cek-slot:hover, .cek-slot.on { border-color: #BE966A; background: #f5f5f7; }
+  .cek-jadwal { display: flex; gap: 14px; align-items: center; border: 1px solid #BE966A; background: #fffaf3; border-radius: 16px; padding: 16px; margin: 16px 0; }
+  .cek-jadwal-icon { width: 46px; height: 46px; border-radius: 50%; background: #BE966A; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cek-jadwal-icon svg { width: 22px; height: 22px; }
+  .cek-jadwal-body { flex: 1; min-width: 0; }
+  .cek-jadwal-row { font-size: 15px; line-height: 1.5; color: var(--text-primary); margin-bottom: 6px; }
+  .cek-jadwal-row strong { font-weight: 600; }
+  .cek-jadwal-note { font-size: 14px; color: var(--text-secondary); margin-top: 8px; margin-bottom: 0; }
   /* Ukuran tombol utama seragam: hero, Cek Program, dan CTA bawah */
   .hero-cta .btn, .cek-cta .btn, .cta-section .btn, .cek-chat .btn {
     width: 300px; max-width: 100%; height: 56px; padding: 0 20px;
@@ -1058,8 +1065,8 @@
     gold:     { menit: 20, harga: 'Rp349.000' },
     platinum: { menit: 30, harga: 'Rp499.000' }
   };
-  var JAM_MULAI = 8 * 60;    // 08.00 WIB (menit sejak 00.00)
-  var JAM_SELESAI = 21 * 60; // 21.00 WIB
+  var JAM_MULAI = 5 * 60;    // 05.00 WIB (menit sejak 00.00)
+  var JAM_SELESAI = 22 * 60; // 22.00 WIB (jam mulai paling akhir)
 
   var flow = document.getElementById('flow');
   var backBtn = document.getElementById('flowBack');
@@ -1089,7 +1096,7 @@
   function fillTimes() {
     var menit = TIER[state.tier].menit;
     var html = '';
-    for (var m = JAM_MULAI; m + menit <= JAM_SELESAI; m += menit) {
+    for (var m = JAM_MULAI; m <= JAM_SELESAI; m += menit) {
       var hh = Math.floor(m / 60), mm = m % 60;
       var v = (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
       html += '<option value="' + v + '">' + v.replace(':', '.') + ' WIB</option>';
@@ -1306,10 +1313,10 @@
   function isAnak() { return S.untuk === 'anak'; }
   function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
   function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
-  // Jam mulai mengikuti format form Daftar: 08.00 sampai 21.00, selang sesuai kelas.
+  // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai kelas.
   function slotList() {
     var menit = KELAS[S.kelas].menit, out = [];
-    for (var m = 8 * 60; m + menit <= 21 * 60; m += menit) {
+    for (var m = 5 * 60; m <= 22 * 60; m += menit) {
       var hh = Math.floor(m / 60), mm = m % 60;
       out.push((hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm);
     }
@@ -1320,15 +1327,35 @@
   function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
   function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
   function durasiLabel(m) { return m === 12 ? '1 tahun' : m + ' bulan'; }
-  function gelombang() {
-    var t = new Date(), y = t.getFullYear(), m = t.getMonth(), today = new Date(y, m, t.getDate());
-    var c = [
-      { s: new Date(y, m, 12), e: new Date(y, m + 1, 10), n: 'G1' },
-      { s: new Date(y, m, 27), e: new Date(y, m + 1, 25), n: 'G2' },
-      { s: new Date(y, m + 1, 12), e: new Date(y, m + 2, 10), n: 'G1' }
-    ];
-    for (var i = 0; i < c.length; i++) if (c[i].s >= today) return c[i];
-    return c[0];
+  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  function tgl(d) { return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
+  // Gelombang: mulai tanggal 12 (selesai tanggal 10 bulan berikutnya) dan mulai tanggal 27 (selesai tanggal 25 bulan berikutnya).
+  function jadwal() {
+    var t = new Date(), y = t.getFullYear(), m = t.getMonth();
+    var today = new Date(y, m, t.getDate());
+    var c = [];
+    for (var o = -2; o <= 2; o++) {
+      c.push({ s: new Date(y, m + o, 12), e: new Date(y, m + o + 1, 10) });
+      c.push({ s: new Date(y, m + o, 27), e: new Date(y, m + o + 1, 25) });
+    }
+    c.sort(function (a, b) { return a.s - b.s; });
+    var next = null, ongoing = null;
+    c.forEach(function (x) {
+      if (x.s >= today && !next) next = x;
+      if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
+    });
+    var cut = ongoing ? Math.floor((today - ongoing.s) / 86400000) : 0;
+    return { next: next, ongoing: ongoing, cut: cut };
+  }
+  function jadwalBox(j) {
+    var icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+    var rows = '';
+    if (j.next) rows += '<div class="cek-jadwal-row">Pembelajaran terdekat dimulai pada tanggal <strong>' + tgl(j.next.s) + '</strong>.</div>';
+    if (j.ongoing) {
+      rows += '<div class="cek-jadwal-row">Yang sedang berlangsung: <strong>' + tgl(j.ongoing.s) + '</strong> sampai <strong>' + tgl(j.ongoing.e) + '</strong>.</div>';
+      rows += '<div class="cek-jadwal-row cek-jadwal-note">Anda juga bisa ikut yang sedang berlangsung. Jika mendaftar hari ini, program Anda terpotong ' + j.cut + ' hari.</div>';
+    }
+    return '<div class="cek-jadwal"><div class="cek-jadwal-icon">' + icon + '</div><div class="cek-jadwal-body">' + rows + '</div></div>';
   }
   function ringkas() {
     var k = KELAS[S.kelas];
@@ -1432,7 +1459,7 @@
     }).join('');
   }
   function renderHasil() {
-    var k = KELAS[S.kelas], m = S.durasi, g = gelombang();
+    var k = KELAS[S.kelas], m = S.durasi;
     var rows = [
       ['Program', LBL[S.jenis]],
       ['Kelas', k.nama + ' · ' + k.menit + ' menit per sesi'],
@@ -1467,7 +1494,7 @@
       '<li>Ikhwan dan akhwat dibimbing terpisah.</li>' +
       '<li>Pengajar hafidz/hafidzah berpengalaman, dan e-sertifikat setelah program.</li>' +
       '<li>Garansi uang kembali 100% dalam 7 hari pertama, dan bisa ganti pengajar tanpa biaya tambahan.</li>' +
-      '</ul><p class="cek-alasan">Gelombang ' + g.n + ' mulai ' + fmt(g.s) + ', selesai ' + fmt(g.e) + '.</p></div>';
+      '</ul></div>';
 
     var closing = '<div class="cek-amount" style="font-size:16px">Total: ' + rupiah(totalBayar()) + '</div>' +
       '<button type="button" class="btn btn-primary btn-lg cek-full" data-cek-act="daftar">Daftar &amp; bayar sekarang</button>' +
@@ -1475,7 +1502,7 @@
       '<p class="cek-alasan">Masih ada yang mengganjal? Ringkasan ini bisa dibahas dulu dengan keluarga lewat <a href="' + waLink("Assalamu'alaikum, ini ringkasan program Al-Qur'an yang sedang kami pertimbangkan:\n\n" + ringkas()) + '" target="_blank" rel="noopener">WhatsApp</a>.</p>';
 
     document.getElementById('cekHasil').innerHTML =
-      '<p class="cek-alasan">' + ALASAN[S.jenis] + '</p>' + box + harga + edit + trust + closing;
+      '<p class="cek-alasan">' + ALASAN[S.jenis] + '</p>' + box + harga + edit + jadwalBox(jadwal()) + trust + closing;
   }
   function renderData() {
     var radio = function (name, v, t, cur) {
