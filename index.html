@@ -283,6 +283,18 @@
   .cek-jadwal-row { font-size: 15px; line-height: 1.5; color: var(--text-primary); margin-bottom: 6px; }
   .cek-jadwal-row strong { font-weight: 600; }
   .cek-jadwal-note { font-size: 14px; color: var(--text-secondary); margin-top: 8px; margin-bottom: 0; }
+  .periode-wrap { display: grid; gap: 12px; margin: 16px 0; }
+  .periode-card { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px 18px; border-radius: 18px; background: #fff; border: 1px solid #d2d2d7; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .periode-card:hover { border-color: #BE966A; }
+  .periode-card:focus-visible { outline: 2px solid #BE966A; outline-offset: 2px; }
+  .periode-card[aria-checked="true"] { border: 2px solid #BE966A; padding: 15px 17px; box-shadow: 0 4px 16px rgba(190, 150, 106, 0.18); }
+  .periode-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #c7c7cc; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .periode-card[aria-checked="true"] .periode-radio { border-color: #BE966A; background: #BE966A; }
+  .periode-card[aria-checked="true"] .periode-radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+  .periode-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .periode-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .periode-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.4; }
+  .periode-tag { align-self: flex-start; font-size: 12px; font-weight: 600; color: #8a6a3f; background: #fbf5ec; border-radius: 999px; padding: 3px 9px; margin-bottom: 4px; white-space: nowrap; }
   /* Ukuran tombol utama seragam: hero, Cek Program, dan CTA bawah */
   .hero-cta .btn, .cek-cta .btn, .cta-section .btn, .cek-chat .btn {
     width: 300px; max-width: 100%; height: 56px; padding: 0 20px;
@@ -1345,22 +1357,39 @@
       if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
     });
     var cut = ongoing ? Math.floor((today - ongoing.s) / 86400000) : 0;
-    return { next: next, ongoing: ongoing, cut: cut };
+    return { next: next, ongoing: ongoing, cut: cut, today: today };
   }
-  function jadwalBox(j) {
-    var icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
-    var rows = '';
-    if (j.next) rows += '<div class="cek-jadwal-row">Pembelajaran terdekat dimulai pada tanggal <strong>' + tgl(j.next.s) + '</strong>.</div>';
+  var DAY = 86400000;
+  function periodeBox(j) {
+    if (!j.ongoing) S.periode = 'berikut';
+    if (!S.periode) S.periode = 'berikut';
+    var cards = '';
     if (j.ongoing) {
-      rows += '<div class="cek-jadwal-row">Yang sedang berlangsung: <strong>' + tgl(j.ongoing.s) + '</strong> sampai <strong>' + tgl(j.ongoing.e) + '</strong>.</div>';
-      rows += '<div class="cek-jadwal-row cek-jadwal-note">Anda juga bisa ikut yang sedang berlangsung. Jika mendaftar hari ini, program Anda terpotong ' + j.cut + ' hari.</div>';
+      cards += periodeCard('berjalan', 'Ikut periode berjalan',
+        'Mulai ' + tgl(j.ongoing.s) + ', selesai ' + tgl(j.ongoing.e) + '.',
+        'Terpotong ' + j.cut + ' hari');
     }
-    return '<div class="cek-jadwal"><div class="cek-jadwal-icon">' + icon + '</div><div class="cek-jadwal-body">' + rows + '</div></div>';
+    var wait = Math.round((j.next.s - j.today) / DAY);
+    cards += periodeCard('berikut', 'Ikut periode berikutnya',
+      'Mulai ' + tgl(j.next.s) + ', selesai ' + tgl(j.next.e) + '.',
+      'Menunggu ' + wait + ' hari');
+    return '<div class="periode-wrap" role="radiogroup" aria-label="Pilih periode">' + cards + '</div>';
+  }
+  function periodeCard(key, title, desc, tag) {
+    var on = S.periode === key;
+    return '<button type="button" class="periode-card" role="radio" aria-checked="' + on + '" data-cek="periode" data-value="' + key + '">' +
+      '<span class="periode-radio"></span>' +
+      '<span class="periode-text"><span class="periode-tag">' + tag + '</span><span class="periode-title">' + title + '</span><span class="periode-desc">' + desc + '</span></span></button>';
+  }
+  function periodeLabel() {
+    var j = jadwal();
+    if (S.periode === 'berjalan' && j.ongoing) return 'periode berjalan (mulai ' + tgl(j.ongoing.s) + ', terpotong ' + j.cut + ' hari)';
+    return 'periode berikutnya (mulai ' + tgl(j.next.s) + ')';
   }
   function ringkas() {
     var k = KELAS[S.kelas];
     return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
-      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\n' +
+      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
       'Peserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
   }
   function pesanDaftar() {
@@ -1502,7 +1531,7 @@
       '<p class="cek-alasan">Masih ada yang mengganjal? Ringkasan ini bisa dibahas dulu dengan keluarga lewat <a href="' + waLink("Assalamu'alaikum, ini ringkasan program Al-Qur'an yang sedang kami pertimbangkan:\n\n" + ringkas()) + '" target="_blank" rel="noopener">WhatsApp</a>.</p>';
 
     document.getElementById('cekHasil').innerHTML =
-      '<p class="cek-alasan">' + ALASAN[S.jenis] + '</p>' + box + harga + edit + jadwalBox(jadwal()) + trust + closing;
+      '<p class="cek-alasan">' + ALASAN[S.jenis] + '</p>' + box + harga + edit + periodeBox(jadwal()) + trust + closing;
   }
   function renderData() {
     var radio = function (name, v, t, cur) {
@@ -1554,6 +1583,7 @@
 
   /* ---------- pilihan ---------- */
   function choose(key, value) {
+    if (key === 'periode') { S.periode = value; renderHasil(); return; }
     if (key === 'untuk') S.untuk = value;
     if (key === 'kondisi') { S.kondisi = value; S.jenis = REKOM[value]; }
     if (key === 'harapan') S.harapan = value;
