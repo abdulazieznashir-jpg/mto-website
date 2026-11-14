@@ -162,14 +162,14 @@
   .flow-backdrop.open { opacity: 1; pointer-events: auto; }
   .flow {
     background: white; width: 100%; max-width: 520px;
-    max-height: calc(100vh - 32px); overflow-y: auto;
+    max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto;
     border-radius: var(--radius-lg); padding: 28px;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
     transform: translateY(16px) scale(0.98);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .flow-backdrop.open .flow { transform: none; }
-  .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; }
+  .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: sticky; top: 0; z-index: 3; background: #fff; padding: 4px 0 8px; }
   .flow-back, .flow-close {
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -315,6 +315,22 @@
   .cek-wa > span { display: block; font-size: 15px; margin-bottom: 6px; }
   .cek-wa-row { display: grid; gap: 8px; }
   .cek-wa-row .cek-kode { width: 100%; }
+  .flow-orn { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; }
+  .flow-orn:last-child { margin: 18px 0 0; }
+  .flow-orn svg { width: 40px; height: 40px; flex-shrink: 0; opacity: 0.85; }
+  .flow-orn span { flex: 1; height: 1px; max-width: 110px; background: linear-gradient(to right, transparent, #BE966A); }
+  .flow-orn span + svg + span { background: linear-gradient(to left, transparent, #BE966A); }
+  .harga-wrap { margin: 6px 0 14px; }
+  .harga { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .harga-now { font-size: 34px; font-weight: 700; color: #BE966A; letter-spacing: -0.5px; line-height: 1.1; }
+  .harga-now .rb { font-size: 0.5em; font-weight: 700; margin-left: 2px; }
+  .harga-now .per { font-size: 15px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0; }
+  .harga-pct, .harga-hemat { display: inline-block; background: #E53935; color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .harga-coret { color: #86868b; text-decoration: line-through; font-size: 15px; margin-top: 6px; }
+  .harga-hemat { margin-top: 8px; }
+  .rb { font-size: 0.55em; font-weight: 600; }
+  .cek-check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; min-height: 44px; margin-top: 8px; color: var(--text-primary); }
+  .cek-check input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; accent-color: #BE966A; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -660,7 +676,7 @@
         <div class="pricing-duration">Langkah awal yang ringan</div>
         <div class="pricing-price">
           <span class="pricing-currency">Rp</span>
-          <span class="pricing-amount">199K</span>
+          <span class="pricing-amount">199</span><span class="rb">rb</span>
         </div>
         <div class="pricing-period">per bulan · Weekdays / Weekends</div>
         <ul class="pricing-features">
@@ -679,7 +695,7 @@
         <div class="pricing-duration">Waktu ideal untuk progres stabil</div>
         <div class="pricing-price">
           <span class="pricing-currency">Rp</span>
-          <span class="pricing-amount">349K</span>
+          <span class="pricing-amount">349</span><span class="rb">rb</span>
         </div>
         <div class="pricing-period">per bulan · Weekdays / Weekends</div>
         <ul class="pricing-features">
@@ -698,7 +714,7 @@
         <div class="pricing-duration">Untuk target yang lebih besar</div>
         <div class="pricing-price">
           <span class="pricing-currency">Rp</span>
-          <span class="pricing-amount">499K</span>
+          <span class="pricing-amount">499</span><span class="rb">rb</span>
         </div>
         <div class="pricing-period">per bulan · Weekdays / Weekends</div>
         <ul class="pricing-features">
@@ -830,6 +846,7 @@
 <!-- ALUR PENDAFTARAN: satu alur untuk semua pintu masuk (Cek Program dan Daftar) -->
 <div class="flow-backdrop" id="cek" aria-hidden="true">
   <div class="flow" role="dialog" aria-modal="true" aria-label="Pendaftaran Mahkota Tahfizh Online">
+    <div class="flow-orn" aria-hidden="true"><span></span><svg viewBox="0 0 100 100" fill="none" stroke="#BE966A" stroke-width="1.5" stroke-linecap="round"><circle cx="50" cy="50" r="47"/><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="10"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(0 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(45 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(90 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(135 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(180 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(225 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(270 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(315 50 50)"/><circle cx="50" cy="50" r="22"/></svg><span></span></div>
     <div class="flow-top">
       <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="flow-stage" aria-live="polite"><span id="cekStage"></span><div class="flow-bar"><i id="cekBar"></i></div></div>
@@ -953,6 +970,7 @@
       <h3>Kirim bukti transfer</h3>
       <div id="kirimBox"></div>
     </div>
+    <div class="flow-orn" aria-hidden="true"><span></span><svg viewBox="0 0 100 100" fill="none" stroke="#BE966A" stroke-width="1.5" stroke-linecap="round"><circle cx="50" cy="50" r="47"/><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="10"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(0 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(45 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(90 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(135 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(180 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(225 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(270 50 50)"/><ellipse cx="50" cy="26" rx="8" ry="17" transform="rotate(315 50 50)"/><circle cx="50" cy="50" r="22"/></svg><span></span></div>
   </div>
 </div>
 
@@ -1016,6 +1034,16 @@
 
   /* ---------- utilitas ---------- */
   function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
+  // Harga ditulis dalam ribuan (rb), sedangkan total pembayaran tetap lengkap.
+  function rbFmt(n) { return 'Rp' + Number(n / 1000).toLocaleString('id-ID') + '<span class="rb">rb</span>'; }
+  function priceBlock(k, m) {
+    var c = KELAS[k], monthly = perBulan(k, m);
+    var html = '<div class="harga"><span class="harga-now">' + rbFmt(monthly) + '<span class="per"> /bulan</span></span>';
+    if (m >= 3) html += '<span class="harga-pct">' + Math.round((c.list - c.paket) / c.list * 100) + '%</span>';
+    html += '</div>';
+    if (m >= 3) html += '<div class="harga-coret">' + rupiah(c.list * m * S.peserta) + '</div><span class="harga-hemat">HEMAT ' + rupiah(hemat()) + '</span>';
+    return '<div class="harga-wrap">' + html + '</div>';
+  }
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
   function isAnak() { return S.untuk === 'anak'; }
@@ -1024,7 +1052,7 @@
   function waValid() { return normWa(S.wa).length >= 8; }
   function waCocok() { return waValid() && normWa(S.wa) === normWa(S.wa2); }
   function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
-  function dataValid() { return !!(S.nama && S.jk && waCocok() && emailValid()); }
+  function dataValid() { return !!(S.nama && S.jk && waCocok() && emailValid() && S.confirm); }
   function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
   function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
   // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai panjang sesi.
@@ -1209,14 +1237,14 @@
       var tag = k === 'gold' ? '<span class="flow-tag">Saran kami</span>' : '';
       return '<button type="button" class="flow-option" data-pick="kelas" data-value="' + k + '"><span class="flow-option-body">' +
         '<span class="flow-option-title">' + c.nama + ' · ' + c.menit + ' menit' + tag + '</span>' +
-        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' Mulai ' + rupiah(c.list) + ' / bulan.</span></span></button>';
+        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' Mulai ' + rbFmt(c.list) + '/bulan.</span></span></button>';
     }).join('');
   }
   function renderDurasi() {
     document.getElementById('durasiOpts').innerHTML = durasiOpts().map(function (m) {
       return '<button type="button" class="flow-option" data-pick="durasi" data-value="' + m + '"><span class="flow-option-body">' +
         '<span class="flow-option-title">' + durasiLabel(m) + '</span>' +
-        '<span class="flow-option-desc">' + rupiah(perBulan(S.kelas, m)) + ' / bulan · ' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
+        '<span class="flow-option-desc">' + rbFmt(perBulan(S.kelas, m)) + '/bulan · ' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
     }).join('');
   }
   function renderJam() {
@@ -1242,10 +1270,7 @@
       return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
     }).join('') + '</div>';
 
-    var harga = m >= 3
-      ? '<div class="cek-amount"><s style="color:#86868b;font-weight:400">' + rupiah(k.list) + '</s> ' + rupiah(k.paket) + ' / bulan</div>' +
-        '<p class="cek-alasan">Hemat ' + rupiah(hemat()) + ' selama ' + durasiLabel(m) + '.</p>'
-      : '<div class="cek-amount">' + rupiah(k.list) + ' / bulan</div>';
+    var harga = priceBlock(S.kelas, m);
 
     var edit = '<div class="cek-edit">' +
       '<button type="button" data-edit="kelas">Ubah kelas</button>' +
@@ -1288,7 +1313,8 @@
         '<input type="tel" name="wa" class="cek-input" inputmode="numeric" placeholder="812xxxxxxxx" value="' + esc(S.wa || '') + '">' +
       '</div></div>' +
       '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" placeholder="Ketik ulang nomor yang sama" value="' + esc(S.wa2 || '') + '"></label>' +
-      '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>';
+      '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>' +
+      '<label class="cek-check"><input type="checkbox" name="cekConfirm"' + (S.confirm ? ' checked' : '') + '><span>Saya memastikan nomor WhatsApp di atas sudah benar dan aktif.</span></label>';
     updateDataBtn();
     updateVerify();
   }
@@ -1391,6 +1417,7 @@
   cek.addEventListener('change', function (e) {
     var t = e.target;
     if (t.name === 'cekJk') S.jk = t.value;
+    if (t.name === 'cekConfirm') S.confirm = t.checked;
     if (t.name === 'kodeNeg') S.kodeNeg = t.value;
     updateDataBtn();
     updateVerify();
