@@ -325,7 +325,7 @@
   .harga-note { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; line-height: 1.4; }
   .harga-hemat { margin: 0 0 10px; }
   .promo-sec { background: #f6f2ec; border-radius: 22px; overflow: hidden; margin: 16px 0; }
-  .promo-head { background: #5a3b1c; color: #fff; padding: 16px 18px 18px; }
+  .promo-head { background: #C62828; color: #fff; padding: 16px 18px 18px; }
   .promo-head h4 { margin: 0; font-size: 18px; color: #fff; }
   .promo-head p { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
   .promo-list { padding: 12px; display: grid; gap: 12px; }
@@ -714,7 +714,7 @@
           <span class="pricing-amount">199</span><span class="rb">rb</span>
           <span class="harga-pct">43%</span>
         </div>
-        <div class="pricing-period">per bulan · Promo awal 43% untuk bulan pertama</div>
+        <div class="pricing-period">per bulan · Diskon 43% otomatis</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 10 menit</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
@@ -735,7 +735,7 @@
           <span class="pricing-amount">349</span><span class="rb">rb</span>
           <span class="harga-pct">40%</span>
         </div>
-        <div class="pricing-period">per bulan · Promo awal 40% untuk bulan pertama</div>
+        <div class="pricing-period">per bulan · Diskon 40% otomatis</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 20 menit</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
@@ -756,7 +756,7 @@
           <span class="pricing-amount">499</span><span class="rb">rb</span>
           <span class="harga-pct">43%</span>
         </div>
-        <div class="pricing-period">per bulan · Promo awal 43% untuk bulan pertama</div>
+        <div class="pricing-period">per bulan · Diskon 43% otomatis</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 30 menit</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
@@ -1101,7 +1101,7 @@
     var card1 = '<div class="promo-card">' +
       '<span class="promo-tag">PROMO AWAL</span>' +
       '<div class="promo-row"><span class="promo-ico">' + PROMO_ICON + '</span>' +
-      '<div class="promo-text"><strong>Diskon ' + promoPct(S.kelas) + '% untuk bulan pertama</strong>' +
+      '<div class="promo-text"><strong>Diskon ' + promoPct(S.kelas) + '% otomatis</strong>' +
       '<small>Harga asli ' + rbFmt(c.asli) + ', sekarang ' + rbFmt(c.list) + ' per bulan.</small></div>' +
       '<button type="button" class="promo-btn' + (on1 ? ' on' : '') + '" data-toggle="promoAwal">' + (on1 ? 'Dipakai' : 'Pakai') + '</button></div>' +
       '<div class="promo-foot">' + (on1 ? 'Hemat ' + rupiah(c.asli - c.list) + ' per bulan' : 'Promo ini tidak dipakai') + '</div></div>';
@@ -1113,11 +1113,11 @@
     var card2 = '<div class="promo-card">' +
       '<span class="promo-tag">PAKET 3 BULAN</span>' +
       '<div class="promo-row"><span class="promo-ico">' + PROMO_ICON + '</span>' +
-      '<div class="promo-text"><strong>Potongan tambahan 12% untuk 3 bulan</strong>' +
-      '<small>Berlaku bersama promo awal, minimal 3 bulan.</small></div>' +
+      '<div class="promo-text"><strong>Tambahan 12% untuk paket 3 bulan</strong>' +
+      '<small>Digabung dengan diskon ' + promoPct(S.kelas) + '%. Minimal pilih 3 bulan.</small></div>' +
       '<button type="button" class="promo-btn' + (eff2 ? ' on' : '') + '" data-toggle="paketPromo"' + ((!on1 || !qual) ? ' disabled' : '') + '>' + (eff2 ? 'Dipakai' : 'Pakai') + '</button></div>' +
       '<div class="promo-foot">' + foot2 + '</div></div>';
-    return '<div class="promo-sec"><div class="promo-head"><h4>Promo untuk Anda</h4>' +
+    return '<div class="promo-sec"><div class="promo-head"><h4>Penawaran Khusus untuk Anda</h4>' +
       '<p>Sudah terpasang otomatis. Lepas jika ingin melihat harga asli.</p></div>' +
       '<div class="promo-list">' + card1 + card2 + '</div></div>';
   }
