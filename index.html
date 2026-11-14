@@ -380,6 +380,8 @@
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
 <script>
   (function () {
+    // Pemanggil event tetap aman walau Pixel belum aktif
+    window.mtoTrack = function (ev, params) { if (window.fbq) window.fbq('track', ev, params || {}); };
     var PIXEL_ID = 'PIXEL_ID';
     if (!PIXEL_ID || PIXEL_ID === 'PIXEL_ID') return;
     !function (f, b, e, v, n, t, s) {
@@ -390,12 +392,20 @@
     window.fbq('init', PIXEL_ID);
     window.fbq('track', 'PageView');
 
-    // Lead: saat pendaftar menekan tombol WhatsApp dari alur daftar
-    // Contact: saat tautan WhatsApp lain diklik
+    // ViewContent: paket belajar terlihat di layar (sekali saja)
+    document.addEventListener('DOMContentLoaded', function () {
+      var card = document.querySelector('.pricing-card');
+      if (!card || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { window.mtoTrack('ViewContent', { content_name: 'Paket Belajar' }); io.disconnect(); }
+      }, { threshold: 0.3 });
+      io.observe(card);
+    });
+
+    // Contact: setiap tautan WhatsApp yang diklik
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
-      if (!a || !window.fbq) return;
-      window.fbq('track', a.id === 'flowWa' ? 'Lead' : 'Contact');
+      if (a) window.mtoTrack('Contact', { content_name: a.textContent.trim().slice(0, 60) });
     });
   })();
 </script>
@@ -1272,6 +1282,7 @@
 
   function openFlow(opts) {
     S = { peserta: 1, mode: opts.mode, program: opts.program || null, jenis: opts.jenis || null, kelas: opts.tier || null, periode: null, editing: false };
+    if (window.mtoTrack) window.mtoTrack('Lead', { content_name: opts.mode === 'daftar' ? 'Daftar dari paket' : 'Cek Program' });
     P = { program: opts.program || null, jenis: opts.jenis || null, tier: opts.tier || null };
     if (P.jenis && P.tier && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
     hist = [];
@@ -1296,6 +1307,8 @@
     show(hist[hist.length - 1]);
   }
   function show(step) {
+    if (window.mtoTrack && step === 'data') window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
+    if (window.mtoTrack && step === 'kirim') window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran terkirim' });
     Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
     backBtn.hidden = hist.length <= 1;
     var n = STAGE_OF[step];
@@ -1590,6 +1603,7 @@
     } else if (s.k === 'ringkas') {
       var c2 = KELAS[s.k2], mo = monthly(s.k2, s.m);
       title.textContent = 'Konfirmasi pertanyaan';
+      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[s.p].lbl + ' ' + c2.n + ' ' + s.m + ' bulan' });
       var q = 'saya ingin menanyakan program ' + PROG[s.p].lbl + ', durasi ' + s.m + ' bulan, kelas ' + c2.n + ' (' + c2.menit + ' menit per sesi).';
       body.innerHTML = '<p class="ask-sum">' + esc(q.charAt(0).toUpperCase() + q.slice(1)) + '</p>' +
         '<span class="ask-tag">Harga ' + rb(mo) + ' per bulan · harga coret ' + rb(c2.asli) + ' · diskon ' + pct(c2.asli, mo) + '%</span>' +
