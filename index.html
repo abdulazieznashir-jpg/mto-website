@@ -361,6 +361,14 @@
   .ask-opt { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid #d2d2d7; border-radius: 14px; background: #fff; font: inherit; font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; }
   .ask-opt:hover { border-color: #BE966A; }
   .ask-opt small { display: block; font-size: 13px; font-weight: 400; color: #6e6e73; margin-top: 2px; }
+  .ask-opt-col { flex-direction: column; align-items: stretch; gap: 8px; }
+  .ask-opt-col .ask-right, .ask-opt .ask-right { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+  .ask-name { display: block; }
+  .ask-price { font-size: 15px; color: #1d1d1f; }
+  .ask-price s { color: #86868b; font-weight: 400; margin-right: 4px; }
+  .ask-price small, .ask-m { display: inline; font-weight: 400; font-size: 13px; color: #6e6e73; }
+  .ask-pct { display: inline-block; background: #FDECEC; color: #D32F2F; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 4px; }
+  .ask-m { display: block; margin-top: 2px; }
   .ask-note, .ask-sum { font-size: 15px; line-height: 1.6; margin: 0; }
   .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
@@ -1526,55 +1534,73 @@
 <script>
 (function () {
   var WA = '6285727533000';
-  var PROG = { tahsin: 'Tahsin', tahfidz: 'Tahfidz', ziyadah: 'Ziyadah', murojaah: "Muroja'ah" };
-  var PAKET = {
-    silver: { n: 'Silver', menit: 10, h: 199000, d: 'Langkah awal yang ringan' },
-    gold: { n: 'Gold', menit: 20, h: 349000, d: 'Waktu ideal untuk progres stabil' },
-    platinum: { n: 'Platinum', menit: 30, h: 499000, d: 'Untuk target yang lebih besar' }
+  var KELAS = {
+    silver: { n: 'Silver', menit: 10, d: 'Langkah awal yang ringan', asli: 350000, list: 199000, paket: 175000 },
+    gold: { n: 'Gold', menit: 20, d: 'Waktu ideal untuk progres stabil', asli: 580000, list: 349000, paket: 307000 },
+    platinum: { n: 'Platinum', menit: 30, d: 'Untuk target yang lebih besar', asli: 875000, list: 499000, paket: 439000 }
   };
-  var QA = [
-    { t: "Saya ingin belajar bacaan Al-Qur'an (Tahsin)", p: 'tahsin' },
-    { t: 'Saya ingin menghafal Al-Qur\'an (Tahfidz)', p: 'tahfidz' },
-    { t: 'Saya ingin menambah hafalan (Ziyadah)', p: 'ziyadah' },
-    { t: "Saya ingin menjaga hafalan (Muroja'ah)", p: 'murojaah' },
-    { t: 'Apakah bisa untuk anak?', a: 'Bisa. Pilih program yang sesuai, lalu hubungi admin untuk memastikan kelas dan jadwal anak.' }
+  var PROG = {
+    tahsin: { lbl: 'Tahsin', kelas: ['silver', 'gold', 'platinum'], dur: [1, 3], t: "Saya ingin belajar bacaan Al-Qur'an (Tahsin)" },
+    pratahsin: { lbl: 'Pra Tahsin', kelas: ['gold', 'platinum'], dur: [1, 3], t: 'Saya ingin belajar dari dasar (Pra Tahsin)' },
+    ziyadah: { lbl: 'Ziyadah', kelas: ['silver', 'gold', 'platinum'], dur: [3, 12], t: 'Saya ingin menambah hafalan (Ziyadah)' },
+    murojaah: { lbl: "Muroja'ah", kelas: ['silver', 'gold', 'platinum'], dur: [1, 3], t: "Saya ingin menjaga hafalan (Muroja'ah)" }
+  };
+  var INFO = [
+    { t: 'Apakah bisa untuk anak?', a: 'Bisa. Pilih program yang sesuai, lalu hubungi admin untuk memastikan kelas dan jadwal anak.' },
+    { t: 'Apa bedanya Silver, Gold, dan Platinum?', a: 'Silver: sesi 10 menit dengan laporan progres bulanan. Gold: sesi 20 menit, pengajar pilihan, laporan progres mingguan, dan akses grup peserta. Platinum: sesi 30 menit, pengajar premium pilihan peserta, laporan progres harian, dan konsultasi langsung dengan mentor.' },
+    { t: 'Berapa biayanya?', a: 'Harga per bulan mulai dari Rp199rb (Silver), Rp349rb (Gold), dan Rp499rb (Platinum). Pilih program untuk melihat harga coret, diskon, dan harga paket 3 bulan.' }
   ];
   var modal = document.getElementById('askModal'), body = document.getElementById('askBody');
   var title = document.getElementById('askTitle'), back = document.getElementById('askBack');
   var hist = [];
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
-  function rb(n) { return 'Rp' + (n / 1000) + 'rb'; }
-  function durs(p) { return p === 'ziyadah' ? [3, 12] : [1, 3]; }
+  function rb(n) { return 'Rp' + Math.round(n / 1000) + 'rb'; }
+  function pct(a, b) { return Math.round((a - b) / a * 100); }
+  function monthly(k, m) { return m >= 3 ? KELAS[k].paket : KELAS[k].list; }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
+  function priceHtml(k, m) {
+    var c = KELAS[k], mo = monthly(k, m);
+    return '<span class="ask-price"><s>' + rb(c.asli) + '</s> <strong>' + rb(mo) + '</strong> <small>per bulan</small></span>' +
+      '<span class="ask-pct">' + pct(c.asli, mo) + '%</span>';
+  }
   function draw(s) {
     back.hidden = hist.length < 2;
     if (s.k === 'list') {
       title.textContent = 'Apa yang ingin Anda tanyakan?';
-      body.innerHTML = QA.map(function (q, i) {
-        var attr = q.p ? 'data-prog="' + q.p + '"' : 'data-i="' + i + '"';
-        return '<button type="button" class="ask-opt" ' + attr + '>' + esc(q.t) + '</button>';
-      }).join('');
+      var progs = Object.keys(PROG).map(function (p) {
+        return '<button type="button" class="ask-opt" data-prog="' + p + '"><span>' + esc(PROG[p].t) + '</span></button>';
+      });
+      var infos = INFO.map(function (q, i) {
+        return '<button type="button" class="ask-opt" data-i="' + i + '"><span>' + esc(q.t) + '</span></button>';
+      });
+      body.innerHTML = progs.concat(infos).join('');
     } else if (s.k === 'answer') {
-      title.textContent = QA[s.i].t;
-      body.innerHTML = '<p class="ask-note">' + esc(QA[s.i].a) + '</p>' +
-        '<a class="ask-btn" target="_blank" rel="noopener" href="' + waLink("Assalamu'alaikum, saya ingin bertanya apakah program bisa untuk anak.") + '">Hubungi Admin via WhatsApp</a>';
-    } else if (s.k === 'paket') {
-      title.textContent = 'Pilih paket ' + PROG[s.p];
-      body.innerHTML = Object.keys(PAKET).map(function (k) {
-        var x = PAKET[k];
-        return '<button type="button" class="ask-opt" data-paket="' + k + '"><span>' + x.n + ' · ' + x.menit + ' menit<small>' + x.d + '</small></span><span>' + rb(x.h) + '<small>per bulan</small></span></button>';
+      title.textContent = INFO[s.i].t;
+      body.innerHTML = '<p class="ask-note">' + esc(INFO[s.i].a) + '</p>' +
+        '<a class="ask-btn" target="_blank" rel="noopener" href="' + waLink("Assalamu'alaikum, saya ingin bertanya: " + INFO[s.i].t) + '">Hubungi Admin via WhatsApp</a>';
+    } else if (s.k === 'kelas') {
+      var pg = PROG[s.p], m0 = pg.dur[0];
+      title.textContent = 'Pilih kelas ' + pg.lbl;
+      body.innerHTML = pg.kelas.map(function (k) {
+        var c = KELAS[k];
+        return '<button type="button" class="ask-opt ask-opt-col" data-kelas="' + k + '">' +
+          '<span class="ask-name">' + c.n + ' · ' + c.menit + ' menit<small>' + c.d + '</small></span>' +
+          '<span class="ask-right">' + priceHtml(k, m0) + '<small class="ask-m">mulai ' + m0 + ' bulan</small></span></button>';
       }).join('');
     } else if (s.k === 'durasi') {
+      var pg2 = PROG[s.p];
       title.textContent = 'Berapa lama?';
-      body.innerHTML = durs(s.p).map(function (m) {
-        return '<button type="button" class="ask-opt" data-dur="' + m + '"><span>' + m + ' bulan</span><span>' + rb(PAKET[s.x].h) + ' / bulan</span></button>';
+      body.innerHTML = pg2.dur.map(function (m) {
+        return '<button type="button" class="ask-opt ask-opt-col" data-dur="' + m + '">' +
+          '<span class="ask-name">' + m + ' bulan</span>' +
+          '<span class="ask-right">' + priceHtml(s.k2, m) + '</span></button>';
       }).join('');
     } else if (s.k === 'ringkas') {
-      var x = PAKET[s.x];
+      var c2 = KELAS[s.k2], mo = monthly(s.k2, s.m), total = mo * s.m;
       title.textContent = 'Konfirmasi pilihan';
-      var msg = "Assalamu'alaikum, saya ingin konsultasi.\nProgram: " + PROG[s.p] + '\nPaket: ' + x.n + ' (' + x.menit + ' menit, ' + rb(x.h) + ' per bulan)\nDurasi: ' + s.m + ' bulan\nMohon info jadwal dan pendaftaran.';
-      body.innerHTML = '<p class="ask-sum">Program: <strong>' + PROG[s.p] + '</strong><br>Paket: <strong>' + x.n + '</strong> (' + x.menit + ' menit, ' + rb(x.h) + ' per bulan)<br>Durasi: <strong>' + s.m + ' bulan</strong></p>' +
-        '<a class="ask-btn" target="_blank" rel="noopener" href="' + waLink(msg) + '">Hubungi Admin via WhatsApp</a>';
+      var lines = 'Program: ' + PROG[s.p].lbl + '\nKelas: ' + c2.n + ' (' + c2.menit + ' menit)\nDurasi: ' + s.m + ' bulan\nHarga: ' + rb(mo) + ' per bulan (harga coret ' + rb(c2.asli) + ', diskon ' + pct(c2.asli, mo) + '%)\nTotal: ' + rb(total);
+      body.innerHTML = '<p class="ask-sum">' + lines.split('\n').map(esc).join('<br>') + '</p>' +
+        '<a class="ask-btn" target="_blank" rel="noopener" href="' + waLink("Assalamu'alaikum, saya ingin konsultasi.\n" + lines + '\nMohon info jadwal dan pendaftaran.') + '">Hubungi Admin via WhatsApp</a>';
     }
   }
   function go(s) { hist.push(s); draw(s); }
@@ -1584,14 +1610,13 @@
     var t = e.target.closest('button'); if (!t) return;
     var cur = hist[hist.length - 1];
     if (t.dataset.i !== undefined) go({ k: 'answer', i: +t.dataset.i });
-    else if (t.dataset.paket) go({ k: 'durasi', p: cur.p, x: t.dataset.paket });
-    else if (t.dataset.dur) go({ k: 'ringkas', p: cur.p, x: cur.x, m: +t.dataset.dur });
+    else if (t.dataset.prog) go({ k: 'kelas', p: t.dataset.prog });
+    else if (t.dataset.kelas) go({ k: 'durasi', p: cur.p, k2: t.dataset.kelas });
+    else if (t.dataset.dur) go({ k: 'ringkas', p: cur.p, k2: cur.k2, m: +t.dataset.dur });
   });
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('[data-ask]');
-    if (t) { e.preventDefault(); open(); return; }
-    var pk = e.target.closest && e.target.closest('[data-prog]');
-    if (pk) { go({ k: 'paket', p: pk.dataset.prog }); }
+    if (t) { e.preventDefault(); open(); }
   });
   document.getElementById('askClose').addEventListener('click', close);
   back.addEventListener('click', function () { if (hist.length > 1) { hist.pop(); draw(hist[hist.length - 1]); } });
