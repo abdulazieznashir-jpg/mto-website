@@ -1015,7 +1015,8 @@
     <div class="flow-step" data-step="waktu">
       <h3>Pilih jam mulai</h3>
       <p id="cekWaktuInfo"></p>
-      <div class="cek-slots" id="cekWaktuOpts"></div>
+      <select id="cekWaktuSel" class="cek-input" style="margin-top:12px"></select>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="cekWaktuNext" style="margin-top:20px">Lanjut</button>
     </div>
 
     <div class="flow-step" data-step="hasil">
@@ -1425,8 +1426,9 @@
   function renderWaktu() {
     var k = KELAS[S.kelas];
     document.getElementById('cekWaktuInfo').textContent = 'Sesi ' + k.nama + ' ' + k.menit + ' menit. Pilih jam mulai (WIB).';
-    document.getElementById('cekWaktuOpts').innerHTML = slotList().map(function (v) {
-      return '<button type="button" class="cek-slot' + (S.jam === v ? ' on' : '') + '" data-cek="jam" data-value="' + v + '">' + v.replace(':', '.') + '</button>';
+    var sel = document.getElementById('cekWaktuSel');
+    sel.innerHTML = '<option value="">Pilih jam</option>' + slotList().map(function (v) {
+      return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':', '.') + ' WIB</option>';
     }).join('');
   }
   function renderHasil() {
@@ -1548,6 +1550,12 @@
   document.getElementById('cekClose').addEventListener('click', close);
   backBtn.addEventListener('click', back);
   document.getElementById('cekNamaNext').addEventListener('click', submitNama);
+  document.getElementById('cekWaktuNext').addEventListener('click', function () {
+    var v = document.getElementById('cekWaktuSel').value;
+    if (!v) { document.getElementById('cekWaktuSel').focus(); return; }
+    S.jam = v;
+    finish();
+  });
   document.getElementById('cekNama').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { e.preventDefault(); submitNama(); }
   });
