@@ -135,15 +135,10 @@
   .testi-name { font-weight: 600; font-size: 16px; }
   .testi-city { font-size: 14px; color: var(--text-tertiary); }
   .testi-link { color: var(--primary); font-weight: 500; }
-  .testi-slider { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 8px 4px 16px; scrollbar-width: none; }
-  .testi-slider::-webkit-scrollbar { display: none; }
-  .testi-slider .testi-single { flex: 0 0 min(340px, 86%); scroll-snap-align: start; max-width: none; margin: 0; padding: 28px; }
-  .testi-slider .testi-quote { font-size: 18px; }
-  .testi-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 12px; }
-  .testi-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.35); background: transparent; color: white; font-size: 22px; cursor: pointer; }
-  .testi-dots { display: flex; gap: 8px; align-items: center; }
-  .testi-dots button { width: 8px; height: 8px; border-radius: 4px; border: 0; padding: 0; background: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.3s; }
-  .testi-dots button.on { background: #BE966A; width: 22px; }
+  .testi-grid { columns: 2; column-gap: 20px; }
+  .testi-grid .testi-single { break-inside: avoid; max-width: none; margin: 0 0 20px; padding: 28px; display: block; }
+  .testi-grid .testi-quote { font-size: 18px; }
+  @media (max-width: 640px) { .testi-grid { columns: 1; } }
   .testimonial-stars { color: #E0A526; letter-spacing: 2px; margin-top: 12px; font-size: 14px; }
 
   /* PROGRAM (TAHSIN / TAHFIDZ) */
@@ -596,8 +591,7 @@
       <div class="eyebrow">Kesan Peserta</div>
       <h2 style="color: white;">Ini kata mereka yang sudah bergabung.</h2>
     </div>
-    <div class="testi-slider-wrap">
-      <div class="testi-slider" id="testiSlider">
+    <div class="testi-grid">
       <div class="testi-single">
         <p class="testi-quote">"Maasya Allah ini adalah tempat tahfidz online yg paling nyaman menurut saya. Selain ustadzahnya juga sudah terjamin kualitasnya bahkan sudah mempunyai sanad, program setor disesuaikan dengan kemampuan. Cocok untuk saya yg menghafal sambil bekerja"</p>
         <div class="testi-name">Citra Atrina Sari</div>
@@ -633,12 +627,6 @@
         <div class="testi-name">Afifah</div>
         <div class="testi-city">Bogor</div>
         <div class="testimonial-stars">★★★★★</div>
-      </div>
-      </div>
-      <div class="testi-nav">
-        <button type="button" class="testi-prev" aria-label="Testimoni sebelumnya">&#8249;</button>
-        <div class="testi-dots" id="testiDots"></div>
-        <button type="button" class="testi-next" aria-label="Testimoni berikutnya">&#8250;</button>
       </div>
     </div>
     <div style="text-align: center; margin-top: 32px;">
@@ -1510,34 +1498,5 @@
 </script>
 
 <script src="js/main.js"></script>
-<script>
-(function () {
-  var sl = document.getElementById('testiSlider');
-  if (!sl) return;
-  var cards = sl.querySelectorAll('.testi-single');
-  var dots = document.getElementById('testiDots');
-  var prev = document.querySelector('.testi-prev'), next = document.querySelector('.testi-next');
-  var timer = null;
-  cards.forEach(function (_, i) {
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Testimoni ' + (i + 1));
-    b.addEventListener('click', function () { go(i); pause(); });
-    dots.appendChild(b);
-  });
-  function step() { return cards[0].offsetWidth + 20; }
-  function idx() { return Math.round(sl.scrollLeft / step()); }
-  function go(i) { i = (i + cards.length) % cards.length; sl.scrollTo({ left: i * step(), behavior: 'smooth' }); }
-  function mark() { var c = idx(); Array.prototype.forEach.call(dots.children, function (d, i) { d.classList.toggle('on', i === c); }); }
-  function play() { timer = setInterval(function () { go(idx() + 1); }, 6000); }
-  function pause() { clearInterval(timer); }
-  sl.addEventListener('scroll', mark, { passive: true });
-  sl.addEventListener('touchstart', pause, { passive: true });
-  sl.addEventListener('mouseenter', pause);
-  prev.addEventListener('click', function () { go(idx() - 1); pause(); });
-  next.addEventListener('click', function () { go(idx() + 1); pause(); });
-  mark(); play();
-})();
-</script>
 </body>
 </html>
