@@ -329,6 +329,28 @@
   .harga-pct { background: #FDECEC; color: #D32F2F; }
   .harga-note { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; line-height: 1.4; }
   .harga-hemat { margin: 0 0 10px; }
+  .promo-sec { background: #f6f2ec; border-radius: 22px; overflow: hidden; margin: 16px 0; }
+  .promo-head { background: #5a3b1c; color: #fff; padding: 16px 18px 18px; }
+  .promo-head h4 { margin: 0; font-size: 18px; color: #fff; }
+  .promo-head p { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+  .promo-list { padding: 12px; display: grid; gap: 12px; }
+  .promo-card { position: relative; background: #fff; border-radius: 16px; border: 1px solid #e6dccf; padding: 14px 14px 0; overflow: hidden; }
+  .promo-tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: #5a3b1c; border: 1.5px solid #5a3b1c; border-radius: 999px; padding: 2px 10px; margin-bottom: 10px; }
+  .promo-row { display: flex; align-items: center; gap: 12px; }
+  .promo-ico { width: 40px; height: 40px; border-radius: 50%; background: #fbf5ec; color: #5a3b1c; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .promo-ico svg { width: 20px; height: 20px; }
+  .promo-text { flex: 1; min-width: 0; }
+  .promo-text strong { display: block; font-size: 15px; color: #2b1c0e; line-height: 1.3; }
+  .promo-text small { display: block; margin-top: 3px; font-size: 13px; color: #7a6a58; line-height: 1.4; }
+  .promo-text small .rb { font-size: 0.8em; }
+  .promo-btn { flex-shrink: 0; border: 1.5px solid #8a7560; color: #5a3b1c; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; min-width: 92px; cursor: pointer; }
+  .promo-btn.on { background: #5a3b1c; border-color: #5a3b1c; color: #fff; }
+  .promo-btn:disabled { color: #b8a993; border-color: #d9cfc1; cursor: not-allowed; }
+  .promo-foot { margin: 12px -14px 0; padding: 10px 14px; background: #fbf5ec; color: #6b4520; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .promo-foot button { background: none; border: none; color: #5a3b1c; font-weight: 700; text-decoration: underline; padding: 0; font-size: 13px; cursor: pointer; }
+  .promo-card::before, .promo-card::after { content: ""; position: absolute; top: 50%; width: 18px; height: 18px; border-radius: 50%; background: #f6f2ec; transform: translateY(-50%); }
+  .promo-card::before { left: -10px; }
+  .promo-card::after { right: -10px; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -1036,14 +1058,48 @@
   function priceBlock(k, m) {
     var c = KELAS[k], monthly = perBulan(k, m);
     var pctAll = Math.round((c.asli - monthly) / c.asli * 100);
-    var pctPromo = Math.round((c.asli - c.list) / c.asli * 100);
     var hematAll = (c.asli - monthly) * m * S.peserta;
-    var html = '<span class="harga-hemat">HEMAT ' + rupiah(hematAll) + '</span>';
+    var html = '';
+    if (hematAll > 0) html += '<span class="harga-hemat">HEMAT ' + rupiah(hematAll) + '</span>';
     html += '<div class="harga"><span class="harga-now">' + rbFmt(monthly) + '<span class="per"> /bulan</span></span>';
-    html += '<span class="harga-pct">' + pctAll + '%</span></div>';
-    html += '<div class="harga-coret">' + rupiah(c.asli * m * S.peserta) + '</div>';
-    if (m >= 3) html += '<p class="harga-note">Promo ' + pctPromo + '% + potongan paket 3 bulan 12%</p>';
+    if (pctAll > 0) html += '<span class="harga-pct">' + pctAll + '%</span>';
+    html += '</div>';
+    if (pctAll > 0) html += '<div class="harga-coret">' + rupiah(c.asli * m * S.peserta) + '</div>';
+    var pr = [];
+    if (S.promoAwal !== false) pr.push('Promo ' + promoPct(k) + '%');
+    if (paketAktif(m)) pr.push('potongan paket 3 bulan 12%');
+    if (pr.length) html += '<p class="harga-note">' + pr.join(' + ') + '</p>';
     return '<div class="harga-wrap">' + html + '</div>';
+  }
+  // Seksi promo bergaya kartu: setiap promo bisa dipakai atau dilepas.
+  var PROMO_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>';
+  function promoSection() {
+    var c = KELAS[S.kelas], m = S.durasi;
+    var on1 = S.promoAwal !== false, on2 = S.paketPromo !== false;
+    var qual = m >= 3;
+    var eff2 = on1 && qual && on2;
+    var card1 = '<div class="promo-card">' +
+      '<span class="promo-tag">PROMO AWAL</span>' +
+      '<div class="promo-row"><span class="promo-ico">' + PROMO_ICON + '</span>' +
+      '<div class="promo-text"><strong>Diskon ' + promoPct(S.kelas) + '% untuk bulan pertama</strong>' +
+      '<small>Harga asli ' + rbFmt(c.asli) + ', sekarang ' + rbFmt(c.list) + ' per bulan.</small></div>' +
+      '<button type="button" class="promo-btn' + (on1 ? ' on' : '') + '" data-toggle="promoAwal">' + (on1 ? 'Dipakai' : 'Pakai') + '</button></div>' +
+      '<div class="promo-foot">' + (on1 ? 'Hemat ' + rupiah(c.asli - c.list) + ' per bulan' : 'Promo ini tidak dipakai') + '</div></div>';
+    var foot2;
+    if (!on1) foot2 = 'Aktifkan promo awal untuk memakai potongan ini';
+    else if (!qual) foot2 = '<span>Ambil paket 3 bulan untuk potongan ini</span><button type="button" data-set-durasi="3">Pilih 3 bulan</button>';
+    else if (!on2) foot2 = 'Potongan ini tidak dipakai';
+    else foot2 = 'Hemat tambahan ' + rupiah((c.list - c.paket) * m * S.peserta);
+    var card2 = '<div class="promo-card">' +
+      '<span class="promo-tag">PAKET 3 BULAN</span>' +
+      '<div class="promo-row"><span class="promo-ico">' + PROMO_ICON + '</span>' +
+      '<div class="promo-text"><strong>Potongan tambahan 12% untuk 3 bulan</strong>' +
+      '<small>Berlaku bersama promo awal, minimal 3 bulan.</small></div>' +
+      '<button type="button" class="promo-btn' + (eff2 ? ' on' : '') + '" data-toggle="paketPromo"' + ((!on1 || !qual) ? ' disabled' : '') + '>' + (eff2 ? 'Dipakai' : 'Pakai') + '</button></div>' +
+      '<div class="promo-foot">' + foot2 + '</div></div>';
+    return '<div class="promo-sec"><div class="promo-head"><h4>Promo untuk Anda</h4>' +
+      '<p>Sudah terpasang otomatis. Lepas jika ingin melihat harga asli.</p></div>' +
+      '<div class="promo-list">' + card1 + card2 + '</div></div>';
   }
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
@@ -1065,7 +1121,19 @@
     }
     return out;
   }
-  function perBulan(k, months) { return months >= 3 ? KELAS[k].paket : KELAS[k].list; }
+  function promoPct(k) { return Math.round((KELAS[k].asli - KELAS[k].list) / KELAS[k].asli * 100); }
+  // Potongan paket 3 bulan hanya berlaku bersama promo awal dan minimal 3 bulan.
+  function paketAktif(m) { return S.promoAwal !== false && S.paketPromo !== false && m >= 3; }
+  function perBulan(k, months) {
+    if (S.promoAwal === false) return KELAS[k].asli;
+    return paketAktif(months) ? KELAS[k].paket : KELAS[k].list;
+  }
+  function promoText() {
+    var t = [];
+    if (S.promoAwal !== false) t.push('promo awal ' + promoPct(S.kelas) + '%');
+    if (paketAktif(S.durasi)) t.push('potongan paket 3 bulan 12%');
+    return t.length ? t.join(' + ') : 'tidak dipakai';
+  }
   function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
   function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
   function durasiLabel(m) { return m === 12 ? '1 tahun' : m + ' bulan'; }
@@ -1120,7 +1188,7 @@
     var k = KELAS[S.kelas];
     return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
       'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
-      'Peserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
+      'Promo: ' + promoText() + '\nPeserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
   }
   function pesanDaftar() {
     var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
@@ -1294,7 +1362,7 @@
       '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="data">Lanjut isi data</button>' +
       '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya sebelum mendaftar.\n\n" + ringkas()) + '" target="_blank" rel="noopener">Tanya admin dulu</a>';
 
-    document.getElementById('ringkasanBox').innerHTML = box + harga + edit + periodeBox(jadwal()) + trust + closing;
+    document.getElementById('ringkasanBox').innerHTML = box + promoSection() + harga + edit + periodeBox(jadwal()) + trust + closing;
   }
   function renderData() {
     var radio = function (name, v, t, cur) {
@@ -1393,6 +1461,8 @@
       return;
     }
     if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
+    if ((b = t.closest('[data-toggle]'))) { var key = b.dataset.toggle, on = S[key] !== false; S[key] = !on; renderRingkasan(); return; }
+    if ((b = t.closest('[data-set-durasi]'))) { S.durasi = Number(b.dataset.setDurasi); renderRingkasan(); return; }
     if ((b = t.closest('[data-peserta]'))) { S.peserta = Math.min(10, Math.max(1, S.peserta + Number(b.dataset.peserta))); renderRingkasan(); return; }
     if ((b = t.closest('[data-periode]'))) { S.periode = b.dataset.periode; renderRingkasan(); return; }
     if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
