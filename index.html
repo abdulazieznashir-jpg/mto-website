@@ -758,6 +758,26 @@
     </div>
 
     <!-- Langkah 3: Durasi -->
+    <!-- Langkah Jadwal (khusus Tahfidz) -->
+    <div class="flow-step" data-step="jadwal">
+      <h3>Pilih jadwal sesi</h3>
+      <p>Pilih jadwal yang paling sesuai dengan kesibukan Anda.</p>
+      <div class="flow-options">
+        <button class="flow-option" data-choose="jadwal" data-value="weekday">
+          <span class="flow-option-body">
+            <span class="flow-option-title">Weekday · 15 pertemuan</span>
+            <span class="flow-option-desc">Sesi di hari kerja, Senin sampai Jumat.</span>
+          </span>
+        </button>
+        <button class="flow-option" data-choose="jadwal" data-value="weekend">
+          <span class="flow-option-body">
+            <span class="flow-option-title">Weekend · 8 pertemuan</span>
+            <span class="flow-option-desc">Sesi di akhir pekan, Sabtu dan Minggu.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
     <div class="flow-step" data-step="tier">
       <div class="flow-crumb" id="flowTierCrumb"></div>
       <h3>Berapa menit setiap sesi?</h3>
@@ -787,27 +807,7 @@
       </div>
     </div>
 
-        <!-- Langkah tambahan: Jadwal -->
-    <div class="flow-step" data-step="jadwal">
-      <h3>Pilih jadwal sesi</h3>
-      <p>Pilih hari yang paling memungkinkan untuk Anda.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="jadwal" data-value="weekday">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Weekday</span>
-            <span class="flow-option-desc">Sesi di hari kerja, Senin sampai Jumat.</span>
-          </span>
-        </button>
-        <button class="flow-option" data-choose="jadwal" data-value="weekend">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Weekend</span>
-            <span class="flow-option-desc">Sesi di akhir pekan, Sabtu dan Minggu.</span>
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Langkah 4: Ringkasan -->
+        <!-- Langkah 4: Ringkasan -->
     <div class="flow-step" data-step="summary">
       <div class="flow-crumb">Hampir selesai</div>
       <h3>Pilihan Anda</h3>
@@ -831,7 +831,7 @@
     tahsin: 'Tahsin', tahfidz: 'Tahfidz',
     ziyadah: 'Ziyadah', murojaah: "Muroja'ah",
     silver: 'Silver', gold: 'Gold', platinum: 'Platinum',
-    weekday: 'Weekday', weekend: 'Weekend'
+    weekday: 'Weekday (15 pertemuan)', weekend: 'Weekend (8 pertemuan)'
   };
   var TIER = {
     silver:   { menit: 10, harga: 'Rp199.000' },
@@ -851,7 +851,7 @@
 
   function path() {
     return state.program === 'tahfidz'
-      ? ['program', 'jenis', 'tier', 'jadwal', 'summary']
+      ? ['program', 'jenis', 'jadwal', 'tier', 'summary']
       : ['program', 'tier', 'jadwal', 'summary'];
   }
 
@@ -884,8 +884,8 @@
   function next() {
     if (!state.program) return show('program');
     if (state.program === 'tahfidz' && !state.jenis) return show('jenis');
+    if (state.program === 'tahfidz' && !state.jadwal) return show('jadwal');
     if (!state.tier) return show('tier');
-    if (!state.jadwal) return show('jadwal');
     show('summary');
   }
 
@@ -896,13 +896,13 @@
     document.getElementById('flowSummary').innerHTML =
       '<div class="flow-summary-row"><span>Program</span><span>' + program + '</span></div>' +
       '<div class="flow-summary-row"><span>Paket</span><span>' + paket + '</span></div>' +
-      '<div class="flow-summary-row"><span>Jadwal</span><span>' + LABEL[state.jadwal] + '</span></div>' +
+      (state.jadwal ? '<div class="flow-summary-row"><span>Jadwal</span><span>' + LABEL[state.jadwal] + '</span></div>' : '') +
       '<div class="flow-summary-row"><span>Biaya</span><span>' + t.harga + ' / bulan</span></div>';
 
     var msg = "Assalamu'alaikum, saya ingin mendaftar di Mahkota Tahfidz Online.\n\n" +
       'Program: ' + program + '\n' +
       'Paket: ' + paket + '\n' +
-      'Jadwal: ' + LABEL[state.jadwal] + '\n' +
+      (state.jadwal ? 'Jadwal: ' + LABEL[state.jadwal] + '\n' : '') +
       'Biaya: ' + t.harga + ' / bulan\n\n' +
       'Mohon info jadwal yang tersedia. Jazakumullahu khairan.';
     document.getElementById('flowWa').href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
@@ -937,7 +937,7 @@
     history.pop();
     var target = history[history.length - 1];
     // Kembali ke sebuah langkah = batalkan pilihan di langkah itu dan sesudahnya.
-    var order = ['program', 'jenis', 'tier', 'jadwal'];
+    var order = ['program', 'jenis', 'jadwal', 'tier'];
     order.slice(order.indexOf(target)).forEach(function (k) { delete state[k]; });
     show(target, false);
   }
