@@ -326,6 +326,9 @@
   .rb { font-size: 0.55em; font-weight: 600; }
   .cek-check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; min-height: 44px; margin-top: 8px; color: var(--text-primary); }
   .cek-check input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; accent-color: #BE966A; }
+  .harga-pct { background: #FDECEC; color: #D32F2F; }
+  .harga-note { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; line-height: 1.4; }
+  .harga-hemat { margin: 0 0 10px; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -975,9 +978,9 @@
   var WA = '6285727533000';
   var LBL = { pratahsin: 'Tahsin · Pra Tahsin', reguler: 'Tahsin · Reguler', ziyadah: 'Tahfidz · Ziyadah', murojaah: "Tahfidz · Muroja'ah" };
   var KELAS = {
-    silver:   { nama: 'Silver',   menit: 10, list: 199000, paket: 175000 },
-    gold:     { nama: 'Gold',     menit: 20, list: 349000, paket: 309000 },
-    platinum: { nama: 'Platinum', menit: 30, list: 499000, paket: 449000 }
+    silver:   { nama: 'Silver',   menit: 10, asli: 350000, list: 199000, paket: 175000 },
+    gold:     { nama: 'Gold',     menit: 20, asli: 580000, list: 349000, paket: 307000 },
+    platinum: { nama: 'Platinum', menit: 30, asli: 875000, list: 499000, paket: 439000 }
   };
   var GAYA_DESC = {
     silver: 'Singkat, untuk jadwal yang padat.',
@@ -1029,12 +1032,17 @@
   function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
   // Harga ditulis dalam ribuan (rb), sedangkan total pembayaran tetap lengkap.
   function rbFmt(n) { return 'Rp' + Number(n / 1000).toLocaleString('id-ID') + '<span class="rb">rb</span>'; }
+  // Urutan: HEMAT di atas, lalu harga, persen diskon, dan harga asli yang dicoret.
   function priceBlock(k, m) {
     var c = KELAS[k], monthly = perBulan(k, m);
-    var html = '<div class="harga"><span class="harga-now">' + rbFmt(monthly) + '<span class="per"> /bulan</span></span>';
-    if (m >= 3) html += '<span class="harga-pct">' + Math.round((c.list - c.paket) / c.list * 100) + '%</span>';
-    html += '</div>';
-    if (m >= 3) html += '<div class="harga-coret">' + rupiah(c.list * m * S.peserta) + '</div><span class="harga-hemat">HEMAT ' + rupiah(hemat()) + '</span>';
+    var pctAll = Math.round((c.asli - monthly) / c.asli * 100);
+    var pctPromo = Math.round((c.asli - c.list) / c.asli * 100);
+    var hematAll = (c.asli - monthly) * m * S.peserta;
+    var html = '<span class="harga-hemat">HEMAT ' + rupiah(hematAll) + '</span>';
+    html += '<div class="harga"><span class="harga-now">' + rbFmt(monthly) + '<span class="per"> /bulan</span></span>';
+    html += '<span class="harga-pct">' + pctAll + '%</span></div>';
+    html += '<div class="harga-coret">' + rupiah(c.asli * m * S.peserta) + '</div>';
+    if (m >= 3) html += '<p class="harga-note">Promo ' + pctPromo + '% + potongan paket 3 bulan 12%</p>';
     return '<div class="harga-wrap">' + html + '</div>';
   }
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
