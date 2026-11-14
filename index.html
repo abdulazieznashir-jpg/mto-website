@@ -301,6 +301,17 @@
     display: inline-flex; align-items: center; justify-content: center;
     box-sizing: border-box; text-align: center; line-height: 1.2; font-size: 16px;
   }
+  .flow-stage { flex: 1; min-width: 0; text-align: center; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .flow-bar { height: 4px; margin: 8px 12px 0; border-radius: 999px; background: #e8e8ed; overflow: hidden; }
+  .flow-bar i { display: block; height: 100%; width: 0; background: #BE966A; border-radius: 999px; transition: width 0.35s ease; }
+  .flow-tag { display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 11px; font-weight: 600; color: #8a6a3f; background: #fbf5ec; border-radius: 999px; padding: 2px 8px; }
+  .cek-link { all: unset; display: block; box-sizing: border-box; margin: 18px auto 0; font-size: 15px; font-weight: 500; color: #8a6a3f; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .cek-link:focus-visible { outline: 2px solid #BE966A; outline-offset: 2px; }
+  .cek-rekom { border: 1px solid #d2d2d7; border-radius: 18px; padding: 18px; background: #fff; margin: 16px 0; }
+  .cek-rekom h4 { margin: 10px 0 6px; font-size: 18px; color: var(--text-primary); }
+  .cek-rekom p { margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 15px; }
+  .cek-verify { background: #fbf5ec; border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--text-primary); }
+  .cek-verify p { margin: 0 0 10px; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -390,13 +401,10 @@
       <p class="lead animate" style="animation-delay: 0.1s">
         Kami siapkan jalannya, mulai hari ini. Belajar dari dasar hingga mahir dan hafal 30 Juz, cukup dari rumah. Tanpa malu, tanpa bingung, agar Anda tidak hanya bisa dan hafal, tetapi juga istiqamah bersama Al-Qur'an.
       </p>
-      <div class="hero-cta animate" style="animation-delay: 0.2s; margin-bottom: 12px">
-        <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
-        <a href="#program" class="btn btn-secondary btn-lg">Lihat Program</a>
-      </div>
-      <div class="cek-cta">
-        <button type="button" class="btn btn-secondary btn-lg" id="cekOpen">Cek Program yang Cocok (1 Menit)</button>
-        <p class="cek-note">Jawab beberapa pertanyaan singkat, dapatkan rekomendasi kelas Al-Qur'an yang pas untuk Anda.</p>
+      <div class="hero-cta animate" style="animation-delay: 0.2s; margin-bottom: 60px; flex-direction: column; align-items: center; gap: 12px">
+        <button type="button" id="cekOpen" class="btn btn-primary btn-lg">Cek Program yang Cocok (1 Menit)</button>
+        <p class="cek-note" style="margin: 0 0 4px">Tiga pertanyaan singkat, lalu kami sarankan program yang sesuai.</p>
+        <a href="#daftar" class="btn btn-secondary btn-lg" data-daftar>Daftar Sekarang</a>
       </div>
       <div class="hero-features">
         <div class="hero-feature">
@@ -708,7 +716,7 @@
   <div class="container">
     <div class="cta-content">
       <h2>Segera daftarkan diri Anda.</h2>
-      <p class="lead">Jadwal setiap pengajar terbatas, jadi amankan waktu belajar Anda sekarang.</p>
+      <p class="lead">Amankan waktu belajar Anda sebelum periode berikutnya dimulai.</p>
       <div class="cta-buttons">
         <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
         <a href="https://wa.me/6285727533000?text=Assalamu'alaikum%2C%20saya%20ingin%20bertanya%20tentang%20program%20Mahkota%20Tahfidz%20Online." class="btn btn-secondary btn-lg">
@@ -816,433 +824,560 @@
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
 
-<!-- ALUR PENDAFTARAN -->
-<div class="flow-backdrop" id="flow" aria-hidden="true">
-  <div class="flow" role="dialog" aria-modal="true" aria-labelledby="flowTitle">
-    <div class="flow-top">
-      <button class="flow-back" id="flowBack" aria-label="Kembali" hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="flow-dots" id="flowDots" aria-hidden="true"></div>
-      <button class="flow-close" id="flowClose" aria-label="Tutup">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-
-    <!-- Langkah 1: Program -->
-    <div class="flow-step" data-step="program">
-      <div class="flow-crumb">Langkah 1</div>
-      <h3 id="flowTitle">Apa yang ingin Anda pelajari?</h3>
-      <p>Pilih salah satu. Anda bisa berganti program kapan saja.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="program" data-value="tahsin">
-          <span class="flow-option-icon">ت</span>
-          <span class="flow-option-body">
-            <span class="flow-option-title">Tahsin</span>
-            <span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span>
-          </span>
-        </button>
-        <button class="flow-option" data-choose="program" data-value="tahfidz">
-          <span class="flow-option-icon">ح</span>
-          <span class="flow-option-body">
-            <span class="flow-option-title">Tahfidz</span>
-            <span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span>
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Langkah 2: Jenis Tahfidz -->
-    <div class="flow-step" data-step="jenis">
-      <div class="flow-crumb">Tahfidz</div>
-      <h3>Hafalan seperti apa yang Anda butuhkan?</h3>
-      <p>Ziyadah untuk menambah, Muroja'ah untuk menjaga.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="jenis" data-value="ziyadah">
-          <span class="flow-option-icon">ز</span>
-          <span class="flow-option-body">
-            <span class="flow-option-title">Ziyadah</span>
-            <span class="flow-option-desc">Menambah hafalan baru, disetorkan dan dikoreksi setiap hari.</span>
-          </span>
-        </button>
-        <button class="flow-option" data-choose="jenis" data-value="murojaah">
-          <span class="flow-option-icon">م</span>
-          <span class="flow-option-body">
-            <span class="flow-option-title">Muroja'ah</span>
-            <span class="flow-option-desc">Mengulang dan menguatkan hafalan yang sudah ada agar tidak hilang.</span>
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Langkah 3: Durasi -->
-    <!-- Langkah Jenis Tahsin -->
-    <div class="flow-step" data-step="jenisTahsin">
-      <div class="flow-crumb">Tahsin</div>
-      <h3>Pilih jenis Tahsin</h3>
-      <p>Pilih program yang sesuai dengan kebutuhan Anda.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="jenis" data-value="reguler">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Tahsin Reguler</span>
-            <span class="flow-option-desc">Program Tahsin standar, tersedia untuk paket Silver, Gold, dan Platinum.</span>
-          </span>
-        </button>
-        <button class="flow-option" data-choose="jenis" data-value="pratahsin">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Pratahsin</span>
-            <span class="flow-option-desc">Program persiapan, tersedia untuk paket Gold dan Platinum.</span>
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Langkah Jadwal -->
-    <div class="flow-step" data-step="jadwal">
-      <h3>Pilih jadwal sesi</h3>
-      <p>Pilih jadwal yang paling sesuai dengan kesibukan Anda.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="jadwal" data-value="weekday">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Weekday · 15 pertemuan</span>
-            <span class="flow-option-desc">Sesi di hari kerja, Senin sampai Jumat.</span>
-          </span>
-        </button>
-        <button class="flow-option" data-choose="jadwal" data-value="weekend">
-          <span class="flow-option-body">
-            <span class="flow-option-title">Weekend · 8 pertemuan</span>
-            <span class="flow-option-desc">Sesi di akhir pekan, Sabtu dan Minggu.</span>
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <div class="flow-step" data-step="tier">
-      <div class="flow-crumb" id="flowTierCrumb"></div>
-      <h3>Berapa menit setiap sesi?</h3>
-      <p>Pilih durasi yang realistis untuk Anda jalani setiap hari.</p>
-      <div class="flow-options">
-        <button class="flow-option" data-choose="tier" data-value="silver">
-          <span class="flow-option-body">
-            <span class="flow-option-title">10 Menit · Silver</span>
-            <span class="flow-option-desc">Langkah awal yang ringan.</span>
-          </span>
-          <span class="flow-option-price">Rp199K<small>/bulan</small></span>
-        </button>
-        <button class="flow-option" data-choose="tier" data-value="gold">
-          <span class="flow-option-body">
-            <span class="flow-option-title">20 Menit · Gold <span class="flow-tag">Populer</span></span>
-            <span class="flow-option-desc">Waktu ideal untuk progres stabil.</span>
-          </span>
-          <span class="flow-option-price">Rp349K<small>/bulan</small></span>
-        </button>
-        <button class="flow-option" data-choose="tier" data-value="platinum">
-          <span class="flow-option-body">
-            <span class="flow-option-title">30 Menit · Platinum</span>
-            <span class="flow-option-desc">Untuk target yang lebih besar.</span>
-          </span>
-          <span class="flow-option-price">Rp499K<small>/bulan</small></span>
-        </button>
-      </div>
-    </div>
-
-        <!-- Langkah Jam sesi -->
-    <div class="flow-step" data-step="waktu">
-      <h3>Pilih jam sesi</h3>
-      <p>Pilih jam mulai sesi (WIB).</p>
-      <select id="flowTime" aria-label="Jam mulai sesi" style="width:100%;padding:14px 16px;border-radius:12px;border:1px solid #d2d2d7;font-size:16px;background:#fff;margin-bottom:16px"></select>
-      <button class="btn btn-primary btn-lg" id="flowTimeNext" style="width:100%">Lanjut</button>
-    </div>
-
-    <!-- Langkah 4: Ringkasan -->
-    <div class="flow-step" data-step="summary">
-      <div class="flow-crumb">Hampir selesai</div>
-      <h3>Pilihan Anda</h3>
-      <p>Lanjutkan ke WhatsApp. Pesan sudah kami siapkan, tinggal kirim.</p>
-      <div class="flow-summary" id="flowSummary"></div>
-      <a href="#" class="btn btn-lg btn-wa" id="flowWa" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        Lanjut Daftar via WhatsApp
-      </a>
-      <div class="flow-note">Jadwal dan guru akan dikonfirmasi oleh admin kami.</div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Cek Program yang Cocok -->
+<!-- ALUR PENDAFTARAN: satu alur untuk semua pintu masuk (Cek Program dan Daftar) -->
 <div class="flow-backdrop" id="cek" aria-hidden="true">
-  <div class="flow" role="dialog" aria-modal="true" aria-label="Cek program yang cocok">
+  <div class="flow" role="dialog" aria-modal="true" aria-label="Pendaftaran Mahkota Tahfizh Online">
     <div class="flow-top">
       <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="flow-dots" aria-hidden="true"></div>
+      <div class="flow-stage" aria-live="polite"><span id="cekStage"></span><div class="flow-bar"><i id="cekBar"></i></div></div>
       <button class="flow-close" id="cekClose" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
     </div>
 
-    <div class="flow-step" data-step="nama">
-      <h3>Assalamu'alaikum, senang Anda tertarik.</h3>
-      <p>Boleh kami tahu nama Anda?</p>
-      <input id="cekNama" class="cek-input" type="text" autocomplete="name" placeholder="Nama lengkap">
-      <p id="cekNamaErr" class="cek-err" hidden>Mohon isi nama Anda terlebih dahulu.</p>
-      <button class="btn btn-primary btn-lg cek-full" id="cekNamaNext" type="button">Lanjut</button>
+    <!-- Tahap 1 (pintu Daftar): program -->
+    <div class="flow-step" data-step="program">
+      <h3>Program apa yang ingin Anda ikuti?</h3>
+      <p>Pilih satu. Belum yakin? Jawab tiga pertanyaan singkat, lalu kami sarankan programnya.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="program" data-value="tahsin"><span class="flow-option-body"><span class="flow-option-title">Tahsin</span><span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span></span></button>
+        <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
+      </div>
+      <button type="button" class="cek-link" data-go-cek>Belum yakin? Cek program yang cocok</button>
     </div>
 
-    <div class="flow-step" data-step="untuk">
-      <h3>Program ini untuk siapa?</h3>
+    <div class="flow-step" data-step="jenisTahsin">
+      <h3>Tahsin yang mana?</h3>
+      <p>Pilih yang paling sesuai dengan bacaan Anda saat ini.</p>
       <div class="flow-options">
-        <button class="flow-option" data-cek="untuk" data-value="diri"><span class="flow-option-body"><span class="flow-option-title">Diri sendiri</span></span></button>
-        <button class="flow-option" data-cek="untuk" data-value="anak"><span class="flow-option-body"><span class="flow-option-title">Anak</span></span></button>
-        <button class="flow-option" data-cek="untuk" data-value="orangtua"><span class="flow-option-body"><span class="flow-option-title">Orang tua</span></span></button>
-        <button class="flow-option" data-cek="untuk" data-value="keluarga"><span class="flow-option-body"><span class="flow-option-title">Beberapa anggota keluarga</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="pratahsin"><span class="flow-option-body"><span class="flow-option-title">Pra Tahsin</span><span class="flow-option-desc">Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="reguler"><span class="flow-option-body"><span class="flow-option-title">Tahsin Reguler</span><span class="flow-option-desc">Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.</span></span></button>
+      </div>
+    </div>
+
+    <div class="flow-step" data-step="jenisTahfidz">
+      <h3>Hafalan seperti apa yang Anda butuhkan?</h3>
+      <p>Ziyadah untuk menambah hafalan baru, Muroja'ah untuk menjaga hafalan yang sudah ada.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="ziyadah"><span class="flow-option-body"><span class="flow-option-title">Ziyadah</span><span class="flow-option-desc">Menambah hafalan baru, disetorkan dan dikoreksi setiap hari.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="murojaah"><span class="flow-option-body"><span class="flow-option-title">Muroja'ah</span><span class="flow-option-desc">Menjaga hafalan lama agar tidak mudah hilang.</span></span></button>
+      </div>
+    </div>
+
+    <!-- Tahap 1 (pintu Cek Program): tiga pertanyaan lalu rekomendasi -->
+    <div class="flow-step" data-step="untuk">
+      <h3>Assalamu'alaikum. Untuk siapa program ini?</h3>
+      <p>Tiga pertanyaan singkat, lalu kami tunjukkan program yang sesuai.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="untuk" data-value="diri"><span class="flow-option-body"><span class="flow-option-title">Diri sendiri</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="anak"><span class="flow-option-body"><span class="flow-option-title">Anak</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="orangtua"><span class="flow-option-body"><span class="flow-option-title">Orang tua</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="keluarga"><span class="flow-option-body"><span class="flow-option-title">Beberapa anggota keluarga</span></span></button>
       </div>
     </div>
 
     <div class="flow-step" data-step="kondisi">
       <h3>Bagaimana kondisi bacaan saat ini?</h3>
+      <p>Pilih yang paling mendekati. Tidak ada jawaban yang salah.</p>
       <div class="flow-options">
-        <button class="flow-option" data-cek="kondisi" data-value="belum_baca"><span class="flow-option-body"><span class="flow-option-title">Belum bisa membaca Al-Qur'an</span></span></button>
-        <button class="flow-option" data-cek="kondisi" data-value="iqro"><span class="flow-option-body"><span class="flow-option-title">Masih belajar Iqro</span></span></button>
-        <button class="flow-option" data-cek="kondisi" data-value="ragu_tajwid"><span class="flow-option-body"><span class="flow-option-title">Sudah bisa, tetapi masih ragu tajwid</span></span></button>
-        <button class="flow-option" data-cek="kondisi" data-value="baik_mau_hafal"><span class="flow-option-body"><span class="flow-option-title">Bacaan sudah baik dan ingin menghafal</span></span></button>
-        <button class="flow-option" data-cek="kondisi" data-value="punya_hafalan"><span class="flow-option-body"><span class="flow-option-title">Sudah punya hafalan dan ingin dikuatkan</span></span></button>
-        <button class="flow-option" data-cek="kondisi" data-value="pernah_hafal"><span class="flow-option-body"><span class="flow-option-title">Pernah hafal, tetapi mulai samar</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="belum_baca"><span class="flow-option-body"><span class="flow-option-title">Belum bisa membaca Al-Qur'an</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="iqro"><span class="flow-option-body"><span class="flow-option-title">Masih belajar Iqro</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="ragu_tajwid"><span class="flow-option-body"><span class="flow-option-title">Sudah bisa, tetapi masih ragu tajwid</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="baik_mau_hafal"><span class="flow-option-body"><span class="flow-option-title">Bacaan sudah baik dan ingin menghafal</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="punya_hafalan"><span class="flow-option-body"><span class="flow-option-title">Sudah punya hafalan dan ingin dikuatkan</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="pernah_hafal"><span class="flow-option-body"><span class="flow-option-title">Pernah hafal, tetapi mulai samar</span></span></button>
       </div>
     </div>
 
     <div class="flow-step" data-step="harapan">
-      <h3>Apa harapan terbesar Anda?</h3>
-      <div class="flow-options" id="cekHarapanOpts"></div>
+      <h3>Apa yang paling ingin Anda capai?</h3>
+      <div class="flow-options" id="harapanOpts"></div>
     </div>
 
-    <div class="flow-step" data-step="gaya">
-      <h3>Gaya belajar seperti apa yang Anda pilih?</h3>
-      <div class="flow-options" id="cekGayaOpts"></div>
+    <div class="flow-step" data-step="rekom">
+      <h3>Program yang sesuai untuk Anda</h3>
+      <div id="rekomBox"></div>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="rekomNext">Atur jadwal belajar</button>
+    </div>
+
+    <!-- Tahap 2: atur jadwal (sama untuk semua pintu) -->
+    <div class="flow-step" data-step="kelas">
+      <h3>Berapa lama setiap sesi?</h3>
+      <p>Panjang sesi menentukan biaya per bulan.</p>
+      <div class="flow-options" id="kelasOpts"></div>
     </div>
 
     <div class="flow-step" data-step="hari">
-      <h3>Pilih hari belajar</h3>
+      <h3>Hari apa Anda belajar?</h3>
+      <p>Pilih hari yang paling mudah Anda jaga setiap pekan.</p>
       <div class="flow-options">
-        <button class="flow-option" data-cek="hari" data-value="weekday"><span class="flow-option-body"><span class="flow-option-title">Weekday</span><span class="flow-option-desc">Senin sampai Jumat, 15 pertemuan per bulan.</span></span></button>
-        <button class="flow-option" data-cek="hari" data-value="weekend"><span class="flow-option-body"><span class="flow-option-title">Weekend</span><span class="flow-option-desc">Sabtu sampai Ahad, 8 pertemuan per bulan.</span></span></button>
+        <button type="button" class="flow-option" data-pick="hari" data-value="weekday"><span class="flow-option-body"><span class="flow-option-title">Senin–Jumat</span><span class="flow-option-desc">15 pertemuan per bulan.</span></span></button>
+        <button type="button" class="flow-option" data-pick="hari" data-value="weekend"><span class="flow-option-body"><span class="flow-option-title">Sabtu–Ahad</span><span class="flow-option-desc">8 pertemuan per bulan.</span></span></button>
       </div>
     </div>
 
     <div class="flow-step" data-step="durasi">
-      <h3>Pilih durasi program</h3>
-      <div class="flow-options" id="cekDurasiOpts"></div>
+      <h3>Berapa lama Anda ingin belajar?</h3>
+      <p>Durasi lebih panjang berarti biaya per bulan lebih ringan.</p>
+      <div class="flow-options" id="durasiOpts"></div>
     </div>
 
-    <div class="flow-step" data-step="waktu">
-      <h3>Pilih jam mulai</h3>
-      <p id="cekWaktuInfo"></p>
-      <select id="cekWaktuSel" class="cek-input" style="margin-top:12px"></select>
-      <button type="button" class="btn btn-primary btn-lg cek-full" id="cekWaktuNext" style="margin-top:20px">Lanjut</button>
+    <div class="flow-step" data-step="jam">
+      <h3>Jam berapa sesi dimulai?</h3>
+      <p id="jamInfo"></p>
+      <select id="jamSel" class="cek-input" style="margin-top:12px"></select>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="jamNext" style="margin-top:20px">Lanjut</button>
     </div>
 
-    <div class="flow-step" data-step="hasil">
-      <h3>Rekomendasi untuk Anda</h3>
-      <div id="cekHasil"></div>
+    <!-- Tahap 3: daftar (sama untuk semua pintu) -->
+    <div class="flow-step" data-step="ringkasan">
+      <h3>Ringkasan pilihan Anda</h3>
+      <div id="ringkasanBox"></div>
     </div>
 
     <div class="flow-step" data-step="data">
       <h3>Data peserta</h3>
-      <p>Isi data berikut agar admin bisa menyiapkan pendaftaran Anda.</p>
-      <form id="cekDataForm" class="cek-form" novalidate></form>
+      <p>Hanya dipakai untuk pendaftaran dan untuk dihubungi admin.</p>
+      <form id="dataForm" class="cek-form" novalidate></form>
+      <div id="verifyBox"></div>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="toBayar" style="margin-top:16px">Lanjut ke pembayaran</button>
     </div>
 
     <div class="flow-step" data-step="bayar">
-      <h3>Pembayaran</h3>
-      <div id="cekBayar"></div>
+      <h3>Transfer ke rekening resmi</h3>
+      <div id="bayarBox"></div>
     </div>
 
     <div class="flow-step" data-step="kirim">
       <h3>Kirim bukti transfer</h3>
-      <div id="cekKirim"></div>
+      <div id="kirimBox"></div>
     </div>
   </div>
 </div>
 
 <script>
-// Alur pendaftaran: Program → Jenis → Jadwal → Paket → Jam → WhatsApp
 (function () {
-  var WA_NUMBER = '6285727533000';
-  var LABEL = {
-    tahsin: 'Tahsin', tahfidz: 'Tahfidz',
-    ziyadah: 'Ziyadah', murojaah: "Muroja'ah",
-    reguler: 'Tahsin Reguler', pratahsin: 'Pratahsin',
-    silver: 'Silver', gold: 'Gold', platinum: 'Platinum',
-    weekday: 'Weekday (15 pertemuan)', weekend: 'Weekend (8 pertemuan)'
-  };
-  var TIER = {
-    silver:   { menit: 10, harga: 'Rp199.000' },
-    gold:     { menit: 20, harga: 'Rp349.000' },
-    platinum: { menit: 30, harga: 'Rp499.000' }
-  };
-  var JAM_MULAI = 5 * 60;    // 05.00 WIB (menit sejak 00.00)
-  var JAM_SELESAI = 22 * 60; // 22.00 WIB (jam mulai paling akhir)
+  var cek = document.getElementById('cek');
+  if (!cek) return;
 
-  var flow = document.getElementById('flow');
-  var backBtn = document.getElementById('flowBack');
-  var dotsEl = document.getElementById('flowDots');
-  var timeSel = document.getElementById('flowTime');
-  var timeNext = document.getElementById('flowTimeNext');
+  var WA = '6285727533000';
+  var LBL = { pratahsin: 'Tahsin · Pra Tahsin', reguler: 'Tahsin · Reguler', ziyadah: 'Tahfidz · Ziyadah', murojaah: "Tahfidz · Muroja'ah" };
+  var KELAS = {
+    silver:   { nama: 'Silver',   menit: 10, list: 199000, paket: 175000 },
+    gold:     { nama: 'Gold',     menit: 20, list: 349000, paket: 309000 },
+    platinum: { nama: 'Platinum', menit: 30, list: 499000, paket: 449000 }
+  };
+  var GAYA_DESC = {
+    silver: 'Singkat, untuk jadwal yang padat.',
+    gold: 'Lebih longgar untuk setoran dan koreksi.',
+    platinum: 'Waktu terpanjang untuk bimbingan mendalam.'
+  };
+  var SESI = { weekday: 15, weekend: 8 };
+  var HARI = { weekday: 'Weekday (Senin–Jumat)', weekend: 'Weekend (Sabtu–Ahad)' };
+  // Draf aturan rekomendasi (menunggu revisi pemilik).
+  var REKOM = { belum_baca: 'pratahsin', iqro: 'pratahsin', ragu_tajwid: 'reguler', baik_mau_hafal: 'ziyadah', punya_hafalan: 'murojaah', pernah_hafal: 'murojaah' };
+  var ALASAN = {
+    pratahsin: 'Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.',
+    reguler: 'Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.',
+    ziyadah: 'Bacaan Anda sudah baik, sekarang saatnya menambah hafalan secara terarah.',
+    murojaah: 'Hafalan yang sudah ada perlu dikuatkan kembali agar tidak mudah hilang.'
+  };
+  var HARAPAN = {
+    pratahsin: [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    reguler:   [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    ziyadah:   [['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    murojaah:  [['kuat', 'Hafalan lama dikuatkan kembali'], ['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar']]
+  };
+  var REKENING = [
+    ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
+    ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
+  ];
+  var STAGE_NAME = { 1: 'Kenali kebutuhan', 2: 'Atur jadwal', 3: 'Daftar' };
+  var STAGE_OF = {
+    program: 1, jenisTahsin: 1, jenisTahfidz: 1, untuk: 1, kondisi: 1, harapan: 1, rekom: 1,
+    kelas: 2, hari: 2, durasi: 2, jam: 2,
+    ringkasan: 3, data: 3, bayar: 3, kirim: 3
+  };
+
   var steps = {};
-  flow.querySelectorAll('.flow-step').forEach(function (el) { steps[el.dataset.step] = el; });
+  cek.querySelectorAll('.flow-step').forEach(function (el) { steps[el.dataset.step] = el; });
+  var backBtn = document.getElementById('cekBack');
+  var stageEl = document.getElementById('cekStage');
+  var barEl = document.getElementById('cekBar');
+  var S = {}, P = {}, hist = [], lastFocus = null;
 
-  var state = {};
-  var history = [];
-  var lastFocus = null;
-
-  // Tahfidz dan Tahsin sama-sama punya pilihan jenis, tetapi isinya berbeda.
-  function jenisStep() { return state.program === 'tahsin' ? 'jenisTahsin' : 'jenis'; }
-
-  function path() {
-    return ['program', jenisStep(), 'jadwal', 'tier', 'waktu', 'summary'];
-  }
-
-  function renderDots(current) {
-    dotsEl.innerHTML = path().map(function (s) {
-      return '<span class="' + (s === current ? 'on' : '') + '"></span>';
-    }).join('');
-  }
-
-  function fillTimes() {
-    var menit = TIER[state.tier].menit;
-    var html = '';
-    for (var m = JAM_MULAI; m <= JAM_SELESAI; m += menit) {
+  /* ---------- utilitas ---------- */
+  function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
+  function isAnak() { return S.untuk === 'anak'; }
+  function waValid() { return !!S.wa && S.wa.replace(/\D/g, '').length >= 9; }
+  function dataValid() { return !!(S.nama && S.jk && waValid()); }
+  function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
+  function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
+  // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai panjang sesi.
+  function slotList() {
+    var menit = KELAS[S.kelas].menit, out = [];
+    for (var m = 5 * 60; m <= 22 * 60; m += menit) {
       var hh = Math.floor(m / 60), mm = m % 60;
-      var v = (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
-      html += '<option value="' + v + '">' + v.replace(':', '.') + ' WIB</option>';
+      out.push((hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm);
     }
-    timeSel.innerHTML = html;
-    steps.waktu.querySelector('p').textContent = 'Sesi ' + menit + ' menit. Pilih jam mulai (WIB).';
+    return out;
   }
-
-  function show(name, push) {
-    if (push !== false) history.push(name);
-    Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === name); });
-    backBtn.hidden = history.length <= 1;
-    renderDots(name);
-
-    if (name === 'tier') {
-      // Pratahsin hanya tersedia untuk Gold dan Platinum.
-      var pratahsin = state.jenis === 'pratahsin';
-      steps.tier.querySelectorAll('[data-choose="tier"]').forEach(function (b) {
-        b.style.display = (pratahsin && b.dataset.value === 'silver') ? 'none' : '';
-      });
-      steps.tier.querySelector('p').textContent = pratahsin
-        ? 'Pratahsin tersedia untuk paket Gold dan Platinum.'
-        : 'Pilih durasi yang realistis untuk Anda jalani setiap hari.';
+  function perBulan(k, months) { return months >= 3 ? KELAS[k].paket : KELAS[k].list; }
+  function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
+  function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
+  function durasiLabel(m) { return m === 12 ? '1 tahun' : m + ' bulan'; }
+  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  function tgl(d) { return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
+  var DAY = 86400000;
+  // Gelombang: mulai tanggal 12 (selesai tanggal 10 bulan berikutnya) dan mulai tanggal 27 (selesai tanggal 25 bulan berikutnya).
+  function jadwal() {
+    var t = new Date(), y = t.getFullYear(), m = t.getMonth();
+    var today = new Date(y, m, t.getDate());
+    var c = [];
+    for (var o = -2; o <= 2; o++) {
+      c.push({ s: new Date(y, m + o, 12), e: new Date(y, m + o + 1, 10) });
+      c.push({ s: new Date(y, m + o, 27), e: new Date(y, m + o + 1, 25) });
     }
-    if (name === 'waktu') fillTimes();
-    if (name === 'summary') renderSummary();
-
-    var first = steps[name].querySelector('button, select');
-    if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 50);
+    c.sort(function (a, b) { return a.s - b.s; });
+    var next = null, ongoing = null;
+    c.forEach(function (x) {
+      if (x.s >= today && !next) next = x;
+      if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
+    });
+    var cut = ongoing ? Math.floor((today - ongoing.s) / DAY) : 0;
+    return { next: next, ongoing: ongoing, cut: cut, today: today };
+  }
+  function periodeBox(j) {
+    if (!j.ongoing) S.periode = 'berikut';
+    if (!S.periode) S.periode = 'berikut';
+    var cards = '';
+    if (j.ongoing) {
+      cards += periodeCard('berjalan', 'Ikut periode berjalan',
+        'Mulai ' + tgl(j.ongoing.s) + ', selesai ' + tgl(j.ongoing.e) + '.',
+        'Terpotong ' + j.cut + ' hari');
+    }
+    var wait = Math.round((j.next.s - j.today) / DAY);
+    cards += periodeCard('berikut', 'Ikut periode berikutnya',
+      'Mulai ' + tgl(j.next.s) + ', selesai ' + tgl(j.next.e) + '.',
+      'Menunggu ' + wait + ' hari');
+    return '<div class="periode-wrap" role="radiogroup" aria-label="Pilih periode">' + cards + '</div>';
+  }
+  function periodeCard(key, title, desc, tag) {
+    var on = S.periode === key;
+    return '<button type="button" class="periode-card" role="radio" aria-checked="' + on + '" data-periode="' + key + '">' +
+      '<span class="periode-radio"></span>' +
+      '<span class="periode-text"><span class="periode-tag">' + tag + '</span><span class="periode-title">' + title + '</span><span class="periode-desc">' + desc + '</span></span></button>';
+  }
+  function periodeLabel() {
+    var j = jadwal();
+    if (S.periode === 'berjalan' && j.ongoing) return 'periode berjalan (mulai ' + tgl(j.ongoing.s) + ', terpotong ' + j.cut + ' hari)';
+    return 'periode berikutnya (mulai ' + tgl(j.next.s) + ')';
+  }
+  function ringkas() {
+    var k = KELAS[S.kelas];
+    return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
+      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
+      'Peserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
+  }
+  function pesanDaftar() {
+    var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
+      'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
+    if (!isAnak()) s += 'Usia: ' + S.usia + '\n';
+    s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: ' + S.wa + ' (belum terverifikasi)\nKode verifikasi: ' + S.kode + '\n\n' +
+      ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
+    return s;
   }
 
-  function next() {
-    if (!state.program) return show('program');
-    if (!state.jenis) return show(jenisStep());
-    if (!state.jadwal) return show('jadwal');
-    if (!state.tier) return show('tier');
-    if (!state.waktu) return show('waktu');
-    show('summary');
+  /* ---------- alur: satu urutan untuk semua pintu masuk ---------- */
+  // Urutan langkah bergantung pada pintu masuk dan pilihan yang sudah diisi lewat tautan.
+  function route() {
+    var r = [];
+    if (S.mode === 'cek') {
+      r.push('untuk', 'kondisi', 'harapan', 'rekom');
+    } else {
+      if (!P.program) r.push('program');
+      if (!P.jenis) r.push(S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin');
+    }
+    if (!P.tier) r.push('kelas');
+    r.push('hari', 'durasi', 'jam', 'ringkasan', 'data', 'bayar', 'kirim');
+    return r;
+  }
+  function advance(cur) {
+    var r = route(), i = r.indexOf(cur);
+    if (i >= 0 && r[i + 1]) go(r[i + 1]);
+  }
+  // Setelah langkah selesai: saat mengubah dari ringkasan, kembali ke ringkasan.
+  function done(cur) {
+    if (S.editing) {
+      var miss = !S.durasi ? 'durasi' : (!S.jam ? 'jam' : null);
+      if (miss) return go(miss);
+      S.editing = false;
+      return go('ringkasan');
+    }
+    advance(cur);
+  }
+  function cleanup() {
+    if (!S.kelas) return;
+    if (S.durasi && durasiOpts().indexOf(S.durasi) < 0) S.durasi = null;
+    if (S.jam && slotList().indexOf(S.jam) < 0) S.jam = null;
+  }
+  function pick(key, v) {
+    if (key === 'program') { S.program = v; S.jenis = P.jenis || null; return advance('program'); }
+    if (key === 'jenisTahsin' || key === 'jenisTahfidz') {
+      S.jenis = v;
+      if (P.tier && S.kelas && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
+      return done(key);
+    }
+    if (key === 'untuk') { S.untuk = v; return advance('untuk'); }
+    if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; return advance('kondisi'); }
+    if (key === 'harapan') { S.harapan = v; return advance('harapan'); }
+    if (key === 'kelas') { S.kelas = v; cleanup(); return done('kelas'); }
+    if (key === 'hari') { S.hari = v; return done('hari'); }
+    if (key === 'durasi') { S.durasi = Number(v); return done('durasi'); }
   }
 
-  function renderSummary() {
-    var t = TIER[state.tier];
-    var program = LABEL[state.program] + ' · ' + LABEL[state.jenis];
-    var paket = LABEL[state.tier] + ' · ' + t.menit + ' menit per sesi';
-    var waktu = state.waktu.replace(':', '.') + ' WIB';
-    document.getElementById('flowSummary').innerHTML =
-      '<div class="flow-summary-row"><span>Program</span><span>' + program + '</span></div>' +
-      '<div class="flow-summary-row"><span>Paket</span><span>' + paket + '</span></div>' +
-      '<div class="flow-summary-row"><span>Jadwal</span><span>' + LABEL[state.jadwal] + '</span></div>' +
-      '<div class="flow-summary-row"><span>Jam</span><span>' + waktu + '</span></div>' +
-      '<div class="flow-summary-row"><span>Biaya</span><span>' + t.harga + ' / bulan</span></div>';
-
-    var msg = "Assalamu'alaikum, saya ingin mendaftar di Mahkota Tahfizh Online.\n\n" +
-      'Program: ' + program + '\n' +
-      'Paket: ' + paket + '\n' +
-      'Jadwal: ' + LABEL[state.jadwal] + '\n' +
-      'Jam: ' + waktu + '\n' +
-      'Biaya: ' + t.harga + ' / bulan\n\n' +
-      'Mohon konfirmasi jadwal yang tersedia. Jazakumullahu khairan.';
-    document.getElementById('flowWa').href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
-  }
-
-  function open(preset) {
-    state = {};
-    history = [];
-    if (preset.program) state.program = preset.program;
-    if (preset.jenis) state.jenis = preset.jenis;
+  function openFlow(opts) {
+    S = { peserta: 1, mode: opts.mode, program: opts.program || null, jenis: opts.jenis || null, kelas: opts.tier || null, periode: null, editing: false };
+    P = { program: opts.program || null, jenis: opts.jenis || null, tier: opts.tier || null };
+    if (P.jenis && P.tier && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
+    hist = [];
     lastFocus = document.activeElement;
-    document.getElementById('mobileMenu').classList.remove('open');
-    flow.classList.add('open');
-    flow.setAttribute('aria-hidden', 'false');
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.remove('open');
+    cek.classList.add('open');
+    cek.setAttribute('aria-hidden', 'false');
     document.body.classList.add('flow-lock');
-    if (state.program) history.push('program');
-    if (state.jenis) history.push(jenisStep());
-    next();
+    go(route()[0]);
   }
-
   function close() {
-    flow.classList.remove('open');
-    flow.setAttribute('aria-hidden', 'true');
+    cek.classList.remove('open');
+    cek.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('flow-lock');
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
-
+  function go(step, noPush) { if (!noPush) hist.push(step); show(step); }
   function back() {
-    if (history.length <= 1) return;
-    history.pop();
-    var target = history[history.length - 1];
-    // Kembali ke sebuah langkah = batalkan pilihan di langkah itu dan sesudahnya.
-    var order = ['program', 'jenis', 'jenisTahsin', 'jadwal', 'tier', 'waktu'];
-    order.slice(order.indexOf(target)).forEach(function (k) {
-      delete state[k === 'jenisTahsin' ? 'jenis' : k];
-    });
-    show(target, false);
+    if (hist.length <= 1) return;
+    hist.pop();
+    show(hist[hist.length - 1]);
+  }
+  function show(step) {
+    Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
+    backBtn.hidden = hist.length <= 1;
+    var n = STAGE_OF[step];
+    var label = n === 1 ? (S.mode === 'daftar' ? 'Pilih program' : STAGE_NAME[1]) : STAGE_NAME[n];
+    stageEl.textContent = 'Tahap ' + n + ' dari 3 · ' + label;
+    barEl.style.width = (n / 3 * 100) + '%';
+    var R = { harapan: renderHarapan, rekom: renderRekom, kelas: renderKelas, durasi: renderDurasi, jam: renderJam,
+      ringkasan: renderRingkasan, data: renderData, bayar: renderBayar, kirim: renderKirim };
+    if (R[step]) R[step]();
+    var first = steps[step].querySelector('button, input, select');
+    if (first && step !== 'data') setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
   }
 
+  /* ---------- render langkah ---------- */
+  function renderHarapan() {
+    var html = isAnak() ? '<p class="cek-alasan">Ananda dekat dengan Al-Qur\'an sejak dini.</p>' : '';
+    (HARAPAN[S.jenis] || []).forEach(function (p) {
+      if (p[0] === 'usia' && isAnak()) return;
+      html += '<button type="button" class="flow-option" data-pick="harapan" data-value="' + p[0] + '"><span class="flow-option-body"><span class="flow-option-title">' + p[1] + '</span></span></button>';
+    });
+    document.getElementById('harapanOpts').innerHTML = html;
+  }
+  function renderRekom() {
+    document.getElementById('rekomBox').innerHTML =
+      '<div class="cek-rekom"><span class="flow-tag">Paling sesuai</span><h4>' + LBL[S.jenis] + '</h4><p>' + ALASAN[S.jenis] + '</p></div>' +
+      '<p class="cek-alasan">Jika ingin mengubah jawaban, gunakan tombol kembali.</p>';
+  }
+  function renderKelas() {
+    document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
+      var c = KELAS[k];
+      var tag = k === 'gold' ? '<span class="flow-tag">Saran kami</span>' : '';
+      return '<button type="button" class="flow-option" data-pick="kelas" data-value="' + k + '"><span class="flow-option-body">' +
+        '<span class="flow-option-title">' + c.nama + ' · ' + c.menit + ' menit' + tag + '</span>' +
+        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' Mulai ' + rupiah(c.list) + ' / bulan.</span></span></button>';
+    }).join('');
+  }
+  function renderDurasi() {
+    document.getElementById('durasiOpts').innerHTML = durasiOpts().map(function (m) {
+      return '<button type="button" class="flow-option" data-pick="durasi" data-value="' + m + '"><span class="flow-option-body">' +
+        '<span class="flow-option-title">' + durasiLabel(m) + '</span>' +
+        '<span class="flow-option-desc">' + rupiah(perBulan(S.kelas, m)) + ' / bulan · ' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
+    }).join('');
+  }
+  function renderJam() {
+    var k = KELAS[S.kelas];
+    document.getElementById('jamInfo').textContent = 'Sesi ' + k.nama + ' ' + k.menit + ' menit. Jam yang sama dipakai di setiap pertemuan (WIB).';
+    var sel = document.getElementById('jamSel');
+    sel.innerHTML = '<option value="">Pilih jam</option>' + slotList().map(function (v) {
+      return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':', '.') + ' WIB</option>';
+    }).join('');
+  }
+  function renderRingkasan() {
+    var k = KELAS[S.kelas], m = S.durasi;
+    var rows = [
+      ['Program', LBL[S.jenis]],
+      ['Kelas', k.nama + ' · ' + k.menit + ' menit per sesi'],
+      ['Hari', HARI[S.hari]],
+      ['Durasi', durasiLabel(m)],
+      ['Jam mulai', S.jam.replace(':', '.') + ' WIB'],
+      ['Total pertemuan', (SESI[S.hari] * m) + ' pertemuan'],
+      ['Peserta', S.peserta + ' orang']
+    ];
+    var box = '<div class="cek-box">' + rows.map(function (r) {
+      return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
+    }).join('') + '</div>';
+
+    var harga = m >= 3
+      ? '<div class="cek-amount"><s style="color:#86868b;font-weight:400">' + rupiah(k.list) + '</s> ' + rupiah(k.paket) + ' / bulan</div>' +
+        '<p class="cek-alasan">Hemat ' + rupiah(hemat()) + ' selama ' + durasiLabel(m) + '.</p>'
+      : '<div class="cek-amount">' + rupiah(k.list) + ' / bulan</div>';
+
+    var edit = '<div class="cek-edit">' +
+      '<button type="button" data-edit="kelas">Ubah kelas</button>' +
+      '<button type="button" data-edit="durasi">Ubah durasi</button>' +
+      '<button type="button" data-edit="hari">Ubah hari</button>' +
+      '<button type="button" data-edit="jam">Ubah jam</button>' +
+      '</div>' +
+      '<div class="cek-stepper" style="margin:8px 0 4px"><span>Jumlah peserta</span>' +
+      '<button type="button" data-peserta="-1" aria-label="Kurangi peserta">−</button>' +
+      '<strong>' + S.peserta + '</strong>' +
+      '<button type="button" data-peserta="1" aria-label="Tambah peserta">+</button></div>';
+
+    var trust = '<div class="cek-trust"><h4>Yang Anda dapatkan</h4><ul>' +
+      '<li>Privat 1-on-1 lewat WhatsApp Call.</li>' +
+      '<li>Ikhwan dan akhwat dibimbing terpisah.</li>' +
+      '<li>Pengajar hafidz/hafidzah berpengalaman, dan e-sertifikat setelah program.</li>' +
+      '</ul></div>';
+
+    var closing = '<div class="cek-amount" style="font-size:16px">Total: ' + rupiah(totalBayar()) + '</div>' +
+      '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="data">Lanjut isi data</button>' +
+      '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya sebelum mendaftar.\n\n" + ringkas()) + '" target="_blank" rel="noopener">Tanya admin dulu</a>';
+
+    document.getElementById('ringkasanBox').innerHTML = box + harga + edit + periodeBox(jadwal()) + trust + closing;
+  }
+  function renderData() {
+    if (!S.kode) S.kode = 'MTO-' + (1000 + Math.floor(Math.random() * 9000));
+    var radio = function (name, v, t, cur) {
+      return '<label><input type="radio" name="' + name + '" value="' + v + '"' + (cur === v ? ' checked' : '') + '> ' + t + '</label>';
+    };
+    document.getElementById('dataForm').innerHTML =
+      '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
+      '<div><span>Jenis kelamin</span><div class="cek-radio">' +
+        radio('cekJk', 'laki-laki', 'Laki-laki', S.jk) + radio('cekJk', 'perempuan', 'Perempuan', S.jk) + '</div></div>' +
+      (isAnak() ? '' : '<label>Usia<input type="number" name="usia" class="cek-input" min="1" max="120" value="' + esc(S.usia || '') + '"></label>') +
+      '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
+      '<label>Nomor WhatsApp<input type="tel" name="wa" class="cek-input" inputmode="tel" value="' + esc(S.wa || '') + '"></label>';
+    updateDataBtn();
+    updateVerify();
+  }
+  function updateDataBtn() {
+    var b = document.getElementById('toBayar');
+    if (b) b.disabled = !dataValid();
+  }
+  // Nomor WhatsApp tidak bisa dicek otomatis dari halaman ini, jadi selalu ditandai belum terverifikasi.
+  function verifMsg() {
+    return "Assalamu'alaikum Admin Mahkota, ini kode verifikasi pendaftaran saya: " + S.kode +
+      '\n\nNama: ' + (S.nama || '-') + '\nNomor WhatsApp: ' + S.wa;
+  }
+  function updateVerify() {
+    var box = document.getElementById('verifyBox');
+    if (!box) return;
+    if (!waValid()) { box.innerHTML = ''; return; }
+    box.innerHTML = '<div class="cek-verify">' +
+      '<p>Nomor WhatsApp Anda: <strong>' + esc(S.wa) + '</strong></p>' +
+      '<p>Nomor ini <strong>belum terverifikasi</strong>. Periksa kembali nomornya. Untuk memverifikasi, kirim kode <strong>' + S.kode + '</strong> ke admin kami. Admin akan mencocokkan pesan itu dengan pendaftaran Anda, atau menghubungi nomor ini untuk konfirmasi.</p>' +
+      '<a class="btn btn-secondary cek-full" href="' + waLink(verifMsg()) + '" target="_blank" rel="noopener">Kirim kode via WhatsApp</a>' +
+      '</div>';
+  }
+  function renderBayar() {
+    var rek = REKENING.map(function (r) {
+      return '<div class="cek-bank"><div><strong>' + r[0] + '</strong><small>' + r[1] + '</small></div>' +
+        '<button type="button" class="cek-copy" data-copy="' + r[1] + '">Salin</button></div>';
+    }).join('');
+    document.getElementById('bayarBox').innerHTML =
+      '<p class="cek-alasan">Transfer ke salah satu rekening resmi di bawah ini, atas nama Abdul Aziez. Admin mengonfirmasi setelah bukti transfer diterima.</p>' +
+      '<div class="cek-amount">Nominal: ' + rupiah(totalBayar()) + '</div>' +
+      '<button type="button" class="cek-copy" data-copy="' + totalBayar() + '">Salin nominal</button>' +
+      '<div class="cek-box" style="margin-top:12px">' + rek + '</div>' +
+      '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="kirim">Sudah transfer, lanjut kirim bukti</button>';
+  }
+  function renderKirim() {
+    document.getElementById('kirimBox').innerHTML =
+      '<p class="cek-alasan">Pesan WhatsApp sudah terisi otomatis. Lampirkan foto bukti transfer, lalu kirim.</p>' +
+      '<p class="cek-alasan">Nomor WhatsApp: <strong>' + esc(S.wa) + '</strong> (belum terverifikasi)</p>' +
+      '<a class="btn btn-wa btn-lg cek-full" href="' + waLink(pesanDaftar()) + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
+  }
+  function copy(text, btn) {
+    if (!navigator.clipboard) return;
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      btn.textContent = 'Tersalin';
+      setTimeout(function () { btn.textContent = btn.dataset.label; }, 1500);
+    }, function () { btn.textContent = 'Gagal, salin manual'; });
+  }
+
+  /* ---------- pintu masuk dan kendali ---------- */
   document.querySelectorAll('[data-daftar]').forEach(function (el) {
     el.addEventListener('click', function (e) {
       e.preventDefault();
-      e.stopImmediatePropagation();
-      open({ program: el.dataset.program, jenis: el.dataset.jenis });
-    }, true);
-  });
-
-  flow.querySelectorAll('[data-choose]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      state[b.dataset.choose] = b.dataset.value;
-      next();
+      openFlow({ mode: 'daftar', program: el.dataset.program, jenis: el.dataset.jenis, tier: el.dataset.tier });
     });
   });
-
-  timeNext.addEventListener('click', function () {
-    if (!timeSel.value) return;
-    state.waktu = timeSel.value;
-    next();
-  });
-
+  document.getElementById('cekOpen').addEventListener('click', function () { openFlow({ mode: 'cek' }); });
+  document.getElementById('cekClose').addEventListener('click', close);
   backBtn.addEventListener('click', back);
-  document.getElementById('flowClose').addEventListener('click', close);
-  flow.addEventListener('click', function (e) { if (e.target === flow) close(); });
+  document.getElementById('jamNext').addEventListener('click', function () {
+    var sel = document.getElementById('jamSel');
+    if (!sel.value) { sel.focus(); return; }
+    S.jam = sel.value;
+    done('jam');
+  });
+
+  cek.addEventListener('click', function (e) {
+    var t = e.target, b;
+    if (t === cek) { close(); return; }
+    if ((b = t.closest('[data-pick]'))) { pick(b.dataset.pick, b.dataset.value); return; }
+    if (t.closest('[data-go-cek]')) {
+      S = { peserta: 1, mode: 'cek', periode: null, editing: false };
+      P = {};
+      hist = [];
+      go('untuk');
+      return;
+    }
+    if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
+    if ((b = t.closest('[data-peserta]'))) { S.peserta = Math.min(10, Math.max(1, S.peserta + Number(b.dataset.peserta))); renderRingkasan(); return; }
+    if ((b = t.closest('[data-periode]'))) { S.periode = b.dataset.periode; renderRingkasan(); return; }
+    if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
+    if ((b = t.closest('[data-act]'))) {
+      if (b.dataset.act === 'data') advance('ringkasan');
+      if (b.dataset.act === 'kirim') advance('bayar');
+      return;
+    }
+    if (t.closest('#rekomNext')) { advance('rekom'); return; }
+    if (t.closest('#toBayar')) { if (dataValid()) advance('data'); return; }
+  });
+
+  cek.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.name === 'nama') S.nama = t.value.trim();
+    if (t.name === 'usia') S.usia = t.value;
+    if (t.name === 'kota') S.kota = t.value.trim();
+    if (t.name === 'wa') S.wa = t.value.trim();
+    if (t.name) { updateDataBtn(); updateVerify(); }
+  });
+  cek.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.name === 'cekJk') S.jk = t.value;
+    updateDataBtn();
+  });
+  cek.addEventListener('submit', function (e) { e.preventDefault(); });
   document.addEventListener('keydown', function (e) {
-    if (!flow.classList.contains('open')) return;
-    if (e.key === 'Escape') { close(); return; }
-    if (e.key !== 'Tab') return;
-    var f = Array.prototype.filter.call(flow.querySelectorAll('button, select, a[href]'), function (el) {
-      return el.offsetParent !== null && !el.disabled && el.style.display !== 'none';
-    });
-    if (!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    if (e.key === 'Escape' && cek.classList.contains('open')) close();
   });
 })();
 </script>
+
 <script src="js/main.js"></script>
 <script>
 (function () {
@@ -1271,389 +1406,6 @@
   prev.addEventListener('click', function () { go(idx() - 1); pause(); });
   next.addEventListener('click', function () { go(idx() + 1); pause(); });
   mark(); play();
-})();
-</script>
-<script>
-(function () {
-  var cek = document.getElementById('cek');
-  if (!cek) return;
-
-  var WA = '6285727533000';
-  var LBL = { pratahsin: 'Tahsin · Pra Tahsin', reguler: 'Tahsin · Reguler', ziyadah: 'Tahfidz · Ziyadah', murojaah: "Tahfidz · Muroja'ah" };
-  var KELAS = {
-    silver:   { nama: 'Silver',   menit: 10, list: 199000, paket: 175000 },
-    gold:     { nama: 'Gold',     menit: 20, list: 349000, paket: 309000 },
-    platinum: { nama: 'Platinum', menit: 30, list: 499000, paket: 449000 }
-  };
-  var GAYA_DESC = {
-    silver: 'Waktu terbatas, cocok untuk jadwal yang padat.',
-    gold: 'Intensif, dan Anda memilih jam belajar sendiri.',
-    platinum: 'Bimbingan penuh untuk belajar yang lebih terarah.'
-  };
-  var SESI = { weekday: 15, weekend: 8 };
-  var HARI = { weekday: 'Weekday (Senin–Jumat)', weekend: 'Weekend (Sabtu–Ahad)' };
-  // Draf aturan rekomendasi (menunggu revisi pemilik).
-  var REKOM = { belum_baca: 'pratahsin', iqro: 'pratahsin', ragu_tajwid: 'reguler', baik_mau_hafal: 'ziyadah', punya_hafalan: 'murojaah', pernah_hafal: 'murojaah' };
-  var ALASAN = {
-    pratahsin: 'Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.',
-    reguler: 'Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.',
-    ziyadah: 'Bacaan Anda sudah baik, sekarang saatnya menambah hafalan secara terarah.',
-    murojaah: 'Hafalan yang sudah ada perlu dikuatkan kembali agar tidak mudah hilang.'
-  };
-  var HARAPAN = {
-    pratahsin: [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
-    reguler:   [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
-    ziyadah:   [['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
-    murojaah:  [['kuat', 'Hafalan lama dikuatkan kembali'], ['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar']]
-  };
-  var REKENING = [
-    ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
-    ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
-  ];
-  var EDIT = { gaya: 'gaya', durasi: 'durasi', hari: 'hari', waktu: 'waktu' };
-
-  var steps = {};
-  cek.querySelectorAll('.flow-step').forEach(function (el) { steps[el.dataset.step] = el; });
-  var backBtn = document.getElementById('cekBack');
-  var dotsEl = cek.querySelector('.flow-dots');
-  var S = {}, hist = [], lastFocus = null;
-
-  function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
-  function fmt(d) { return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); }
-  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
-  function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
-  function isAnak() { return S.untuk === 'anak'; }
-  function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
-  function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
-  // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai kelas.
-  function slotList() {
-    var menit = KELAS[S.kelas].menit, out = [];
-    for (var m = 5 * 60; m <= 22 * 60; m += menit) {
-      var hh = Math.floor(m / 60), mm = m % 60;
-      out.push((hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm);
-    }
-    return out;
-  }
-  function seq() { return ['nama', 'untuk', 'kondisi', 'harapan', 'gaya', 'hari', 'durasi', 'waktu', 'hasil', 'data', 'bayar', 'kirim']; }
-  function perBulan(k, months) { return months >= 3 ? KELAS[k].paket : KELAS[k].list; }
-  function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
-  function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
-  function durasiLabel(m) { return m === 12 ? '1 tahun' : m + ' bulan'; }
-  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  function tgl(d) { return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
-  // Gelombang: mulai tanggal 12 (selesai tanggal 10 bulan berikutnya) dan mulai tanggal 27 (selesai tanggal 25 bulan berikutnya).
-  function jadwal() {
-    var t = new Date(), y = t.getFullYear(), m = t.getMonth();
-    var today = new Date(y, m, t.getDate());
-    var c = [];
-    for (var o = -2; o <= 2; o++) {
-      c.push({ s: new Date(y, m + o, 12), e: new Date(y, m + o + 1, 10) });
-      c.push({ s: new Date(y, m + o, 27), e: new Date(y, m + o + 1, 25) });
-    }
-    c.sort(function (a, b) { return a.s - b.s; });
-    var next = null, ongoing = null;
-    c.forEach(function (x) {
-      if (x.s >= today && !next) next = x;
-      if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
-    });
-    var cut = ongoing ? Math.floor((today - ongoing.s) / 86400000) : 0;
-    return { next: next, ongoing: ongoing, cut: cut, today: today };
-  }
-  var DAY = 86400000;
-  function periodeBox(j) {
-    if (!j.ongoing) S.periode = 'berikut';
-    if (!S.periode) S.periode = 'berikut';
-    var cards = '';
-    if (j.ongoing) {
-      cards += periodeCard('berjalan', 'Ikut periode berjalan',
-        'Mulai ' + tgl(j.ongoing.s) + ', selesai ' + tgl(j.ongoing.e) + '.',
-        'Terpotong ' + j.cut + ' hari');
-    }
-    var wait = Math.round((j.next.s - j.today) / DAY);
-    cards += periodeCard('berikut', 'Ikut periode berikutnya',
-      'Mulai ' + tgl(j.next.s) + ', selesai ' + tgl(j.next.e) + '.',
-      'Menunggu ' + wait + ' hari');
-    return '<div class="periode-wrap" role="radiogroup" aria-label="Pilih periode">' + cards + '</div>';
-  }
-  function periodeCard(key, title, desc, tag) {
-    var on = S.periode === key;
-    return '<button type="button" class="periode-card" role="radio" aria-checked="' + on + '" data-cek="periode" data-value="' + key + '">' +
-      '<span class="periode-radio"></span>' +
-      '<span class="periode-text"><span class="periode-tag">' + tag + '</span><span class="periode-title">' + title + '</span><span class="periode-desc">' + desc + '</span></span></button>';
-  }
-  function periodeLabel() {
-    var j = jadwal();
-    if (S.periode === 'berjalan' && j.ongoing) return 'periode berjalan (mulai ' + tgl(j.ongoing.s) + ', terpotong ' + j.cut + ' hari)';
-    return 'periode berikutnya (mulai ' + tgl(j.next.s) + ')';
-  }
-  function ringkas() {
-    var k = KELAS[S.kelas];
-    return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
-      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
-      'Peserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
-  }
-  function pesanDaftar() {
-    var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
-      'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
-    if (!isAnak()) s += 'Usia: ' + S.usia + '\n';
-    s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: ' + S.wa + '\n\n' +
-      ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
-    return s;
-  }
-
-  /* ---------- navigasi ---------- */
-  function show(name) {
-    Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === name); });
-    backBtn.hidden = hist.length <= 1;
-    var a = seq(), idx = a.indexOf(name);
-    dotsEl.innerHTML = a.map(function (_, i) { return '<span class="' + (i === idx ? 'on' : '') + '"></span>'; }).join('');
-    if (name === 'harapan') renderHarapan();
-    if (name === 'gaya') renderGaya();
-    if (name === 'durasi') renderDurasi();
-    if (name === 'waktu') renderWaktu();
-    if (name === 'hasil') renderHasil();
-    if (name === 'data') renderData();
-    if (name === 'bayar') renderBayar();
-    if (name === 'kirim') renderKirim();
-    var first = steps[name].querySelector('button, input');
-    if (first && name !== 'data') setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
-  }
-  function go(name, push) { if (push !== false) hist.push(name); show(name); }
-  function advance() {
-    var a = seq(), i = a.indexOf(hist[hist.length - 1]);
-    go(a[i + 1]);
-  }
-  function finish() {
-    if (S.durasi && durasiOpts().indexOf(S.durasi) < 0) S.durasi = null;
-    if (S.jam && slotList().indexOf(S.jam) < 0) S.jam = null;
-    if (!S.editing) return advance();
-    if (!S.durasi) return go('durasi');
-    if (!S.jam) return go('waktu');
-    S.editing = false;
-    go('hasil');
-  }
-  function back() {
-    if (hist.length <= 1) return;
-    hist.pop();
-    show(hist[hist.length - 1]);
-  }
-  function open() {
-    S = { peserta: 1 };
-    hist = [];
-    lastFocus = document.activeElement;
-    var menu = document.getElementById('mobileMenu');
-    if (menu) menu.classList.remove('open');
-    cek.classList.add('open');
-    cek.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('flow-lock');
-    go('nama');
-  }
-  function close() {
-    cek.classList.remove('open');
-    cek.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('flow-lock');
-    if (lastFocus) lastFocus.focus({ preventScroll: true });
-  }
-
-  /* ---------- render langkah ---------- */
-  function renderHarapan() {
-    var html = isAnak() ? '<p class="cek-alasan">Ananda dekat dengan Al-Qur\'an sejak dini.</p>' : '';
-    (HARAPAN[S.jenis] || []).forEach(function (p) {
-      if (p[0] === 'usia' && isAnak()) return;
-      html += '<button type="button" class="flow-option" data-cek="harapan" data-value="' + p[0] + '"><span class="flow-option-body"><span class="flow-option-title">' + p[1] + '</span></span></button>';
-    });
-    document.getElementById('cekHarapanOpts').innerHTML = html;
-  }
-  function renderGaya() {
-    document.getElementById('cekGayaOpts').innerHTML = kelasList().map(function (k) {
-      var c = KELAS[k];
-      return '<button type="button" class="flow-option" data-cek="gaya" data-value="' + k + '"><span class="flow-option-body">' +
-        '<span class="flow-option-title">' + c.nama + ' · ' + c.menit + ' menit</span>' +
-        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' Mulai ' + rupiah(c.list) + ' / bulan.</span></span></button>';
-    }).join('');
-  }
-  function renderDurasi() {
-    document.getElementById('cekDurasiOpts').innerHTML = durasiOpts().map(function (m) {
-      return '<button type="button" class="flow-option" data-cek="durasi" data-value="' + m + '"><span class="flow-option-body">' +
-        '<span class="flow-option-title">' + durasiLabel(m) + '</span>' +
-        '<span class="flow-option-desc">' + rupiah(perBulan(S.kelas, m)) + ' / bulan · ' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
-    }).join('');
-  }
-  function renderWaktu() {
-    var k = KELAS[S.kelas];
-    document.getElementById('cekWaktuInfo').textContent = 'Sesi ' + k.nama + ' ' + k.menit + ' menit. Pilih jam mulai (WIB).';
-    var sel = document.getElementById('cekWaktuSel');
-    sel.innerHTML = '<option value="">Pilih jam</option>' + slotList().map(function (v) {
-      return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':', '.') + ' WIB</option>';
-    }).join('');
-  }
-  function renderHasil() {
-    var k = KELAS[S.kelas], m = S.durasi;
-    var rows = [
-      ['Program', LBL[S.jenis]],
-      ['Kelas', k.nama + ' · ' + k.menit + ' menit per sesi'],
-      ['Hari', HARI[S.hari]],
-      ['Durasi', durasiLabel(m)],
-      ['Jam mulai', S.jam.replace(':', '.') + ' WIB'],
-      ['Total pertemuan', (SESI[S.hari] * m) + ' pertemuan'],
-      ['Peserta', S.peserta + ' orang']
-    ];
-    var box = '<div class="cek-box">' + rows.map(function (r) {
-      return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
-    }).join('') + '</div>';
-
-    var harga = m >= 3
-      ? '<div class="cek-amount"><s style="color:#86868b;font-weight:400">' + rupiah(k.list) + '</s> ' + rupiah(k.paket) + ' / bulan</div>' +
-        '<p class="cek-alasan">Hemat ' + rupiah(hemat()) + ' selama ' + durasiLabel(m) + '.</p>'
-      : '<div class="cek-amount">' + rupiah(k.list) + ' / bulan</div>';
-
-    var edit = '<div class="cek-edit">' +
-      '<button type="button" data-cek-edit="gaya">Ubah kelas</button>' +
-      '<button type="button" data-cek-edit="durasi">Ubah durasi</button>' +
-      '<button type="button" data-cek-edit="hari">Ubah hari</button>' +
-      '<button type="button" data-cek-edit="waktu">Ubah jam</button>' +
-      '</div>' +
-      '<div class="cek-stepper" style="margin:8px 0 4px"><span>Jumlah peserta</span>' +
-      '<button type="button" data-peserta="-1" aria-label="Kurangi peserta">−</button>' +
-      '<strong>' + S.peserta + '</strong>' +
-      '<button type="button" data-peserta="1" aria-label="Tambah peserta">+</button></div>';
-
-    var trust = '<div class="cek-trust"><h4>Yang Anda dapatkan</h4><ul>' +
-      '<li>Privat 1-on-1 lewat WhatsApp Call.</li>' +
-      '<li>Ikhwan dan akhwat dibimbing terpisah.</li>' +
-      '<li>Pengajar hafidz/hafidzah berpengalaman, dan e-sertifikat setelah program.</li>' +
-      '<li>Garansi uang kembali 100% dalam 7 hari pertama, dan bisa ganti pengajar tanpa biaya tambahan.</li>' +
-      '</ul></div>';
-
-    var closing = '<div class="cek-amount" style="font-size:16px">Total: ' + rupiah(totalBayar()) + '</div>' +
-      '<button type="button" class="btn btn-primary btn-lg cek-full" data-cek-act="daftar">Daftar &amp; bayar sekarang</button>' +
-      '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya tentang program Al-Qur'an.\n\n" + ringkas()) + '" target="_blank" rel="noopener">Tanya admin via WhatsApp</a>' +
-      '<p class="cek-alasan">Masih ada yang mengganjal? Ringkasan ini bisa dibahas dulu dengan keluarga lewat <a href="' + waLink("Assalamu'alaikum, ini ringkasan program Al-Qur'an yang sedang kami pertimbangkan:\n\n" + ringkas()) + '" target="_blank" rel="noopener">WhatsApp</a>.</p>';
-
-    document.getElementById('cekHasil').innerHTML =
-      '<p class="cek-alasan">' + ALASAN[S.jenis] + '</p>' + box + harga + edit + periodeBox(jadwal()) + trust + closing;
-  }
-  function renderData() {
-    var radio = function (name, v, t, cur) {
-      return '<label><input type="radio" name="' + name + '" value="' + v + '"' + (cur === v ? ' checked' : '') + '> ' + t + '</label>';
-    };
-    document.getElementById('cekDataForm').innerHTML =
-      '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
-      '<div><span>Jenis kelamin</span><div class="cek-radio">' +
-        radio('cekJk', 'laki-laki', 'Laki-laki', S.jk) + radio('cekJk', 'perempuan', 'Perempuan', S.jk) + '</div></div>' +
-      (isAnak() ? '' : '<label>Usia<input type="number" name="usia" class="cek-input" min="1" max="120" value="' + esc(S.usia || '') + '"></label>') +
-      '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
-      '<label>Nomor WhatsApp<input type="tel" name="wa" class="cek-input" inputmode="tel" value="' + esc(S.wa || '') + '"></label>' +
-      '<button type="button" class="btn btn-primary btn-lg cek-full" id="cekToBayar">Lanjut ke pembayaran</button>' +
-      '<p class="cek-err" id="cekDataErr" hidden>Isi nama, jenis kelamin, dan nomor WhatsApp (minimal 9 digit).</p>';
-    updateDataBtn();
-  }
-  function dataValid() {
-    return !!(S.nama && S.jk && S.wa && S.wa.replace(/\D/g, '').length >= 9);
-  }
-  function updateDataBtn() {
-    var b = document.getElementById('cekToBayar');
-    if (b) b.disabled = !dataValid();
-  }
-  function renderBayar() {
-    var rek = REKENING.map(function (r) {
-      return '<div class="cek-bank"><div><strong>' + r[0] + '</strong><small>' + r[1] + '</small></div>' +
-        '<button type="button" class="cek-copy" data-copy="' + r[1] + '">Salin</button></div>';
-    }).join('');
-    document.getElementById('cekBayar').innerHTML =
-      '<p class="cek-alasan">Transfer ke salah satu rekening resmi di bawah ini, atas nama Abdul Aziez.</p>' +
-      '<div class="cek-amount">Nominal: ' + rupiah(totalBayar()) + '</div>' +
-      '<button type="button" class="cek-copy" data-copy="' + totalBayar() + '">Salin nominal</button>' +
-      '<div class="cek-box" style="margin-top:12px">' + rek + '</div>' +
-      '<button type="button" class="btn btn-primary btn-lg cek-full" data-cek-act="kirim">Sudah transfer, lanjut kirim bukti</button>';
-  }
-  function renderKirim() {
-    document.getElementById('cekKirim').innerHTML =
-      '<p class="cek-alasan">Data Anda sudah terisi otomatis di pesan WhatsApp. Kirim pesannya, lalu lampirkan foto bukti transfer.</p>' +
-      '<a class="btn btn-wa btn-lg cek-full" href="' + waLink(pesanDaftar()) + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
-  }
-  function copy(text, btn) {
-    if (!navigator.clipboard) return;
-    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
-    navigator.clipboard.writeText(text).then(function () {
-      btn.textContent = 'Tersalin';
-      setTimeout(function () { btn.textContent = btn.dataset.label; }, 1500);
-    }, function () { btn.textContent = 'Gagal, salin manual'; });
-  }
-
-  /* ---------- pilihan ---------- */
-  function choose(key, value) {
-    if (key === 'periode') { S.periode = value; renderHasil(); return; }
-    if (key === 'untuk') S.untuk = value;
-    if (key === 'kondisi') { S.kondisi = value; S.jenis = REKOM[value]; }
-    if (key === 'harapan') S.harapan = value;
-    if (key === 'gaya') S.kelas = value;
-    if (key === 'hari') S.hari = value;
-    if (key === 'durasi') S.durasi = Number(value);
-    if (key === 'jam') S.jam = value;
-    finish();
-  }
-  function submitNama() {
-    var input = document.getElementById('cekNama');
-    var err = document.getElementById('cekNamaErr');
-    var v = input.value.trim();
-    if (!v) { err.hidden = false; input.focus(); return; }
-    err.hidden = true;
-    S.nama = v;
-    advance();
-  }
-
-  document.getElementById('cekOpen').addEventListener('click', open);
-  document.getElementById('cekClose').addEventListener('click', close);
-  backBtn.addEventListener('click', back);
-  document.getElementById('cekNamaNext').addEventListener('click', submitNama);
-  document.getElementById('cekWaktuNext').addEventListener('click', function () {
-    var v = document.getElementById('cekWaktuSel').value;
-    if (!v) { document.getElementById('cekWaktuSel').focus(); return; }
-    S.jam = v;
-    finish();
-  });
-  document.getElementById('cekNama').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') { e.preventDefault(); submitNama(); }
-  });
-
-  cek.addEventListener('click', function (e) {
-    var t = e.target;
-    if (t === cek) { close(); return; }
-    var b = t.closest('[data-cek]');
-    if (b) { choose(b.dataset.cek, b.dataset.value); return; }
-    b = t.closest('[data-cek-edit]');
-    if (b) { S.editing = true; go(EDIT[b.dataset.cekEdit]); return; }
-    b = t.closest('[data-peserta]');
-    if (b) { S.peserta = Math.min(10, Math.max(1, S.peserta + Number(b.dataset.peserta))); renderHasil(); return; }
-    b = t.closest('[data-copy]');
-    if (b) { copy(b.dataset.copy, b); return; }
-    b = t.closest('[data-cek-act]');
-    if (b) {
-      if (b.dataset.cekAct === 'daftar') go('data');
-      if (b.dataset.cekAct === 'kirim') advance();
-      return;
-    }
-    if (t.closest('#cekToBayar')) advance();
-  });
-
-  cek.addEventListener('input', function (e) {
-    var t = e.target;
-    if (t.name === 'nama') S.nama = t.value.trim();
-    if (t.name === 'usia') S.usia = t.value;
-    if (t.name === 'kota') S.kota = t.value.trim();
-    if (t.name === 'wa') S.wa = t.value.trim();
-    updateDataBtn();
-  });
-  cek.addEventListener('change', function (e) {
-    var t = e.target;
-    if (t.name === 'cekJk') S.jk = t.value;
-    updateDataBtn();
-  });
-  cek.addEventListener('submit', function (e) { e.preventDefault(); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && cek.classList.contains('open')) close();
-  });
 })();
 </script>
 </body>
