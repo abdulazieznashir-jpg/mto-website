@@ -263,6 +263,12 @@
   .cek-input { display: block; }
   .cek-full:disabled { opacity: 0.45; cursor: not-allowed; }
   .cek-edit button:hover, .cek-copy:hover { background: #f5f5f7; }
+  /* Ukuran tombol utama seragam: hero, Cek Program, dan CTA bawah */
+  .hero-cta .btn, .cek-cta .btn, .cta-section .btn, .cek-chat .btn {
+    width: 300px; max-width: 100%; height: 56px; padding: 0 20px;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-sizing: border-box; text-align: center; line-height: 1.2; font-size: 16px;
+  }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -1172,6 +1178,7 @@
   });
 })();
 </script>
+<script src="js/main.js"></script>
 <script>
 (function () {
   var cek = document.getElementById('cek');
