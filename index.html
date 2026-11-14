@@ -312,6 +312,10 @@
   .cek-rekom p { margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 15px; }
   .cek-verify { background: #fbf5ec; border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--text-primary); }
   .cek-verify p { margin: 0 0 10px; }
+  .cek-wa > span { display: block; font-size: 15px; margin-bottom: 6px; }
+  .cek-wa-row { display: flex; gap: 8px; }
+  .cek-wa-row .cek-kode { width: 38%; flex-shrink: 0; padding-left: 10px; padding-right: 8px; }
+  .cek-wa-row input { flex: 1; min-width: 0; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -1009,8 +1013,12 @@
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
   function isAnak() { return S.untuk === 'anak'; }
-  function waValid() { return !!S.wa && S.wa.replace(/\D/g, '').length >= 9; }
-  function dataValid() { return !!(S.nama && S.jk && waValid()); }
+  function normWa(v) { return String(v || '').replace(/\D/g, '').replace(/^0+/, ''); }
+  function waFull() { return (S.kodeNeg || '62') + normWa(S.wa); }
+  function waValid() { return normWa(S.wa).length >= 8; }
+  function waCocok() { return waValid() && normWa(S.wa) === normWa(S.wa2); }
+  function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
+  function dataValid() { return !!(S.nama && S.jk && waCocok() && emailValid()); }
   function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
   function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
   // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai panjang sesi.
@@ -1083,7 +1091,7 @@
     var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
       'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
     if (!isAnak()) s += 'Usia: ' + S.usia + '\n';
-    s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: ' + S.wa + ' (belum terverifikasi)\nKode verifikasi: ' + S.kode + '\n\n' +
+    s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: +' + waFull() + '\nEmail: ' + S.email + '\n\n' +
       ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
     return s;
   }
@@ -1257,17 +1265,27 @@
     document.getElementById('ringkasanBox').innerHTML = box + harga + edit + periodeBox(jadwal()) + trust + closing;
   }
   function renderData() {
-    if (!S.kode) S.kode = 'MTO-' + (1000 + Math.floor(Math.random() * 9000));
     var radio = function (name, v, t, cur) {
       return '<label><input type="radio" name="' + name + '" value="' + v + '"' + (cur === v ? ' checked' : '') + '> ' + t + '</label>';
     };
+    var kodes = [['62', '+62 ID'], ['60', '+60 MY'], ['65', '+65 SG'], ['966', '+966 SA'],
+      ['971', '+971 UAE'], ['1', '+1 US'], ['44', '+44 UK'], ['61', '+61 AU'],
+      ['81', '+81 JP'], ['63', '+63 PH']];
+    var sel = kodes.map(function (o) {
+      return '<option value="' + o[0] + '"' + ((S.kodeNeg || '62') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+    }).join('');
     document.getElementById('dataForm').innerHTML =
       '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
       '<div><span>Jenis kelamin</span><div class="cek-radio">' +
         radio('cekJk', 'laki-laki', 'Laki-laki', S.jk) + radio('cekJk', 'perempuan', 'Perempuan', S.jk) + '</div></div>' +
       (isAnak() ? '' : '<label>Usia<input type="number" name="usia" class="cek-input" min="1" max="120" value="' + esc(S.usia || '') + '"></label>') +
       '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
-      '<label>Nomor WhatsApp<input type="tel" name="wa" class="cek-input" inputmode="tel" value="' + esc(S.wa || '') + '"></label>';
+      '<div class="cek-wa"><span>Nomor WhatsApp</span><div class="cek-wa-row">' +
+        '<select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select>' +
+        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" placeholder="812xxxxxxxx" value="' + esc(S.wa || '') + '">' +
+      '</div></div>' +
+      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" placeholder="Ketik ulang nomor yang sama" value="' + esc(S.wa2 || '') + '"></label>' +
+      '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>';
     updateDataBtn();
     updateVerify();
   }
@@ -1275,19 +1293,18 @@
     var b = document.getElementById('toBayar');
     if (b) b.disabled = !dataValid();
   }
-  // Nomor WhatsApp tidak bisa dicek otomatis dari halaman ini, jadi selalu ditandai belum terverifikasi.
-  function verifMsg() {
-    return "Assalamu'alaikum Admin Mahkota, ini kode verifikasi pendaftaran saya: " + S.kode +
-      '\n\nNama: ' + (S.nama || '-') + '\nNomor WhatsApp: ' + S.wa;
-  }
+  // Verifikasi dua langkah: nomor harus diketik dua kali dengan hasil yang sama.
   function updateVerify() {
     var box = document.getElementById('verifyBox');
     if (!box) return;
     if (!waValid()) { box.innerHTML = ''; return; }
+    if (!waCocok()) {
+      box.innerHTML = S.wa2 ? '<p class="cek-err">Nomor WhatsApp belum sama. Periksa kembali kedua kolom.</p>' : '';
+      return;
+    }
     box.innerHTML = '<div class="cek-verify">' +
-      '<p>Nomor WhatsApp Anda: <strong>' + esc(S.wa) + '</strong></p>' +
-      '<p>Nomor ini <strong>belum terverifikasi</strong>. Periksa kembali nomornya. Untuk memverifikasi, kirim kode <strong>' + S.kode + '</strong> ke admin kami. Admin akan mencocokkan pesan itu dengan pendaftaran Anda, atau menghubungi nomor ini untuk konfirmasi.</p>' +
-      '<a class="btn btn-secondary cek-full" href="' + waLink(verifMsg()) + '" target="_blank" rel="noopener">Kirim kode via WhatsApp</a>' +
+      '<p>Nomor WhatsApp Anda: <strong>+' + esc(waFull()) + '</strong></p>' +
+      '<p>Nomor ini belum diverifikasi oleh sistem. Admin akan mengonfirmasi lewat WhatsApp setelah pendaftaran masuk.</p>' +
       '</div>';
   }
   function renderBayar() {
@@ -1305,7 +1322,7 @@
   function renderKirim() {
     document.getElementById('kirimBox').innerHTML =
       '<p class="cek-alasan">Pesan WhatsApp sudah terisi otomatis. Lampirkan foto bukti transfer, lalu kirim.</p>' +
-      '<p class="cek-alasan">Nomor WhatsApp: <strong>' + esc(S.wa) + '</strong> (belum terverifikasi)</p>' +
+      '<p class="cek-alasan">Nomor WhatsApp: <strong>+' + esc(waFull()) + '</strong> dan email ' + esc(S.email) + '. Admin akan mengonfirmasi lewat WhatsApp.</p>' +
       '<a class="btn btn-wa btn-lg cek-full" href="' + waLink(pesanDaftar()) + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
   }
   function copy(text, btn) {
@@ -1364,12 +1381,16 @@
     if (t.name === 'usia') S.usia = t.value;
     if (t.name === 'kota') S.kota = t.value.trim();
     if (t.name === 'wa') S.wa = t.value.trim();
+    if (t.name === 'wa2') S.wa2 = t.value.trim();
+    if (t.name === 'email') S.email = t.value.trim();
     if (t.name) { updateDataBtn(); updateVerify(); }
   });
   cek.addEventListener('change', function (e) {
     var t = e.target;
     if (t.name === 'cekJk') S.jk = t.value;
+    if (t.name === 'kodeNeg') S.kodeNeg = t.value;
     updateDataBtn();
+    updateVerify();
   });
   cek.addEventListener('submit', function (e) { e.preventDefault(); });
   document.addEventListener('keydown', function (e) {
