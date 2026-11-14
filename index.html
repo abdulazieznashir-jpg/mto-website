@@ -1230,14 +1230,14 @@
       var tag = k === 'gold' ? '<span class="flow-tag">Saran kami</span>' : '';
       return '<button type="button" class="flow-option" data-pick="kelas" data-value="' + k + '"><span class="flow-option-body">' +
         '<span class="flow-option-title">' + c.nama + ' · ' + c.menit + ' menit' + tag + '</span>' +
-        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' Mulai ' + rbFmt(c.list) + '/bulan.</span></span></button>';
+        '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></button>';
     }).join('');
   }
   function renderDurasi() {
     document.getElementById('durasiOpts').innerHTML = durasiOpts().map(function (m) {
       return '<button type="button" class="flow-option" data-pick="durasi" data-value="' + m + '"><span class="flow-option-body">' +
         '<span class="flow-option-title">' + durasiLabel(m) + '</span>' +
-        '<span class="flow-option-desc">' + rbFmt(perBulan(S.kelas, m)) + '/bulan · ' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
+        '<span class="flow-option-desc">' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
     }).join('');
   }
   function renderJam() {
