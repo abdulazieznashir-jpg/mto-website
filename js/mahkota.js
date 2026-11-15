@@ -137,7 +137,7 @@
   function tampilDaftarSaya(list) {
     var box = $('daftarSayaBox');
     if (!box) return;
-    tglMulaiGelombang = '';
+    tglMulaiGelombang = ''; tglMulaiISO = '';
     if (!list.length) { box.hidden = true; renderMulai(); return; }
     var d = list[0];
     var idx = TAHAP.indexOf(d.status);
@@ -149,6 +149,10 @@
       : (d.status === 'kedaluwarsa' ? 'Hubungi admin untuk dibukakan kembali.' : 'Progres pendaftaran Anda.');
     var lanjut = d.status === 'menunggu_bayar' ? '<div class="pd-aksi"><a class="pf-btn pf-btn-pri" href="pembayaran.html">Lanjutkan pembayaran</a></div>' : '';
     var mulai = d.tanggal_halaqah ? new Date(d.tanggal_halaqah + 'T00:00:00+07:00') : null;
+    if (d.status === 'diterima' && d.tanggal_halaqah) {
+      tglMulaiISO = d.tanggal_halaqah;
+      tglMulaiGelombang = mulai.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
+    }
     if (d.status === 'diterima' && mulai && mulai > new Date()) {
       var tgl = mulai.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
       $('daftarSaya').innerHTML = '<p class="pd-status">Belum Mulai</p>' +
@@ -297,24 +301,49 @@
     });
   }
 
-  var tglBergabung = '', aktifPaket = false, tglMulaiGelombang = '';
+  var aktifPaket = false, tglMulaiGelombang = '', tglMulaiISO = '', paketKey = '', pengampuNama = '';
+  var pertemuanSelesai = null; /* diisi dari pencatatan pengajar (belum tersedia) */
+  var MENIT_SESI = { silver: 10, gold: 20, platinum: 30 };
+  function hariIniJakarta() { return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); }
   function renderMulai() {
-    var t = tglMulaiGelombang || (aktifPaket ? tglBergabung : '');
-    $('pbBergabung').textContent = t || '–';
+    var blok = $('pkBlok'), status = $('pkStatus'), meta = $('pkMeta'), kaki = $('pkKaki'), daftar = $('pbDaftar');
+    if (!blok) return;
+    if (!aktifPaket && !tglMulaiISO) {
+      blok.hidden = true; status.hidden = true; meta.hidden = true; kaki.hidden = true;
+      if (daftar) daftar.hidden = false;
+      return;
+    }
+    if (daftar) daftar.hidden = true;
+    blok.hidden = false; status.hidden = false; meta.hidden = false; kaki.hidden = false;
+    var kondisi = tglMulaiISO && tglMulaiISO > hariIniJakarta() ? 'belum'
+      : (pertemuanSelesai !== null && pertemuanSelesai >= 15 ? 'selesai' : 'berjalan');
+    var label = { belum: 'Belum Mulai', berjalan: 'Sedang Berjalan', selesai: 'Selesai' }[kondisi];
+    status.textContent = label;
+    status.className = 'pk-status pk-' + kondisi;
+    meta.textContent = paketKey
+      ? 'Sesi ' + MENIT_SESI[paketKey] + ' menit • Weekdays • 15 pertemuan'
+      : 'Weekdays • 15 pertemuan';
+    if (kondisi === 'belum') {
+      blok.className = 'pk-blok';
+      blok.innerHTML = '<span class="pk-label">Mulai Belajar</span><b class="pk-nilai">' + esc(tglMulaiGelombang || '–') + '</b>';
+    } else if (kondisi === 'berjalan') {
+      blok.className = 'pk-blok pk-hijau';
+      blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">–</b></div>' +
+        '<div><span class="pk-label">Pertemuan</span><b class="pk-nilai">' + (pertemuanSelesai === null ? '–' : pertemuanSelesai) + ' / 15</b></div>';
+    } else {
+      blok.className = 'pk-blok';
+      blok.innerHTML = '<b class="pk-nilai">Program telah selesai</b><span class="pk-label">15 / 15 pertemuan</span>';
+    }
+    kaki.innerHTML = '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span>' +
+      '<button type="button" class="pk-ganti" disabled>Ganti Pengajar</button>';
   }
   function tampilPaket(d) {
     setTier(d);
-    var aktif = d.status === 'aktif';
-    var tgl = d.bergabung ? new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' }) : '';
-    var p = String(d.paket || '');
-    $('pbNamaPaket').textContent = aktif && p ? 'Paket ' + p.charAt(0).toUpperCase() + p.slice(1) : '–';
-    $('pbPengampu').textContent = aktif && d.pengampu ? d.pengampu : '–';
-    tglBergabung = tgl; aktifPaket = aktif;
+    aktifPaket = d.status === 'aktif';
+    var p = String(d.paket || '').toLowerCase();
+    paketKey = aktifPaket && MENIT_SESI[p] ? p : '';
+    pengampuNama = aktifPaket && d.pengampu ? d.pengampu : '';
     renderMulai();
-    var daftar = $('pbDaftar');
-    if (daftar) daftar.hidden = aktif;
-    var rows = $('pkRows');
-    if (rows) rows.hidden = !aktif;
   }
 
   /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */
