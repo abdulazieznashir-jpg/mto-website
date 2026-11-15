@@ -74,14 +74,14 @@
     $('mkRiwayat').innerHTML = riwayat || '<li class="pf-empty">Belum ada riwayat Mahkota.</li>';
   }
 
-  /* ---------- Pencapaian: Jus 1 sampai 30, tiap jus 20 halaman ---------- */
+  /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */
   function renderJus(data) {
     var el = $('pbJus');
     if (!el) return;
     if (!data || !data.aktif) {
       el.innerHTML = '<li class="pb-info">' +
-        '<strong>Pencapaian Jus hanya untuk peserta Mahkota yang aktif.</strong>' +
-        '<span>Setelah terdaftar sebagai peserta Mahkota, guru akan mengisi progres hafalan Anda per jus. Progres akan tampil di sini.</span>' +
+        '<strong>Pencapaian Juz hanya untuk peserta Mahkota yang aktif.</strong>' +
+        '<span>Setelah terdaftar sebagai peserta Mahkota, guru akan mengisi progres hafalan Anda per juz. Progres akan tampil di sini.</span>' +
         '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Tanya admin via WhatsApp</a>' +
         '</li>';
       return;
@@ -93,7 +93,7 @@
       html += '<li class="pb-juz">' +
               '<span class="pb-pena">' + n + '</span>' +
               '<div class="pb-juz-isi">' +
-              '<div class="pb-juz-judul">Jus ' + n + '<span>' + h + '/20</span></div>' +
+              '<div class="pb-juz-judul">Juz ' + n + '<span>' + h + '/20</span></div>' +
               '<div class="pb-bar"><i style="width:' + (h / 20 * 100) + '%"></i></div>' +
               '</div></li>';
     }
