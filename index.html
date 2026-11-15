@@ -502,7 +502,7 @@
   <div class="hero-ornament"></div>
   <div class="container">
     <div class="hero-content">
-      <img class="hero-image" src="hero.png" alt="Ilustrasi seorang muslimah membaca Al-Qur'an dengan lentera dan ikon WhatsApp" width="828" height="641" style="display:block;width:min(100%,420px);height:auto;margin:0 auto 24px">
+      <picture style="display:block;width:min(100%,420px);margin:0 auto 24px"><source srcset="hero.webp" type="image/webp"><img class="hero-image" src="hero.png" alt="Ilustrasi seorang muslimah membaca Al-Qur'an dengan lentera dan ikon WhatsApp" width="828" height="641" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;margin:0 auto"></picture>
       <div class="hero-badge">
         <span class="dot"></span>
         Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
@@ -546,7 +546,7 @@
 <section class="stats">
   <div class="container">
     <div class="stats-grid">
-      <div class="reveal"><div class="stat-value">15.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
+      <div class="reveal"><div class="stat-value" data-count="16000" data-suffix="+">16.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
       <div class="reveal"><div class="stat-value">5+</div><div class="stat-label">Negara di Luar Indonesia</div></div>
       <div class="reveal"><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan Setiap Pengajar</div></div>
       <div class="reveal"><div class="stat-value">1:1</div><div class="stat-label">Satu Guru, Satu Peserta</div></div>
@@ -826,6 +826,15 @@
     <div class="cta-content">
       <h2>Segera daftarkan diri Anda.</h2>
       <p class="lead">Amankan waktu belajar Anda sebelum periode berikutnya dimulai.</p>
+      <div class="wave" id="waveTimer" aria-label="Hitung mundur periode berikutnya">
+        <div class="wave-label">Periode berikutnya dimulai <strong id="waveDate"></strong> <span class="wave-tz">WIB</span></div>
+        <div class="wave-cells">
+          <div class="wave-cell"><b id="wD">0</b><span>Hari</span></div>
+          <div class="wave-cell"><b id="wH">00</b><span>Jam</span></div>
+          <div class="wave-cell"><b id="wM">00</b><span>Menit</span></div>
+          <div class="wave-cell"><b id="wS">00</b><span>Detik</span></div>
+        </div>
+      </div>
       <div class="cta-buttons">
         <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
         <a href="https://wa.me/6285727533000?text=Assalamu'alaikum%2C%20saya%20ingin%20bertanya%20tentang%20program%20Mahkota%20Tahfidz%20Online." class="btn btn-secondary btn-lg" data-ask>
@@ -1669,6 +1678,58 @@
 })();
 </script>
 
+<script>
+(function () {
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function fmt(n) { return Math.round(n).toLocaleString('id-ID'); }
+  function run(el) {
+    var target = Number(el.getAttribute('data-count')), suf = el.getAttribute('data-suffix') || '', t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / 1400, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(target * e) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
+  }, { threshold: 0.5 });
+  els.forEach(function (el) { el.textContent = '0' + (el.getAttribute('data-suffix') || ''); io.observe(el); });
+})();
+(function () {
+  var box = document.getElementById('waveTimer');
+  if (!box) return;
+  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  // Gelombang dimulai tanggal 12 dan 27, tengah malam WIB (UTC+7).
+  function wib(y, m, d) { return Date.UTC(y, m, d) - 7 * 3600000; }
+  function nextStart(now) {
+    var d = new Date(now + 7 * 3600000), y = d.getUTCFullYear(), m = d.getUTCMonth();
+    for (var o = 0; o <= 2; o++) {
+      var a = wib(y, m + o, 12), b = wib(y, m + o, 27);
+      if (a > now) return a;
+      if (b > now) return b;
+    }
+  }
+  var target = nextStart(Date.now());
+  var lbl = document.getElementById('waveDate');
+  function setDate(t) { var d = new Date(t + 7 * 3600000); lbl.textContent = d.getUTCDate() + ' ' + BULAN[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+  setDate(target);
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    var ms = target - Date.now();
+    if (ms <= 0) { target = nextStart(Date.now()); setDate(target); ms = target - Date.now(); }
+    var s = Math.floor(ms / 1000);
+    document.getElementById('wD').textContent = Math.floor(s / 86400);
+    document.getElementById('wH').textContent = pad(Math.floor(s % 86400 / 3600));
+    document.getElementById('wM').textContent = pad(Math.floor(s % 3600 / 60));
+    document.getElementById('wS').textContent = pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 <script src="js/main.js"></script>
 <div class="ask-backdrop" id="askModal" hidden>
   <div class="ask-panel" role="dialog" aria-modal="true" aria-labelledby="askTitle">
