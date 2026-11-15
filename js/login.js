@@ -13,6 +13,8 @@
   var sb = null;
   var mode = 'daftar';   // 'daftar' | 'masuk'
   var emailCek = '';
+  // true saat peserta membuka halaman dari link reset password di email
+  var pemulihan = /type=recovery/.test(window.location.hash);
 
   var $ = function (id) { return document.getElementById(id); };
   function esc(v) { return String(v || '').replace(/[&<>"']/g, function (c) {
@@ -21,7 +23,7 @@
   function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
 
   function showView(id) {
-    ['viewAuth', 'viewCek', 'viewStatus'].forEach(function (v) {
+    ['viewAuth', 'viewCek', 'viewStatus', 'viewLupa', 'viewBaru'].forEach(function (v) {
       $(v).classList.toggle('hidden', v !== id);
     });
     window.scrollTo(0, 0);
@@ -40,6 +42,7 @@
     $('tabMasuk').setAttribute('aria-selected', !daftar);
     $('fldNama').classList.toggle('hidden', !daftar);
     $('fldHint').classList.toggle('hidden', !daftar);
+    $('lupaWrap').classList.toggle('hidden', daftar);
     $('password').setAttribute('autocomplete', daftar ? 'new-password' : 'current-password');
     $('btnKirim').textContent = daftar ? 'Daftar' : 'Masuk';
     $('lgSub').textContent = daftar
@@ -117,6 +120,37 @@
       .then(function () { muatStatus(alamat); });
   }
 
+  /* ---------- Lupa password ---------- */
+  function kirimReset(e) {
+    e.preventDefault();
+    var alamat = (e.target.email.value || '').trim().toLowerCase();
+    if (!validEmail(alamat)) { note($('noticeLupa'), 'Tulis email yang benar.', true); return; }
+    if (!sb) { note($('noticeLupa'), 'Layanan masuk belum tersedia.', true); return; }
+    var btn = $('btnKirimLupa');
+    setBusy(btn, true, 'Mengirim…');
+    sb.auth.resetPasswordForEmail(alamat, { redirectTo: pageUrl() }).then(function (r) {
+      setBusy(btn, false, 'Kirim link reset');
+      if (r.error) { note($('noticeLupa'), msgErr(r.error), true); return; }
+      note($('noticeLupa'), 'Link untuk mengatur ulang password sudah dikirim. Cek email Anda, termasuk folder spam.');
+    });
+  }
+
+  function simpanPasswordBaru(e) {
+    e.preventDefault();
+    var pass = e.target.password.value || '';
+    if (pass.length < 8) { note($('noticeBaru'), 'Password minimal 8 karakter.', true); return; }
+    var btn = $('btnSimpanBaru');
+    setBusy(btn, true, 'Menyimpan…');
+    sb.auth.updateUser({ password: pass }).then(function (r) {
+      setBusy(btn, false, 'Simpan password baru');
+      if (r.error) { note($('noticeBaru'), msgErr(r.error), true); return; }
+      pemulihan = false;
+      history.replaceState(null, '', pageUrl());
+      e.target.reset();
+      pastikanPeserta(r.data.user);
+    });
+  }
+
   /* ---------- Alur ---------- */
   function kirim(e) {
     e.preventDefault();
@@ -179,6 +213,10 @@
       $('formAuth').email.value = emailCek;
     });
     $('btnKeluar').addEventListener('click', keluar);
+    $('btnLupa').addEventListener('click', function () { note($('noticeLupa'), ''); showView('viewLupa'); });
+    $('btnBatalLupa').addEventListener('click', function () { setMode('masuk'); showView('viewAuth'); });
+    $('formLupa').addEventListener('submit', kirimReset);
+    $('formBaru').addEventListener('submit', simpanPasswordBaru);
     setMode('daftar');
 
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
@@ -193,7 +231,10 @@
       sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       // Dipanggil saat halaman dibuka (INITIAL_SESSION) dan setiap ada masuk baru,
       // termasuk ketika peserta mengklik link konfirmasi di email.
+      if (pemulihan) showView('viewBaru');
       sb.auth.onAuthStateChange(function (event, session) {
+        if (event === 'PASSWORD_RECOVERY') { pemulihan = true; showView('viewBaru'); return; }
+        if (pemulihan) return; // selama membuat password baru, jangan tampilkan status dulu
         if (session && session.user && (event === 'INITIAL_SESSION' || event === 'SIGNED_IN')) {
           pastikanPeserta(session.user);
         }

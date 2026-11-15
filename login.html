@@ -83,7 +83,7 @@
         <p class="hint hidden" id="fldHint">Gunakan password yang mudah Anda ingat dan jangan dibagikan.</p>
         <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnKirim">Daftar</button>
       </form>
-      <p class="lg-note">Lupa password? <a href="https://wa.me/6285727533000" target="_blank" rel="noopener">Hubungi admin via WhatsApp</a>.</p>
+      <p class="lg-note hidden" id="lupaWrap"><button type="button" class="link" id="btnLupa">Lupa password?</button></p>
     </section>
 
     <!-- 2. Cek email (setelah daftar, jika konfirmasi email aktif) -->
@@ -92,6 +92,33 @@
       <h1>Cek email Anda</h1>
       <p class="lg-sub">Kami sudah mengirim link konfirmasi ke <strong id="cekEmail"></strong>. Klik link itu, lalu masuk dengan email dan password Anda.</p>
       <button type="button" class="btn btn-primary btn-lg btn-full" id="btnMasukSekarang">Masuk sekarang</button>
+    </section>
+
+    <!-- Lupa password: minta link reset ke email -->
+    <section id="viewLupa" class="hidden">
+      <h1>Atur ulang password</h1>
+      <p class="lg-sub">Masukkan email akun Anda. Kami kirim link untuk membuat password baru.</p>
+      <div id="noticeLupa" class="notice" aria-live="polite"></div>
+      <form id="formLupa" novalidate>
+        <label class="fld"><span>Email</span>
+          <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="nama@email.com" required>
+        </label>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnKirimLupa">Kirim link reset</button>
+      </form>
+      <button type="button" class="link" id="btnBatalLupa">Kembali ke halaman masuk</button>
+    </section>
+
+    <!-- Password baru (dibuka dari link di email) -->
+    <section id="viewBaru" class="hidden">
+      <h1>Buat password baru</h1>
+      <p class="lg-sub">Tulis password baru untuk akun Anda.</p>
+      <div id="noticeBaru" class="notice" aria-live="polite"></div>
+      <form id="formBaru" novalidate>
+        <label class="fld"><span>Password baru</span>
+          <input type="password" name="password" autocomplete="new-password" placeholder="Minimal 8 karakter" minlength="8" required>
+        </label>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnSimpanBaru">Simpan password baru</button>
+      </form>
     </section>
 
     <!-- 3. Status akun -->
