@@ -203,6 +203,21 @@
   .pb-user { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: #1D1D1F; }
   .pf-group .mk-av { width: 32px; height: 32px; border-radius: 50%; flex: none; background: #F2EBE1; color: #5C3D0A; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
   .pf-group .mk-av svg { width: 18px; height: 18px; }
+
+  .pb-tanya { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--pf-sep); background: #FFFFFF; color: var(--pf-muted); font-size: 12px; font-weight: 700; margin-left: 4px; padding: 0; cursor: pointer; vertical-align: middle; line-height: 1; }
+  .pb-tanya:hover, .pb-tanya:focus-visible { color: #1D1D1F; border-color: #1D1D1F; }
+  .bt-cari input { width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--pf-sep); background: #FFFFFF; font-size: 15px; margin-bottom: 8px; }
+  .bt-kosong { font-size: 14px; color: var(--pf-muted); margin: 8px 4px 0; }
+  .bt-kat { margin-top: 18px; }
+  .bt-kat:first-of-type { margin-top: 8px; }
+  .bt-item { border-bottom: 1px solid var(--pf-sep); }
+  .bt-item:last-child { border-bottom: 0; }
+  .bt-item summary { list-style: none; cursor: pointer; padding: 15px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; color: #1D1D1F; }
+  .bt-item summary::-webkit-details-marker { display: none; }
+  .bt-item summary::after { content: '+'; color: var(--pf-muted); font-size: 20px; font-weight: 400; line-height: 1; }
+  .bt-item[open] summary::after { content: '–'; }
+  .bt-item p { margin: 0; padding: 0 16px 16px; font-size: 14px; line-height: 1.6; color: var(--pf-muted); }
+  .bt-item.bt-sorot { background: #F2F8FC; }
 </style>
 </head>
 <body>
@@ -247,15 +262,15 @@
       <section class="pb-stats" aria-label="Ringkasan Mahkota">
         <div class="pb-stat">
           <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF9600" d="M12 2c1 3.5 5 5.5 5 10.5A5 5 0 0 1 7 12.5c0-2.4 1.3-3.9 2.5-5 .3 1.6 1 2.6 2 3C11 7.5 11.2 5 12 2z"/></svg>
-          <b id="mkStreak">–</b><small>Runtunan hari</small>
+          <b id="mkStreak">–</b><small>Runtunan hari</small><button type="button" class="pb-tanya" data-bantuan="bt-runtunan" aria-label="Penjelasan">?</button>
         </div>
         <div class="pb-stat">
           <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FFC800" d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
-          <b id="mkTotal">–</b><small>XP</small>
+          <b id="mkTotal">–</b><small>XP</small><button type="button" class="pb-tanya" data-bantuan="bt-xp" aria-label="Penjelasan">?</button>
         </div>
         <div class="pb-stat">
           <span class="pb-angka-emas" aria-hidden="true">1</span>
-          <b id="mkRank">–</b><small id="mkRankKet">Posisi</small>
+          <b id="mkRank">–</b><small id="mkRankKet">Posisi</small><button type="button" class="pb-tanya" data-bantuan="bt-posisi" aria-label="Penjelasan">?</button>
         </div>
       </section>
 
@@ -263,31 +278,31 @@
         <svg class="pb-ikon-besar" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1CB0F6" d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>
         <div>
           <b>Safir</b>
-          <small>Tingkatan saat ini</small>
+          <small>Tingkatan saat ini</small><button type="button" class="pb-tanya" data-bantuan="bt-tingkat" aria-label="Penjelasan">?</button>
         </div>
       </section>
 
       <div class="pb-klaim">
         <div>
           <span class="pf-label" id="mkKlaimText">Login hari ini</span>
-          <p class="pf-caption">Login +1 · Aktivitas +3</p>
+          <p class="pf-caption">Login +1 setiap hari <button type="button" class="pb-tanya" data-bantuan="bt-klaim" aria-label="Penjelasan">?</button></p>
         </div>
         <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim" disabled>Klaim +1</button>
       </div>
     </div>
 
     <div class="pb-kanan">
-      <p class="pf-section-title">Papan skor</p>
+      <p class="pf-section-title">Papan skor <button type="button" class="pb-tanya" data-bantuan="bt-papan" aria-label="Penjelasan">?</button></p>
       <div class="pf-group">
         <ol class="mk-list" id="mkPapan"></ol>
       </div>
 
-      <p class="pf-section-title">Pencapaian</p>
+      <p class="pf-section-title">Pencapaian <button type="button" class="pb-tanya" data-bantuan="bt-jus" aria-label="Penjelasan">?</button></p>
       <div class="pf-group">
         <ol class="pb-jus" id="pbJus"></ol>
       </div>
 
-      <p class="pf-section-title">Riwayat Mahkota</p>
+      <p class="pf-section-title">Riwayat Mahkota <button type="button" class="pb-tanya" data-bantuan="bt-mahkota" aria-label="Penjelasan">?</button></p>
       <div class="pf-group">
         <ul class="mk-list" id="mkRiwayat"></ul>
       </div>
@@ -316,7 +331,7 @@
       <span class="pf-value" id="vEmail">–</span>
     </div>
     <div class="pf-row">
-      <span class="pf-label">Username</span>
+      <span class="pf-label">Username <button type="button" class="pb-tanya" data-bantuan="bt-username" aria-label="Penjelasan">?</button></span>
       <span class="pf-value" id="vUsername">–</span>
       <button type="button" class="pf-action" id="btnEditUsername">Ubah</button>
     </div>
@@ -416,6 +431,105 @@
 
   <div class="pf-pane" data-pane="bantuan">
   <p class="pf-section-title">Bantuan</p>
+  <div class="bt-cari">
+    <input type="search" id="btCari" placeholder="Cari, misalnya XP, jus, atau username" aria-label="Cari bantuan">
+  </div>
+  <p class="bt-kosong hidden" id="btKosong">Tidak ada bantuan yang cocok. Coba kata lain atau hubungi admin di bawah.</p>
+
+  <section class="bt-kat">
+    <p class="pf-section-title">Mahkota</p>
+    <div class="pf-group">
+      <details id="bt-mahkota" class="bt-item">
+        <summary>Apa itu Mahkota?</summary>
+        <p>Mahkota adalah poin yang Anda kumpulkan di Mahkota Tahfidz Online. Setiap poin tercatat di Riwayat Mahkota, lengkap dengan tanggal dan sumbernya.</p>
+      </details>
+      <details id="bt-klaim" class="bt-item">
+        <summary>Bagaimana cara klaim Login +1?</summary>
+        <p>Tekan tombol Klaim +1 sekali setiap hari. Hari dihitung menurut waktu Indonesia (WIB), jadi pergantian hari terjadi pada pukul 00.00 WIB.</p>
+      </details>
+      <details id="bt-xp" class="bt-item">
+        <summary>Apa itu XP?</summary>
+        <p>XP di aplikasi ini adalah total Mahkota yang sudah Anda kumpulkan sejak awal. Angka ini tidak pernah berkurang.</p>
+      </details>
+      <details id="bt-aktivitas" class="bt-item">
+        <summary>Kenapa Aktivitas +3 belum bertambah?</summary>
+        <p>Poin aktivitas belum diaktifkan. Saat ini Mahkota hanya bertambah dari login harian. Jika poin aktivitas sudah berjalan, keterangan di halaman ini akan kami perbarui.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="bt-kat">
+    <p class="pf-section-title">Runtunan dan posisi</p>
+    <div class="pf-group">
+      <details id="bt-runtunan" class="bt-item">
+        <summary>Apa itu runtunan hari?</summary>
+        <p>Runtunan hari adalah jumlah hari berturut-turut Anda sudah klaim login. Jika satu hari terlewat, runtunan dihitung ulang mulai dari hari berikutnya.</p>
+      </details>
+      <details id="bt-posisi" class="bt-item">
+        <summary>Apa arti Posisi?</summary>
+        <p>Posisi adalah peringkat Anda di papan skor, dihitung dari total XP. Peringkat 1 sampai 3 ditandai sebagai Posisi 3 besar.</p>
+      </details>
+      <details id="bt-papan" class="bt-item">
+        <summary>Bagaimana papan skor bekerja?</summary>
+        <p>Papan skor menampilkan 10 peserta teratas dan posisi Anda. Yang tampil adalah username dan ikon avatar. Peserta yang belum mengatur username tampil sebagai Peserta. Saat ini papan skor menghitung total sejak awal dan belum direset tiap minggu.</p>
+      </details>
+      <details id="bt-tingkat" class="bt-item">
+        <summary>Apa itu tingkatan Safir?</summary>
+        <p>Safir adalah tingkatan yang ditampilkan di beranda. Aturan kenaikan tingkat belum ditetapkan. Setelah ditetapkan, aturannya akan dijelaskan di halaman ini sebelum diberlakukan.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="bt-kat">
+    <p class="pf-section-title">Pencapaian Jus</p>
+    <div class="pf-group">
+      <details id="bt-jus" class="bt-item">
+        <summary>Apa itu Pencapaian Jus?</summary>
+        <p>Pencapaian Jus menampilkan progres hafalan Anda dari Jus 1 sampai Jus 30. Setiap jus berisi 20 halaman, dan progres ditampilkan sebagai jumlah halaman yang sudah dihafal dari 20.</p>
+      </details>
+      <details id="bt-jus-diisi" class="bt-item">
+        <summary>Siapa yang mengisi progres jus?</summary>
+        <p>Progres diisi oleh guru pengajar Anda. Peserta tidak bisa mengubah progres dari akunnya sendiri.</p>
+      </details>
+      <details id="bt-jus-syarat" class="bt-item">
+        <summary>Siapa yang bisa melihat Pencapaian Jus?</summary>
+        <p>Hanya peserta Mahkota yang sudah aktif. Jika Anda belum aktif, halaman akan menampilkan keterangan dan Anda bisa menghubungi admin lewat WhatsApp.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="bt-kat">
+    <p class="pf-section-title">Akun dan profil</p>
+    <div class="pf-group">
+      <details id="bt-username" class="bt-item">
+        <summary>Bagaimana mengatur username?</summary>
+        <p>Buka Pengaturan, lalu tekan Ubah pada baris Username. Username terdiri dari 3 sampai 20 karakter: huruf kecil, angka, titik, atau garis bawah. Username harus unik, jadi jika sudah dipakai orang lain, pilih yang lain.</p>
+      </details>
+      <details id="bt-avatar" class="bt-item">
+        <summary>Bagaimana mengganti avatar?</summary>
+        <p>Tekan Ubah avatar di beranda, lalu pilih ikon. Ikon yang Anda pilih juga tampil di papan skor.</p>
+      </details>
+      <details id="bt-password" class="bt-item">
+        <summary>Bagaimana mengganti password?</summary>
+        <p>Buka Pengaturan, lalu pilih Ubah password. Password baru minimal 8 karakter.</p>
+      </details>
+      <details id="bt-data" class="bt-item">
+        <summary>Kenapa diminta tanggal lahir dan jenis kelamin?</summary>
+        <p>Data ini dipakai untuk mencatat data peserta dengan akurat. Jika belum lengkap, Anda akan diminta melengkapinya. Anda juga bisa melengkapinya langsung di Pengaturan.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="bt-kat">
+    <p class="pf-section-title">Lainnya</p>
+    <div class="pf-group">
+      <details id="bt-afiliasi" class="bt-item">
+        <summary>Apa itu afiliasi?</summary>
+        <p>Afiliasi adalah program untuk mengajak keluarga dan teman lewat link pribadi Anda. Fee diberikan sesuai ketentuan program, untuk peserta yang sudah membayar dan aktif.</p>
+      </details>
+    </div>
+  </section>
+
   <div class="pf-group">
     <a class="pf-row pf-link" href="https://wa.me/6285727533000" target="_blank" rel="noopener">
       <span class="pf-label">Chat admin via WhatsApp</span>
@@ -428,7 +542,6 @@
   </div>
 
   </div>
-
   <div class="verif-modal hidden" id="verifModal" role="dialog" aria-modal="true" aria-labelledby="verifJudul">
     <div class="verif-kartu">
       <div class="verif-ikon" aria-hidden="true">!</div>
@@ -457,5 +570,6 @@
 <script src="js/notifikasi.js"></script>
 <script src="js/verifikasi.js"></script>
 <script src="js/profil-tabs.js"></script>
+<script src="js/bantuan.js"></script>
 </body>
 </html>
