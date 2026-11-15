@@ -381,6 +381,12 @@
   .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
   .rc { margin: 8px 0 16px; }
+  .promo-card.kode-voucher { border: 1.5px dashed #b8893c; background: #fffaf0; }
+  .kode-form { display: flex; gap: 8px; align-items: center; }
+  .kode-in { flex: 1; min-width: 0; border: 1.5px solid #d9cfc1; border-radius: 999px; padding: 10px 14px; font-size: 16px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #2b1c0e; background: #fff; font-family: inherit; }
+  .kode-in:focus { outline: 2px solid #5a3b1c; outline-offset: 1px; }
+  .kode-msg { margin: 10px 0 0; font-size: 13px; color: #C62828; font-weight: 600; }
+  .kode-timer { color: #C62828; font-variant-numeric: tabular-nums; }
   .rc-title { font-size: 18px; font-weight: 700; color: #2b1c0e; margin: 8px 0 10px; }
   .rc-card { background: #fff; border-radius: 20px; border: 1px solid #e6dccf; padding: 16px 18px 14px; }
   .rc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 15px; color: #4a4a4a; }
@@ -1114,7 +1120,8 @@
     html += '</div>';
     if (pctAll > 0) html += '<div class="harga-coret">' + rupiah(c.asli * m * S.peserta) + '</div>';
     var pr = [];
-    if (S.promoAwal !== false) pr.push('Promo ' + promoPct(k) + '%');
+    if (kodeAktif()) pr.push('Kode ' + KODE.kode + ' ' + KODE.pct + '%');
+    else if (awalOn()) pr.push('Promo ' + promoPct(k) + '%');
     if (paketAktif(m)) pr.push('potongan paket 3 bulan 12%');
     if (pr.length) html += '<p class="harga-note">' + pr.join(' + ') + '</p>';
     return '<div class="harga-wrap">' + html + '</div>';
@@ -1123,31 +1130,91 @@
   var PROMO_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>';
   function promoSection() {
     var c = KELAS[S.kelas], m = S.durasi, n = S.peserta;
-    var on1 = S.promoAwal !== false, on2 = S.paketPromo !== false;
-    var qual = m >= 3, eff2 = on1 && qual && on2;
+    var kode = kodeAktif(), on1 = awalOn(), on2 = S.paketPromo !== false;
+    var qual = m >= 3, eff2 = (on1 || kode) && qual && on2;
     var save1 = (c.asli - c.list) * m * n;
+    var saveK = c.asli * KODE.pct / 100 * m * n;
     var save2 = (c.list - c.paket) * Math.max(m, 3) * n;
-    var total = (on1 ? save1 : 0) + (eff2 ? save2 : 0);
+    var total = (kode ? saveK : (on1 ? save1 : 0)) + (eff2 ? save2 : 0);
     function btn(key, on, disabled) {
       return '<button type="button" class="promo-btn' + (on ? ' on' : '') + '" data-toggle="' + key + '"' + (disabled ? ' disabled' : '') + '>' + (on ? 'Dipakai' : 'Pakai') + '</button>';
     }
-    var card1 = '<div class="promo-card">' +
-      '<div class="promo-top"><span class="promo-tag">PROMO PENDAFTARAN</span>' + btn('promoAwal', on1, false) + '</div>' +
-      '<div class="promo-text"><strong>Hemat ' + rbFmt(save1) + '</strong>' +
-      '<small>Diskon ' + promoPct(S.kelas) + '% untuk pendaftaran ini</small></div></div>';
     var foot2 = '';
-    if (!on1) foot2 = '<div class="promo-foot">Pakai promo pendaftaran untuk membuka potongan ini</div>';
+    if (kode) foot2 = '';
+    else if (!on1) foot2 = '<div class="promo-foot">Pakai promo pendaftaran untuk membuka potongan ini</div>';
     else if (!qual) foot2 = '<div class="promo-foot"><span>Berlaku untuk paket 3 bulan</span><button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div>';
     var card2 = '<div class="promo-card">' +
-      '<div class="promo-top"><span class="promo-tag">PAKET 3 BULAN</span>' + btn('paketPromo', eff2, !on1 || !qual) + '</div>' +
+      '<div class="promo-top"><span class="promo-tag">PAKET 3 BULAN</span>' + btn('paketPromo', eff2, !(on1 || kode) || !qual) + '</div>' +
       '<div class="promo-text"><strong>Ekstra hemat ' + rbFmt(save2) + '</strong>' +
-      '<small>Potongan tambahan 12%, digabung dengan promo pendaftaran</small></div>' + foot2 + '</div>';
+      '<small>Potongan tambahan 12%, digabung dengan ' + (kode ? 'kode ' + KODE.kode : 'promo pendaftaran') + '</small></div>' + foot2 + '</div>';
+    var card1 = '';
+    if (!kode) {
+      card1 = '<div class="promo-card">' +
+        '<div class="promo-top"><span class="promo-tag">PROMO PENDAFTARAN</span>' + btn('promoAwal', on1, false) + '</div>' +
+        '<div class="promo-text"><strong>Hemat ' + rbFmt(save1) + '</strong>' +
+        '<small>Diskon ' + promoPct(S.kelas) + '% untuk pendaftaran ini</small></div></div>';
+    }
     var sub = total > 0
       ? 'Anda hemat ' + rbFmt(total) + ' untuk pendaftaran ini.'
       : 'Pakai promo di bawah untuk mendapatkan harga terbaik.';
     return '<div class="promo-sec"><div class="promo-head"><h4>Penawaran Khusus untuk Anda</h4>' +
       '<p>' + sub + '</p></div>' +
-      '<div class="promo-list">' + card1 + card2 + '</div></div>';
+      '<div class="promo-list">' + kodeCard() + card1 + card2 + '</div></div>';
+  }
+  // Kartu kode promo: kolom input sebelum kode dipakai, lalu voucher dengan timer.
+  function kodeCard() {
+    var c = KELAS[S.kelas], m = S.durasi, n = S.peserta;
+    var msg = S.kodeMsg ? '<p class="kode-msg">' + esc(S.kodeMsg) + '</p>' : '';
+    if (!S.kode) {
+      return '<div class="promo-card">' +
+        '<div class="promo-top"><span class="promo-tag">PUNYA KODE PROMO?</span></div>' +
+        '<div class="kode-form"><input type="text" name="kode" class="kode-in" placeholder="Masukkan kode" maxlength="12" autocomplete="off" autocapitalize="characters" aria-label="Kode promo" value="' + esc(S.kodeIn || '') + '">' +
+        '<button type="button" class="promo-btn on" data-kode-apply>Terapkan</button></div>' + msg + '</div>';
+    }
+    var head = '<div class="promo-top"><span class="promo-tag">KODE ' + KODE.kode + '</span><button type="button" class="promo-btn" data-kode-clear>Hapus</button></div>';
+    if (Date.now() >= KODE.akhir.getTime()) {
+      return '<div class="promo-card">' + head + '<p class="kode-msg">Kode ' + KODE.kode + ' sudah berakhir.</p></div>';
+    }
+    if (!kodeAktif()) {
+      return '<div class="promo-card">' + head +
+        '<div class="promo-text"><strong>Kode ' + KODE.kode + ' berlaku untuk paket minimal 3 bulan</strong>' +
+        '<small>Pilih 3 bulan untuk memakai potongan ' + KODE.pct + '%.</small></div>' +
+        '<div class="promo-foot"><span>Potongan belum aktif</span><button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div></div>';
+    }
+    return '<div class="promo-card kode-voucher">' + head +
+      '<div class="promo-text"><strong>Potongan ' + KODE.pct + '% untuk paket ini</strong>' +
+      '<small>Hemat ' + rbFmt(c.asli * KODE.pct / 100 * m * n) + ' · berlaku untuk paket minimal 3 bulan</small></div>' +
+      '<div class="promo-foot"><span>Berakhir dalam <b class="kode-timer" id="kodeTimer">' + fmtSisa(KODE.akhir.getTime() - Date.now()) + '</b></span><span>s.d. 17 Nov 2026, 23.59 WIB</span></div></div>';
+  }
+  var KODE = { kode: 'ABD', pct: 50, akhir: new Date('2026-11-17T23:59:00+07:00') };
+  function kodeAktif() { return !!S.kode && S.kode === KODE.kode && S.durasi >= 3 && Date.now() < KODE.akhir.getTime(); }
+  function awalOn() { return S.promoAwal !== false && !kodeAktif(); }
+  function applyKode() {
+    var v = String(S.kodeIn || '').trim().toUpperCase();
+    S.kodeMsg = '';
+    if (!v) S.kodeMsg = 'Masukkan kode promo terlebih dahulu.';
+    else if (v !== KODE.kode) S.kodeMsg = 'Kode promo tidak dikenali.';
+    else if (Date.now() >= KODE.akhir.getTime()) S.kodeMsg = 'Kode ' + KODE.kode + ' sudah berakhir.';
+    else { S.kode = v; S.kodeIn = ''; }
+    renderRingkasan();
+  }
+  function fmtSisa(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000));
+    var h = Math.floor(s / 3600), mi = Math.floor((s % 3600) / 60), d = s % 60;
+    function p(x) { return (x < 10 ? '0' : '') + x; }
+    return p(h) + ':' + p(mi) + ':' + p(d);
+  }
+  var kodeTimer = null;
+  function startKodeTimer() {
+    if (kodeTimer) { clearInterval(kodeTimer); kodeTimer = null; }
+    if (!kodeAktif()) return;
+    kodeTimer = setInterval(function () {
+      var el = document.getElementById('kodeTimer');
+      var sisa = KODE.akhir.getTime() - Date.now();
+      if (!el) { clearInterval(kodeTimer); kodeTimer = null; return; }
+      if (sisa <= 0) { clearInterval(kodeTimer); kodeTimer = null; renderRingkasan(); return; }
+      el.textContent = fmtSisa(sisa);
+    }, 1000);
   }
   function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
   function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
@@ -1171,14 +1238,17 @@
   }
   function promoPct(k) { return Math.round((KELAS[k].asli - KELAS[k].list) / KELAS[k].asli * 100); }
   // Potongan paket 3 bulan hanya berlaku bersama promo awal dan minimal 3 bulan.
-  function paketAktif(m) { return S.promoAwal !== false && S.paketPromo !== false && m >= 3; }
+  function paketAktif(m) { return (awalOn() || kodeAktif()) && S.paketPromo !== false && m >= 3; }
   function perBulan(k, months) {
-    if (S.promoAwal === false) return KELAS[k].asli;
-    return paketAktif(months) ? KELAS[k].paket : KELAS[k].list;
+    var c = KELAS[k];
+    if (kodeAktif() && months >= 3) return c.asli * (1 - KODE.pct / 100) - (paketAktif(months) ? c.list - c.paket : 0);
+    if (S.promoAwal === false || kodeAktif()) return kodeAktif() ? c.asli * (1 - KODE.pct / 100) : c.asli;
+    return paketAktif(months) ? c.paket : c.list;
   }
   function promoText() {
     var t = [];
-    if (S.promoAwal !== false) t.push('promo awal ' + promoPct(S.kelas) + '%');
+    if (kodeAktif()) t.push('kode ' + KODE.kode + ' ' + KODE.pct + '%');
+    else if (awalOn()) t.push('promo awal ' + promoPct(S.kelas) + '%');
     if (paketAktif(S.durasi)) t.push('potongan paket 3 bulan 12%');
     return t.length ? t.join(' + ') : 'tidak dipakai';
   }
@@ -1187,11 +1257,12 @@
   // Ringkasan pembayaran bergaya kwitansi: harga, setiap diskon dengan labelnya, dan total.
   function receiptBlock(k, m) {
     var c = KELAS[k], n = S.peserta, base = c.asli * m * n;
-    var p1 = S.promoAwal !== false ? (c.asli - c.list) * m * n : 0;
+    var kode = kodeAktif();
+    var p1 = kode ? c.asli * KODE.pct / 100 * m * n : (awalOn() ? (c.asli - c.list) * m * n : 0);
     var p2 = paketAktif(m) ? (c.list - c.paket) * m * n : 0;
     var total = base - p1 - p2;
     var rows = '<div class="rc-row"><span>Harga paket · ' + durasiLabel(m) + (n > 1 ? ' · ' + n + ' peserta' : '') + '</span><span>' + rupiah(base) + '</span></div>';
-    if (p1) rows += '<div class="rc-row rc-disc"><span>Diskon promo awal ' + promoPct(k) + '%</span><span>-' + rupiah(p1) + '</span></div>';
+    if (p1) rows += '<div class="rc-row rc-disc"><span>' + (kode ? 'Kode ' + KODE.kode + ' · diskon ' + KODE.pct + '%' : 'Diskon promo awal ' + promoPct(k) + '%') + '</span><span>-' + rupiah(p1) + '</span></div>';
     if (p2) rows += '<div class="rc-row rc-disc"><span>Potongan paket 3 bulan 12%</span><span>-' + rupiah(p2) + '</span></div>';
     var tot = '<div class="rc-total"><span>Total pembayaran</span><span>' + ((p1 || p2) ? '<s class="rc-old">' + rupiah(base) + '</s>' : '') + '<strong>' + rupiah(total) + '</strong></span></div>';
     return '<div class="rc"><div class="rc-title">Ringkasan pembayaran</div><div class="rc-card">' + rows + tot + '</div></div>';
@@ -1426,6 +1497,7 @@
       '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya sebelum mendaftar.\n\n" + ringkas()) + '" target="_blank" rel="noopener">Tanya admin dulu</a>';
 
     document.getElementById('ringkasanBox').innerHTML = box + promoSection() + harga + edit + periodeBox(jadwal()) + trust + closing;
+    startKodeTimer();
   }
   function renderData() {
     var radio = function (name, v, t, cur) {
@@ -1524,6 +1596,8 @@
       return;
     }
     if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
+    if (t.closest('[data-kode-apply]')) { applyKode(); return; }
+    if (t.closest('[data-kode-clear]')) { S.kode = null; S.kodeMsg = ''; S.kodeIn = ''; renderRingkasan(); return; }
     if ((b = t.closest('[data-toggle]'))) { var key = b.dataset.toggle, on = S[key] !== false; S[key] = !on; renderRingkasan(); return; }
     if ((b = t.closest('[data-set-durasi]'))) { S.durasi = Number(b.dataset.setDurasi); renderRingkasan(); return; }
     if ((b = t.closest('[data-peserta]'))) { S.peserta = Math.min(10, Math.max(1, S.peserta + Number(b.dataset.peserta))); renderRingkasan(); return; }
@@ -1538,8 +1612,13 @@
     if (t.closest('#toBayar')) { if (dataValid()) advance('data'); return; }
   });
 
+  cek.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.name === 'kode') { e.preventDefault(); applyKode(); }
+  });
+
   cek.addEventListener('input', function (e) {
     var t = e.target;
+    if (t.name === 'kode') S.kodeIn = t.value;
     if (t.name === 'nama') S.nama = t.value.trim();
     if (t.name === 'usia') S.usia = t.value;
     if (t.name === 'kota') S.kota = t.value.trim();
