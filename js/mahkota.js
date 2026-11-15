@@ -338,6 +338,29 @@
         '<div class="pd-aksi">' + aksi + '</div>' + jadwal + '</div>';
     }).join('');
   }
+  function ubahKePng(blob) {
+    if (blob.type === 'image/png') return Promise.resolve(blob);
+    return new Promise(function (ok, gagal) {
+      var url = URL.createObjectURL(blob), img = new Image();
+      img.onload = function () {
+        var c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        c.toBlob(function (b) { b ? ok(b) : gagal(new Error('png')); }, 'image/png');
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); gagal(new Error('gambar')); };
+      img.src = url;
+    });
+  }
+  function bacaDataUrl(blob) {
+    return new Promise(function (ok, gagal) {
+      var r = new FileReader();
+      r.onload = function () { ok(r.result); };
+      r.onerror = function () { gagal(r.error); };
+      r.readAsDataURL(blob);
+    });
+  }
   function bindAdmin() {
     var box = $('adminList');
     if (!box) return;
@@ -346,9 +369,34 @@
       if (t.dataset.salin !== undefined) {
         var p = daftarAdmin[Number(t.dataset.salin)];
         if (!navigator.clipboard || !p) return;
-        navigator.clipboard.writeText(teksWa(p)).then(function () {
-          t.textContent = 'Tersalin';
-          setTimeout(function () { t.textContent = 'Salin untuk WhatsApp'; }, 1500);
+        var teks = teksWa(p);
+        var tandai = function (label) {
+          t.textContent = label;
+          setTimeout(function () { t.textContent = 'Salin untuk WhatsApp'; }, 1800);
+        };
+        var salinTeksSaja = function () {
+          navigator.clipboard.writeText(teks).then(function () { tandai('Tersalin (tanpa bukti)'); });
+        };
+        if (!p.bukti_path || !sb || typeof ClipboardItem === 'undefined') { salinTeksSaja(); return; }
+        /* Teks dan gambar bukti transfer disalin bersamaan. ClipboardItem dibuat langsung di dalam klik. */
+        var gambarPng = sb.storage.from('bukti-transfer').download(p.bukti_path).then(function (r) {
+          if (r.error || !r.data) throw new Error('bukti');
+          return ubahKePng(r.data);
+        });
+        var htmlSalin = gambarPng.then(function (png) {
+          return bacaDataUrl(png).then(function (url) {
+            return '<p>' + esc(teks).replace(/\n/g, '<br>') + '</p><p><img src="' + url + '" alt="Bukti transfer"></p>';
+          });
+        });
+        var item = new ClipboardItem({
+          'text/plain': new Blob([teks], { type: 'text/plain' }),
+          'text/html': htmlSalin.then(function (h) { return new Blob([h], { type: 'text/html' }); }),
+          'image/png': gambarPng
+        });
+        navigator.clipboard.write([item]).then(function () {
+          tandai('Tersalin dengan bukti');
+        }).catch(function () {
+          salinTeksSaja();
         });
       }
       if (t.dataset.bukti !== undefined && sb) {
