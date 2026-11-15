@@ -1592,7 +1592,7 @@
       sb.rpc('daftar_pendaftaran', { p: {
         email: S.email, nama: S.nama, jk: S.jk, tgl: S.tgl || null, kota: S.kota,
         wa: waFull(), kelas: S.kelas, durasi: S.durasi, peserta: S.peserta,
-        total: totalBayar(), ringkasan: ringkas()
+        total: totalBayar(), ringkasan: ringkas(), hari: S.hari, jam: S.jam
       } }).then(function (r) {
         if (r.error || !r.data) return cb((r.error && r.error.message) || 'Pendaftaran belum tersimpan. Coba lagi.');
         S.pid = r.data.id;

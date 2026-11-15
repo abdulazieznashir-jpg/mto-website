@@ -122,23 +122,15 @@
     return new Date(iso).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) + ' WIB';
   }
   function renderJadwal(d) {
-    var chips = $('jadwalChips'), sesiEl = $('sesiList'), sel = $('sMurid');
-    if (!chips || !sesiEl || !sel) return;
-    var jadwal = (d && d.jadwal) || [], sesi = (d && d.sesi) || [], murid = (d && d.murid) || [];
+    var chips = $('jadwalChips');
+    if (!chips) return;
+    var jadwal = (d && d.jadwal) || [];
     chips.innerHTML = jadwal.length
       ? jadwal.map(function (j) {
           return '<span class="pj-chip">' + esc(HARI_NAMA[j.hari]) + ' ' + esc(j.jam) +
             ' <button type="button" data-hapus="' + j.id + '" aria-label="Hapus">×</button></span>';
         }).join('')
       : '<p class="mr-kosong">Belum ada jadwal kosong.</p>';
-    sesiEl.innerHTML = sesi.length
-      ? sesi.map(function (x) {
-          return '<div class="pj-sesi"><b>' + esc(x.murid || x.peserta_email) + '</b><small>' + esc(tglJamWib(x.mulai)) + ' · ' + esc(x.status) + '</small></div>';
-        }).join('')
-      : '<p class="mr-kosong">Belum ada sesi yang dijadwalkan.</p>';
-    sel.innerHTML = murid.length
-      ? murid.map(function (m) { return '<option value="' + esc(m.email) + '">' + esc(m.nama || m.email) + '</option>'; }).join('')
-      : '<option value="">Belum ada murid</option>';
   }
   function muatJadwal() {
     sb.rpc('jadwal_saya').then(function (r) {
@@ -151,8 +143,14 @@
     if (jadwalEvents) return;
     jadwalEvents = true;
     $('jTambah').addEventListener('click', function () {
-      sb.rpc('tambah_jadwal_kosong', { p_hari: Number($('jHari').value), p_jam: $('jJam').value }).then(function (r) {
-        if (r.error) window.alert(r.error.message || 'Jadwal belum bisa ditambah.');
+      var hari = [];
+      document.querySelectorAll('#jHariBox input[type=checkbox]:checked').forEach(function (c) { hari.push(Number(c.value)); });
+      var jam = $('jJam').value;
+      if (!hari.length) { window.alert('Pilih minimal satu hari (Senin sampai Jumat).'); return; }
+      if (!jam) { window.alert('Pilih jam terlebih dahulu.'); return; }
+      sb.rpc('tambah_jadwal_kosong', { p_hari: hari, p_jam: jam }).then(function (r) {
+        if (r.error) { window.alert(r.error.message || 'Jadwal belum bisa ditambahkan.'); return; }
+        document.querySelectorAll('#jHariBox input[type=checkbox]').forEach(function (c) { c.checked = false; });
         muatJadwal();
       });
     });
@@ -161,15 +159,6 @@
       if (!b) return;
       if (!window.confirm('Hapus jadwal kosong ini?')) return;
       sb.rpc('hapus_jadwal_kosong', { p_id: Number(b.getAttribute('data-hapus')) }).then(muatJadwal);
-    });
-    $('sBuat').addEventListener('click', function () {
-      var murid = $('sMurid').value, waktu = $('sWaktu').value;
-      if (!murid || !waktu) { window.alert('Pilih murid dan waktu sesi terlebih dahulu.'); return; }
-      sb.rpc('buat_sesi', { p_peserta: murid, p_mulai: waktu + ':00+07:00' }).then(function (r) {
-        if (r.error) window.alert(r.error.message || 'Sesi belum bisa dibuat.');
-        else { $('sWaktu').value = ''; }
-        muatJadwal();
-      });
     });
   }
 
