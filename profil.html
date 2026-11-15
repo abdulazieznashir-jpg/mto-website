@@ -240,7 +240,11 @@
       <button type="button" class="pf-action" id="btnVerif">Lengkapi</button>
     </div>
     <form id="formVerif" class="pf-edit hidden" novalidate>
-      <input type="number" name="usia" inputmode="numeric" min="10" max="100" placeholder="Usia (10 sampai 100)" aria-label="Usia">
+      <div class="tgl-grup">
+        <select id="tglHari" aria-label="Tanggal"></select>
+        <select id="tglBulan" aria-label="Bulan"></select>
+        <select id="tglTahun" aria-label="Tahun"></select>
+      </div>
       <div class="jk-opsi">
         <label class="jk-pilih"><input type="radio" name="jk" value="P"> <span>Perempuan</span></label>
         <label class="jk-pilih"><input type="radio" name="jk" value="L"> <span>Laki-laki</span></label>
@@ -340,6 +344,7 @@
 <script src="js/mahkota.js"></script>
 <script src="js/afiliasi.js"></script>
 <script src="js/profil.js"></script>
+<script src="js/tanggal-lahir.js"></script>
 <script src="js/notifikasi.js"></script>
 <script src="js/verifikasi.js"></script>
 <script src="js/profil-tabs.js"></script>

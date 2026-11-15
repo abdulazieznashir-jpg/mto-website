@@ -33,7 +33,7 @@
   function bukaFormVerif() {
     var form = $('formVerif');
     form.classList.remove('hidden');
-    form.usia.focus();
+    $('tglHari').focus();
     $('btnVerif').setAttribute('aria-expanded', 'true');
   }
 
@@ -51,14 +51,16 @@
   function simpan(e) {
     e.preventDefault();
     var f = e.target;
-    var usia = Number(f.usia.value);
+    var tgl = window.MTO_TGL ? MTO_TGL.iso($('tglHari'), $('tglBulan'), $('tglTahun')) : '';
     var jk = (f.querySelector('input[name="jk"]:checked') || {}).value || '';
     var btn = $('btnSimpanVerif');
-    if (!Number.isInteger(usia) || usia < 10 || usia > 100) { note('Tulis usia antara 10 dan 100 tahun.', true); return; }
+    if (!tgl) { note('Pilih tanggal lahir Anda dengan lengkap dan benar.', true); return; }
+    var usia = MTO_TGL.usia(tgl);
+    if (usia < 10 || usia > 100) { note('Usia harus antara 10 dan 100 tahun.', true); return; }
     if (!jk) { note('Pilih jenis kelamin Anda.', true); return; }
 
     btn.disabled = true;
-    sb.rpc('lengkapi_data_diri', { p_usia: usia, p_jk: jk }).then(function (r) {
+    sb.rpc('lengkapi_data_diri', { p_tanggal_lahir: tgl, p_jk: jk }).then(function (r) {
       btn.disabled = false;
       if (r.error) { note('Data belum tersimpan. Coba lagi sebentar.', true); return; }
       perlu = false;
@@ -123,6 +125,7 @@
   }
 
   function mulai() {
+    if (window.MTO_TGL) MTO_TGL.isi($('tglHari'), $('tglBulan'), $('tglTahun'));
     var s = document.createElement('script');
     s.src = SUPABASE_JS;
     s.onload = function () {
