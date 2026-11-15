@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Masuk · Mahkota Tahfizh Online</title>
-<meta name="description" content="Daftar atau masuk ke akun peserta Mahkota Tahfizh Online dengan email dan kode verifikasi.">
+<meta name="description" content="Daftar atau masuk ke akun peserta Mahkota Tahfizh Online dengan email dan password.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="css/style.css">
@@ -28,21 +28,21 @@
   .fld span { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
   .fld input { width: 100%; box-sizing: border-box; padding: 14px 16px; border-radius: 12px; border: 1px solid #d2d2d7; font-size: 16px; font-family: inherit; background: #fff; }
   .fld input:focus { outline: 2px solid #1D1D1F; outline-offset: 1px; }
-  .kode-in { text-align: center; font-size: 26px !important; font-weight: 700; letter-spacing: 10px; padding-left: 18px !important; }
+  .hint { margin: -6px 0 14px; font-size: 13px; color: var(--text-tertiary, #86868B); }
   .btn-full { width: 100%; box-sizing: border-box; text-align: center; margin-top: 6px; }
   button[disabled] { opacity: 0.55; cursor: default; }
   .link { background: none; border: 0; color: var(--text-secondary, #6E6E73); font-size: 14px; cursor: pointer; padding: 10px; font-family: inherit; text-decoration: underline; display: block; margin: 6px auto 0; }
   .notice { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: var(--text-secondary, #6E6E73); text-align: center; min-height: 0; }
   .notice:empty { display: none; }
   .notice.bad { color: #B42318; }
-  .lg-note { margin: 18px 0 0; font-size: 12px; color: var(--text-tertiary, #86868B); text-align: center; line-height: 1.5; }
+  .lg-note { margin: 18px 0 0; font-size: 13px; color: var(--text-tertiary, #86868B); text-align: center; line-height: 1.5; }
+  .lg-note a { color: var(--text-secondary, #6E6E73); }
 
   /* Status */
   .st-ico { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: #fff; }
   .st-ico.ok { background: #2E7D32; }
   .st-ico.wait { background: #B7791F; }
   .st-ico.info { background: #1D1D1F; }
-  .st-who { text-align: center; font-size: 14px; color: var(--text-tertiary, #86868B); margin-bottom: 14px; word-break: break-all; }
   .promo { margin-top: 16px; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, #FBF6EE 0%, #F6EEE2 100%); text-align: left; }
   .promo h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
   .promo p { margin: 0 0 12px; font-size: 14px; color: #6B5A48; line-height: 1.5; }
@@ -63,38 +63,35 @@
     <!-- 1. Daftar atau masuk -->
     <section id="viewAuth">
       <h1>Selamat datang</h1>
-      <p class="lg-sub">Daftar dengan email, atau masuk jika sudah punya akun.</p>
+      <p class="lg-sub" id="lgSub">Buat akun dengan email dan password.</p>
       <div class="tabs" role="tablist">
         <button type="button" role="tab" id="tabDaftar" aria-selected="true" data-mode="daftar">Daftar</button>
         <button type="button" role="tab" id="tabMasuk" aria-selected="false" data-mode="masuk">Sudah punya akun</button>
       </div>
       <div id="notice" class="notice" aria-live="polite"></div>
 
-      <form id="formKirim" novalidate>
+      <form id="formAuth" novalidate>
         <label class="fld hidden" id="fldNama"><span>Nama lengkap</span>
           <input type="text" name="nama" autocomplete="name" placeholder="Nama sesuai pendaftaran">
         </label>
         <label class="fld"><span>Email</span>
           <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="nama@email.com" required>
         </label>
-        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnKirim">Kirim kode ke email</button>
+        <label class="fld"><span>Password</span>
+          <input type="password" name="password" id="password" autocomplete="new-password" placeholder="Minimal 8 karakter" minlength="8" required>
+        </label>
+        <p class="hint hidden" id="fldHint">Gunakan password yang mudah Anda ingat dan jangan dibagikan.</p>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnKirim">Daftar</button>
       </form>
-      <p class="lg-note">Kami mengirim kode 6 digit ke email Anda. Tidak perlu password.</p>
+      <p class="lg-note">Lupa password? <a href="https://wa.me/6285727533000" target="_blank" rel="noopener">Hubungi admin via WhatsApp</a>.</p>
     </section>
 
-    <!-- 2. Masukkan kode -->
-    <section id="viewKode" class="hidden">
+    <!-- 2. Cek email (setelah daftar, jika konfirmasi email aktif) -->
+    <section id="viewCek" class="hidden">
+      <div class="st-ico info" aria-hidden="true">✉</div>
       <h1>Cek email Anda</h1>
-      <p class="lg-sub">Kami sudah mengirim kode 6 digit ke <strong id="kodeEmail"></strong>.</p>
-      <div id="noticeKode" class="notice" aria-live="polite"></div>
-      <form id="formKode" novalidate>
-        <label class="fld"><span>Kode verifikasi</span>
-          <input type="text" name="kode" class="kode-in" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required>
-        </label>
-        <button type="submit" class="btn btn-primary btn-lg btn-full">Verifikasi dan masuk</button>
-      </form>
-      <button type="button" class="link" id="btnUlang" disabled>Kirim ulang kode</button>
-      <button type="button" class="link" id="btnGanti">Ganti email</button>
+      <p class="lg-sub">Kami sudah mengirim link konfirmasi ke <strong id="cekEmail"></strong>. Klik link itu, lalu masuk dengan email dan password Anda.</p>
+      <button type="button" class="btn btn-primary btn-lg btn-full" id="btnMasukSekarang">Masuk sekarang</button>
     </section>
 
     <!-- 3. Status akun -->
