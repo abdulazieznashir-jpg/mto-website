@@ -1572,21 +1572,81 @@
       '<p>Nomor ini belum diverifikasi oleh sistem. Admin akan mengonfirmasi lewat WhatsApp setelah pendaftaran masuk.</p>' +
       '</div>';
   }
+  /* ---------- pendaftaran tersimpan dan batas waktu bayar ---------- */
+  var SB_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
+  var SB_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
+  var SB_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+  var sbKlien = null, timerBayar = null;
+  function sbSiap(cb) {
+    if (sbKlien) return cb(sbKlien);
+    if (window.supabase) { sbKlien = window.supabase.createClient(SB_URL, SB_KEY); return cb(sbKlien); }
+    var s = document.createElement('script');
+    s.src = SB_JS;
+    s.onload = function () { sbKlien = window.supabase.createClient(SB_URL, SB_KEY); cb(sbKlien); };
+    document.head.appendChild(s);
+  }
+  // Data disimpan sekali per sesi isian: saat "Lanjut ke pembayaran" ditekan.
+  function simpanPendaftaran(cb) {
+    if (S.pid) return cb(null);
+    sbSiap(function (sb) {
+      sb.rpc('daftar_pendaftaran', { p: {
+        email: S.email, nama: S.nama, jk: S.jk, usia: isAnak() ? null : S.usia, kota: S.kota,
+        wa: waFull(), kelas: S.kelas, durasi: S.durasi, peserta: S.peserta,
+        total: totalBayar(), ringkasan: ringkas()
+      } }).then(function (r) {
+        if (r.error || !r.data) return cb((r.error && r.error.message) || 'Pendaftaran belum tersimpan. Coba lagi.');
+        S.pid = r.data.id;
+        S.batas = r.data.batas_bayar;
+        cb(null);
+      });
+    });
+  }
+  function tandaiBukti(cb) {
+    sbSiap(function (sb) {
+      sb.rpc('tandai_bukti', { p_id: S.pid, p_email: S.email }).then(function (r) {
+        cb(r.error ? (r.error.message || 'Gagal memperbarui status.') : null);
+      });
+    });
+  }
+  function jalankanTimer() {
+    clearInterval(timerBayar);
+    var el = document.getElementById('bayarTimer');
+    if (!el || !S.batas) return;
+    var akhir = new Date(S.batas).getTime();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    function tik() {
+      var sisa = akhir - Date.now();
+      if (sisa <= 0) {
+        el.innerHTML = '<strong>Waktu pembayaran habis.</strong> Hubungi admin untuk dibukakan kembali.';
+        clearInterval(timerBayar);
+        return;
+      }
+      var j = Math.floor(sisa / 3600000), m = Math.floor((sisa % 3600000) / 60000), d = Math.floor((sisa % 60000) / 1000);
+      var tgl = new Date(akhir).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+      el.innerHTML = 'Selesaikan pembayaran sebelum <strong>' + tgl + ' WIB</strong><br>Sisa waktu <strong>' + pad(j) + ':' + pad(m) + ':' + pad(d) + '</strong>';
+    }
+    tik();
+    timerBayar = setInterval(tik, 1000);
+  }
+
   function renderBayar() {
     var rek = REKENING.map(function (r) {
       return '<div class="cek-bank"><div><strong>' + r[0] + '</strong><small>' + r[1] + '</small></div>' +
         '<button type="button" class="cek-copy" data-copy="' + r[1] + '">Salin</button></div>';
     }).join('');
     document.getElementById('bayarBox').innerHTML =
+      '<div class="cek-timer" id="bayarTimer" style="font-size:14px;line-height:1.5;margin:0 0 12px;padding:12px 14px;border-radius:14px;background:#F5F5F7;color:#1D1D1F"></div>' +
       '<p class="cek-alasan">Transfer ke salah satu rekening resmi di bawah ini, atas nama Abdul Aziez. Admin mengonfirmasi setelah bukti transfer diterima.</p>' +
       '<div class="cek-amount">Nominal: ' + rupiah(totalBayar()) + '</div>' +
       '<button type="button" class="cek-copy" data-copy="' + totalBayar() + '">Salin nominal</button>' +
       '<div class="cek-box" style="margin-top:12px">' + rek + '</div>' +
+      '<p class="cek-err" id="bayarErr"></p>' +
       '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="kirim">Sudah transfer, lanjut kirim bukti</button>';
+    jalankanTimer();
   }
   function renderKirim() {
     document.getElementById('kirimBox').innerHTML =
-      '<p class="cek-alasan">Pesan WhatsApp sudah terisi otomatis. Lampirkan foto bukti transfer, lalu kirim.</p>' +
+      '<p class="cek-alasan"><strong>Status: menunggu verifikasi.</strong> Pesan WhatsApp sudah terisi otomatis. Lampirkan foto bukti transfer, lalu kirim.</p>' +
       '<p class="cek-alasan">Nomor WhatsApp: <strong>+' + esc(waFull()) + '</strong> dan email ' + esc(S.email) + '. Admin akan mengonfirmasi lewat WhatsApp.</p>' +
       '<a class="btn btn-wa btn-lg cek-full" href="' + waLink(pesanDaftar()) + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
   }
@@ -1638,11 +1698,25 @@
     if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
     if ((b = t.closest('[data-act]'))) {
       if (b.dataset.act === 'data') advance('ringkasan');
-      if (b.dataset.act === 'kirim') advance('bayar');
+      if (b.dataset.act === 'kirim') {
+        tandaiBukti(function (err) {
+          var e = document.getElementById('bayarErr');
+          if (err) { if (e) e.textContent = err; return; }
+          clearInterval(timerBayar);
+          advance('bayar');
+        });
+      }
       return;
     }
     if (t.closest('#rekomNext')) { advance('rekom'); return; }
-    if (t.closest('#toBayar')) { if (dataValid()) advance('data'); return; }
+    if (t.closest('#toBayar')) {
+      if (!dataValid()) return;
+      simpanPendaftaran(function (err) {
+        if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
+        advance('data');
+      });
+      return;
+    }
   });
 
   cek.addEventListener('keydown', function (e) {

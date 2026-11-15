@@ -254,6 +254,22 @@
   .pb-koin svg { width: 20px; height: 20px; fill: #1D1D1F; }
   .bk-more { display: block; width: 100%; margin-top: 10px; padding: 10px; border: 0; background: none; color: #0071E3; font-size: 14px; font-weight: 500; cursor: pointer; }
   .mk-list > li[hidden], .pb-jus > li[hidden] { display: none !important; }
+
+  .pb-kartu { background: #fff; border: 1px solid #E5E5EA; border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+  .pb-kartu[hidden] { display: none; }
+  .pb-kartu .pf-section-title { margin: 0 0 10px; }
+  .pd-status { font-size: 15px; font-weight: 600; color: #1D1D1F; margin: 0 0 4px; }
+  .pd-sub { font-size: 13px; color: #86868B; margin: 0 0 12px; }
+  .pd-langkah { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 4px; }
+  .pd-langkah span { height: 4px; border-radius: 2px; background: #E5E5EA; }
+  .pd-langkah span.on { background: #1D1D1F; }
+  .pd-item { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-top: 1px solid #F0F0F2; }
+  .pd-item:first-child { border-top: 0; padding-top: 0; }
+  .pd-item b { font-size: 15px; color: #1D1D1F; font-weight: 600; }
+  .pd-item small { font-size: 12px; color: #86868B; }
+  .pd-aksi { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pd-aksi button { border: 0; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 500; background: #F5F5F7; color: #1D1D1F; cursor: pointer; }
+  .pd-aksi button.utama { background: #1D1D1F; color: #fff; }
 </style>
 </head>
 <body>
@@ -336,6 +352,16 @@
     </div>
 
     <div class="pb-kanan">
+      <section class="pb-kartu" id="daftarSayaBox" hidden>
+        <p class="pf-section-title" style="margin-top:0">Pendaftaran Anda</p>
+        <div id="daftarSaya"></div>
+      </section>
+
+      <section class="pb-kartu" id="adminBox" hidden>
+        <p class="pf-section-title" style="margin-top:0">Pendaftar baru</p>
+        <div id="adminList"></div>
+      </section>
+
       <p class="pf-section-title">Papan skor <button type="button" class="pb-tanya" data-bantuan="bt-papan" aria-label="Penjelasan">?</button></p>
       <div class="pf-group">
         <ol class="mk-list" id="mkPapan"></ol>

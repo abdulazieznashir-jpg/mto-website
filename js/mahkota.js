@@ -71,6 +71,12 @@
     sb.rpc('progres_juz_saya').then(function (r) {
       renderJus(r.error ? null : r.data);
     });
+    sb.rpc('pendaftaran_saya').then(function (r) {
+      if (!r.error) tampilDaftarSaya(r.data || []);
+    });
+    sb.rpc('pendaftaran_admin').then(function (r) {
+      if (!r.error) tampilAdmin(r.data || []);
+    });
     sb.rpc('profil_peserta_saya').then(function (r) {
       if (!r.error && r.data) tampilPaket(r.data);
     });
@@ -112,6 +118,84 @@
              '<span class="mk-sc">+' + h.jumlah + '</span></li>';
     }).join('');
     $('mkRiwayat').innerHTML = riwayat || '<li class="pf-empty">Belum ada riwayat Mahkota.</li>';
+  }
+
+  /* ---------- Pendaftaran: progres peserta dan daftar pendaftar admin ---------- */
+  var LABEL_STATUS = {
+    menunggu_bayar: 'Menunggu pembayaran',
+    menunggu_verifikasi: 'Bukti diterima, menunggu verifikasi',
+    diterima: 'Pembayaran diterima',
+    kedaluwarsa: 'Waktu pembayaran habis'
+  };
+  var TAHAP = ['menunggu_bayar', 'menunggu_verifikasi', 'diterima'];
+  function tglJam(iso) {
+    return new Date(iso).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+  }
+  function tampilDaftarSaya(list) {
+    var box = $('daftarSayaBox');
+    if (!box) return;
+    if (!list.length) { box.hidden = true; return; }
+    var d = list[0];
+    var idx = TAHAP.indexOf(d.status);
+    var langkah = '<div class="pd-langkah">' + [0, 1, 2, 3].map(function (i) {
+      return '<span class="' + (d.status === 'diterima' || (idx >= 0 && i <= idx) ? 'on' : '') + '"></span>';
+    }).join('') + '</div>';
+    var sub = d.status === 'menunggu_bayar'
+      ? 'Selesaikan pembayaran sebelum ' + tglJam(d.batas_bayar) + '.'
+      : (d.status === 'kedaluwarsa' ? 'Hubungi admin untuk dibukakan kembali.' : 'Progres pendaftaran Anda.');
+    $('daftarSaya').innerHTML = '<p class="pd-status">' + esc(LABEL_STATUS[d.status] || d.status) + '</p>' +
+      '<p class="pd-sub">' + esc(sub) + '</p>' + langkah;
+    box.hidden = false;
+  }
+
+  var daftarAdmin = [];
+  function teksWa(p) {
+    var b = ['Nama: ' + p.nama];
+    if (p.jenis_kelamin) b.push('Jenis kelamin: ' + p.jenis_kelamin);
+    if (p.usia) b.push('Usia: ' + p.usia);
+    if (p.kota) b.push('Kota/Negara: ' + p.kota);
+    b.push('Nomor WhatsApp: +' + p.wa);
+    b.push('Email: ' + p.email);
+    b.push('Status: ' + (LABEL_STATUS[p.status] || p.status));
+    var awal = b.join('\n');
+    return p.ringkasan ? awal + '\n\n' + p.ringkasan : awal;
+  }
+  function tampilAdmin(list) {
+    var box = $('adminBox');
+    if (!box) return;
+    daftarAdmin = list;
+    box.hidden = false;
+    if (!list.length) { $('adminList').innerHTML = '<p class="pd-sub">Belum ada pendaftar.</p>'; return; }
+    $('adminList').innerHTML = list.map(function (p, i) {
+      var aksi = '<button type="button" data-salin="' + i + '">Salin untuk WhatsApp</button>' +
+        (p.status === 'menunggu_verifikasi' ? '<button type="button" class="utama" data-terima="' + p.id + '">Tandai diterima</button>' : '');
+      return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
+        '<small>' + esc(p.kelas || '-') + ' · ' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
+        '<small>Batas bayar: ' + esc(tglJam(p.batas_bayar)) + '</small>' +
+        '<div class="pd-aksi">' + aksi + '</div></div>';
+    }).join('');
+  }
+  function bindAdmin() {
+    var box = $('adminList');
+    if (!box) return;
+    box.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t.dataset.salin !== undefined) {
+        var p = daftarAdmin[Number(t.dataset.salin)];
+        if (!navigator.clipboard || !p) return;
+        navigator.clipboard.writeText(teksWa(p)).then(function () {
+          t.textContent = 'Tersalin';
+          setTimeout(function () { t.textContent = 'Salin untuk WhatsApp'; }, 1500);
+        });
+      }
+      if (t.dataset.terima !== undefined && sb) {
+        t.disabled = true;
+        sb.rpc('ubah_status_pendaftaran', { p_id: Number(t.dataset.terima), p_status: 'diterima' }).then(function (r) {
+          if (r.error) { t.disabled = false; note('Status belum berubah. Coba lagi.', true); return; }
+          muat();
+        });
+      }
+    });
   }
 
   /* ---------- Paket, pengampu, dan tanggal bergabung ---------- */
@@ -264,6 +348,7 @@
     sb = client;
     user = u;
     $('btnKlaim').addEventListener('click', klaim);
+    bindAdmin();
     $('btnFoto').addEventListener('click', bukaPilihan);
     $('btnEditUsername').addEventListener('click', bukaUsername);
     $('btnBatalUsername').addEventListener('click', function () { $('formUsername').classList.add('hidden'); });
