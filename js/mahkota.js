@@ -80,6 +80,14 @@
       grupBesar = (!r.error && r.data && r.data.link) ? r.data : null;
       renderMulai();
     });
+    sb.from('rekening_garansi').select('bank,nomor,nama_pemilik').maybeSingle().then(function (r) {
+      rekeningGaransi = (!r.error && r.data) ? r.data : null;
+      renderGaransi();
+    });
+    sb.from('klaim_garansi').select('status,dibuat_at').order('dibuat_at', { ascending: false }).limit(1).then(function (r) {
+      klaimGaransi = (!r.error && r.data && r.data[0]) ? r.data[0] : null;
+      renderGaransi();
+    });
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
     });
@@ -348,6 +356,62 @@
       : (adaBesar ? 'Anda sudah bergabung di Grup Besar. ' : '') +
         'Grup Halaqah akan diberikan setelah ustadz ditetapkan. Di Grup Halaqah, Anda akan melakukan briefing jadwal belajar bersama ustadz.';
   }
+  /* ---------- Garansi uang kembali (7 hari pertama sejak pembelajaran dimulai) ---------- */
+  var rekeningGaransi = null, klaimGaransi = null, garansiTimer = null;
+  var HARI_GARANSI = 7;
+  function fmtSisa(ms) {
+    var m = Math.max(0, Math.floor(ms / 60000));
+    var hari = Math.floor(m / 1440), jam = Math.floor((m % 1440) / 60);
+    return hari + ' hari ' + jam + ' jam';
+  }
+  var LANGKAH_KLAIM = [
+    { kode: 'diajukan', judul: 'Ajukan Klaim' },
+    { kode: 'dikonfirmasi', judul: 'Konfirmasi' },
+    { kode: 'diproses', judul: 'Diproses' },
+    { kode: 'selesai', judul: 'Selesai' }
+  ];
+  function renderGaransi() {
+    var kartu = $('pkGaransi');
+    if (!kartu) return;
+    if (garansiTimer) { clearInterval(garansiTimer); garansiTimer = null; }
+    if (!sudahBayar) { kartu.hidden = true; return; }
+    kartu.hidden = false;
+    var badge = $('garansiBadge'), kiri = $('garansiKiri'), rek = $('garansiRekening'), kl = $('garansiKlaim');
+    var ada = !!tglMulaiISO;
+    var akhir = ada ? new Date(tglMulaiISO + 'T00:00:00+07:00').getTime() + HARI_GARANSI * 86400000 : 0;
+    var belum = !ada || tglMulaiISO > hariIniJakarta();
+    var aktif = !belum && Date.now() < akhir;
+    var label = belum ? 'Menunggu Dimulai' : (aktif ? 'Masa Garansi Aktif' : 'Masa Garansi Berakhir');
+    badge.textContent = label;
+    badge.className = 'gr-badge ' + (belum ? 'gr-tunggu' : (aktif ? 'gr-aktif' : 'gr-akhir'));
+    if (belum) {
+      kiri.innerHTML = '<span class="pk-label">Berlaku</span><b class="pk-nilai">' + (ada ? '7 hari setelah ' + esc(tglMulaiGelombang) : 'Setelah jadwal mulai ditetapkan') + '</b>';
+    } else if (aktif) {
+      kiri.innerHTML = '<span class="pk-label">Sisa Waktu Klaim</span><b class="pk-nilai" id="garansiSisa">' + fmtSisa(akhir - Date.now()) + '</b>';
+      garansiTimer = setInterval(function () {
+        var el = $('garansiSisa');
+        if (!el) return;
+        if (Date.now() >= akhir) { renderGaransi(); return; }
+        el.textContent = fmtSisa(akhir - Date.now());
+      }, 60000);
+    } else {
+      kiri.innerHTML = '<b class="pk-nilai">Garansi Tidak Dapat Diklaim</b><span class="pk-label">Batas klaim 7 hari telah lewat sejak pembelajaran dimulai.</span>';
+    }
+    rek.innerHTML = rekeningGaransi
+      ? '<span class="pk-label">Rekening Pengembalian Dana</span><b class="pk-nilai gr-rek">' + esc(rekeningGaransi.bank) + ' • ' + esc(rekeningGaransi.nomor) + '</b><span class="pk-label">a.n. ' + esc(rekeningGaransi.nama_pemilik) + '</span>' +
+        '<button type="button" class="gr-btn-kecil" disabled>Ubah</button>'
+      : '<span class="pk-label">Rekening Pengembalian Dana</span><b class="pk-nilai">Belum diisi</b>' +
+        '<button type="button" class="gr-btn-kecil" disabled>Isi Rekening</button>';
+    if (klaimGaransi) {
+      var idx = LANGKAH_KLAIM.findIndex(function (l) { return l.kode === klaimGaransi.status; });
+      kl.innerHTML = '<div class="gr-langkah">' + LANGKAH_KLAIM.map(function (l, n) {
+        return '<div class="' + (n <= idx ? 'on' : '') + '"><span></span>' + l.judul + '</div>';
+      }).join('') + '</div>';
+    } else {
+      kl.innerHTML = '<button type="button" class="gr-btn-klaim" disabled>Klaim Garansi</button>';
+    }
+  }
+
   function renderMulai() {
     var blok = $('pkBlok'), status = $('pkStatus'), meta = $('pkMeta'), kaki = $('pkKaki'), daftar = $('pbDaftar');
     if (!blok) return;
@@ -393,6 +457,7 @@
     kaki.innerHTML = '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span>' +
       '<button type="button" class="pk-ganti" disabled>Ganti Pengajar</button>';
     renderGrup(kondisi === 'belum');
+    renderGaransi();
   }
 
   function tampilPaket(d) {

@@ -468,6 +468,32 @@
   .pk-tahap-judul { font: 600 13px Inter, system-ui, sans-serif; margin-top: 8px; }
   .pk-tahap-sub { font-size: 12px; color: #6E6E73; margin-top: 4px; }
   .pk-tahap-note { background: #FBF7EF; border-radius: 12px; padding: 12px; font-size: 13px; color: #48484A; margin: 14px 0 0; line-height: 1.5; }
+
+  /* Garansi uang kembali */
+  .sy-garansi[hidden] { display: none; }
+  .sy-garansi { padding: 16px; }
+  .gr-atas { display: flex; gap: 12px; align-items: center; }
+  .gr-ikon { width: 48px; height: 48px; border-radius: 999px; background: #FBF0D6; color: #B8862B; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .gr-ikon svg { width: 24px; height: 24px; }
+  .gr-judul { font-size: 18px; display: block; }
+  .gr-sub { font-size: 13px; color: #6E6E73; margin: 3px 0 0; line-height: 1.4; }
+  .gr-badge { display: inline-block; margin-top: 12px; font: 600 13px Inter, system-ui, sans-serif; padding: 4px 10px; border-radius: 999px; }
+  .gr-tunggu { background: #FBF0D6; color: #8A6A1F; }
+  .gr-aktif { background: #E7F6EA; color: #1E7B34; }
+  .gr-akhir { background: #EEEEF0; color: #6E6E73; }
+  .gr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .gr-kotak { border: 1px solid #EFE7D6; border-radius: 14px; padding: 12px; min-width: 0; display: flex; flex-direction: column; gap: 4px; background: #FFFCF6; }
+  .gr-rek { font-size: 15px !important; word-break: break-word; }
+  .gr-btn-kecil { align-self: flex-start; margin-top: 4px; border: 1px solid #D8D8DC; background: #fff; border-radius: 999px; padding: 6px 12px; font: 600 13px Inter, system-ui, sans-serif; color: #1D1D1F; }
+  .gr-btn-kecil:disabled { opacity: 0.5; }
+  .gr-btn-klaim { width: 100%; margin-top: 12px; border: 0; border-radius: 14px; padding: 13px; font: 600 15px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); opacity: 0.5; }
+  .gr-langkah { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; font-size: 12px; color: #6E6E73; text-align: center; }
+  .gr-langkah div span { display: block; width: 14px; height: 14px; border-radius: 999px; border: 2px solid #D8D8DC; margin: 0 auto 6px; }
+  .gr-langkah div.on { color: #1D1D1F; font-weight: 600; }
+  .gr-langkah div.on span { background: #C9982F; border-color: #C9982F; }
+  .gr-catatan { margin-top: 14px; background: #FBF7EF; border-radius: 12px; padding: 12px 14px; font-size: 13px; color: #48484A; }
+  .gr-catatan b { display: block; margin-bottom: 6px; }
+  .gr-catatan ul { margin: 0; padding-left: 18px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -604,6 +630,26 @@
   <section class="sy-card sy-tahap" id="pkTahap" hidden>
     <div class="pk-tahap-langkah" id="pkTahapLangkah"></div>
     <p class="pk-tahap-note" id="pkTahapNote"></p>
+  </section>
+
+  <section class="sy-card sy-garansi" id="pkGaransi" hidden>
+    <div class="gr-atas">
+      <span class="gr-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 7.8-7 9.5-4-1.7-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+      <div><b class="gr-judul">Garansi Uang Kembali</b><p class="gr-sub">Berlaku 7 hari pertama setelah pembelajaran dimulai.</p></div>
+    </div>
+    <span class="gr-badge" id="garansiBadge"></span>
+    <div class="gr-grid">
+      <div class="gr-kotak" id="garansiKiri"></div>
+      <div class="gr-kotak" id="garansiRekening"></div>
+    </div>
+    <div id="garansiKlaim"></div>
+    <div class="gr-catatan">
+      <b>Catatan Penting</b>
+      <ul>
+        <li>Garansi uang kembali dapat diklaim maksimal 7 hari setelah pembelajaran dimulai.</li>
+        <li>Setelah 7 hari, Anda tetap dapat mengajukan Ganti Pengajar jika diperlukan.</li>
+      </ul>
+    </div>
   </section>
 
   <button type="button" class="sy-card sy-baris sy-menu" data-go="pengaturan">
