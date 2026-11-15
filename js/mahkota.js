@@ -76,8 +76,12 @@
       return '<div class="mr-item">' +
         '<div class="mr-atas"><b>' + esc(m.nama || m.email) + '</b><span class="mr-paket">' + esc(m.paket ? 'Paket ' + m.paket.charAt(0).toUpperCase() + m.paket.slice(1) : '') + '</span></div>' +
         '<div class="mr-bar"><span style="width:' + pct + '%"></span></div>' +
+        '<p class="mr-jam">Jam ' + esc(m.jam || '-') + ' WIB</p>' +
         '<div class="mr-bawah"><small>' + n + ' / 15 pertemuan</small>' +
         '<button type="button" class="mr-btn" data-catat="' + esc(m.email) + '" data-nama="' + esc(m.nama || m.email) + '"' + (penuh ? ' disabled' : '') + '>' + (penuh ? 'Lengkap' : 'Catat Pertemuan') + '</button></div>' +
+        '<div class="mr-bawah">' + (m.keluar_status === 'menunggu'
+          ? '<span class="mr-tunggu">Menunggu persetujuan admin</span>'
+          : '<button type="button" class="mr-btn mr-keluar" data-keluar="' + esc(m.email) + '" data-nama="' + esc(m.nama || m.email) + '">Keluarkan dari murid</button>') + '</div>' +
         '</div>';
     }).join('');
   }
@@ -106,6 +110,16 @@
     if (pengajarEvents) return;
     pengajarEvents = true;
     $('muridList').addEventListener('click', function (e) {
+      var k = e.target.closest && e.target.closest('button[data-keluar]');
+      if (k) {
+        if (!window.confirm('Ajukan agar ' + k.getAttribute('data-nama') + ' dikeluarkan dari daftar murid Anda? Admin harus menyetujui terlebih dahulu.')) return;
+        k.disabled = true;
+        sb.rpc('minta_keluar_murid', { p_peserta: k.getAttribute('data-keluar') }).then(function (r) {
+          if (r.error) window.alert(r.error.message || 'Permintaan belum bisa dikirim.');
+          muatMurid();
+        });
+        return;
+      }
       var b = e.target.closest && e.target.closest('button[data-catat]');
       if (!b || b.disabled) return;
       var nama = b.getAttribute('data-nama');
@@ -123,20 +137,58 @@
   function tglJamWib(iso) {
     return new Date(iso).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) + ' WIB';
   }
+  var PERIODE = [
+    { nama: 'Pagi', dari: '04:00', sampai: '10:50' },
+    { nama: 'Siang', dari: '11:00', sampai: '14:50' },
+    { nama: 'Sore', dari: '15:00', sampai: '17:50' },
+    { nama: 'Malam', dari: '18:00', sampai: '23:50' }
+  ];
+  var PAKET_NAMA = { weekday: 'Senin–Jumat', weekend: 'Sabtu–Ahad' };
+  function daftarJam() {
+    var out = [];
+    for (var m = 4 * 60; m <= 23 * 60 + 50; m += 10) {
+      out.push(('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2));
+    }
+    return out;
+  }
+  function periodeIndeks(jam) {
+    var h = Number(String(jam).slice(0, 2));
+    return h < 11 ? 0 : h < 15 ? 1 : h < 18 ? 2 : 3;
+  }
+  function isiJamSelect() {
+    var sel = $('jJam');
+    if (!sel) return;
+    var semua = daftarJam();
+    sel.innerHTML = PERIODE.map(function (p, i) {
+      return '<optgroup label="' + p.nama + ' (' + p.dari + '–' + p.sampai + ')">' +
+        semua.filter(function (s) { return periodeIndeks(s) === i; }).map(function (s) {
+          return '<option value="' + s + '">' + s + ' WIB</option>';
+        }).join('') + '</optgroup>';
+    }).join('');
+    sel.value = '19:00';
+  }
+  // Ringkasan: setiap paket dibagi menurut waktu (pagi, siang, sore, malam). Jam yang sudah terisi murid ditandai hijau.
   function renderJadwal(d) {
-    var chips = $('jadwalChips');
-    if (!chips) return;
+    var box = $('jadwalRingkas');
+    if (!box) return;
     var jadwal = (d && d.jadwal) || [];
-    chips.innerHTML = jadwal.length
-      ? jadwal.map(function (j) {
-          return '<span class="pj-chip">' + esc(HARI_NAMA[j.hari]) + ' ' + esc(j.jam) +
-            ' <button type="button" data-hapus="' + j.id + '" aria-label="Hapus">×</button></span>';
-        }).join('')
-      : '<p class="mr-kosong">Belum ada jadwal kosong.</p>';
+    box.innerHTML = ['weekday', 'weekend'].map(function (paket) {
+      var baris = jadwal.filter(function (j) { return j.paket === paket; });
+      return '<div class="pj-paket"><b>' + PAKET_NAMA[paket] + '</b>' +
+        PERIODE.map(function (p, i) {
+          var list = baris.filter(function (j) { return periodeIndeks(j.jam) === i; });
+          return '<div class="pj-periode"><small>' + p.nama + ' · ' + p.dari + '–' + p.sampai + '</small>' +
+            '<div class="pj-chips">' + (list.length ? list.map(function (j) {
+              return '<span class="pj-chip' + (j.terisi ? ' terisi' : '') + '">' + esc(j.jam) +
+                (j.terisi ? ' · terisi' : ' <button type="button" data-hapus-paket="' + paket + '" data-jam="' + esc(j.jam) + '" aria-label="Hapus">×</button>') +
+                '</span>';
+            }).join('') : '<span class="pj-kosong">Belum ada</span>') + '</div></div>';
+        }).join('') + '</div>';
+    }).join('');
   }
   function muatJadwal() {
     sb.rpc('jadwal_saya').then(function (r) {
-      if (r.error) { $('jadwalChips').innerHTML = '<p class="mr-kosong">Jadwal belum bisa dimuat.</p>'; return; }
+      if (r.error) { $('jadwalRingkas').innerHTML = '<p class="mr-kosong">Jadwal belum bisa dimuat.</p>'; return; }
       renderJadwal(r.data || {});
     });
   }
@@ -144,23 +196,23 @@
   function pasangJadwalEvents() {
     if (jadwalEvents) return;
     jadwalEvents = true;
+    isiJamSelect();
     $('jTambah').addEventListener('click', function () {
-      var hari = [];
-      document.querySelectorAll('#jHariBox input[type=checkbox]:checked').forEach(function (c) { hari.push(Number(c.value)); });
-      var jam = $('jJam').value;
-      if (!hari.length) { window.alert('Pilih minimal satu hari (Senin sampai Jumat).'); return; }
-      if (!jam) { window.alert('Pilih jam terlebih dahulu.'); return; }
-      sb.rpc('tambah_jadwal_kosong', { p_hari: hari, p_jam: jam }).then(function (r) {
+      var paket = $('jPaket').value, jam = $('jJam').value;
+      sb.rpc('tambah_jadwal_kosong', { p_paket: paket, p_jam: jam }).then(function (r) {
         if (r.error) { window.alert(r.error.message || 'Jadwal belum bisa ditambahkan.'); return; }
-        document.querySelectorAll('#jHariBox input[type=checkbox]').forEach(function (c) { c.checked = false; });
         muatJadwal();
       });
     });
-    $('jadwalChips').addEventListener('click', function (e) {
-      var b = e.target.closest && e.target.closest('button[data-hapus]');
+    $('jadwalRingkas').addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-hapus-paket]');
       if (!b) return;
-      if (!window.confirm('Hapus jadwal kosong ini?')) return;
-      sb.rpc('hapus_jadwal_kosong', { p_id: Number(b.getAttribute('data-hapus')) }).then(muatJadwal);
+      var paket = b.getAttribute('data-hapus-paket'), jam = b.getAttribute('data-jam');
+      if (!window.confirm('Hapus jadwal ' + PAKET_NAMA[paket] + ' pukul ' + jam + ' WIB?')) return;
+      sb.rpc('hapus_paket_jadwal', { p_paket: paket, p_jam: jam }).then(function (r) {
+        if (r.error) window.alert(r.error.message || 'Jadwal belum bisa dihapus.');
+        muatJadwal();
+      });
     });
   }
 
@@ -172,7 +224,7 @@
     $('permintaanList').innerHTML = list.map(function (x) {
       return '<div class="pm-item"><b>' + esc(x.nama) + '</b>' +
         '<small>' + esc(x.kelas || '-') + ' · ' + esc(String(x.durasi || '-')) + ' bulan · +' + esc(x.wa || '') + '</small>' +
-        '<small>Senin–Jumat, pukul ' + esc(String(x.jam_diminta || '').slice(0, 5)) + ' WIB</small>' +
+        '<small>' + (x.hari_diminta === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat') + ', pukul ' + esc(String(x.jam_diminta || '').slice(0, 5)) + ' WIB</small>' +
         '<div class="pm-aksi"><button type="button" class="mr-btn" data-terima="' + x.id + '">Terima</button>' +
         '<button type="button" class="pm-tolak" data-tolak="' + x.id + '">Tolak</button></div></div>';
     }).join('');
@@ -239,6 +291,7 @@
       sb.rpc('gelombang_admin').then(function (r) {
         if (!r.error) tampilGelombang(r.data || []);
       });
+      muatKeluar();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -399,7 +452,6 @@
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
         '<div class="pd-detail">' + baris + '</div>' + ringkas +
         '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
-        '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
         (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' : '') +
         '</div>';
     }).join('');
@@ -410,11 +462,7 @@
         if (!slot) return;
         if (r.error) { slot.innerHTML = '<small>Ustadz belum bisa dicari.</small>'; return; }
         var daftar = r.data || [];
-        if (!p.hari_diminta || p.hari_diminta !== 'weekday') {
-          slot.innerHTML = '<small>Murid memilih Sabtu–Ahad. Belum ada jadwal ustadz untuk hari ini.</small>';
-          return;
-        }
-        if (!daftar.length) { slot.innerHTML = '<small>Belum ada ustadz yang kosong pada jam ' + esc(String(p.jam_diminta || '').slice(0, 5)) + ' WIB.</small>'; return; }
+        if (!daftar.length) { slot.innerHTML = '<small>Belum ada ustadz yang kosong untuk ' + (p.hari_diminta === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat') + ' pukul ' + esc(String(p.jam_diminta || '').slice(0, 5)) + ' WIB.</small>'; return; }
         slot.innerHTML = '<small>Ustadz yang cocok:</small>' + daftar.map(function (u) {
           return '<div class="cocok-baris"><b>' + esc(u.nama) + '</b>' +
             '<button type="button" data-ajukan="' + p.id + '" data-ustadz="' + esc(u.email) + '">Ajukan ke ustadz</button></div>';
@@ -433,6 +481,38 @@
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
     if (daftarAdmin.length) tampilAdmin(daftarAdmin);
+  }
+  function tampilKeluar(list) {
+    var box = $('keluarBox'), el = $('keluarList');
+    if (!box || !el) return;
+    box.hidden = !list.length;
+    el.innerHTML = list.map(function (k) {
+      return '<div class="pm-item"><b>' + esc(k.murid || 'Murid') + '</b>' +
+        '<small>Diminta keluar oleh ' + esc(k.pengajar || 'pengajar') + '</small>' +
+        '<div class="pm-aksi"><button type="button" class="mr-btn" data-setuju-keluar="' + k.id + '">Setujui keluarkan</button>' +
+        '<button type="button" class="pm-tolak" data-tolak-keluar="' + k.id + '">Tolak</button></div></div>';
+    }).join('');
+  }
+  function bindKeluar() {
+    var el = $('keluarList');
+    if (!el) return;
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-setuju-keluar], button[data-tolak-keluar]');
+      if (!b || !sb) return;
+      var setuju = b.hasAttribute('data-setuju-keluar');
+      if (!window.confirm(setuju ? 'Setujui murid dikeluarkan dari ustadz ini?' : 'Tolak permintaan ini?')) return;
+      var id = Number(b.getAttribute(setuju ? 'data-setuju-keluar' : 'data-tolak-keluar'));
+      sb.rpc('respon_keluar', { p_id: id, p_setuju: setuju }).then(function (r) {
+        if (r.error) { note(r.error.message || 'Belum bisa diproses.', true); return; }
+        note(setuju ? 'Murid dikeluarkan dari daftar ustadz.' : 'Permintaan ditolak.');
+        muatKeluar();
+      });
+    });
+  }
+  function muatKeluar() {
+    sb.rpc('daftar_keluar_admin').then(function (r) {
+      if (!r.error) tampilKeluar(r.data || []);
+    });
   }
   function ubahKePng(blob) {
     if (blob.type === 'image/png') return Promise.resolve(blob);
@@ -877,6 +957,7 @@
     emailSaya = ((u && u.email) || '').toLowerCase();
     $('btnKlaim').addEventListener('click', klaim);
     bindAdmin();
+    bindKeluar();
     $('btnFoto').addEventListener('click', bukaPilihan);
     $('btnEditUsername').addEventListener('click', bukaUsername);
     $('btnBatalUsername').addEventListener('click', function () { $('formUsername').classList.add('hidden'); });

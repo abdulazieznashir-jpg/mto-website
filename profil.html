@@ -528,6 +528,17 @@
   .pj-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .pj-form select, .pj-form input { flex: 1 1 130px; min-width: 0; border: 1px solid #D8D8DC; border-radius: 12px; padding: 9px 10px; font: 500 14px Inter, system-ui, sans-serif; background: #fff; color: #1D1D1F; }
   .pj-form .mr-btn { flex: 0 0 auto; }
+  .pj-paket { margin-top: 14px; padding: 12px; border: 1px solid #EFE7D6; border-radius: 14px; background: #FFFCF6; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .pj-paket > b { font-size: 15px; }
+  .pj-periode { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .pj-periode > small { font-size: 12px; color: #6E6E73; }
+  .pj-periode .pj-chips { margin-top: 0; }
+  .pj-chip.terisi { background: #E7F6EA; color: #1E7B34; }
+  .pj-chip.terisi::after { content: none; }
+  .pj-kosong { font-size: 13px; color: #A1A1A6; }
+  .mr-keluar { background: #fff; color: #8A6A1F; border: 1px solid #C9982F; }
+  .mr-tunggu { font-size: 13px; color: #8A6A1F; font-weight: 600; }
+  .mr-jam { font-size: 13px; color: #6E6E73; margin: 4px 0 0; }
   .pj-hari-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
   .pj-hari { display: flex; align-items: center; gap: 8px; border: 1px solid #D8D8DC; border-radius: 12px; padding: 9px 10px; font: 500 14px Inter, system-ui, sans-serif; background: #fff; }
   .pj-hari input { width: 16px; height: 16px; accent-color: #C9982F; }
@@ -674,13 +685,16 @@
 
     <div class="pj-blok">
       <b class="pj-judul">Jadwal Kosong</b>
-      <p class="mr-sub">Pilih hari (Senin sampai Jumat), pilih satu jam, lalu tekan Tambahkan. Jam yang bertabrakan dengan jadwal yang sudah ada tidak bisa disimpan.</p>
-      <div class="pj-chips" id="jadwalChips"></div>
-      <div class="pj-hari-grid" id="jHariBox"><label class="pj-hari"><input type="checkbox" value="1"><span>Senin</span></label><label class="pj-hari"><input type="checkbox" value="2"><span>Selasa</span></label><label class="pj-hari"><input type="checkbox" value="3"><span>Rabu</span></label><label class="pj-hari"><input type="checkbox" value="4"><span>Kamis</span></label><label class="pj-hari"><input type="checkbox" value="5"><span>Jumat</span></label></div>
+      <p class="mr-sub">Pilih salah satu paket: Senin–Jumat atau Sabtu–Ahad. Paket selalu penuh (Senin sampai Jumat, atau Sabtu dan Ahad sekaligus). Pilih jam per 10 menit, lalu tekan Tambahkan. Jam yang bertabrakan dengan jadwal yang sudah ada tidak bisa disimpan.</p>
       <div class="pj-form">
-        <input type="time" id="jJam" value="19:00" aria-label="Jam">
+        <select id="jPaket" aria-label="Paket hari">
+          <option value="weekday">Senin–Jumat</option>
+          <option value="weekend">Sabtu–Ahad</option>
+        </select>
+        <select id="jJam" aria-label="Jam"></select>
         <button type="button" class="mr-btn" id="jTambah">Tambahkan</button>
       </div>
+      <div id="jadwalRingkas"></div>
     </div>
   </section>
 
@@ -744,6 +758,10 @@
       </section>
   <section class="pb-kartu" id="adminBox" hidden>
         <p class="pf-section-title" style="margin-top:0">Pendaftar baru</p>
+        <div class="pd-gelombang" id="keluarBox" hidden>
+          <p class="pd-sub">Permintaan keluarkan murid dari ustadz</p>
+          <div id="keluarList"></div>
+        </div>
         <div class="pd-gelombang" id="gelombangBox" hidden>
           <p class="pd-sub">Tanggal mulai gelombang</p>
           <div id="gelombangForm"></div>
