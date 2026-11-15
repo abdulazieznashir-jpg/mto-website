@@ -27,6 +27,7 @@ as $$
 declare
   v_email text := lower(auth.jwt() ->> 'email');
   v_kode text;
+  v_base text;
   v_ada public.afiliasi%rowtype;
 begin
   if v_email is null then
@@ -48,8 +49,11 @@ begin
     raise exception 'data rekening tidak valid';
   end if;
 
+  -- Kode: 4 huruf pertama dari nama (huruf saja) + 3 angka acak, misalnya ABDU482.
+  v_base := upper(left(rpad(regexp_replace(trim(p_nama), '[^A-Za-z]', '', 'g'), 4, 'X'), 4));
+
   loop
-    v_kode := upper(substr(md5(random()::text || clock_timestamp()::text), 1, 6));
+    v_kode := v_base || lpad(floor(random() * 1000)::int::text, 3, '0');
     exit when not exists (select 1 from public.afiliasi where kode = v_kode);
   end loop;
 
