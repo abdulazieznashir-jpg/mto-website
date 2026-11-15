@@ -470,7 +470,7 @@
       <li><a href="kontak.html">Kontak</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="login.html" class="nav-masuk">Masuk</a>
+      <a href="login.html" class="nav-masuk" id="navMasuk">Masuk</a>
       <a href="#daftar" class="btn btn-primary" data-daftar>Daftar Sekarang</a>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -491,7 +491,7 @@
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="kontak.html">Kontak</a></li>
-    <li><a href="login.html">Masuk</a></li>
+    <li><a href="login.html" id="navMasukMobile">Masuk</a></li>
   </ul>
   <div class="mobile-menu-cta">
     <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
@@ -1827,6 +1827,57 @@
   back.addEventListener('click', function () { if (hist.length > 1) { hist.pop(); draw(hist[hist.length - 1]); } });
   modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+})();
+</script>
+<script>
+(function () {
+  var SUPABASE_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
+  var SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+  var s = document.createElement('script');
+  s.src = SUPABASE_JS;
+  s.onload = function () {
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sb.auth.getSession().then(function (r) {
+      var u = r.data && r.data.session && r.data.session.user;
+      if (!u) return;
+      var meta = u.user_metadata || {};
+      var nama = (meta.nama || '').trim();
+      var kata = nama.split(/\s+/).filter(Boolean);
+      var depan = kata.length ? kata[0] : 'Profil saya';
+      var inis = kata.length
+        ? (kata[0].charAt(0) + (kata.length > 1 ? kata[kata.length - 1].charAt(0) : '')).toUpperCase()
+        : (u.email || '?').charAt(0).toUpperCase();
+
+      var link = document.getElementById('navMasuk');
+      if (link) {
+        link.href = 'profil.html';
+        link.className = 'nav-user';
+        link.textContent = '';
+        var av = document.createElement('span');
+        av.className = 'nav-avatar';
+        av.textContent = inis;
+        var nm = document.createElement('span');
+        nm.className = 'nav-nama';
+        nm.textContent = depan;
+        link.appendChild(av);
+        link.appendChild(nm);
+        if (meta.avatar_path) {
+          sb.storage.from('avatars').createSignedUrl(meta.avatar_path, 3600).then(function (x) {
+            if (x.error || !x.data) return;
+            var img = document.createElement('img');
+            img.alt = '';
+            img.src = x.data.signedUrl;
+            av.textContent = '';
+            av.appendChild(img);
+          });
+        }
+      }
+      var m = document.getElementById('navMasukMobile');
+      if (m) { m.href = 'profil.html'; m.textContent = 'Profil saya'; }
+    });
+  };
+  document.head.appendChild(s);
 })();
 </script>
 </body>
