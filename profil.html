@@ -289,6 +289,12 @@
   .pd-jadwal label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #86868B; }
   .pd-jadwal input { font: 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 8px 10px; border: 1px solid #D2D2D7; border-radius: 10px; }
   .pd-jadwal button, .pd-aksi button { font-family: inherit; }
+  .pd-jadwal select { font: 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 8px 10px; border: 1px solid #D2D2D7; border-radius: 10px; background: #fff; max-width: 100%; }
+  .pd-gelombang { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #F0F0F2; }
+  .pd-gelombang-baris { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin-top: 8px; }
+  .pd-gelombang-baris label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #86868B; min-width: 0; flex: 1 1 160px; }
+  .pd-gelombang-baris input { font: 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 8px 10px; border: 1px solid #D2D2D7; border-radius: 10px; max-width: 100%; }
+  .pd-gelombang-baris button { font-family: inherit; }
 
   .pf-brand { display: inline-flex; align-items: center; gap: 8px; }
   .pf-logo { width: 28px; height: 28px; flex-shrink: 0; }
@@ -738,6 +744,10 @@
       </section>
   <section class="pb-kartu" id="adminBox" hidden>
         <p class="pf-section-title" style="margin-top:0">Pendaftar baru</p>
+        <div class="pd-gelombang" id="gelombangBox" hidden>
+          <p class="pd-sub">Tanggal mulai gelombang</p>
+          <div id="gelombangForm"></div>
+        </div>
         <div id="adminList"></div>
       </section>
   </div>

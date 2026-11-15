@@ -235,6 +235,11 @@
       klaimGaransi = (!r.error && r.data && r.data[0]) ? r.data[0] : null;
       renderGaransi();
     });
+    if (emailSaya === OWNER) {
+      sb.rpc('gelombang_admin').then(function (r) {
+        if (!r.error) tampilGelombang(r.data || []);
+      });
+    }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
     });
@@ -329,6 +334,13 @@
   }
 
   var daftarAdmin = [];
+  var gelombangList = [];
+  function hariLabel(h) { return h === 'weekday' ? 'Senin–Jumat' : h === 'weekend' ? 'Sabtu–Ahad' : '-'; }
+  function jamLabel(j) { return j ? String(j).slice(0, 5) + ' WIB' : '-'; }
+  function namaGelombang(k) {
+    var g = gelombangList.filter(function (x) { return x.kode === k; })[0];
+    return g ? g.nama : '-';
+  }
   function tglLahir(iso) {
     return new Date(iso + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   }
@@ -341,6 +353,8 @@
     b.push('Nomor WhatsApp: +' + p.wa);
     b.push('Email: ' + p.email);
     b.push('Status: ' + (LABEL_STATUS[p.status] || p.status));
+    if (p.hari_diminta) b.push('Hari diminta: ' + hariLabel(p.hari_diminta));
+    if (p.jam_diminta) b.push('Jam diminta: ' + jamLabel(p.jam_diminta));
     var awal = b.join('\n');
     return p.ringkasan ? awal + '\n\n' + p.ringkasan : awal;
   }
@@ -357,23 +371,34 @@
         ['Tanggal lahir', p.tanggal_lahir ? tglLahir(p.tanggal_lahir) : '-'],
         ['Kota/Negara', p.kota || '-'], ['Kelas', p.kelas || '-'],
         ['Durasi', p.durasi ? p.durasi + ' bulan' : '-'],
+        ['Hari diminta', hariLabel(p.hari_diminta)], ['Jam diminta', jamLabel(p.jam_diminta)],
         ['Peserta', p.peserta || '-'], ['Total', rupiahAdm(p.total)],
         ['Batas bayar', tglJam(p.batas_bayar)],
-        ['Bukti transfer', p.bukti_at ? tglJam(p.bukti_at) : 'Belum ada']
+        ['Bukti transfer', p.bukti_at ? tglJam(p.bukti_at) : 'Belum ada'],
+        ['Gelombang', p.gelombang ? namaGelombang(p.gelombang) : 'Belum dipilih'],
+        ['Mulai halaqah', p.tanggal_halaqah ? tglLahir(p.tanggal_halaqah) : 'Belum diatur']
       ].map(function (r) {
         return '<div class="pd-baris"><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>';
       }).join('');
+      var ringkas = p.ringkasan ? '<div class="pd-ringkas" style="white-space:pre-wrap;margin:8px 0"><small>Ringkasan pendaftaran</small>' +
+        '<div>' + esc(p.ringkasan) + '</div></div>' : '';
       var owner = emailSaya === OWNER;
       var aksi = '<button type="button" data-salin="' + i + '">Salin untuk WhatsApp</button>' +
         (p.bukti_path ? '<button type="button" data-bukti="' + i + '">Lihat bukti</button>' : '') +
         (owner && p.status === 'menunggu_verifikasi' ? '<button type="button" class="utama" data-terima="' + p.id + '">Konfirmasi pembayaran</button>' : '');
+      var opsi = '<option value="">Pilih gelombang</option>' + gelombangList.map(function (g) {
+        var ada = !!g.tanggal_mulai;
+        return '<option value="' + esc(g.kode) + '"' + (p.gelombang === g.kode ? ' selected' : '') + (ada ? '' : ' disabled') + '>' +
+          esc(g.nama) + (ada ? ' · mulai ' + tglLahir(g.tanggal_mulai) : ' · tanggal belum diatur') + '</option>';
+      }).join('');
       var jadwal = owner ? '<div class="pd-jadwal">' +
-        '<label>Mulai halaqah<input type="date" data-tglhalaqah="' + p.id + '" value="' + esc(p.tanggal_halaqah || '') + '"></label>' +
+        '<label>Gelombang<select data-gelombang="' + p.id + '">' + opsi + '</select></label>' +
         '<label>Link grup<input type="url" data-linkgrup="' + p.id + '" placeholder="https://chat.whatsapp.com/..." value="' + esc(p.link_grup || '') + '"></label>' +
         '<button type="button" data-jadwal="' + p.id + '">Simpan jadwal</button></div>' : '';
       return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
-        '<div class="pd-detail">' + baris + '</div>' +
+        '<div class="pd-detail">' + baris + '</div>' + ringkas +
+        '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
         '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
         (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' : '') +
         '</div>';
@@ -396,6 +421,18 @@
         }).join('');
       });
     });
+  }
+  function tampilGelombang(list) {
+    gelombangList = list;
+    var box = $('gelombangBox'), form = $('gelombangForm');
+    if (!box || !form) return;
+    box.hidden = false;
+    form.innerHTML = list.map(function (g) {
+      return '<div class="pd-gelombang-baris"><label>' + esc(g.nama) +
+        '<input type="date" data-gtgl="' + esc(g.kode) + '" value="' + esc(g.tanggal_mulai || '') + '"></label>' +
+        '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
+    }).join('');
+    if (daftarAdmin.length) tampilAdmin(daftarAdmin);
   }
   function ubahKePng(blob) {
     if (blob.type === 'image/png') return Promise.resolve(blob);
@@ -482,11 +519,22 @@
       }
       if (t.dataset.jadwal !== undefined && sb) {
         var id = t.dataset.jadwal;
-        var tg = box.querySelector('[data-tglhalaqah="' + id + '"]').value || null;
+        var kode = box.querySelector('[data-gelombang="' + id + '"]').value;
         var lk = box.querySelector('[data-linkgrup="' + id + '"]').value || null;
-        sb.rpc('atur_halaqah', { p_id: Number(id), p_tanggal: tg, p_link: lk }).then(function (r) {
-          if (r.error) { note('Jadwal belum tersimpan. Coba lagi.', true); return; }
+        if (!kode) { note('Pilih gelombang dulu.', true); return; }
+        sb.rpc('atur_jadwal_pendaftaran', { p_id: Number(id), p_kode: kode, p_link: lk }).then(function (r) {
+          if (r.error) { note(r.error.message || 'Jadwal belum tersimpan. Coba lagi.', true); return; }
           note('Jadwal halaqah tersimpan.');
+          muat();
+        });
+      }
+      if (t.dataset.gsimpan !== undefined && sb) {
+        var kg = t.dataset.gsimpan;
+        var tglG = document.querySelector('[data-gtgl="' + kg + '"]').value;
+        if (!tglG) { note('Isi tanggal mulai dulu.', true); return; }
+        sb.rpc('atur_gelombang', { p_kode: kg, p_tanggal: tglG }).then(function (r) {
+          if (r.error) { note('Tanggal gelombang belum tersimpan.', true); return; }
+          note('Tanggal gelombang tersimpan.');
           muat();
         });
       }
