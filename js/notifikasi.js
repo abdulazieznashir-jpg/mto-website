@@ -91,22 +91,118 @@
     } catch (e) { return ''; }
   }
 
-  // Salinan daftar untuk tab Notifikasi di bagian bawah, dan lencana merahnya.
+  var terakhir = {};
+  var IKON = {
+    lonceng: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>',
+    mahkota: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>',
+    jadwal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+    materi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5 4.5 8 4.5 12 6.5c4-2 7-2 9.5-1v13c-2.5-1-5.5-1-9.5.9-4-1.9-7-1.9-9.5-.9z"/><path d="M12 6.5v13"/></svg>',
+    capaian: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="12" width="3.5" height="8" rx="1"/><rect x="10.25" y="7" width="3.5" height="13" rx="1"/><rect x="16.5" y="3" width="3.5" height="17" rx="1"/></svg>',
+    umum: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l8 4V6L7 10z"/><path d="M18 9.5a3.5 3.5 0 010 5"/></svg>'
+  };
+
+  function pilihIkon(t) {
+    t = (t || '').toLowerCase();
+    if (/bayar|pembayaran|paket/.test(t)) return IKON.mahkota;
+    if (/jadwal|sesi/.test(t)) return IKON.jadwal;
+    if (/capai|juz/.test(t)) return IKON.capaian;
+    if (/materi/.test(t)) return IKON.materi;
+    if (/pengumuman|libur|periode/.test(t)) return IKON.umum;
+    return IKON.lonceng;
+  }
+
+  function hariJakarta(d) {
+    return d.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+  }
+
+  function waktuRelatif(iso) {
+    var d = new Date(iso), s = (Date.now() - d.getTime()) / 1000;
+    if (isNaN(s)) return '';
+    if (s < 60) return 'Baru saja';
+    if (s < 3600) return Math.floor(s / 60) + ' menit lalu';
+    if (s < 86400) return Math.floor(s / 3600) + ' jam lalu';
+    if (hariJakarta(d) === hariJakarta(new Date(Date.now() - 86400000))) return 'Kemarin';
+    if (s < 7 * 86400) return Math.floor(s / 86400) + ' hari lalu';
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', timeZone: 'Asia/Jakarta' });
+  }
+
+  function buatItem(judul, isi, waktu, ikon, belum, tautan) {
+    var el = document.createElement(tautan ? 'a' : 'div');
+    if (tautan) el.href = tautan;
+    el.className = 'nt-item' + (belum ? ' belum' : '');
+    var ik = document.createElement('span');
+    ik.className = 'nt-ikon';
+    ik.innerHTML = ikon;
+    var isiBox = document.createElement('div');
+    isiBox.className = 'nt-isi';
+    var head = document.createElement('div');
+    head.className = 'nt-head';
+    var b = document.createElement('b');
+    b.textContent = judul;
+    var w = document.createElement('small');
+    w.textContent = waktu;
+    head.appendChild(b);
+    head.appendChild(w);
+    isiBox.appendChild(head);
+    if (isi) {
+      var p = document.createElement('p');
+      p.textContent = isi;
+      isiBox.appendChild(p);
+    }
+    el.appendChild(ik);
+    el.appendChild(isiBox);
+    if (belum) {
+      var dot = document.createElement('span');
+      dot.className = 'nt-dot';
+      el.appendChild(dot);
+    }
+    return el;
+  }
+
+  // Daftar di tab Notifikasi: dibagi Hari Ini dan Sebelumnya. Lencana bawah ikut diperbarui.
   function sinkronTab(belum) {
     var tabBadge = document.getElementById('tabNotifBadge');
     if (tabBadge) {
       tabBadge.textContent = belum > 9 ? '9+' : String(belum);
       tabBadge.hidden = belum === 0;
     }
-    var paneList = document.getElementById('notifPane');
-    var paneKosong = document.getElementById('notifPaneKosong');
-    if (!paneList) return;
-    paneList.textContent = '';
-    Array.prototype.forEach.call(list.children, function (c) { paneList.appendChild(c.cloneNode(true)); });
-    if (paneKosong) paneKosong.hidden = list.children.length > 0;
+    var wrap = document.getElementById('notifPane');
+    var kosong = document.getElementById('notifPaneKosong');
+    if (!wrap || !kosong) return;
+
+    var daftar = terakhir.daftar || [];
+    var verif = !!terakhir.perlu_verifikasi;
+    wrap.textContent = '';
+    if (!daftar.length && !verif) {
+      wrap.hidden = true;
+      kosong.hidden = false;
+      return;
+    }
+    wrap.hidden = false;
+    kosong.hidden = true;
+
+    var ini = hariJakarta(new Date());
+    var grupIni = [], grupLama = [];
+    if (verif) {
+      grupIni.push(buatItem('Harap verifikasi data Anda', 'Lengkapi usia dan jenis kelamin agar data peserta akurat.', '', IKON.lonceng, true, '#pengaturan'));
+    }
+    daftar.forEach(function (n) {
+      var el = buatItem(n.judul, n.isi, waktuRelatif(n.dibuat_at), pilihIkon(n.judul + ' ' + (n.isi || '')), !n.dibaca_at, null);
+      (hariJakarta(new Date(n.dibuat_at)) === ini ? grupIni : grupLama).push(el);
+    });
+    function tambahGrup(judul, items) {
+      var h = document.createElement('p');
+      h.className = 'nt-grup';
+      h.textContent = judul;
+      wrap.appendChild(h);
+      items.forEach(function (el) { wrap.appendChild(el); });
+    }
+    if (grupIni.length) tambahGrup('Hari Ini', grupIni);
+    if (grupLama.length) tambahGrup('Sebelumnya', grupLama);
   }
 
   function render(data) {
+    terakhir = data || {};
     var perluVerif = !!data.perlu_verifikasi;
     var belum = Number(data.belum_dibaca || 0) + (perluVerif ? 1 : 0);
     var daftar = data.daftar || [];

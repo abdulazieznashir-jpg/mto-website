@@ -392,6 +392,28 @@
   .sy-tersembunyi { display: none; }
   .pf-tabbar .pf-tab[aria-selected="true"] { background: #F7EBCF; border-radius: 16px; }
   .pf-tabbar .pf-tab[aria-selected="true"] svg { color: #1D1D1F; }
+
+  .nt-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .nt-wrap[hidden] { display: none; }
+  .nt-grup { font-size: 15px; font-weight: 600; color: #6E6E73; margin: 14px 2px 2px; }
+  .nt-grup:first-child { margin-top: 0; }
+  .nt-item { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.92); border: 1px solid #EFE7D6; border-radius: 18px; padding: 14px; color: inherit; text-decoration: none; box-shadow: 0 1px 2px rgba(60,40,10,0.04); }
+  .nt-item.belum { background: #FFFBF2; }
+  .nt-ikon { width: 52px; height: 52px; border-radius: 999px; background: #F3F3F5; color: #6E6E73; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .nt-item.belum .nt-ikon { background: #FBF0D6; color: #B8862B; }
+  .nt-ikon svg { width: 24px; height: 24px; display: block; }
+  .nt-isi { flex: 1; min-width: 0; }
+  .nt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .nt-head b { font-size: 16px; font-weight: 700; line-height: 1.3; }
+  .nt-head small { font-size: 13px; color: #8E8E93; white-space: nowrap; }
+  .nt-isi p { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: #48484A; }
+  .nt-dot { width: 9px; height: 9px; border-radius: 999px; background: #C9982F; flex-shrink: 0; }
+  .nt-kosong { text-align: center; padding: 70px 12px 40px; }
+  .nt-kosong[hidden] { display: none; }
+  .nt-kosong-ikon { width: 160px; height: 160px; border-radius: 999px; background: #FBF4E6; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+  .nt-kosong-ikon svg { width: 76px; height: 76px; }
+  .nt-kosong h2 { font-size: 22px; font-weight: 700; margin: 28px 0 8px; }
+  .nt-kosong p { font-size: 15px; line-height: 1.6; color: #6E6E73; max-width: 300px; margin: 0 auto; }
 </style>
 </head>
 <body>
@@ -458,10 +480,14 @@
   </div>
 
   <div class="pf-pane" data-pane="notifikasi">
-  <p class="pf-section-title">Notifikasi</p>
-  <ul class="notif-list notif-list-pane" id="notifPane"></ul>
-  <p class="notif-kosong" id="notifPaneKosong" hidden>Belum ada notifikasi.</p>
-</div>
+  <section class="sy-hero"><h1 class="sy-title">Notifikasi</h1></section>
+  <div class="nt-wrap" id="notifPane" hidden></div>
+  <div class="nt-kosong" id="notifPaneKosong">
+    <div class="nt-kosong-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#C9982F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/><path d="M19 3.5l1.2 1.4M21.5 7.5h-1.6M4.9 3.5L3.7 4.9"/></svg></div>
+    <h2>Belum Ada Notifikasi</h2>
+    <p>Berbagai pemberitahuan penting seputar kelas, jadwal, dan aktivitas Anda akan terlihat di sini.</p>
+  </div>
+  </div>
 
   <div class="pf-pane" data-pane="saya">
   <section class="sy-hero">
