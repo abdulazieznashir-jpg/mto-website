@@ -1256,7 +1256,7 @@
   function waValid() { return normWa(S.wa).length >= 8; }
   function waCocok() { return waValid() && normWa(S.wa) === normWa(S.wa2); }
   function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
-  function dataValid() { return !!(S.nama && S.jk && waCocok() && emailValid() && S.confirm); }
+  function dataValid() { return !!(S.nama && S.jk && S.tgl && waCocok() && emailValid() && S.confirm); }
   function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
   function durasiOpts() { return S.jenis === 'ziyadah' ? [3, 12] : [1, 3]; }
   // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai panjang sesi.
@@ -1356,7 +1356,7 @@
   function pesanDaftar() {
     var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
       'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
-    if (!isAnak()) s += 'Usia: ' + S.usia + '\n';
+    s += 'Tanggal lahir: ' + (S.tgl || '-') + '\n';
     s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: +' + waFull() + '\nEmail: ' + S.email + '\n\n' +
       ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
     return s;
@@ -1542,7 +1542,7 @@
       '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
       '<div><span>Jenis kelamin</span><div class="cek-radio">' +
         radio('cekJk', 'laki-laki', 'Laki-laki', S.jk) + radio('cekJk', 'perempuan', 'Perempuan', S.jk) + '</div></div>' +
-      (isAnak() ? '' : '<label>Usia<input type="number" name="usia" class="cek-input" min="1" max="120" value="' + esc(S.usia || '') + '"></label>') +
+      '<label>Tanggal lahir<input type="date" name="tgl" class="cek-input" value="' + esc(S.tgl || '') + '"></label>' +
       '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
       '<div class="cek-wa"><span>Nomor WhatsApp</span><div class="cek-wa-row">' +
         '<select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select>' +
@@ -1590,7 +1590,7 @@
     if (S.pid) return cb(null);
     sbSiap(function (sb) {
       sb.rpc('daftar_pendaftaran', { p: {
-        email: S.email, nama: S.nama, jk: S.jk, usia: isAnak() ? null : S.usia, kota: S.kota,
+        email: S.email, nama: S.nama, jk: S.jk, tgl: S.tgl || null, kota: S.kota,
         wa: waFull(), kelas: S.kelas, durasi: S.durasi, peserta: S.peserta,
         total: totalBayar(), ringkasan: ringkas()
       } }).then(function (r) {
@@ -1713,7 +1713,8 @@
       if (!dataValid()) return;
       simpanPendaftaran(function (err) {
         if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
-        advance('data');
+        try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
+        window.location.href = 'pembayaran.html';
       });
       return;
     }
@@ -1727,7 +1728,7 @@
     var t = e.target;
     if (t.name === 'kode') { S.kodeIn = t.value; syncKodeUi(); }
     if (t.name === 'nama') S.nama = t.value.trim();
-    if (t.name === 'usia') S.usia = t.value;
+    if (t.name === 'tgl') S.tgl = t.value;
     if (t.name === 'kota') S.kota = t.value.trim();
     if (t.name === 'wa') S.wa = t.value.trim();
     if (t.name === 'wa2') S.wa2 = t.value.trim();
@@ -1942,6 +1943,27 @@
       }
       var m = document.getElementById('navMasukMobile');
       if (m) { m.href = 'profil.html'; m.textContent = 'Profil saya'; }
+    });
+  };
+  document.head.appendChild(s);
+})();
+</script>
+<div id="pendingBar" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:#1D1D1F;color:#fff;font:500 14px/1.4 Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.18)"><span id="pendingTeks"></span><a href="pembayaran.html" style="color:#fff;font-weight:600;text-decoration:none;white-space:nowrap">Lanjutkan</a></div>
+<script>
+(function () {
+  var simpan = null;
+  try { simpan = JSON.parse(localStorage.getItem('mtoDaftar') || 'null'); } catch (e) {}
+  if (!simpan || !simpan.id || !simpan.email) return;
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+  s.onload = function () {
+    var sb = window.supabase.createClient('https://bvltmjurkgnzmwtgdaic.supabase.co', 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g');
+    sb.rpc('status_pendaftaran', { p_id: simpan.id, p_email: simpan.email }).then(function (r) {
+      if (r.error || !r.data) return;
+      if (r.data.status !== 'menunggu_bayar' && r.data.status !== 'menunggu_verifikasi') return;
+      var teks = r.data.status === 'menunggu_bayar' ? 'Pembayaran belum selesai.' : 'Bukti transfer sedang diverifikasi.';
+      document.getElementById('pendingTeks').textContent = teks;
+      document.getElementById('pendingBar').hidden = false;
     });
   };
   document.head.appendChild(s);

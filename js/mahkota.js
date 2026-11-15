@@ -95,8 +95,8 @@
     if (akun) $('pfAvatar').innerHTML = svgAvatar(akun);
 
     var sudah = !!d.sudah_login_hari_ini;
-    $('btnKlaim').disabled = sudah;
-    $('btnKlaim').textContent = sudah ? 'Sudah' : 'Klaim +1';
+    $('btnKlaim').setAttribute('data-sudah', sudah ? '1' : '0');
+    $('btnKlaim').textContent = sudah ? 'Sudah diklaim' : 'Klaim +1';
     $('mkKlaimText').textContent = sudah ? 'Login hari ini sudah diklaim' : 'Login hari ini belum diklaim';
 
     var papan = (d.papan || []).map(function (p) {
@@ -143,16 +143,21 @@
     var sub = d.status === 'menunggu_bayar'
       ? 'Selesaikan pembayaran sebelum ' + tglJam(d.batas_bayar) + '.'
       : (d.status === 'kedaluwarsa' ? 'Hubungi admin untuk dibukakan kembali.' : 'Progres pendaftaran Anda.');
+    var lanjut = d.status === 'menunggu_bayar' ? '<div class="pd-aksi"><a class="pf-btn pf-btn-pri" href="pembayaran.html">Lanjutkan pembayaran</a></div>' : '';
     $('daftarSaya').innerHTML = '<p class="pd-status">' + esc(LABEL_STATUS[d.status] || d.status) + '</p>' +
-      '<p class="pd-sub">' + esc(sub) + '</p>' + langkah;
+      '<p class="pd-sub">' + esc(sub) + '</p>' + langkah + lanjut;
     box.hidden = false;
   }
 
   var daftarAdmin = [];
+  function tglLahir(iso) {
+    return new Date(iso + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  function rupiahAdm(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
   function teksWa(p) {
     var b = ['Nama: ' + p.nama];
     if (p.jenis_kelamin) b.push('Jenis kelamin: ' + p.jenis_kelamin);
-    if (p.usia) b.push('Usia: ' + p.usia);
+    if (p.tanggal_lahir) b.push('Tanggal lahir: ' + tglLahir(p.tanggal_lahir));
     if (p.kota) b.push('Kota/Negara: ' + p.kota);
     b.push('Nomor WhatsApp: +' + p.wa);
     b.push('Email: ' + p.email);
@@ -167,11 +172,23 @@
     box.hidden = false;
     if (!list.length) { $('adminList').innerHTML = '<p class="pd-sub">Belum ada pendaftar.</p>'; return; }
     $('adminList').innerHTML = list.map(function (p, i) {
+      var baris = [
+        ['Email', p.email], ['WhatsApp', '+' + p.wa],
+        ['Jenis kelamin', p.jenis_kelamin || '-'],
+        ['Tanggal lahir', p.tanggal_lahir ? tglLahir(p.tanggal_lahir) : '-'],
+        ['Kota/Negara', p.kota || '-'], ['Kelas', p.kelas || '-'],
+        ['Durasi', p.durasi ? p.durasi + ' bulan' : '-'],
+        ['Peserta', p.peserta || '-'], ['Total', rupiahAdm(p.total)],
+        ['Batas bayar', tglJam(p.batas_bayar)],
+        ['Bukti transfer', p.bukti_at ? tglJam(p.bukti_at) : 'Belum ada']
+      ].map(function (r) {
+        return '<div class="pd-baris"><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>';
+      }).join('');
       var aksi = '<button type="button" data-salin="' + i + '">Salin untuk WhatsApp</button>' +
         (p.status === 'menunggu_verifikasi' ? '<button type="button" class="utama" data-terima="' + p.id + '">Tandai diterima</button>' : '');
       return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
-        '<small>' + esc(p.kelas || '-') + ' · ' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
-        '<small>Batas bayar: ' + esc(tglJam(p.batas_bayar)) + '</small>' +
+        '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
+        '<div class="pd-detail">' + baris + '</div>' +
         '<div class="pd-aksi">' + aksi + '</div></div>';
     }).join('');
   }
@@ -199,37 +216,40 @@
   }
 
   /* ---------- Paket, pengampu, dan tanggal bergabung ---------- */
+  var IKON_KOIN = '<span class="pb-koin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>';
   function tampilPaket(d) {
     var box = $('pbPaket');
     if (!box) return;
-    var aktif = d.status === 'aktif';
-    box.hidden = !aktif;
-    if (!aktif) return;
-    $('pbNamaPaket').textContent = d.paket ? 'Paket ' + d.paket : 'Belum ada paket';
-    $('pbPengampu').textContent = d.pengampu ? 'Pengampu: ' + d.pengampu : '';
-    $('pbBergabung').textContent = d.bergabung
-      ? 'Bergabung sejak ' + new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })
-      : '';
+    box.hidden = false;
+    if (d.status !== 'aktif') {
+      box.innerHTML = IKON_KOIN +
+        '<div><b>Belum ada paket</b>' +
+        '<small>Daftar sekarang untuk memulai program, atau hubungi admin.</small>' +
+        '<div class="pb-aksi-paket">' +
+        '<a class="pf-btn pf-btn-pri" href="index.html#daftar">Daftar sekarang</a>' +
+        '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Hubungi admin</a>' +
+        '</div></div>';
+      return;
+    }
+    box.innerHTML = IKON_KOIN + '<div>' +
+      '<b>' + (d.paket ? 'Paket ' + esc(d.paket) : 'Belum ada paket') + '</b>' +
+      (d.pengampu ? '<small>Pengampu: ' + esc(d.pengampu) + '</small>' : '') +
+      (d.bergabung ? '<small>Bergabung sejak ' + esc(new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })) + '</small>' : '') +
+      '</div>';
   }
 
   /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */
   function renderJus(data) {
     var el = $('pbJus');
     if (!el) return;
-    if (!data || !data.aktif) {
-      el.innerHTML = '<li class="pb-info">' +
-        '<strong>Pencapaian Juz hanya untuk peserta Mahkota yang aktif.</strong>' +
-        '<span>Setelah terdaftar sebagai peserta Mahkota, guru akan mengisi progres hafalan Anda per juz. Progres akan tampil di sini.</span>' +
-        '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Tanya admin via WhatsApp</a>' +
-        '</li>';
-      lipat(el, 10);
-      return;
-    }
-    var juz = data.juz || {};
+    var aktif = !!(data && data.aktif);
+    var juz = aktif ? (data.juz || {}) : {};
     var selesai = 0;
     for (var k = 1; k <= 30; k++) if (parseInt(juz[k], 10) >= 20) selesai++;
     var ringkas = $('pbRingkas');
-    if (ringkas) ringkas.textContent = selesai + ' dari 30 juz selesai · sisa ' + (30 - selesai) + ' juz';
+    if (ringkas) ringkas.textContent = aktif
+      ? selesai + ' dari 30 juz selesai · sisa ' + (30 - selesai) + ' juz'
+      : 'Belum terdaftar. Progres juz tampil setelah Anda menjadi peserta aktif.';
     var html = '';
     for (var n = 1; n <= 30; n++) {
       var h = Math.min(20, Math.max(0, parseInt(juz[n], 10) || 0));
@@ -241,15 +261,15 @@
               '</div></li>';
     }
     el.innerHTML = html;
-    lipat(el, 10);
+    lipat(el, 4);
   }
 
   /* ---------- Klaim login harian ---------- */
   function klaim() {
     var b = $('btnKlaim');
-    b.disabled = true;
+    if (b.getAttribute('data-sudah') === '1') { note('Login hari ini sudah diklaim.'); return; }
     sb.rpc('klaim_login_harian').then(function (r) {
-      if (r.error) { b.disabled = false; note('Klaim belum berhasil. Coba lagi.', true); return; }
+      if (r.error) { note('Klaim belum berhasil. Coba lagi.', true); return; }
       note(r.data && r.data.baru ? '+1 Mahkota diterima.' : 'Login hari ini sudah diklaim.');
       muat();
     });

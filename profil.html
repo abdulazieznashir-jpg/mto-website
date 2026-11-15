@@ -230,7 +230,7 @@
   /* ---- Beranda gaya Apple: putih, garis tipis, kartu simetris ---- */
   .pb-kiri { display: flex; flex-direction: column; gap: 12px; }
   .pb-kiri > * { width: 100%; margin: 0; }
-  .pb-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .pb-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .pb-stat, .pb-tingkat, .pb-klaim, .pb-paket { position: relative; background: #fff; border: 1px solid #E5E5EA; border-radius: 18px; box-shadow: none; padding: 16px 14px; }
   .pb-stat { display: flex; flex-direction: column; text-align: left; gap: 2px; }
   .pb-stat b { font-size: 26px; font-weight: 600; letter-spacing: -.02em; color: #1D1D1F; line-height: 1.1; }
@@ -270,6 +270,20 @@
   .pd-aksi { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
   .pd-aksi button { border: 0; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 500; background: #F5F5F7; color: #1D1D1F; cursor: pointer; }
   .pd-aksi button.utama { background: #1D1D1F; color: #fff; }
+
+  .pb-stats .pb-klaim { position: relative; background: #fff; border: 1px solid #E5E5EA; border-radius: 18px; padding: 16px 14px; display: flex; flex-direction: column; gap: 4px; }
+  .pb-stats .pb-stat[hidden] { display: none; }
+  .pb-stats .pb-klaim > .pb-tanya { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; min-width: 0; padding: 0; margin: 0; border: 0; border-radius: 50%; background: #F5F5F7; color: #86868B; font-size: 12px; font-weight: 600; line-height: 22px; }
+  .pb-stats .pb-klaim .pf-label { font-size: 14px; color: #1D1D1F; padding-right: 26px; }
+  .pb-stats .pb-klaim .pf-btn { margin-top: 8px; width: 100%; }
+  .pb-aksi-paket { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .pb-aksi-paket a { font-size: 13px; padding: 8px 14px; border-radius: 999px; text-decoration: none; font-weight: 500; }
+  .pb-paket .pb-koin { flex: none; }
+
+  .pd-detail { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 2px; }
+  .pd-baris { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+  .pd-baris span { color: #86868B; flex: none; }
+  .pd-baris b { font-weight: 500; color: #1D1D1F; text-align: right; word-break: break-word; }
 </style>
 </head>
 <body>
@@ -316,30 +330,20 @@
           <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF9600" d="M12 2c1 3.5 5 5.5 5 10.5A5 5 0 0 1 7 12.5c0-2.4 1.3-3.9 2.5-5 .3 1.6 1 2.6 2 3C11 7.5 11.2 5 12 2z"/></svg>
           <b id="mkStreak">–</b><small>Runtunan hari</small><button type="button" class="pb-tanya" data-bantuan="bt-runtunan" aria-label="Penjelasan">?</button>
         </div>
-        <div class="pb-stat">
+        <div class="pb-stat" hidden>
           <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FFC800" d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
           <b id="mkTotal">–</b><small>XP</small><button type="button" class="pb-tanya" data-bantuan="bt-xp" aria-label="Penjelasan">?</button>
         </div>
-        <div class="pb-stat">
+        <div class="pb-stat" hidden>
           <b id="mkRank">–</b><small id="mkRankKet">Posisi</small><button type="button" class="pb-tanya" data-bantuan="bt-posisi" aria-label="Penjelasan">?</button>
         </div>
-      </section>
-
-      <div class="pb-dua">
-        <section class="pb-tingkat" aria-label="Tingkatan saat ini">
-          <svg class="pb-ikon-besar" viewBox="0 0 24 24" aria-hidden="true"><path fill="#0071E3" d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>
-          <b>Safir</b>
-          <small>Tingkatan saat ini</small>
-          <button type="button" class="pb-tanya" data-bantuan="bt-tingkat" aria-label="Penjelasan">?</button>
-        </section>
-
         <div class="pb-klaim">
           <span class="pf-label" id="mkKlaimText">Login hari ini</span>
           <small class="pb-kecil">Login +1 setiap hari</small>
           <button type="button" class="pb-tanya" data-bantuan="bt-klaim" aria-label="Penjelasan">?</button>
-          <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim" disabled>Klaim +1</button>
+          <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim">Klaim +1</button>
         </div>
-      </div>
+      </section>
 
       <div class="pb-paket" id="pbPaket" hidden>
         <span class="pb-koin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>
