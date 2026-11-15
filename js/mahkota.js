@@ -90,6 +90,7 @@
     $('mkRank').textContent = d.peringkat || '–';
     $('mkRankKet').textContent = d.peringkat && d.peringkat <= 3 ? 'Posisi 3 besar' : 'Posisi Anda';
     $('mkStreak').textContent = d.streak;
+    renderTrack(d.streak);
     usernameSaya = d.username || '';
     $('vUsername').textContent = usernameSaya || 'Belum diatur';
     $('pfUsername').textContent = usernameSaya ? '@' + usernameSaya : 'Belum ada username';
@@ -252,10 +253,21 @@
   };
   function svgPaket(p) {
     var w = WARNA_PAKET[p] || WARNA_PAKET.kosong;
-    return '<svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">' +
+    return '<svg viewBox="0 0 64 64" width="84" height="84" aria-hidden="true">' +
       '<circle cx="32" cy="32" r="28" fill="' + w.isi + '" stroke="' + w.cincin + '" stroke-width="5"/>' +
       '<path d="M18 40V25l8 7 6-11 6 11 8-7v15z" fill="' + w.mahkota + '"/>' +
       '<rect x="18" y="41.5" width="28" height="3" rx="1.5" fill="' + w.mahkota + '"/></svg>';
+  }
+
+  // Lingkaran H1 sampai H7: hari yang sudah berurutan diberi tanda centang.
+  function renderTrack(n) {
+    var box = $('mkTrack');
+    if (!box) return;
+    var isi = Math.min(Number(n) || 0, 7), html = '';
+    for (var i = 1; i <= 7; i++) {
+      html += '<div class="mk-hari' + (i <= isi ? ' on' : '') + '"><span class="mk-dot"></span><small>H' + i + '</small></div>';
+    }
+    box.innerHTML = html;
   }
 
   function setTier(d) {
@@ -266,7 +278,7 @@
     if (badge) badge.innerHTML = svgPaket(kunci);
     var btn = $('pfTier');
     if (btn && btn.firstChild) {
-      btn.firstChild.nodeValue = (ada ? p.charAt(0).toUpperCase() + p.slice(1) : 'Belum ada paket') + ' ';
+      btn.firstChild.nodeValue = (ada ? p.charAt(0).toUpperCase() + p.slice(1) : 'Belum Ada Paket') + ' ';
     }
     document.querySelectorAll('#pfTierInfo li[data-paket]').forEach(function (li) {
       li.classList.toggle('on', ada && li.getAttribute('data-paket') === p);
@@ -283,6 +295,8 @@
     $('pbBergabung').textContent = aktif && tgl ? tgl : '–';
     var daftar = $('pbDaftar');
     if (daftar) daftar.hidden = aktif;
+    var rows = $('pkRows');
+    if (rows) rows.hidden = !aktif;
   }
 
   /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */
