@@ -381,12 +381,28 @@
   .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
   .rc { margin: 8px 0 16px; }
-  .promo-card.kode-voucher { border: 1.5px dashed #b8893c; background: #fffaf0; }
-  .kode-form { display: flex; gap: 8px; align-items: center; }
-  .kode-in { flex: 1; min-width: 0; border: 1.5px solid #d9cfc1; border-radius: 999px; padding: 10px 14px; font-size: 16px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #2b1c0e; background: #fff; font-family: inherit; }
-  .kode-in:focus { outline: 2px solid #5a3b1c; outline-offset: 1px; }
-  .kode-msg { margin: 10px 0 0; font-size: 13px; color: #C62828; font-weight: 600; }
-  .kode-timer { color: #C62828; font-variant-numeric: tabular-nums; }
+  .promo-list { grid-template-columns: minmax(0, 1fr); }
+  .kode-box { min-width: 0; background: #fff; border: 1px solid #e6dccf; border-radius: 16px; padding: 14px; }
+  .kode-box.applied { background: #fffaf2; border-color: #e9d9bf; }
+  .kode-label { display: block; font-size: 14px; font-weight: 600; color: #2b1c0e; margin: 0 0 8px; }
+  .kode-field { display: flex; align-items: center; gap: 4px; min-height: 48px; padding: 0 6px 0 14px; border: 1px solid #d9cfc1; border-radius: 12px; background: #fbfaf8; }
+  .kode-field:focus-within { border-color: #5a3b1c; background: #fff; box-shadow: 0 0 0 3px rgba(90,59,28,0.12); }
+  .kode-field input { flex: 1 1 0; width: 0; min-width: 0; height: 46px; border: 0; outline: 0; background: transparent; font-family: inherit; font-size: 16px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #2b1c0e; }
+  .kode-field input::placeholder { text-transform: none; letter-spacing: 0; font-weight: 400; color: #a39382; }
+  .kode-clear { width: 26px; height: 26px; border-radius: 50%; border: 0; background: #e4dbcf; color: #5a3b1c; font-size: 16px; line-height: 1; cursor: pointer; flex-shrink: 0; padding: 0; }
+  .kode-apply { flex-shrink: 0; border: 0; background: none; color: #C62828; font-size: 15px; font-weight: 700; padding: 10px 8px; cursor: pointer; font-family: inherit; }
+  .kode-apply:disabled { color: #c4b9ab; cursor: default; }
+  .kode-row { display: flex; align-items: center; gap: 12px; }
+  .kode-check { width: 32px; height: 32px; border-radius: 50%; background: #2E7D32; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; }
+  .kode-check.muted { background: #e4dbcf; color: #5a3b1c; }
+  .kode-check svg { width: 18px; height: 18px; }
+  .kode-info { flex: 1; min-width: 0; }
+  .kode-info strong { display: block; font-size: 15px; color: #2b1c0e; letter-spacing: 0.3px; }
+  .kode-info small { display: block; margin-top: 2px; font-size: 13px; color: #7a6a58; line-height: 1.4; }
+  .kode-remove { flex-shrink: 0; border: 0; background: none; color: #5a3b1c; font-size: 14px; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 4px 0; font-family: inherit; }
+  .kode-timer-row { margin-top: 12px; padding-top: 10px; border-top: 1px solid #efe5d6; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 13px; color: #6b5a48; }
+  .kode-timer { color: #C62828; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kode-msg { margin: 8px 2px 0; font-size: 13px; color: #C62828; font-weight: 600; }
   .rc-title { font-size: 18px; font-weight: 700; color: #2b1c0e; margin: 8px 0 10px; }
   .rc-card { background: #fff; border-radius: 20px; border: 1px solid #e6dccf; padding: 16px 18px 14px; }
   .rc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 15px; color: #4a4a4a; }
@@ -1161,30 +1177,40 @@
       '<p>' + sub + '</p></div>' +
       '<div class="promo-list">' + kodeCard() + card1 + card2 + '</div></div>';
   }
-  // Kartu kode promo: kolom input sebelum kode dipakai, lalu voucher dengan timer.
+  // Kolom kode promo bergaya Apple: label di atas, satu field dengan tombol di ujung kanan.
+  var CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   function kodeCard() {
     var c = KELAS[S.kelas], m = S.durasi, n = S.peserta;
     var msg = S.kodeMsg ? '<p class="kode-msg">' + esc(S.kodeMsg) + '</p>' : '';
     if (!S.kode) {
-      return '<div class="promo-card">' +
-        '<div class="promo-top"><span class="promo-tag">PUNYA KODE PROMO?</span></div>' +
-        '<div class="kode-form"><input type="text" name="kode" class="kode-in" placeholder="Masukkan kode" maxlength="12" autocomplete="off" autocapitalize="characters" aria-label="Kode promo" value="' + esc(S.kodeIn || '') + '">' +
-        '<button type="button" class="promo-btn on" data-kode-apply>Terapkan</button></div>' + msg + '</div>';
+      var v = String(S.kodeIn || '');
+      return '<div class="kode-box"><label class="kode-label" for="kodeInput">Punya kode promo?</label>' +
+        '<div class="kode-field"><input id="kodeInput" type="text" name="kode" placeholder="Contoh: ABD" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(v) + '">' +
+        '<button type="button" class="kode-clear" data-kode-x aria-label="Hapus isian"' + (v ? '' : ' style="display:none"') + '>&times;</button>' +
+        '<button type="button" class="kode-apply" data-kode-apply' + (v.trim() ? '' : ' disabled') + '>Terapkan</button></div>' + msg + '</div>';
     }
-    var head = '<div class="promo-top"><span class="promo-tag">KODE ' + KODE.kode + '</span><button type="button" class="promo-btn" data-kode-clear>Hapus</button></div>';
+    function row(ok, title, sub) {
+      return '<div class="kode-row"><span class="kode-check' + (ok ? '' : ' muted') + '">' + (ok ? CHECK_ICON : '!') + '</span>' +
+        '<div class="kode-info"><strong>' + title + '</strong><small>' + sub + '</small></div>' +
+        '<button type="button" class="kode-remove" data-kode-clear>Hapus</button></div>';
+    }
     if (Date.now() >= KODE.akhir.getTime()) {
-      return '<div class="promo-card">' + head + '<p class="kode-msg">Kode ' + KODE.kode + ' sudah berakhir.</p></div>';
+      return '<div class="kode-box applied">' + row(false, 'Kode ' + KODE.kode + ' sudah berakhir', 'Promo ini tidak lagi bisa dipakai.') + '</div>';
     }
     if (!kodeAktif()) {
-      return '<div class="promo-card">' + head +
-        '<div class="promo-text"><strong>Kode ' + KODE.kode + ' berlaku untuk paket minimal 3 bulan</strong>' +
-        '<small>Pilih 3 bulan untuk memakai potongan ' + KODE.pct + '%.</small></div>' +
-        '<div class="promo-foot"><span>Potongan belum aktif</span><button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div></div>';
+      return '<div class="kode-box">' + row(false, 'Kode ' + KODE.kode + ' belum aktif', 'Berlaku untuk paket minimal 3 bulan.') +
+        '<div class="kode-timer-row"><span>Potongan ' + KODE.pct + '% untuk paket 3 bulan atau lebih.</span>' +
+        '<button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div></div>';
     }
-    return '<div class="promo-card kode-voucher">' + head +
-      '<div class="promo-text"><strong>Potongan ' + KODE.pct + '% untuk paket ini</strong>' +
-      '<small>Hemat ' + rbFmt(c.asli * KODE.pct / 100 * m * n) + ' · berlaku untuk paket minimal 3 bulan</small></div>' +
-      '<div class="promo-foot"><span>Berakhir dalam <b class="kode-timer" id="kodeTimer">' + fmtSisa(KODE.akhir.getTime() - Date.now()) + '</b></span><span>s.d. 17 Nov 2026, 23.59 WIB</span></div></div>';
+    return '<div class="kode-box applied">' +
+      row(true, 'Kode ' + KODE.kode + ' · potongan ' + KODE.pct + '%', 'Hemat ' + rbFmt(c.asli * KODE.pct / 100 * m * n) + ' untuk paket ' + durasiLabel(m) + (n > 1 ? ' · ' + n + ' peserta' : '') + '.') +
+      '<div class="kode-timer-row"><span>Berakhir dalam</span><b class="kode-timer" id="kodeTimer">' + fmtSisa(KODE.akhir.getTime() - Date.now()) + '</b><span>· 17 Nov 2026, 23.59 WIB</span></div></div>';
+  }
+  function syncKodeUi() {
+    var v = String(S.kodeIn || '').trim();
+    var ap = document.querySelector('[data-kode-apply]'), x = document.querySelector('[data-kode-x]');
+    if (ap) ap.disabled = !v;
+    if (x) x.style.display = S.kodeIn ? '' : 'none';
   }
   var KODE = { kode: 'ABD', pct: 50, akhir: new Date('2026-11-17T23:59:00+07:00') };
   function kodeAktif() { return !!S.kode && S.kode === KODE.kode && S.durasi >= 3 && Date.now() < KODE.akhir.getTime(); }
@@ -1597,6 +1623,7 @@
     }
     if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
     if (t.closest('[data-kode-apply]')) { applyKode(); return; }
+    if (t.closest('[data-kode-x]')) { S.kodeIn = ''; S.kodeMsg = ''; renderRingkasan(); var ki = document.getElementById('kodeInput'); if (ki) ki.focus(); return; }
     if (t.closest('[data-kode-clear]')) { S.kode = null; S.kodeMsg = ''; S.kodeIn = ''; renderRingkasan(); return; }
     if ((b = t.closest('[data-toggle]'))) { var key = b.dataset.toggle, on = S[key] !== false; S[key] = !on; renderRingkasan(); return; }
     if ((b = t.closest('[data-set-durasi]'))) { S.durasi = Number(b.dataset.setDurasi); renderRingkasan(); return; }
@@ -1618,7 +1645,7 @@
 
   cek.addEventListener('input', function (e) {
     var t = e.target;
-    if (t.name === 'kode') S.kodeIn = t.value;
+    if (t.name === 'kode') { S.kodeIn = t.value; syncKodeUi(); }
     if (t.name === 'nama') S.nama = t.value.trim();
     if (t.name === 'usia') S.usia = t.value;
     if (t.name === 'kota') S.kota = t.value.trim();
