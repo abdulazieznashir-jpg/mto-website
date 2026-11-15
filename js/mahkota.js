@@ -81,8 +81,10 @@
   function tampilPaket(d) {
     var box = $('pbPaket');
     if (!box) return;
-    box.hidden = !d.paket;
-    if (d.paket) $('pbNamaPaket').textContent = 'Paket ' + d.paket;
+    var aktif = d.status === 'aktif';
+    box.hidden = !aktif;
+    if (!aktif) return;
+    $('pbNamaPaket').textContent = d.paket ? 'Paket ' + d.paket : 'Belum ada paket';
     $('pbPengampu').textContent = d.pengampu ? 'Pengampu: ' + d.pengampu : '';
     $('pbBergabung').textContent = d.bergabung
       ? 'Bergabung sejak ' + new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })
