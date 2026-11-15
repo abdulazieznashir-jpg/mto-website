@@ -798,6 +798,7 @@
     jmEvents = true;
     var box = $('jadwalMurid');
     if (!box) return;
+    isiJamMurid();
     box.addEventListener('click', function (e) {
       var t = e.target.closest && e.target.closest('button');
       if (!t) return;
