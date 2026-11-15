@@ -137,7 +137,8 @@
   function tampilDaftarSaya(list) {
     var box = $('daftarSayaBox');
     if (!box) return;
-    if (!list.length) { box.hidden = true; return; }
+    tglMulaiGelombang = '';
+    if (!list.length) { box.hidden = true; renderMulai(); return; }
     var d = list[0];
     var idx = TAHAP.indexOf(d.status);
     var langkah = '<div class="pd-langkah">' + [0, 1, 2, 3].map(function (i) {
@@ -152,9 +153,12 @@
       var tgl = mulai.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
       $('daftarSaya').innerHTML = '<p class="pd-status">Belum Mulai</p>' +
         '<p class="pd-sub">Mulai belajar</p><p class="pd-status" style="font-size:20px">' + esc(tgl) + '</p>';
+      tglMulaiGelombang = tgl;
+      renderMulai();
       box.hidden = false;
       return;
     }
+    renderMulai();
     $('daftarSaya').innerHTML = '<p class="pd-status">' + esc(LABEL_STATUS[d.status] || d.status) + '</p>' +
       '<p class="pd-sub">' + esc(sub) + '</p>' + langkah + lanjut;
     box.hidden = false;
@@ -293,6 +297,11 @@
     });
   }
 
+  var tglBergabung = '', aktifPaket = false, tglMulaiGelombang = '';
+  function renderMulai() {
+    var t = tglMulaiGelombang || (aktifPaket ? tglBergabung : '');
+    $('pbBergabung').textContent = t || '–';
+  }
   function tampilPaket(d) {
     setTier(d);
     var aktif = d.status === 'aktif';
@@ -300,7 +309,8 @@
     var p = String(d.paket || '');
     $('pbNamaPaket').textContent = aktif && p ? 'Paket ' + p.charAt(0).toUpperCase() + p.slice(1) : '–';
     $('pbPengampu').textContent = aktif && d.pengampu ? d.pengampu : '–';
-    $('pbBergabung').textContent = aktif && tgl ? tgl : '–';
+    tglBergabung = tgl; aktifPaket = aktif;
+    renderMulai();
     var daftar = $('pbDaftar');
     if (daftar) daftar.hidden = aktif;
     var rows = $('pkRows');
