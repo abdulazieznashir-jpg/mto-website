@@ -1,135 +1,212 @@
-/* Halaman masuk Mahkota Tahfizh Online.
+/* Daftar dan masuk Mahkota Tahfizh Online dengan email dan kode verifikasi.
  *
- * CATATAN PENTING
- * - Isi GOOGLE_CLIENT_ID dengan Client ID OAuth dari Google Cloud Console.
- * - Token dari Google hanya didekode di browser untuk menampilkan nama dan email.
- *   Verifikasi token dan pengecekan status akun HARUS dilakukan di server.
- * - Fungsi cekStatus() di bawah masih memakai data pratinjau sampai server dibangun.
+ * Isi dua nilai ini dari Supabase: Project Settings → API.
+ *   SUPABASE_URL      : Project URL, bentuknya https://xxxx.supabase.co
+ *   SUPABASE_ANON_KEY : anon public key (boleh dipakai di browser).
+ *                       JANGAN pakai service_role key di halaman ini.
  */
 (function () {
-  var GOOGLE_CLIENT_ID = ''; // Contoh: '1234-abc.apps.googleusercontent.com'
-  var DAFTAR_URL = 'index.html#daftar';
+  var SUPABASE_URL = '';
+  var SUPABASE_ANON_KEY = '';
+  var WA = '6285727533000';
+  var PAKET_URL = 'index.html#daftar';
+  var sb = null;
+  var mode = 'daftar';   // 'daftar' | 'masuk'
+  var email = '', nama = '';
+  var timerUlang = null;
 
   var $ = function (id) { return document.getElementById(id); };
-  var viewMasuk = $('viewMasuk'), viewStatus = $('viewStatus');
-  var gStatus = $('gStatus'), stWho = $('stWho'), stBody = $('stBody');
-
   function esc(v) { return String(v || '').replace(/[&<>"']/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
   }); }
+  function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
 
-  function decodeJwt(token) {
-    try {
-      var b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      var json = decodeURIComponent(atob(b64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(json);
-    } catch (e) { return null; }
+  function showView(id) {
+    ['viewAuth', 'viewKode', 'viewStatus'].forEach(function (v) {
+      $(v).classList.toggle('hidden', v !== id);
+    });
+    window.scrollTo(0, 0);
+  }
+  function note(el, msg, bad) {
+    el.textContent = msg || '';
+    el.classList.toggle('bad', !!bad);
+  }
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
+  function setMode(m) {
+    mode = m;
+    var daftar = m === 'daftar';
+    $('tabDaftar').setAttribute('aria-selected', daftar);
+    $('tabMasuk').setAttribute('aria-selected', !daftar);
+    $('fldNama').classList.toggle('hidden', !daftar);
+    $('btnKirim').textContent = daftar ? 'Daftar dan kirim kode' : 'Kirim kode ke email';
+    if (SUPABASE_URL) note($('notice'), '');
   }
 
-  // Pratinjau: status bisa dipaksa lewat ?demo=... hanya jika Client ID belum dipasang.
-  // Setelah server tersambung, fungsi ini diganti dengan panggilan ke server.
-  function cekStatus(email, cb) {
-    var demo = GOOGLE_CLIENT_ID ? null : new URLSearchParams(location.search).get('demo');
-    setTimeout(function () { cb(demo || 'belum'); }, 250);
+  function setBusy(btn, busy, label) {
+    btn.disabled = busy;
+    if (label) btn.textContent = label;
   }
 
-  var DAFTAR_CTA = '<a class="btn btn-primary btn-lg" href="' + DAFTAR_URL + '">Daftar Sekarang</a>';
-
-  var VIEW = {
-    aktif: function (u) {
-      return '<div class="st-head"><div class="st-ico ok" aria-hidden="true">✓</div>' +
-        '<h2>Selamat datang' + (u.name ? ', ' + esc(u.name.split(' ')[0]) : '') + '</h2></div>' +
-        '<p class="st-text">Akun Anda aktif dan sudah bisa digunakan.</p>' +
-        '<div class="st-actions"><button type="button" class="btn btn-primary btn-lg" disabled>Dashboard segera hadir</button></div>';
-    },
-    menunggu: function () {
-      return '<div class="st-head"><div class="st-ico wait" aria-hidden="true">…</div>' +
-        '<h2>Anda sudah terdaftar</h2></div>' +
-        '<p class="st-text">Bukti transfer Anda sedang kami periksa. Kami akan memberi tahu lewat email dan WhatsApp setelah akun aktif.</p>' +
-        '<div class="st-actions"><a class="btn btn-secondary btn-lg" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Tanya status via WhatsApp</a></div>';
-    },
-    verifikasi: function () {
-      return '<div class="st-head"><div class="st-ico info" aria-hidden="true">@</div>' +
-        '<h2>Anda sudah terdaftar</h2></div>' +
-        '<p class="st-text">Silakan verifikasi email Anda terlebih dahulu. Cek kotak masuk atau folder spam.</p>' +
-        '<div class="st-actions"><button type="button" class="btn btn-secondary btn-lg" disabled>Kirim ulang email verifikasi</button></div>';
-    },
-    belum: function () {
-      return '<div class="st-head"><div class="st-ico info" aria-hidden="true">!</div>' +
-        '<h2>Akun belum aktif</h2></div>' +
-        '<p class="st-text">Email ini belum terdaftar sebagai peserta. Daftar dulu untuk mulai belajar, lalu akun Anda aktif setelah pembayaran diverifikasi.</p>' +
-        '<div class="promo"><h3>Mulai hafalan Anda hari ini</h3>' +
-        '<p>Belajar privat 1-on-1, cukup dari rumah.</p>' +
-        '<ul><li><span>Silver · 10 menit</span><span>Mulai Rp199rb/bulan</span></li>' +
-        '<li><span>Gold · 20 menit</span><span>Pilihan terbanyak</span></li>' +
-        '<li><span>Platinum · 30 menit</span><span>Untuk target lebih besar</span></li></ul>' +
-        DAFTAR_CTA + '</div>';
+  function mulaiCooldown() {
+    var btn = $('btnUlang'), sisa = 30;
+    btn.disabled = true;
+    clearInterval(timerUlang);
+    function tick() {
+      if (sisa <= 0) {
+        clearInterval(timerUlang);
+        btn.disabled = false;
+        btn.textContent = 'Kirim ulang kode';
+        return;
+      }
+      btn.textContent = 'Kirim ulang kode (' + sisa + ' dtk)';
+      sisa--;
     }
-  };
-
-  function tampilkanStatus(user, status) {
-    stWho.innerHTML = (user.picture ? '<img src="' + esc(user.picture) + '" alt="">' : '') +
-      '<div><strong>' + esc(user.name || 'Pengguna') + '</strong><small>' + esc(user.email) + '</small></div>';
-    stBody.innerHTML = (VIEW[status] || VIEW.belum)(user);
-    viewMasuk.classList.add('hidden');
-    viewStatus.classList.remove('hidden');
+    tick();
+    timerUlang = setInterval(tick, 1000);
   }
 
-  function setUser(user) {
-    stBody.innerHTML = '<p class="st-text">Memeriksa akun Anda…</p>';
-    stWho.innerHTML = '<div><strong>' + esc(user.name || 'Pengguna') + '</strong><small>' + esc(user.email) + '</small></div>';
-    viewMasuk.classList.add('hidden');
-    viewStatus.classList.remove('hidden');
-    cekStatus(user.email, function (status) { tampilkanStatus(user, status); });
+  /* ---------- Status akun ---------- */
+  function tampilkanStatus(status, namaPeserta) {
+    var v = {
+      belum: function () {
+        return '<div class="st-ico info" aria-hidden="true">!</div>' +
+          '<h1>Email ini belum terdaftar</h1>' +
+          '<p class="lg-sub">Daftar dulu untuk mulai belajar. Akun Anda aktif setelah pembayaran diverifikasi.</p>' +
+          '<div class="promo"><h3>Mulai hafalan Anda hari ini</h3>' +
+          '<p>Belajar privat 1-on-1, cukup dari rumah.</p>' +
+          '<ul><li><span>Silver · 10 menit</span><span>Mulai Rp199rb/bulan</span></li>' +
+          '<li><span>Gold · 20 menit</span><span>Pilihan terbanyak</span></li>' +
+          '<li><span>Platinum · 30 menit</span><span>Untuk target lebih besar</span></li></ul>' +
+          '<a class="btn btn-primary btn-lg btn-full" href="' + PAKET_URL + '">Daftar Sekarang</a></div>';
+      },
+      terdaftar: function () {
+        return '<div class="st-ico wait" aria-hidden="true">✓</div>' +
+          '<h1>Anda sudah terdaftar</h1>' +
+          '<p class="lg-sub">Silakan lakukan pembayaran, lalu kirim bukti transfer ke admin kami.</p>' +
+          '<a class="btn btn-secondary btn-lg btn-full" href="' + waLink('Assalamu\'alaikum Admin, saya sudah mendaftar dan ingin mengirim bukti transfer.') + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
+      },
+      menunggu: function () {
+        return '<div class="st-ico wait" aria-hidden="true">…</div>' +
+          '<h1>Bukti transfer diperiksa</h1>' +
+          '<p class="lg-sub">Kami akan memberi tahu Anda begitu akun aktif.</p>';
+      },
+      aktif: function () {
+        return '<div class="st-ico ok" aria-hidden="true">✓</div>' +
+          '<h1>Selamat datang' + (namaPeserta ? ', ' + esc(namaPeserta.split(' ')[0]) : '') + '</h1>' +
+          '<p class="lg-sub">Akun Anda aktif.</p>' +
+          '<button type="button" class="btn btn-primary btn-lg btn-full" disabled>Dashboard segera hadir</button>';
+      }
+    };
+    $('stBody').innerHTML = (v[status] || v.belum)();
+    showView('viewStatus');
   }
 
-  function onCredential(resp) {
-    var p = decodeJwt(resp.credential || '');
-    if (!p || !p.email) { gStatus.textContent = 'Login belum berhasil. Coba lagi.'; return; }
-    setUser({ email: p.email, name: p.name, picture: p.picture });
-  }
-
-  $('stSwitch').addEventListener('click', function () {
-    if (window.google && google.accounts && google.accounts.id && google.accounts.id.disableAutoSelect) {
-      google.accounts.id.disableAutoSelect();
-    }
-    viewStatus.classList.add('hidden');
-    viewMasuk.classList.remove('hidden');
-    stBody.innerHTML = '';
-    gStatus.textContent = '';
-  });
-
-  // Tampilan pratinjau tanpa Google (hanya bila Client ID belum dipasang)
-  function pratinjau() {
-    var demo = new URLSearchParams(location.search).get('demo');
-    if (!demo) {
-      gStatus.textContent = 'Login Google akan aktif setelah Client ID dipasang.';
-      return;
-    }
-    setUser({ email: 'peserta@contoh.com', name: 'Peserta Contoh', picture: '' });
-  }
-
-  function initGoogle() {
-    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onCredential, ux_mode: 'popup' });
-    var box = $('googleBtn');
-    google.accounts.id.renderButton(box, {
-      type: 'standard', theme: 'outline', size: 'large', text: 'signin_with',
-      shape: 'pill', logo_alignment: 'left', width: Math.min(360, box.offsetWidth || 320)
+  function muatStatus(alamat) {
+    sb.from('peserta').select('nama,status').eq('email', alamat).maybeSingle().then(function (r) {
+      if (r.error) { note($('notice'), 'Status belum bisa dimuat. Coba lagi sebentar.', true); showView('viewAuth'); return; }
+      if (!r.data) { tampilkanStatus('belum'); return; }
+      tampilkanStatus(r.data.status, r.data.nama);
     });
   }
 
-  if (!GOOGLE_CLIENT_ID) {
-    // Belum ada Client ID: tampilkan pratinjau tanpa memuat layanan Google.
-    pratinjau();
-  } else {
-    // Muat skrip Google hanya saat Client ID sudah dipasang.
+  /* ---------- Alur ---------- */
+  function kirimKode(e) {
+    e.preventDefault();
+    var f = e.target;
+    var alamat = (f.email.value || '').trim().toLowerCase();
+    var n = (f.nama ? f.nama.value : '').trim();
+    if (!validEmail(alamat)) { note($('notice'), 'Tulis email yang benar.', true); return; }
+    if (mode === 'daftar' && !n) { note($('notice'), 'Tulis nama lengkap Anda.', true); return; }
+    if (!sb) { note($('notice'), 'Layanan masuk belum dihubungkan.', true); return; }
+
+    var btn = $('btnKirim');
+    setBusy(btn, true, 'Mengirim…');
+    var opsi = { shouldCreateUser: mode === 'daftar' };
+    if (mode === 'daftar') opsi.data = { nama: n };
+
+    sb.auth.signInWithOtp({ email: alamat, options: opsi }).then(function (r) {
+      setBusy(btn, false, mode === 'daftar' ? 'Daftar dan kirim kode' : 'Kirim kode ke email');
+      if (r.error) {
+        var m = r.error.message || '';
+        if (/signups? not allowed|not found/i.test(m) && mode === 'masuk') {
+          note($('notice'), 'Email ini belum terdaftar. Pilih tab Daftar.', true);
+        } else if (/rate|too many|seconds/i.test(m)) {
+          note($('notice'), 'Terlalu sering. Tunggu sebentar lalu coba lagi.', true);
+        } else {
+          note($('notice'), 'Kode belum terkirim. Coba lagi.', true);
+        }
+        return;
+      }
+      email = alamat; nama = n;
+      $('kodeEmail').textContent = alamat;
+      note($('noticeKode'), '');
+      showView('viewKode');
+      mulaiCooldown();
+    });
+  }
+
+  function verifikasi(e) {
+    e.preventDefault();
+    var kode = (e.target.kode.value || '').replace(/\D/g, '');
+    if (kode.length !== 6) { note($('noticeKode'), 'Kode terdiri dari 6 angka.', true); return; }
+    sb.auth.verifyOtp({ email: email, token: kode, type: 'email' }).then(function (r) {
+      if (r.error) { note($('noticeKode'), 'Kode salah atau sudah kedaluwarsa.', true); return; }
+      // Pendaftar baru: buat baris peserta dengan status awal 'terdaftar'.
+      if (mode === 'daftar' && nama) {
+        sb.from('peserta').upsert({ email: email, nama: nama, status: 'terdaftar' }, { onConflict: 'email', ignoreDuplicates: true })
+          .then(function () { muatStatus(email); });
+      } else {
+        muatStatus(email);
+      }
+    });
+  }
+
+  function kirimUlang() {
+    if (!sb || !email) return;
+    sb.auth.signInWithOtp({ email: email, options: { shouldCreateUser: mode === 'daftar' } }).then(function (r) {
+      if (r.error) { note($('noticeKode'), 'Belum bisa mengirim ulang. Tunggu sebentar.', true); return; }
+      note($('noticeKode'), 'Kode baru sudah dikirim.');
+      mulaiCooldown();
+    });
+  }
+
+  function keluar() {
+    if (sb) sb.auth.signOut();
+    email = ''; nama = '';
+    $('formKirim').reset(); $('formKode').reset();
+    setMode('daftar');
+    showView('viewAuth');
+  }
+
+  /* ---------- Inisialisasi ---------- */
+  function mulai() {
+    $('tabDaftar').addEventListener('click', function () { setMode('daftar'); });
+    $('tabMasuk').addEventListener('click', function () { setMode('masuk'); });
+    $('formKirim').addEventListener('submit', kirimKode);
+    $('formKode').addEventListener('submit', verifikasi);
+    $('btnUlang').addEventListener('click', kirimUlang);
+    $('btnGanti').addEventListener('click', function () { showView('viewAuth'); note($('notice'), ''); });
+    $('btnKeluar').addEventListener('click', keluar);
+    setMode('daftar');
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      note($('notice'), 'Layanan masuk belum dihubungkan. Halaman ini siap dan akan aktif setelah konfigurasi dipasang.', true);
+      $('btnKirim').disabled = true;
+      return;
+    }
+
     var s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.async = true; s.defer = true;
-    s.onload = initGoogle;
-    s.onerror = function () { gStatus.textContent = 'Tidak dapat memuat layanan Google. Periksa koneksi Anda.'; };
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';
+    s.onload = function () {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      sb.auth.getSession().then(function (r) {
+        if (r.data && r.data.session) muatStatus(r.data.session.user.email);
+      });
+    };
+    s.onerror = function () { note($('notice'), 'Tidak dapat memuat layanan masuk. Periksa koneksi Anda.', true); };
     document.head.appendChild(s);
   }
+
+  mulai();
 })();

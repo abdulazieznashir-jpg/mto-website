@@ -4,92 +4,109 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Masuk · Mahkota Tahfizh Online</title>
-<meta name="description" content="Masuk ke akun peserta dan admin Mahkota Tahfizh Online.">
+<meta name="description" content="Daftar atau masuk ke akun peserta Mahkota Tahfizh Online dengan email dan kode verifikasi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <style>
-  :root { color-scheme: light; }
   body { background: var(--bg-off-white, #FBFBFD); color: var(--text-primary, #1D1D1F); margin: 0; }
-  .login-top { padding: 18px 0; }
-  .login-top a { font-weight: 600; color: var(--text-primary, #1D1D1F); text-decoration: none; font-size: 17px; }
-  .login-wrap { min-height: calc(100vh - 150px); display: flex; align-items: center; justify-content: center; padding: 24px 0 56px; }
-  .login-card {
-    width: 100%; max-width: 420px; background: #fff; border-radius: 24px; padding: 40px 28px 28px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.06); text-align: center;
-  }
-  .login-card h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px; line-height: 1.2; }
-  .login-card > p { margin: 0 0 28px; color: var(--text-secondary, #6E6E73); font-size: 16px; line-height: 1.5; }
-  #googleBtn { min-height: 44px; display: flex; justify-content: center; }
-  .login-fallback { margin-top: 14px; font-size: 14px; color: var(--text-tertiary, #86868B); min-height: 20px; }
-  .login-note { margin: 24px 0 0; font-size: 13px; color: var(--text-tertiary, #86868B); line-height: 1.5; }
+  .lg-top { padding: 18px 0; }
+  .lg-top a { font-weight: 600; color: var(--text-primary, #1D1D1F); text-decoration: none; font-size: 17px; }
+  .lg-wrap { min-height: calc(100vh - 150px); display: flex; align-items: center; justify-content: center; padding: 16px 0 56px; }
+  .lg-card { width: 100%; max-width: 420px; background: #fff; border-radius: 24px; padding: 32px 26px 26px; box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.06); box-sizing: border-box; }
+  .lg-card h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; line-height: 1.2; text-align: center; }
+  .lg-sub { margin: 0 0 22px; color: var(--text-secondary, #6E6E73); font-size: 15px; line-height: 1.5; text-align: center; }
+  .hidden { display: none !important; }
 
-  /* Tampilan status */
-  .st { text-align: left; }
-  .st-head { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
-  .st-ico { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; color: #fff; }
+  /* Tab */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; background: #F5F5F7; border-radius: 12px; padding: 4px; margin-bottom: 22px; }
+  .tabs button { border: 0; background: transparent; padding: 10px; border-radius: 9px; font-size: 15px; font-weight: 600; font-family: inherit; color: var(--text-secondary, #6E6E73); cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: #fff; color: var(--text-primary, #1D1D1F); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+  /* Form */
+  .fld { display: block; margin-bottom: 14px; }
+  .fld span { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .fld input { width: 100%; box-sizing: border-box; padding: 14px 16px; border-radius: 12px; border: 1px solid #d2d2d7; font-size: 16px; font-family: inherit; background: #fff; }
+  .fld input:focus { outline: 2px solid #1D1D1F; outline-offset: 1px; }
+  .kode-in { text-align: center; font-size: 26px !important; font-weight: 700; letter-spacing: 10px; padding-left: 18px !important; }
+  .btn-full { width: 100%; box-sizing: border-box; text-align: center; margin-top: 6px; }
+  button[disabled] { opacity: 0.55; cursor: default; }
+  .link { background: none; border: 0; color: var(--text-secondary, #6E6E73); font-size: 14px; cursor: pointer; padding: 10px; font-family: inherit; text-decoration: underline; display: block; margin: 6px auto 0; }
+  .notice { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: var(--text-secondary, #6E6E73); text-align: center; min-height: 0; }
+  .notice:empty { display: none; }
+  .notice.bad { color: #B42318; }
+  .lg-note { margin: 18px 0 0; font-size: 12px; color: var(--text-tertiary, #86868B); text-align: center; line-height: 1.5; }
+
+  /* Status */
+  .st-ico { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: #fff; }
   .st-ico.ok { background: #2E7D32; }
   .st-ico.wait { background: #B7791F; }
   .st-ico.info { background: #1D1D1F; }
-  .st h2 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
-  .st-text { margin: 0 0 18px; color: var(--text-secondary, #6E6E73); font-size: 15px; line-height: 1.55; }
-  .st-who { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F5F5F7; border-radius: 14px; margin-bottom: 18px; }
-  .st-who img { width: 34px; height: 34px; border-radius: 50%; }
-  .st-who strong { display: block; font-size: 14px; }
-  .st-who small { display: block; font-size: 13px; color: var(--text-tertiary, #86868B); word-break: break-all; }
-  .st-actions { display: grid; gap: 10px; }
-  .st-actions .btn { width: 100%; box-sizing: border-box; text-align: center; }
-  .st-actions button[disabled] { opacity: 0.55; cursor: default; }
-  .st-link { background: none; border: 0; color: var(--text-secondary, #6E6E73); font-size: 14px; cursor: pointer; padding: 8px; font-family: inherit; text-decoration: underline; }
-
-  .promo { margin-top: 4px; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, #FBF6EE 0%, #F6EEE2 100%); text-align: left; }
+  .st-who { text-align: center; font-size: 14px; color: var(--text-tertiary, #86868B); margin-bottom: 14px; word-break: break-all; }
+  .promo { margin-top: 16px; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, #FBF6EE 0%, #F6EEE2 100%); text-align: left; }
   .promo h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
   .promo p { margin: 0 0 12px; font-size: 14px; color: #6B5A48; line-height: 1.5; }
   .promo ul { margin: 0 0 14px; padding: 0; list-style: none; font-size: 14px; color: #3F3326; }
-  .promo li { padding: 6px 0; border-top: 1px solid rgba(90,59,28,0.12); display: flex; justify-content: space-between; gap: 10px; }
+  .promo li { padding: 6px 0; border-top: 1px solid rgba(90,59,28,0.12); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .promo li:first-child { border-top: 0; }
-
-  .promo .btn { width: 100%; box-sizing: border-box; text-align: center; }
-  .login-foot { text-align: center; font-size: 13px; color: var(--text-tertiary, #86868B); padding: 0 0 28px; }
-  .login-foot a { color: var(--text-secondary, #6E6E73); }
-  .hidden { display: none !important; }
+  .lg-foot { text-align: center; font-size: 13px; color: var(--text-tertiary, #86868B); padding: 0 0 28px; }
+  .lg-foot a { color: var(--text-secondary, #6E6E73); }
 </style>
 </head>
 <body>
 
-<header class="login-top">
-  <div class="container">
-    <a href="index.html">Mahkota Tahfizh</a>
-  </div>
-</header>
+<header class="lg-top"><div class="container"><a href="index.html">Mahkota Tahfizh</a></div></header>
 
-<main class="login-wrap">
-  <div class="login-card" role="region" aria-labelledby="loginTitle">
+<main class="lg-wrap">
+  <div class="lg-card">
 
-    <!-- Tampilan 1: sebelum masuk -->
-    <div id="viewMasuk">
-      <h1 id="loginTitle">Masuk</h1>
-      <p>Gunakan akun Gmail Anda untuk masuk ke Mahkota Tahfizh Online.</p>
-      <div id="googleBtn" aria-label="Masuk dengan Google"></div>
-      <div class="login-fallback" id="gStatus" aria-live="polite"></div>
-      <p class="login-note">Hanya peserta dan admin yang sudah terdaftar yang bisa masuk. Dengan masuk, Anda menyetujui penggunaan data untuk keperluan belajar sesuai kebijakan privasi kami.</p>
-    </div>
-
-    <!-- Tampilan 2: status akun setelah masuk -->
-    <div id="viewStatus" class="st hidden" aria-live="polite">
-      <div class="st-who" id="stWho"></div>
-      <div id="stBody"></div>
-      <div class="st-actions" style="margin-top:14px">
-        <button type="button" class="st-link" id="stSwitch">Gunakan akun Gmail lain</button>
+    <!-- 1. Daftar atau masuk -->
+    <section id="viewAuth">
+      <h1>Selamat datang</h1>
+      <p class="lg-sub">Daftar dengan email, atau masuk jika sudah punya akun.</p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tabDaftar" aria-selected="true" data-mode="daftar">Daftar</button>
+        <button type="button" role="tab" id="tabMasuk" aria-selected="false" data-mode="masuk">Sudah punya akun</button>
       </div>
-    </div>
+      <div id="notice" class="notice" aria-live="polite"></div>
+
+      <form id="formKirim" novalidate>
+        <label class="fld hidden" id="fldNama"><span>Nama lengkap</span>
+          <input type="text" name="nama" autocomplete="name" placeholder="Nama sesuai pendaftaran">
+        </label>
+        <label class="fld"><span>Email</span>
+          <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="nama@email.com" required>
+        </label>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btnKirim">Kirim kode ke email</button>
+      </form>
+      <p class="lg-note">Kami mengirim kode 6 digit ke email Anda. Tidak perlu password.</p>
+    </section>
+
+    <!-- 2. Masukkan kode -->
+    <section id="viewKode" class="hidden">
+      <h1>Cek email Anda</h1>
+      <p class="lg-sub">Kami sudah mengirim kode 6 digit ke <strong id="kodeEmail"></strong>.</p>
+      <div id="noticeKode" class="notice" aria-live="polite"></div>
+      <form id="formKode" novalidate>
+        <label class="fld"><span>Kode verifikasi</span>
+          <input type="text" name="kode" class="kode-in" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required>
+        </label>
+        <button type="submit" class="btn btn-primary btn-lg btn-full">Verifikasi dan masuk</button>
+      </form>
+      <button type="button" class="link" id="btnUlang" disabled>Kirim ulang kode</button>
+      <button type="button" class="link" id="btnGanti">Ganti email</button>
+    </section>
+
+    <!-- 3. Status akun -->
+    <section id="viewStatus" class="hidden" aria-live="polite">
+      <div id="stBody"></div>
+      <button type="button" class="link" id="btnKeluar">Keluar</button>
+    </section>
 
   </div>
 </main>
 
-<footer class="login-foot">
-  <p>Butuh bantuan? <a href="https://wa.me/6285727533000" target="_blank" rel="noopener">Chat admin via WhatsApp</a></p>
-</footer>
+<footer class="lg-foot"><p>Butuh bantuan? <a href="https://wa.me/6285727533000" target="_blank" rel="noopener">Chat admin via WhatsApp</a></p></footer>
 
 <script src="js/login.js"></script>
 </body>
