@@ -156,16 +156,22 @@
     return h < 11 ? 0 : h < 15 ? 1 : h < 18 ? 2 : 3;
   }
   function isiJamSelect() {
-    var sel = $('jJam');
-    if (!sel) return;
+    var mulai = $('jMulai'), berakhir = $('jBerakhir');
+    if (!mulai || !berakhir) return;
     var semua = daftarJam();
-    sel.innerHTML = PERIODE.map(function (p, i) {
-      return '<optgroup label="' + p.nama + ' (' + p.dari + '–' + p.sampai + ')">' +
-        semua.filter(function (s) { return periodeIndeks(s) === i; }).map(function (s) {
-          return '<option value="' + s + '">' + s + ' WIB</option>';
-        }).join('') + '</optgroup>';
-    }).join('');
-    sel.value = '19:00';
+    var akhir = semua.slice(1).concat(['24:00']);
+    function opsi(daftar, akhirOpsi) {
+      return PERIODE.map(function (p, i) {
+        return '<optgroup label="' + p.nama + ' (' + p.dari + '–' + p.sampai + ')">' +
+          daftar.filter(function (s) { return periodeIndeks(s) === i; }).map(function (s) {
+            return '<option value="' + s + '">' + s + (s === '24:00' ? ' (tengah malam)' : ' WIB') + '</option>';
+          }).join('') + '</optgroup>';
+      }).join('');
+    }
+    mulai.innerHTML = opsi(semua);
+    berakhir.innerHTML = opsi(akhir);
+    mulai.value = '19:00';
+    berakhir.value = '21:00';
   }
   // Ringkasan: setiap paket dibagi menurut waktu (pagi, siang, sore, malam). Jam yang sudah terisi murid ditandai hijau.
   function renderJadwal(d) {
@@ -198,8 +204,9 @@
     jadwalEvents = true;
     isiJamSelect();
     $('jTambah').addEventListener('click', function () {
-      var paket = $('jPaket').value, jam = $('jJam').value;
-      sb.rpc('tambah_jadwal_kosong', { p_paket: paket, p_jam: jam }).then(function (r) {
+      var paket = $('jPaket').value, mulai = $('jMulai').value, berakhir = $('jBerakhir').value;
+      if (mulai >= berakhir) { window.alert('Waktu berakhir harus setelah waktu mulai.'); return; }
+      sb.rpc('tambah_jadwal_kosong', { p_paket: paket, p_mulai: mulai, p_berakhir: berakhir }).then(function (r) {
         if (r.error) { window.alert(r.error.message || 'Jadwal belum bisa ditambahkan.'); return; }
         muatJadwal();
       });
