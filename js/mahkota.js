@@ -32,6 +32,9 @@
       if (r.error || !r.data) { note('Data Mahkota belum bisa dimuat.', true); return; }
       tampil(r.data);
     });
+    sb.rpc('progres_juz_saya').then(function (r) {
+      renderJus(r.error ? null : r.data);
+    });
   }
 
   function tampil(d) {
@@ -39,7 +42,6 @@
     $('mkRank').textContent = d.peringkat || '–';
     $('mkRankKet').textContent = d.peringkat && d.peringkat <= 3 ? 'Posisi 3 besar' : 'Posisi Anda';
     $('mkStreak').textContent = d.streak;
-    renderJus(d.jus || {});
 
     var sudah = !!d.sudah_login_hari_ini;
     $('btnKlaim').disabled = sudah;
@@ -66,9 +68,18 @@
   function renderJus(data) {
     var el = $('pbJus');
     if (!el) return;
+    if (!data || !data.aktif) {
+      el.innerHTML = '<li class="pb-info">' +
+        '<strong>Pencapaian Jus hanya untuk peserta Mahkota yang aktif.</strong>' +
+        '<span>Setelah terdaftar sebagai peserta Mahkota, guru akan mengisi progres hafalan Anda per jus. Progres akan tampil di sini.</span>' +
+        '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Tanya admin via WhatsApp</a>' +
+        '</li>';
+      return;
+    }
+    var juz = data.juz || {};
     var html = '';
     for (var n = 1; n <= 30; n++) {
-      var h = Math.min(20, Math.max(0, parseInt(data[n], 10) || 0));
+      var h = Math.min(20, Math.max(0, parseInt(juz[n], 10) || 0));
       html += '<li class="pb-juz">' +
               '<span class="pb-pena">' + n + '</span>' +
               '<div class="pb-juz-isi">' +
