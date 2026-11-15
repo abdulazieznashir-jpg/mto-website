@@ -243,38 +243,46 @@
 
   /* ---------- Paket, pengampu, dan tanggal bergabung ---------- */
   var IKON_KOIN = '<span class="pb-koin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>';
+  // Ikon paket: lingkaran dan mahkota. Silver abu-abu, Gold emas, Platinum perak, belum ada paket abu-abu.
+  var WARNA_PAKET = {
+    silver:   { cincin: '#9CA3AF', isi: '#FFFFFF', mahkota: '#1D1D1F' },
+    gold:     { cincin: '#D4A337', isi: '#1D1D1F', mahkota: '#E9C46A' },
+    platinum: { cincin: '#C0C6CC', isi: '#1D1D1F', mahkota: '#C0C6CC' },
+    kosong:   { cincin: '#C7C7CC', isi: '#FFFFFF', mahkota: '#C7C7CC' }
+  };
+  function svgPaket(p) {
+    var w = WARNA_PAKET[p] || WARNA_PAKET.kosong;
+    return '<svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">' +
+      '<circle cx="32" cy="32" r="28" fill="' + w.isi + '" stroke="' + w.cincin + '" stroke-width="5"/>' +
+      '<path d="M18 40V25l8 7 6-11 6 11 8-7v15z" fill="' + w.mahkota + '"/>' +
+      '<rect x="18" y="41.5" width="28" height="3" rx="1.5" fill="' + w.mahkota + '"/></svg>';
+  }
+
   function setTier(d) {
-    var btn = $('pfTier');
-    if (!btn) return;
     var p = String(d.paket || '').toLowerCase();
-    var ada = p === 'silver' || p === 'gold' || p === 'platinum';
-    btn.hidden = !(d.status === 'aktif' && ada);
-    btn.firstChild.nodeValue = ada ? p.charAt(0).toUpperCase() + p.slice(1) + ' ' : '';
+    var ada = d.status === 'aktif' && (p === 'silver' || p === 'gold' || p === 'platinum');
+    var kunci = ada ? p : 'kosong';
+    var badge = $('pfBadge');
+    if (badge) badge.innerHTML = svgPaket(kunci);
+    var btn = $('pfTier');
+    if (btn && btn.firstChild) {
+      btn.firstChild.nodeValue = (ada ? p.charAt(0).toUpperCase() + p.slice(1) : 'Belum ada paket') + ' ';
+    }
     document.querySelectorAll('#pfTierInfo li[data-paket]').forEach(function (li) {
-      li.classList.toggle('on', li.getAttribute('data-paket') === p);
+      li.classList.toggle('on', ada && li.getAttribute('data-paket') === p);
     });
   }
 
   function tampilPaket(d) {
     setTier(d);
-    var box = $('pbPaket');
-    if (!box) return;
-    box.hidden = false;
-    if (d.status !== 'aktif') {
-      box.innerHTML = IKON_KOIN +
-        '<div><b>Belum ada paket</b>' +
-        '<small>Daftar sekarang untuk memulai program, atau hubungi admin.</small>' +
-        '<div class="pb-aksi-paket">' +
-        '<a class="pf-btn pf-btn-pri" href="index.html#daftar">Daftar sekarang</a>' +
-        '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Hubungi admin</a>' +
-        '</div></div>';
-      return;
-    }
-    box.innerHTML = IKON_KOIN + '<div>' +
-      '<b>' + (d.paket ? 'Paket ' + esc(d.paket) : 'Belum ada paket') + '</b>' +
-      (d.pengampu ? '<small>Pengampu: ' + esc(d.pengampu) + '</small>' : '') +
-      (d.bergabung ? '<small>Bergabung sejak ' + esc(new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })) + '</small>' : '') +
-      '</div>';
+    var aktif = d.status === 'aktif';
+    var tgl = d.bergabung ? new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' }) : '';
+    var p = String(d.paket || '');
+    $('pbNamaPaket').textContent = aktif && p ? 'Paket ' + p.charAt(0).toUpperCase() + p.slice(1) : '–';
+    $('pbPengampu').textContent = aktif && d.pengampu ? d.pengampu : '–';
+    $('pbBergabung').textContent = aktif && tgl ? tgl : '–';
+    var daftar = $('pbDaftar');
+    if (daftar) daftar.hidden = aktif;
   }
 
   /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */

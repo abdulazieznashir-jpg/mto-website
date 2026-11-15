@@ -313,6 +313,32 @@
   .ps-kosong { font-size: 14px; color: var(--pf-muted); text-align: center; margin: 0 0 14px; }
   .ps-kosong[hidden] { display: none; }
   .notif-list-pane { list-style: none; margin: 0; padding: 0; background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; overflow: hidden; }
+
+  .mto-hero { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 20px; padding: 22px 20px; margin-top: 8px; }
+  .mto-hero h1 { font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; margin: 6px 0 8px; }
+  .mto-hero p { margin: 0; color: var(--pf-muted); font-size: 15px; line-height: 1.55; }
+  .mto-langkah { list-style: none; margin: 0; padding: 0; background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; overflow: hidden; }
+  .mto-langkah li { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-bottom: 1px solid var(--pf-sep); }
+  .mto-langkah li:last-child { border-bottom: 0; }
+  .mto-langkah b { font-size: 15px; }
+  .mto-langkah span { font-size: 14px; color: var(--pf-muted); }
+  .pf-link-card { display: block; text-decoration: none; color: inherit; }
+  button.pf-row { width: 100%; background: none; border: 0; text-align: left; font: inherit; cursor: pointer; color: inherit; }
+  .pf-back { background: none; border: 0; color: #1D1D1F; font: 600 15px Inter, system-ui, sans-serif; padding: 6px 0 2px; cursor: pointer; }
+  .pf-gear { background: none; border: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #1D1D1F; cursor: pointer; border-radius: 999px; }
+  .pf-gear svg { width: 24px; height: 24px; }
+  .pf-avatar-card { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 20px; padding: 22px 20px; text-align: center; }
+  .pf-badge-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .pf-badge { display: inline-flex; }
+  .pf-badge svg { display: block; }
+  .pk-rows { margin: 0; background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; padding: 0 16px; }
+  .pk-rows > div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--pf-sep); }
+  .pk-rows > div:last-child { border-bottom: 0; }
+  .pk-rows dt { color: var(--pf-muted); font-size: 14px; }
+  .pk-rows dd { margin: 0; font-size: 15px; font-weight: 600; text-align: right; }
+  .pb-paket { margin-bottom: 14px; }
+  .pk-daftar { display: block; text-align: center; margin-top: 12px; text-decoration: none; }
+  .pf-top-in .notif-wrap-pf { display: none; }
 </style>
 </head>
 <body>
@@ -320,50 +346,109 @@
 <header class="pf-top">
   <div class="pf-top-in">
     <a href="index.html" class="pf-brand"><svg class="pf-logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#1D1D1F"/><circle cx="16" cy="16" r="12.5" fill="none" stroke="#BE966A" stroke-width="1"/><path d="M8.5 21.5V12.2l4.3 3.6L16 9.5l3.2 6.3 4.3-3.6v9.3z" fill="#D9B77F"/><rect x="8.5" y="22.6" width="15" height="1.6" rx=".8" fill="#D9B77F"/></svg><span>Mahkota Tahfizh</span></a>
-    <div class="pf-menu-wrap">
-      <button type="button" class="pf-avatar-btn" id="btnMenu" aria-haspopup="true" aria-expanded="false" aria-label="Menu akun">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      </button>
-      <div class="pf-menu" id="pfMenu" hidden>
-        <button type="button" id="btnKeluarTop" class="pf-menu-danger">Keluar</button>
-      </div>
-    </div>
+    <button type="button" class="pf-gear" data-go="pengaturan" aria-label="Pengaturan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
   </div>
 </header>
 
 <main class="pf-wrap">
 
   <div class="pf-pane is-on" data-pane="beranda">
+  <section class="mto-hero">
+    <div class="eyebrow">Mahkota Tahfizh Online</div>
+    <h1>Hafal Al-Qur'an 30 juz dengan bimbingan terarah</h1>
+    <p>Kami siapkan jalannya. Dari Tahsin sampai Tahfidz, setiap langkah dibimbing pengajar bersertifikat dalam sesi privat 1-on-1.</p>
+  </section>
+
+  <p class="pf-section-title">Jalannya</p>
+  <ol class="mto-langkah">
+    <li><b>Pilih paket</b><span>Silver, Gold, atau Platinum, sesuai waktu harian Anda.</span></li>
+    <li><b>Kami atur pengampu</b><span>Pengajar dan jadwal disesuaikan dengan kebutuhan Anda.</span></li>
+    <li><b>Setor hafalan</b><span>Setiap sesi dibimbing langsung oleh pengajar.</span></li>
+    <li><b>Pantau progres</b><span>Lihat juz yang sudah selesai di menu Pencapaian.</span></li>
+  </ol>
+
+  <p class="pf-section-title">Program</p>
+  <div class="pf-group">
+    <div class="pf-row"><span class="pf-label">Tahsin</span><span class="pf-value">Membaca dengan tajwid yang benar</span></div>
+    <div class="pf-row"><span class="pf-label">Tahfidz Ziyadah</span><span class="pf-value">Menambah hafalan baru</span></div>
+    <div class="pf-row"><span class="pf-label">Tahfidz Muroja'ah</span><span class="pf-value">Mengulang hafalan agar tetap kuat</span></div>
+  </div>
+
+  <p class="pf-section-title">Penawaran</p>
+  <a class="pf-group pf-link-card" href="deals.html">
+    <span class="pf-row pf-link"><span class="pf-label">Promo pendaftaran dan paket 3 bulan</span><span class="pf-chev" aria-hidden="true">›</span></span>
+  </a>
+
+  <p class="pf-section-title">Bantuan</p>
+  <div class="pf-group">
+    <a class="pf-row pf-link" href="testimoni.html"><span class="pf-label">Testimoni peserta</span><span class="pf-chev" aria-hidden="true">›</span></a>
+    <a class="pf-row pf-link" href="index.html#faq"><span class="pf-label">Pertanyaan yang sering diajukan</span><span class="pf-chev" aria-hidden="true">›</span></a>
+    <a class="pf-row pf-link" href="https://wa.me/6285727533000" target="_blank" rel="noopener"><span class="pf-label">Chat admin via WhatsApp</span><span class="pf-chev" aria-hidden="true">›</span></a>
+  </div>
+  </div>
+
+  <div class="pf-pane" data-pane="pencapaian">
+  <p class="pf-section-title">Papan skor <button type="button" class="pb-tanya" data-bantuan="bt-papan" aria-label="Penjelasan">?</button></p>
+  <div class="pf-group">
+    <ol class="mk-list" id="mkPapan"></ol>
+  </div>
+
+  <p class="pf-section-title">Pencapaian <button type="button" class="pb-tanya" data-bantuan="bt-jus" aria-label="Penjelasan">?</button></p>
+  <p class="pb-ringkas" id="pbRingkas"></p>
+  <div class="pf-group">
+    <ol class="pb-jus" id="pbJus"></ol>
+  </div>
+
+  <p class="pf-section-title">Riwayat Mahkota <button type="button" class="pb-tanya" data-bantuan="bt-mahkota" aria-label="Penjelasan">?</button></p>
+  <div class="pf-group">
+    <ul class="mk-list" id="mkRiwayat"></ul>
+  </div>
+  </div>
+
+  <div class="pf-pane" data-pane="notifikasi">
+  <p class="pf-section-title">Notifikasi</p>
+  <ul class="notif-list notif-list-pane" id="notifPane"></ul>
+  <p class="notif-kosong" id="notifPaneKosong" hidden>Belum ada notifikasi.</p>
+</div>
+
+  <div class="pf-pane" data-pane="saya">
   <div class="verif-banner hidden" id="verifBanner" role="alert">
     <div class="verif-banner-ikon" aria-hidden="true">!</div>
     <div class="verif-banner-isi"><strong>Data diri belum lengkap</strong><span>Lengkapi usia dan jenis kelamin Anda.</span></div>
     <button type="button" class="verif-banner-btn" data-verif-buka>Verifikasi</button>
   </div>
 
-  <div class="pb-grid">
-    <div class="pb-kiri">
-      <section class="pb-profil">
-        <div class="pb-sampul" aria-hidden="true"></div>
-        <div class="pb-id">
-          <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
-          <h1 class="pf-name" id="pfNama">Memuat…</h1>
-          <button type="button" class="pf-tier" id="pfTier" hidden aria-expanded="false" aria-controls="pfTierInfo">Platinum <span aria-hidden="true">›</span></button>
-          <div class="pf-tier-info" id="pfTierInfo" hidden>
-            <p>Paket Anda ditandai di atas. Ada tiga paket:</p>
-            <ul>
-              <li data-paket="silver">Silver, sesi 10 menit</li>
-              <li data-paket="gold">Gold, sesi 20 menit</li>
-              <li data-paket="platinum">Platinum, sesi 30 menit</li>
-            </ul>
-          </div>
-          <p class="pb-user" id="pfUsername"></p>
-          <p class="pf-mail" id="pfEmail"></p>
-          <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
-          <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
-        </div>
-      </section>
 
-      <section class="pb-stats" aria-label="Ringkasan Mahkota">
+  <div class="pf-avatar-card">
+    <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
+    <div class="pf-badge-row">
+      <span class="pf-badge" id="pfBadge" aria-hidden="true"></span>
+      <button type="button" class="pf-tier" id="pfTier" aria-expanded="false" aria-controls="pfTierInfo">Belum ada paket <span aria-hidden="true">›</span></button>
+    </div>
+    <div class="pf-tier-info" id="pfTierInfo" hidden>
+      <p>Tiga paket yang tersedia:</p>
+      <ul>
+        <li data-paket="silver">Silver, sesi 10 menit</li>
+        <li data-paket="gold">Gold, sesi 20 menit</li>
+        <li data-paket="platinum">Platinum, sesi 30 menit</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="pf-section-title">Akun</p>
+  <div class="pf-group">
+    <div class="pf-row">
+      <span class="pf-label">Avatar</span>
+      <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
+    </div>
+    <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
+    <div class="pf-row"><span class="pf-label">Email</span><span class="pf-value" id="pfEmail"></span></div>
+    <div class="pf-row"><span class="pf-label">Username</span><span class="pf-value" id="pfUsername"></span></div>
+    <div class="pf-row"><span class="pf-label">Nama</span><span class="pf-value" id="pfNama">Memuat…</span></div>
+  </div>
+
+  <p class="pf-section-title">Mahkota</p>
+  <section class="pb-stats" aria-label="Ringkasan Mahkota">
         <div class="pb-stat">
           <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF9600" d="M12 2c1 3.5 5 5.5 5 10.5A5 5 0 0 1 7 12.5c0-2.4 1.3-3.9 2.5-5 .3 1.6 1 2.6 2 3C11 7.5 11.2 5 12 2z"/></svg>
           <b id="mkStreak">–</b><small>Runtunan hari</small><button type="button" class="pb-tanya" data-bantuan="bt-runtunan" aria-label="Penjelasan">?</button>
@@ -383,60 +468,28 @@
         </div>
       </section>
 
-      <div class="pb-paket" id="pbPaket" hidden>
-        <span class="pb-koin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>
-        <div>
-          <b id="pbNamaPaket"></b>
-          <small id="pbPengampu"></small>
-          <small id="pbBergabung"></small>
-        </div>
-      </div>
-    </div>
+  <p class="pf-section-title">Paket</p>
+  <div class="pb-paket" id="pbPaket">
+    <dl class="pk-rows">
+      <div><dt>Paket</dt><dd id="pbNamaPaket">–</dd></div>
+      <div><dt>Pengampu</dt><dd id="pbPengampu">–</dd></div>
+      <div><dt>Mulai</dt><dd id="pbBergabung">–</dd></div>
+    </dl>
+    <a class="pf-btn pf-btn-pri pk-daftar" id="pbDaftar" href="index.html#daftar">Daftar sekarang</a>
+  </div>
 
-    <div class="pb-kanan">
-      <section class="pb-kartu" id="daftarSayaBox" hidden>
+  <section class="pb-kartu" id="daftarSayaBox" hidden>
         <p class="pf-section-title" style="margin-top:0">Pendaftaran Anda</p>
         <div id="daftarSaya"></div>
       </section>
-
-      <section class="pb-kartu" id="adminBox" hidden>
+  <section class="pb-kartu" id="adminBox" hidden>
         <p class="pf-section-title" style="margin-top:0">Pendaftar baru</p>
         <div id="adminList"></div>
       </section>
-
-      <p class="pf-section-title">Papan skor <button type="button" class="pb-tanya" data-bantuan="bt-papan" aria-label="Penjelasan">?</button></p>
-      <div class="pf-group">
-        <ol class="mk-list" id="mkPapan"></ol>
-      </div>
-
-      <p class="pf-section-title">Pencapaian <button type="button" class="pb-tanya" data-bantuan="bt-jus" aria-label="Penjelasan">?</button></p>
-      <p class="pb-ringkas" id="pbRingkas"></p>
-      <div class="pf-group">
-        <ol class="pb-jus" id="pbJus"></ol>
-      </div>
-
-      <p class="pf-section-title">Riwayat Mahkota <button type="button" class="pb-tanya" data-bantuan="bt-mahkota" aria-label="Penjelasan">?</button></p>
-      <div class="pf-group">
-        <ul class="mk-list" id="mkRiwayat"></ul>
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-  <div class="pf-pane" data-pane="notifikasi">
-  <p class="pf-section-title">Notifikasi</p>
-  <ul class="notif-list notif-list-pane" id="notifPane"></ul>
-  <p class="notif-kosong" id="notifPaneKosong" hidden>Belum ada notifikasi.</p>
-</div>
-
-  <div class="pf-pane" data-pane="saya">
-  <p class="pf-section-title">Pesanan Saya</p>
-  <div class="ps-grid"><button type="button" class="ps-item" data-status="belum_bayar"><span class="ps-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 14.5h2"/></svg></span><span class="ps-label">Belum Bayar</span><span class="ps-badge" hidden></span></button><button type="button" class="ps-item" data-status="diproses"><span class="ps-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg></span><span class="ps-label">Diproses</span><span class="ps-badge" hidden></span></button><button type="button" class="ps-item" data-status="belajar"><span class="ps-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5C5 5.3 8 5.3 12 7c4-1.7 7-1.7 9.5-.5v12C19 17.3 16 17.3 12 19c-4-1.7-7-1.7-9.5-.5z"/><path d="M12 7v12"/></svg></span><span class="ps-label">Belajar</span><span class="ps-badge" hidden></span></button><button type="button" class="ps-item" data-status="beri_nilai"><span class="ps-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg></span><span class="ps-label">Beri Nilai</span><span class="ps-badge" hidden></span></button></div>
-  <p class="ps-kosong" id="psKosong" hidden>Belum ada pesanan.</p>
   </div>
 
   <div class="pf-pane" data-pane="pengaturan">
+  <button type="button" class="pf-back" data-go="saya">‹ Saya</button>
   <p class="pf-section-title">Data diri</p>
   <div class="pf-group">
     <div class="pf-row">
@@ -513,13 +566,17 @@
     </form>
   </div>
 
+  <div class="pf-group" style="margin-top: 22px;">
+    <button type="button" class="pf-row pf-link" data-go="afiliasi"><span class="pf-label">Afiliasi</span><span class="pf-chev" aria-hidden="true">›</span></button>
+    <button type="button" class="pf-row pf-link" data-go="bantuan"><span class="pf-label">Bantuan</span><span class="pf-chev" aria-hidden="true">›</span></button>
+  </div>
   <div class="pf-group" style="margin-top: 26px;">
     <button type="button" class="pf-row pf-danger" id="btnKeluar">Keluar dari akun</button>
   </div>
-
   </div>
 
   <div class="pf-pane" data-pane="afiliasi">
+  <button type="button" class="pf-back" data-go="pengaturan">‹ Pengaturan</button>
   <p class="pf-section-title">Afiliasi</p>
   <div class="pf-group">
     <div class="af-intro">
@@ -555,6 +612,7 @@
   </div>
 
   <div class="pf-pane" data-pane="bantuan">
+  <button type="button" class="pf-back" data-go="pengaturan">‹ Pengaturan</button>
   <p class="pf-section-title">Bantuan</p>
   <div class="bt-cari">
     <input type="search" id="btCari" placeholder="Cari, misalnya XP, juz, atau username" aria-label="Cari bantuan">
@@ -682,7 +740,7 @@
 
 <nav class="pf-tabbar" aria-label="Menu akun">
   <button type="button" class="pf-tab" data-tab="beranda" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>Beranda</span></button>
-  <a class="pf-tab" href="deals.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg><span>Deals</span></a>
+  <button type="button" class="pf-tab" data-tab="pencapaian" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16V8M8.5 11.5L12 8l3.5 3.5"/></svg><span>Pencapaian</span></button>
   <button type="button" class="pf-tab" data-tab="notifikasi" aria-selected="false"><span class="pf-tab-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pf-tab-badge" id="tabNotifBadge" hidden></span></span><span>Notifikasi</span></button>
   <button type="button" class="pf-tab" data-tab="saya" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Saya</span></button>
 </nav>
@@ -694,7 +752,6 @@
 <script src="js/tanggal-lahir.js"></script>
 <script src="js/notifikasi.js"></script>
 <script src="js/verifikasi.js"></script>
-<script src="js/pesanan.js"></script>
 <script src="js/profil-tabs.js"></script>
 <script src="js/bantuan.js"></script>
 </body>

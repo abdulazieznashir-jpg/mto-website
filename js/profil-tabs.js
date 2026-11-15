@@ -1,59 +1,56 @@
-/* Navigasi bawah akun: Beranda, Deals (halaman terpisah), Notifikasi, dan Saya.
- * Saya memuat Pesanan Saya, Pengaturan, Afiliasi, dan Bantuan. Tab dipilih lewat hash di URL,
- * tanpa memuat ulang halaman. Menu avatar di pojok kanan atas tetap berfungsi.
+/* Navigasi akun: bar bawah (Beranda, Pencapaian, Notifikasi, Saya) dan halaman Pengaturan.
+ * Pengaturan memuat Data diri, Ubah password, lalu Afiliasi, Bantuan, dan Keluar.
+ * Setiap layar punya hash sendiri di URL dan tidak memuat ulang halaman.
  */
 (function () {
-  var GRUP = {
-    beranda: ['beranda'],
-    notifikasi: ['notifikasi'],
-    saya: ['saya', 'pengaturan', 'afiliasi', 'bantuan']
+  var LAYAR = {
+    beranda: 'beranda',
+    pencapaian: 'pencapaian',
+    notifikasi: 'notifikasi',
+    saya: 'saya',
+    pengaturan: 'pengaturan',
+    afiliasi: 'afiliasi',
+    bantuan: 'bantuan'
   };
-  // Bagian di dalam Saya: hash-nya tetap, lalu layar digulir ke bagian itu.
-  var DI_SAYA = { pengaturan: true, afiliasi: true, bantuan: true };
+  // Layar di bawah Saya: bar bawah tetap menandai Saya.
+  var TAB_INDUK = { pengaturan: 'saya', afiliasi: 'saya', bantuan: 'saya' };
   var panes = document.querySelectorAll('.pf-pane');
   var tabs = document.querySelectorAll('.pf-tab[data-tab]');
-  var menu = document.getElementById('pfMenu');
-  var btnMenu = document.getElementById('btnMenu');
 
   function tampilkan(nama) {
-    var sub = DI_SAYA[nama] ? nama : null;
-    var grup = sub ? 'saya' : (GRUP[nama] ? nama : 'beranda');
-    var aktif = GRUP[grup];
+    if (!LAYAR[nama]) nama = 'beranda';
+    var tab = TAB_INDUK[nama] || nama;
     panes.forEach(function (p) {
-      p.classList.toggle('is-on', aktif.indexOf(p.getAttribute('data-pane')) >= 0);
+      p.classList.toggle('is-on', p.getAttribute('data-pane') === nama);
     });
     tabs.forEach(function (t) {
-      t.setAttribute('aria-selected', t.getAttribute('data-tab') === grup ? 'true' : 'false');
+      t.setAttribute('aria-selected', t.getAttribute('data-tab') === tab ? 'true' : 'false');
     });
-    var hashBaru = '#' + (sub || grup);
-    if (location.hash !== hashBaru) {
-      history.replaceState(null, '', hashBaru);
+    if (location.hash !== '#' + nama) {
+      history.replaceState(null, '', '#' + nama);
     }
-    if (sub) {
-      var el = document.querySelector('[data-pane="' + sub + '"]');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    if (grup === 'notifikasi') {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    if (nama === 'notifikasi') {
       window.dispatchEvent(new CustomEvent('notifikasi:buka'));
     }
   }
 
   function dariHash() {
-    tampilkan(location.hash.replace('#', ''));
-  }
-
-  function bukaMenu(buka) {
-    if (!menu || !btnMenu) return;
-    menu.hidden = !buka;
-    btnMenu.setAttribute('aria-expanded', buka ? 'true' : 'false');
+    tampilkan(location.hash.replace('#', '') || 'beranda');
   }
 
   tabs.forEach(function (t) {
     t.addEventListener('click', function () {
       tampilkan(t.getAttribute('data-tab'));
     });
+  });
+
+  // Tombol apa pun dengan data-go (roda gigi, kembali, Afiliasi, Bantuan).
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-go]');
+    if (!a) return;
+    e.preventDefault();
+    tampilkan(a.getAttribute('data-go'));
   });
 
   var tier = document.getElementById('pfTier');
@@ -67,28 +64,6 @@
     });
   }
 
-  if (btnMenu) {
-    btnMenu.addEventListener('click', function (e) {
-      e.stopPropagation();
-      bukaMenu(menu.hidden);
-    });
-  }
-  if (menu) {
-    menu.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var a = e.target.closest && e.target.closest('[data-go]');
-      if (a) {
-        e.preventDefault();
-        tampilkan(a.getAttribute('data-go'));
-        bukaMenu(false);
-      }
-    });
-  }
-  document.addEventListener('click', function () { bukaMenu(false); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') bukaMenu(false);
-  });
   window.addEventListener('hashchange', dariHash);
-
   dariHash();
 })();
