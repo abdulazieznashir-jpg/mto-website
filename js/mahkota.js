@@ -96,6 +96,8 @@
       $('pengajarNama').textContent = namaPengajar;
       muatMurid();
       pasangJadwalEvents();
+      pasangPermintaanEvents();
+      muatPermintaan();
       muatJadwal();
     }
   }
@@ -159,6 +161,43 @@
       if (!b) return;
       if (!window.confirm('Hapus jadwal kosong ini?')) return;
       sb.rpc('hapus_jadwal_kosong', { p_id: Number(b.getAttribute('data-hapus')) }).then(muatJadwal);
+    });
+  }
+
+  /* ---------- Pengajar: permintaan murid masuk ---------- */
+  function renderPermintaan(list) {
+    var box = $('permintaanBox');
+    if (!box) return;
+    box.hidden = !list.length;
+    $('permintaanList').innerHTML = list.map(function (x) {
+      return '<div class="pm-item"><b>' + esc(x.nama) + '</b>' +
+        '<small>' + esc(x.kelas || '-') + ' · ' + esc(String(x.durasi || '-')) + ' bulan · +' + esc(x.wa || '') + '</small>' +
+        '<small>Senin–Jumat, pukul ' + esc(String(x.jam_diminta || '').slice(0, 5)) + ' WIB</small>' +
+        '<div class="pm-aksi"><button type="button" class="mr-btn" data-terima="' + x.id + '">Terima</button>' +
+        '<button type="button" class="pm-tolak" data-tolak="' + x.id + '">Tolak</button></div></div>';
+    }).join('');
+  }
+  function muatPermintaan() {
+    sb.rpc('permintaan_saya').then(function (r) {
+      if (!r.error) renderPermintaan(r.data || []);
+    });
+  }
+  var permintaanEvents = false;
+  function pasangPermintaanEvents() {
+    if (permintaanEvents) return;
+    permintaanEvents = true;
+    $('permintaanList').addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-terima], button[data-tolak]');
+      if (!b) return;
+      var terima = b.hasAttribute('data-terima');
+      if (!terima && !window.confirm('Tolak permintaan murid ini?')) return;
+      if (terima && !window.confirm('Terima murid ini? Jam tersebut akan terisi untuk murid ini.')) return;
+      var id = Number(b.getAttribute(terima ? 'data-terima' : 'data-tolak'));
+      sb.rpc('respon_pengajuan', { p_id: id, p_terima: terima }).then(function (r) {
+        if (r.error) window.alert(r.error.message || 'Belum bisa diproses.');
+        muatPermintaan();
+        muatJadwal();
+      });
     });
   }
 
@@ -335,8 +374,28 @@
       return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
         '<div class="pd-detail">' + baris + '</div>' +
-        '<div class="pd-aksi">' + aksi + '</div>' + jadwal + '</div>';
+        '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
+        (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' : '') +
+        '</div>';
     }).join('');
+    list.forEach(function (p) {
+      if (p.status !== 'diterima' || !sb) return;
+      var slot = box.querySelector('[data-cocok="' + p.id + '"]');
+      sb.rpc('ustadz_cocok', { p_pendaftaran: p.id }).then(function (r) {
+        if (!slot) return;
+        if (r.error) { slot.innerHTML = '<small>Ustadz belum bisa dicari.</small>'; return; }
+        var daftar = r.data || [];
+        if (!p.hari_diminta || p.hari_diminta !== 'weekday') {
+          slot.innerHTML = '<small>Murid memilih Sabtu–Ahad. Belum ada jadwal ustadz untuk hari ini.</small>';
+          return;
+        }
+        if (!daftar.length) { slot.innerHTML = '<small>Belum ada ustadz yang kosong pada jam ' + esc(String(p.jam_diminta || '').slice(0, 5)) + ' WIB.</small>'; return; }
+        slot.innerHTML = '<small>Ustadz yang cocok:</small>' + daftar.map(function (u) {
+          return '<div class="cocok-baris"><b>' + esc(u.nama) + '</b>' +
+            '<button type="button" data-ajukan="' + p.id + '" data-ustadz="' + esc(u.email) + '">Ajukan ke ustadz</button></div>';
+        }).join('');
+      });
+    });
   }
   function ubahKePng(blob) {
     if (blob.type === 'image/png') return Promise.resolve(blob);
@@ -405,6 +464,13 @@
         sb.storage.from('bukti-transfer').createSignedUrl(pb.bukti_path, 300).then(function (r) {
           if (r.error || !r.data) { note('Bukti belum bisa dibuka.', true); return; }
           window.open(r.data.signedUrl, '_blank', 'noopener');
+        });
+      }
+      if (t.dataset.ajukan !== undefined && sb) {
+        sb.rpc('ajukan_ustadz', { p_pendaftaran: Number(t.dataset.ajukan), p_pengajar: t.dataset.ustadz }).then(function (r) {
+          if (r.error) { note(r.error.message || 'Belum bisa diajukan.', true); return; }
+          note('Permintaan dikirim ke ustadz.');
+          t.disabled = true; t.textContent = 'Sudah diajukan';
         });
       }
       if (t.dataset.terima !== undefined && sb) {
