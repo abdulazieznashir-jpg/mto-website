@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masuk · Mahkota Tahfizh Online</title>
+<meta name="description" content="Masuk ke akun peserta dan admin Mahkota Tahfizh Online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  :root { color-scheme: light; }
+  body { background: var(--bg-off-white, #FBFBFD); color: var(--text-primary, #1D1D1F); margin: 0; }
+  .login-top { padding: 18px 0; }
+  .login-top a { font-weight: 600; color: var(--text-primary, #1D1D1F); text-decoration: none; font-size: 17px; }
+  .login-wrap { min-height: calc(100vh - 150px); display: flex; align-items: center; justify-content: center; padding: 24px 0 56px; }
+  .login-card {
+    width: 100%; max-width: 420px; background: #fff; border-radius: 24px; padding: 40px 28px 28px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.06); text-align: center;
+  }
+  .login-card h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px; line-height: 1.2; }
+  .login-card > p { margin: 0 0 28px; color: var(--text-secondary, #6E6E73); font-size: 16px; line-height: 1.5; }
+  #googleBtn { min-height: 44px; display: flex; justify-content: center; }
+  .login-fallback { margin-top: 14px; font-size: 14px; color: var(--text-tertiary, #86868B); min-height: 20px; }
+  .login-note { margin: 24px 0 0; font-size: 13px; color: var(--text-tertiary, #86868B); line-height: 1.5; }
+
+  /* Tampilan status */
+  .st { text-align: left; }
+  .st-head { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+  .st-ico { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; color: #fff; }
+  .st-ico.ok { background: #2E7D32; }
+  .st-ico.wait { background: #B7791F; }
+  .st-ico.info { background: #1D1D1F; }
+  .st h2 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
+  .st-text { margin: 0 0 18px; color: var(--text-secondary, #6E6E73); font-size: 15px; line-height: 1.55; }
+  .st-who { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #F5F5F7; border-radius: 14px; margin-bottom: 18px; }
+  .st-who img { width: 34px; height: 34px; border-radius: 50%; }
+  .st-who strong { display: block; font-size: 14px; }
+  .st-who small { display: block; font-size: 13px; color: var(--text-tertiary, #86868B); word-break: break-all; }
+  .st-actions { display: grid; gap: 10px; }
+  .st-actions .btn { width: 100%; box-sizing: border-box; text-align: center; }
+  .st-actions button[disabled] { opacity: 0.55; cursor: default; }
+  .st-link { background: none; border: 0; color: var(--text-secondary, #6E6E73); font-size: 14px; cursor: pointer; padding: 8px; font-family: inherit; text-decoration: underline; }
+
+  .promo { margin-top: 4px; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, #FBF6EE 0%, #F6EEE2 100%); text-align: left; }
+  .promo h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+  .promo p { margin: 0 0 12px; font-size: 14px; color: #6B5A48; line-height: 1.5; }
+  .promo ul { margin: 0 0 14px; padding: 0; list-style: none; font-size: 14px; color: #3F3326; }
+  .promo li { padding: 6px 0; border-top: 1px solid rgba(90,59,28,0.12); display: flex; justify-content: space-between; gap: 10px; }
+  .promo li:first-child { border-top: 0; }
+
+  .promo .btn { width: 100%; box-sizing: border-box; text-align: center; }
+  .login-foot { text-align: center; font-size: 13px; color: var(--text-tertiary, #86868B); padding: 0 0 28px; }
+  .login-foot a { color: var(--text-secondary, #6E6E73); }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="login-top">
+  <div class="container">
+    <a href="index.html">Mahkota Tahfizh</a>
+  </div>
+</header>
+
+<main class="login-wrap">
+  <div class="login-card" role="region" aria-labelledby="loginTitle">
+
+    <!-- Tampilan 1: sebelum masuk -->
+    <div id="viewMasuk">
+      <h1 id="loginTitle">Masuk</h1>
+      <p>Gunakan akun Gmail Anda untuk masuk ke Mahkota Tahfizh Online.</p>
+      <div id="googleBtn" aria-label="Masuk dengan Google"></div>
+      <div class="login-fallback" id="gStatus" aria-live="polite"></div>
+      <p class="login-note">Hanya peserta dan admin yang sudah terdaftar yang bisa masuk. Dengan masuk, Anda menyetujui penggunaan data untuk keperluan belajar sesuai kebijakan privasi kami.</p>
+    </div>
+
+    <!-- Tampilan 2: status akun setelah masuk -->
+    <div id="viewStatus" class="st hidden" aria-live="polite">
+      <div class="st-who" id="stWho"></div>
+      <div id="stBody"></div>
+      <div class="st-actions" style="margin-top:14px">
+        <button type="button" class="st-link" id="stSwitch">Gunakan akun Gmail lain</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="login-foot">
+  <p>Butuh bantuan? <a href="https://wa.me/6285727533000" target="_blank" rel="noopener">Chat admin via WhatsApp</a></p>
+</footer>
+
+<script src="js/login.js"></script>
+</body>
+</html>
