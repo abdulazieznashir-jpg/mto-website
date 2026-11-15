@@ -609,19 +609,18 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
   .stats-grid > div + div { border-left: 1px solid rgba(255, 255, 255, 0.12); }
 }
 
-/* Hitung mundur periode berikutnya */
-.wave {
-  margin: 0 auto 32px; max-width: 520px; padding: 18px 18px 16px;
-  background: #f5f5f7; color: #1d1d1f; border-radius: 20px; text-align: center;
+/* Hitung mundur periode berikutnya, gaya Apple: tanpa kotak, angka tipis dan besar */
+.wave { margin: 0 auto 40px; max-width: 560px; text-align: center; color: var(--text-primary); }
+.wave-label { margin: 0 0 18px; font-size: 15px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.01em; }
+.wave-label span { color: var(--text-primary); font-weight: 600; }
+.wave-row { display: flex; justify-content: center; align-items: flex-start; gap: clamp(4px, 2vw, 18px); }
+.wave-unit { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.wave-unit span {
+  font-size: clamp(30px, 9vw, 56px); font-weight: 300; line-height: 1;
+  letter-spacing: -0.035em; font-variant-numeric: tabular-nums; color: var(--text-primary);
 }
-.wave-label { font-size: 15px; color: #6e6e73; margin-bottom: 14px; line-height: 1.5; }
-.wave-label strong { color: #1d1d1f; font-weight: 600; }
-.wave-tz { font-size: 12px; color: #86868b; }
-.wave-cells { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.wave-cell { background: #fff; border-radius: 14px; padding: 12px 6px 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
-.wave-cell b {
-  display: block; font-size: clamp(24px, 6vw, 32px); font-weight: 700; line-height: 1.1;
-  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+.wave-unit small {
+  margin-top: 10px; font-size: 11px; font-weight: 500; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
-.wave-cell span { display: block; margin-top: 4px; font-size: 12px; color: #86868b; font-weight: 500; }
-@media (max-width: 380px) { .wave { padding: 14px 12px 12px; } .wave-cells { gap: 6px; } }
+.wave-colon { font-size: clamp(30px, 9vw, 56px); font-weight: 300; line-height: 0.9; color: var(--text-tertiary); padding-top: 0; }

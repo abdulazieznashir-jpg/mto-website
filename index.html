@@ -827,12 +827,15 @@
       <h2>Segera daftarkan diri Anda.</h2>
       <p class="lead">Amankan waktu belajar Anda sebelum periode berikutnya dimulai.</p>
       <div class="wave" id="waveTimer" aria-label="Hitung mundur periode berikutnya">
-        <div class="wave-label">Periode berikutnya dimulai <strong id="waveDate"></strong> <span class="wave-tz">WIB</span></div>
-        <div class="wave-cells">
-          <div class="wave-cell"><b id="wD">0</b><span>Hari</span></div>
-          <div class="wave-cell"><b id="wH">00</b><span>Jam</span></div>
-          <div class="wave-cell"><b id="wM">00</b><span>Menit</span></div>
-          <div class="wave-cell"><b id="wS">00</b><span>Detik</span></div>
+        <p class="wave-label">Periode berikutnya &middot; <span id="waveDate"></span></p>
+        <div class="wave-row" role="timer">
+          <div class="wave-unit"><span id="wD">0</span><small>hari</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wH">00</span><small>jam</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wM">00</span><small>menit</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wS">00</span><small>detik</small></div>
         </div>
       </div>
       <div class="cta-buttons">
