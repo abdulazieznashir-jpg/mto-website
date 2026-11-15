@@ -528,6 +528,31 @@
   .pj-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .pj-form select, .pj-form input { flex: 1 1 130px; min-width: 0; border: 1px solid #D8D8DC; border-radius: 12px; padding: 9px 10px; font: 500 14px Inter, system-ui, sans-serif; background: #fff; color: #1D1D1F; }
   .pj-form .mr-btn { flex: 0 0 auto; }
+  .sy-jadwal { margin-bottom: 12px; }
+  .sy-jadwal[hidden] { display: none; }
+  .jm-atas { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .jm-ikon { width: 52px; height: 52px; border-radius: 16px; background: #FBF0D6; color: #8A6A1F; display: grid; place-items: center; flex: 0 0 auto; }
+  .jm-judul { flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .jm-judul b { font-size: 17px; }
+  .jm-judul small { font-size: 13px; color: #6E6E73; }
+  .jm-waktu { background: #F5F5F7; border-radius: 14px; padding: 12px; margin-top: 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .jm-waktu small, .jm-dua small { font-size: 12px; color: #6E6E73; }
+  .jm-waktu b, .jm-dua b { font-size: 16px; }
+  .jm-usulan { background: #FFF8E6; border-radius: 14px; padding: 12px; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .jm-usulan > b { font-size: 15px; }
+  .jm-usulan > p { font-size: 13px; color: #6E6E73; margin: 0; line-height: 1.5; }
+  .jm-dua { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .jm-dua > div { flex: 1 1 0; min-width: 0; background: #fff; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 3px; }
+  .jm-dua > span { color: #8A6A1F; flex: 0 0 auto; }
+  .jm-tersedia { background: #FBF0D6 !important; }
+  .jm-tersedia em { font-style: normal; font-size: 12px; font-weight: 600; color: #8A6A1F; }
+  .jm-aksi, .jm-tombol { display: flex; flex-wrap: wrap; gap: 8px; }
+  .jm-aksi > button, .jm-tombol > button { flex: 1 1 140px; }
+  .jm-aksi .pf-btn, .jm-tombol .pf-btn { font-family: inherit; }
+  .jm-form { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .jm-form label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #6E6E73; min-width: 0; }
+  .jm-form select { font: 500 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 10px; border: 1px solid #D8D8DC; border-radius: 12px; background: #fff; max-width: 100%; }
+  .jm-note { font-size: 13px; color: #6E6E73; margin: 10px 0 0; line-height: 1.5; }
   .pj-waktu { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #6E6E73; flex: 1 1 130px; min-width: 0; }
   .pj-waktu select { flex: none; width: 100%; }
   .pj-paket { margin-top: 14px; padding: 12px; border: 1px solid #EFE7D6; border-radius: 14px; background: #FFFCF6; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
@@ -718,6 +743,23 @@
   <section class="sy-card sy-grup" id="pkGrup" hidden>
     <div class="pk-grup-baris" id="grupBesarBaris"></div>
     <div class="pk-grup-baris" id="grupHalaqahBaris"></div>
+  </section>
+
+  <section class="sy-card sy-jadwal" id="jadwalMurid" hidden>
+    <div class="jm-atas">
+      <span class="jm-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+      <div class="jm-judul"><b>Penjadwalan Belajar</b><small id="jmSub"></small></div>
+      <span class="pk-pill-kuning" id="jmPill"></span>
+    </div>
+    <div id="jmIsi"></div>
+    <form id="jmForm" class="jm-form" hidden>
+      <label>Paket hari<select id="jmPaket"><option value="weekday">Senin–Jumat</option><option value="weekend">Sabtu–Ahad</option></select></label>
+      <label>Jam mulai<select id="jmJam" aria-label="Jam mulai"></select></label>
+      <div class="jm-tombol">
+        <button type="button" class="pf-btn" id="jmBatal">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri">Ajukan jadwal ini</button>
+      </div>
+    </form>
   </section>
 
   <section class="sy-card sy-tahap" id="pkTahap" hidden>

@@ -272,6 +272,8 @@
     sb.rpc('pendaftaran_saya').then(function (r) {
       if (!r.error) tampilDaftarSaya(r.data || []);
     });
+    pasangJadwalMurid();
+    muatJadwalMurid();
     sb.rpc('profil_pengajar_saya').then(function (r) {
       isPengajar = !r.error && !!(r.data && r.data.is_pengajar);
       namaPengajar = isPengajar ? (r.data.nama || '') : '';
@@ -459,11 +461,23 @@
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
         '<div class="pd-detail">' + baris + '</div>' + ringkas +
         '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
-        (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' : '') +
+        (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' +
+          '<div class="cocok" data-terdekat="' + p.id + '"></div>' : '') +
         '</div>';
     }).join('');
     list.forEach(function (p) {
       if (p.status !== 'diterima' || !sb) return;
+      var terdekat = box.querySelector('[data-terdekat="' + p.id + '"]');
+      sb.rpc('ustadz_terdekat', { p_pendaftaran: p.id }).then(function (r) {
+        if (!terdekat || r.error) return;
+        var daftar = r.data || [];
+        if (!daftar.length) { terdekat.innerHTML = ''; return; }
+        terdekat.innerHTML = '<small>Usulkan waktu terdekat ke murid:</small>' + daftar.slice(0, 5).map(function (u) {
+          return '<div class="cocok-baris"><b>' + esc(u.nama) + ' · ' + esc(u.jam) + ' WIB' +
+            (Number(u.selisih) ? ' (' + (u.selisih > 0 ? '+' : '') + u.selisih + ' menit)' : '') + '</b>' +
+            '<button type="button" data-usulkan="' + p.id + '" data-usul-ustadz="' + esc(u.email) + '" data-usul-jam="' + esc(u.jam) + '">Usulkan ke murid</button></div>';
+        }).join('');
+      });
       var slot = box.querySelector('[data-cocok="' + p.id + '"]');
       sb.rpc('ustadz_cocok', { p_pendaftaran: p.id }).then(function (r) {
         if (!slot) return;
@@ -615,6 +629,13 @@
           muat();
         });
       }
+      if (t.hasAttribute('data-usulkan') && sb) {
+        sb.rpc('usulkan_waktu', { p_pendaftaran: Number(t.getAttribute('data-usulkan')), p_pengajar: t.getAttribute('data-usul-ustadz'), p_jam: t.getAttribute('data-usul-jam') }).then(function (r) {
+          if (r.error) { note(r.error.message || 'Usulan belum bisa dikirim.', true); return; }
+          note('Usulan waktu sudah dikirim ke murid.');
+          muat();
+        });
+      }
       if (t.dataset.gsimpan !== undefined && sb) {
         var kg = t.dataset.gsimpan;
         var tglG = document.querySelector('[data-gtgl="' + kg + '"]').value;
@@ -713,6 +734,97 @@
       : (adaBesar ? 'Anda sudah bergabung di Grup Besar. ' : '') +
         'Grup Halaqah akan diberikan setelah ustadz ditetapkan. Di Grup Halaqah, Anda akan melakukan briefing jadwal belajar bersama ustadz.';
   }
+  /* ---------- Penjadwalan belajar murid: ubah jadwal, usulan dari admin ---------- */
+  var jadwalMurid = null, jmEvents = false;
+  function labelHariJm(h) { return h === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat'; }
+  function isiJamMurid(pilih) {
+    var sel = $('jmJam');
+    if (!sel) return;
+    var semua = daftarJam();
+    sel.innerHTML = PERIODE.map(function (p, i) {
+      return '<optgroup label="' + p.nama + ' (' + p.dari + '–' + p.sampai + ')">' +
+        semua.filter(function (s) { return periodeIndeks(s) === i; }).map(function (s) {
+          return '<option value="' + s + '">' + s + ' WIB</option>';
+        }).join('') + '</optgroup>';
+    }).join('');
+    sel.value = pilih || '19:00';
+  }
+  function bukaFormJadwal() {
+    var f = $('jmForm');
+    if (!f) return;
+    $('jmPaket').value = (jadwalMurid && jadwalMurid.hari) || 'weekday';
+    isiJamMurid(jadwalMurid && jadwalMurid.jam);
+    f.hidden = false;
+    f.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  function renderJadwalMurid(d) {
+    var box = $('jadwalMurid');
+    if (!box) return;
+    jadwalMurid = d;
+    if (!d || !d.pendaftaran_id) { box.hidden = true; return; }
+    box.hidden = false;
+    var belum = !d.sudah_mulai;
+    $('jmSub').textContent = belum
+      ? 'Bisa diganti kapan saja selama belum mulai belajar.'
+      : 'Sudah mulai belajar. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
+    $('jmPill').textContent = d.usulan ? 'Ada usulan dari admin' : (d.ustadz ? 'Ustadz ditetapkan' : 'Menunggu Ustadz');
+    var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc(d.jam || '-') + ' WIB</b>' +
+      (d.ustadz ? '<small>Ustadz: ' + esc(d.ustadz) + '</small>' : '') + '</div>';
+    if (d.usulan) {
+      var u = d.usulan, selisih = Number(u.selisih || 0);
+      isi += '<div class="jm-usulan"><b>Usulan dari Admin</b>' +
+        '<p>Ada ustadz yang tersedia dengan waktu terdekat dari permintaan Anda.</p>' +
+        '<div class="jm-dua"><div><small>Waktu Anda</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc(d.jam) + '</b></div>' +
+        '<span aria-hidden="true">→</span>' +
+        '<div class="jm-tersedia"><small>Waktu Tersedia</small><b>' + esc(labelHariJm(u.hari)) + ', ' + esc(u.jam) + '</b>' +
+        '<em>' + (selisih >= 0 ? '+' : '') + selisih + ' menit</em></div></div>' +
+        '<small>Ustadz: ' + esc(u.ustadz) + '</small>' +
+        '<div class="jm-aksi"><button type="button" class="pf-btn pf-btn-pri" data-setuju-usulan="' + u.id + '">Setuju Waktu Ini</button>' +
+        '<button type="button" class="pf-btn" id="jmLain">Ajukan Waktu Lain</button></div></div>';
+    }
+    var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
+    isi += '<div class="jm-aksi" style="margin-top:12px">' +
+      '<button type="button" class="pf-btn" id="jmEdit"' + (bisaUbah ? '' : ' disabled') + '>Edit Waktu</button></div>' +
+      (bisaUbah ? '' : '<p class="jm-note">Batas 3 kali perubahan setelah mulai sudah habis.</p>');
+    $('jmIsi').innerHTML = isi;
+  }
+  function muatJadwalMurid() {
+    sb.rpc('jadwal_murid_saya').then(function (r) {
+      renderJadwalMurid(r.error ? null : r.data);
+    });
+  }
+  function pasangJadwalMurid() {
+    if (jmEvents) return;
+    jmEvents = true;
+    var box = $('jadwalMurid');
+    if (!box) return;
+    box.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('button');
+      if (!t) return;
+      if (t.id === 'jmEdit' || t.id === 'jmLain') { bukaFormJadwal(); return; }
+      if (t.id === 'jmBatal') { $('jmForm').hidden = true; return; }
+      if (t.hasAttribute('data-setuju-usulan')) {
+        if (!window.confirm('Setujui waktu ini? Jadwal Anda akan langsung berpindah ke waktu tersebut.')) return;
+        sb.rpc('respon_usulan', { p_id: Number(t.getAttribute('data-setuju-usulan')), p_setuju: true }).then(function (r) {
+          if (r.error) { note(r.error.message || 'Jadwal belum bisa disetujui.', true); return; }
+          note('Jadwal Anda sudah diperbarui.');
+          muat();
+        });
+      }
+    });
+    $('jmForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var hari = $('jmPaket').value, jam = $('jmJam').value;
+      if (!window.confirm('Ajukan jadwal ' + labelHariJm(hari) + ', pukul ' + jam + ' WIB? Admin akan mencarikan ustadz yang sesuai.')) return;
+      sb.rpc('ajukan_ubah_jadwal', { p_hari: hari, p_jam: jam }).then(function (r) {
+        if (r.error) { note(r.error.message || 'Permintaan belum bisa dikirim.', true); return; }
+        $('jmForm').hidden = true;
+        note('Permintaan jadwal sudah dikirim. Admin akan mengabari Anda.');
+        muat();
+      });
+    });
+  }
+
   /* ---------- Garansi uang kembali (7 hari pertama sejak pembelajaran dimulai) ---------- */
   var rekeningGaransi = null, klaimGaransi = null, garansiTimer = null;
   var HARI_GARANSI = 7;
