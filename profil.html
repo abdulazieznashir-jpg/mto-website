@@ -111,6 +111,26 @@
   .pf-menu a, .pf-menu .pf-menu-danger { display: block; width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 10px; font-size: 15px; color: var(--text-primary); text-decoration: none; background: none; border: 0; text-align: left; cursor: pointer; }
   .pf-menu a:hover, .pf-menu .pf-menu-danger:hover { background: var(--pf-bg, #F2F2F7); }
   .pf-menu .pf-menu-danger { color: #FF3B30; border-top: 1px solid var(--border-light); margin-top: 4px; border-radius: 0 0 10px 10px; }
+
+  /* VERIFIKASI DATA DIRI */
+  .verif-banner { display: flex; align-items: center; gap: 12px; background: #FF3B30; color: #fff; border-radius: 16px; padding: 14px 16px; margin: 0 0 16px; }
+  .verif-banner[hidden], .verif-banner.hidden { display: none; }
+  .verif-banner-ikon { flex: 0 0 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .verif-banner-isi { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.35; }
+  .verif-banner-isi span { font-size: 13px; opacity: 0.9; }
+  .verif-banner-btn { flex: 0 0 auto; background: #fff; color: #FF3B30; border: 0; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .verif-modal { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.32); display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .verif-modal.hidden { display: none; }
+  .verif-kartu { width: min(360px, 100%); background: #fff; border-radius: 22px; padding: 28px 24px 20px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
+  .verif-ikon { width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 50%; background: #FF3B30; color: #fff; font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .verif-kartu h2 { font-size: 20px; font-weight: 700; margin: 0 0 8px; color: #1D1D1F; letter-spacing: -0.01em; }
+  .verif-kartu p { font-size: 15px; line-height: 1.5; color: #6E6E73; margin: 0 0 22px; }
+  .verif-utama { width: 100%; background: #FF3B30; color: #fff; border: 0; border-radius: 999px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .verif-nanti { width: 100%; background: none; border: 0; color: #6E6E73; padding: 12px; font-size: 15px; cursor: pointer; margin-top: 4px; }
+  .jk-opsi { display: flex; gap: 10px; margin: 8px 0 12px; }
+  .jk-pilih { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid #D2D2D7; border-radius: 12px; cursor: pointer; font-size: 15px; }
+  .jk-pilih:has(input:checked) { border-color: #1D1D1F; box-shadow: inset 0 0 0 1px #1D1D1F; }
+  .jk-pilih input { accent-color: #1D1D1F; }
 </style>
 </head>
 <body>
@@ -143,6 +163,12 @@
   </nav>
 
   <div class="pf-pane is-on" data-pane="beranda">
+    <div class="verif-banner hidden" id="verifBanner" role="alert">
+      <div class="verif-banner-ikon" aria-hidden="true">!</div>
+      <div class="verif-banner-isi"><strong>Data diri belum lengkap</strong><span>Lengkapi usia dan jenis kelamin Anda.</span></div>
+      <button type="button" class="verif-banner-btn" data-verif-buka>Verifikasi</button>
+    </div>
+
   <section class="pf-hero">
     <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
     <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
@@ -204,6 +230,26 @@
       <span class="pf-label">Bergabung</span>
       <span class="pf-value" id="vTgl">–</span>
     </div>
+    <div class="pf-row">
+      <span class="pf-label">Usia</span>
+      <span class="pf-value" id="vUsia">–</span>
+    </div>
+    <div class="pf-row">
+      <span class="pf-label">Jenis kelamin</span>
+      <span class="pf-value" id="vJk">–</span>
+      <button type="button" class="pf-action" id="btnVerif">Lengkapi</button>
+    </div>
+    <form id="formVerif" class="pf-edit hidden" novalidate>
+      <input type="number" name="usia" inputmode="numeric" min="10" max="100" placeholder="Usia (10 sampai 100)" aria-label="Usia">
+      <div class="jk-opsi">
+        <label class="jk-pilih"><input type="radio" name="jk" value="P"> <span>Perempuan</span></label>
+        <label class="jk-pilih"><input type="radio" name="jk" value="L"> <span>Laki-laki</span></label>
+      </div>
+      <div class="pf-btns">
+        <button type="button" class="pf-btn pf-btn-ghost" id="btnBatalVerif">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri" id="btnSimpanVerif">Simpan</button>
+      </div>
+    </form>
   </div>
 
   <p class="pf-section-title">Keamanan</p>
@@ -277,6 +323,16 @@
 
   </div>
 
+  <div class="verif-modal hidden" id="verifModal" role="dialog" aria-modal="true" aria-labelledby="verifJudul">
+    <div class="verif-kartu">
+      <div class="verif-ikon" aria-hidden="true">!</div>
+      <h2 id="verifJudul">Verifikasi data Anda</h2>
+      <p>Mohon lengkapi usia dan jenis kelamin agar data peserta akurat. Hanya butuh satu menit.</p>
+      <button type="button" class="verif-utama" id="verifSekarang">Verifikasi sekarang</button>
+      <button type="button" class="verif-nanti" id="verifNanti">Nanti saja</button>
+    </div>
+  </div>
+
   <div id="notice" class="pf-notice" aria-live="polite"></div>
 </main>
 
@@ -285,6 +341,7 @@
 <script src="js/afiliasi.js"></script>
 <script src="js/profil.js"></script>
 <script src="js/notifikasi.js"></script>
+<script src="js/verifikasi.js"></script>
 <script src="js/profil-tabs.js"></script>
 </body>
 </html>

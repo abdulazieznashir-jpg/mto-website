@@ -51,6 +51,10 @@
   .promo li:first-child { border-top: 0; }
   .lg-foot { text-align: center; font-size: 13px; color: var(--text-tertiary, #86868B); padding: 0 0 28px; }
   .lg-foot a { color: var(--text-secondary, #6E6E73); }
+  .jk-opsi { display: flex; gap: 10px; margin-top: 6px; }
+  .jk-pilih { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid #D2D2D7; border-radius: 12px; cursor: pointer; font-size: 15px; }
+  .jk-pilih:has(input:checked) { border-color: #1D1D1F; box-shadow: inset 0 0 0 1px #1D1D1F; }
+  .jk-pilih input { accent-color: #1D1D1F; }
 </style>
 </head>
 <body>
@@ -74,6 +78,16 @@
         <label class="fld hidden" id="fldNama"><span>Nama lengkap</span>
           <input type="text" name="nama" autocomplete="name" placeholder="Nama sesuai pendaftaran">
         </label>
+        <label class="fld hidden" id="fldUsia"><span>Usia</span>
+          <input type="number" name="usia" inputmode="numeric" min="10" max="100" placeholder="Contoh: 25">
+        </label>
+        <div class="fld hidden" id="fldJk" role="radiogroup" aria-labelledby="jkLabel">
+          <span id="jkLabel">Jenis kelamin</span>
+          <div class="jk-opsi">
+            <label class="jk-pilih"><input type="radio" name="jk" value="P"> <span>Perempuan</span></label>
+            <label class="jk-pilih"><input type="radio" name="jk" value="L"> <span>Laki-laki</span></label>
+          </div>
+        </div>
         <label class="fld"><span>Email</span>
           <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="nama@email.com" required>
         </label>

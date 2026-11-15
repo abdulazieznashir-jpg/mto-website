@@ -42,6 +42,8 @@
     $('tabMasuk').setAttribute('aria-selected', !daftar);
     $('fldNama').classList.toggle('hidden', !daftar);
     $('fldHint').classList.toggle('hidden', !daftar);
+    $('fldUsia').classList.toggle('hidden', !daftar);
+    $('fldJk').classList.toggle('hidden', !daftar);
     $('lupaWrap').classList.toggle('hidden', daftar);
     $('password').setAttribute('autocomplete', daftar ? 'new-password' : 'current-password');
     $('btnKirim').textContent = daftar ? 'Daftar' : 'Masuk';
@@ -71,9 +73,12 @@
   // Pendaftar baru dibuatkan baris peserta dengan status awal 'terdaftar'.
   function pastikanPeserta(user) {
     var alamat = (user.email || '').toLowerCase();
-    var nama = (user.user_metadata && user.user_metadata.nama) || '';
+    var meta = user.user_metadata || {};
+    var baris = { email: alamat, nama: meta.nama || '', status: 'terdaftar' };
+    if (meta.usia) baris.usia = Number(meta.usia);
+    if (meta.jk) baris.jenis_kelamin = meta.jk;
     sb.from('peserta')
-      .upsert({ email: alamat, nama: nama, status: 'terdaftar' }, { onConflict: 'email', ignoreDuplicates: true })
+      .upsert(baris, { onConflict: 'email', ignoreDuplicates: true })
       .then(function () { window.location.replace('profil.html'); });
   }
 
@@ -118,6 +123,10 @@
     if (!validEmail(alamat)) { note($('notice'), 'Tulis email yang benar.', true); return; }
     if (mode === 'daftar' && !n) { note($('notice'), 'Tulis nama lengkap Anda.', true); return; }
     if (pass.length < 8) { note($('notice'), 'Password minimal 8 karakter.', true); return; }
+    var usiaIn = mode === 'daftar' ? Number(f.usia.value) : 0;
+    var jkIn = mode === 'daftar' ? ((f.querySelector('input[name="jk"]:checked') || {}).value || '') : '';
+    if (mode === 'daftar' && (!Number.isInteger(usiaIn) || usiaIn < 10 || usiaIn > 100)) { note($('notice'), 'Tulis usia Anda antara 10 dan 100 tahun.', true); return; }
+    if (mode === 'daftar' && !jkIn) { note($('notice'), 'Pilih jenis kelamin Anda.', true); return; }
     if (!sb) { note($('notice'), 'Layanan masuk belum tersedia.', true); return; }
 
     var ref = (new URLSearchParams(window.location.search).get('ref') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
@@ -130,7 +139,7 @@
       sb.auth.signUp({
         email: alamat,
         password: pass,
-        options: { data: ref ? { nama: n, ref: ref } : { nama: n }, emailRedirectTo: pageUrl() }
+        options: { data: Object.assign({ nama: n, usia: usiaIn, jk: jkIn }, ref ? { ref: ref } : {}), emailRedirectTo: pageUrl() }
       }).then(function (r) {
         setBusy(btn, false, label);
         if (r.error) { note($('notice'), msgErr(r.error), true); return; }

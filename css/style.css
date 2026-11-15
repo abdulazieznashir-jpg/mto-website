@@ -699,3 +699,5 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 .notif-kosong { margin: 0; padding: 14px 18px 18px; font-size: 14px; color: var(--text-tertiary); }
 .notif-kosong[hidden] { display: none; }
 .notif-wrap-pf { margin-left: auto; }
+.notif-item.penting .notif-judul { color: #FF3B30; }
+.notif-link { display: block; color: inherit; text-decoration: none; }

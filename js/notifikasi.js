@@ -92,7 +92,8 @@
   }
 
   function render(data) {
-    var belum = Number(data.belum_dibaca || 0);
+    var perluVerif = !!data.perlu_verifikasi;
+    var belum = Number(data.belum_dibaca || 0) + (perluVerif ? 1 : 0);
     var daftar = data.daftar || [];
 
     btn.hidden = false;
@@ -101,7 +102,7 @@
     btn.setAttribute('aria-label', belum ? 'Notifikasi, ' + belum + ' belum dibaca' : 'Notifikasi');
 
     list.textContent = '';
-    kosong.hidden = daftar.length > 0;
+    kosong.hidden = daftar.length > 0 || perluVerif;
 
     daftar.forEach(function (n) {
       var li = document.createElement('li');
@@ -126,6 +127,24 @@
 
       list.appendChild(li);
     });
+
+    if (perluVerif) {
+      var pin = document.createElement('li');
+      pin.className = 'notif-item belum penting';
+      var tautan = document.createElement('a');
+      tautan.className = 'notif-link';
+      tautan.href = 'profil.html#pengaturan';
+      var jv = document.createElement('div');
+      jv.className = 'notif-judul';
+      jv.textContent = 'Harap verifikasi data Anda';
+      var iv = document.createElement('div');
+      iv.className = 'notif-isi';
+      iv.textContent = 'Lengkapi usia dan jenis kelamin agar data peserta akurat.';
+      tautan.appendChild(jv);
+      tautan.appendChild(iv);
+      pin.appendChild(tautan);
+      list.insertBefore(pin, list.firstChild);
+    }
   }
 
   function muat() {
@@ -158,6 +177,7 @@
         if (!buatTombol()) return;
         muat();
         setInterval(muat, 5 * 60 * 1000);
+        window.addEventListener('verifikasi:selesai', muat);
       });
     };
     document.head.appendChild(s);
