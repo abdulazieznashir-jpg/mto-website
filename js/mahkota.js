@@ -76,6 +76,10 @@
     sb.rpc('pendaftaran_saya').then(function (r) {
       if (!r.error) tampilDaftarSaya(r.data || []);
     });
+    sb.rpc('grup_besar_saya').then(function (r) {
+      grupBesar = (!r.error && r.data && r.data.link) ? r.data : null;
+      renderMulai();
+    });
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
     });
@@ -137,9 +141,10 @@
   function tampilDaftarSaya(list) {
     var box = $('daftarSayaBox');
     if (!box) return;
-    tglMulaiGelombang = ''; tglMulaiISO = '';
+    tglMulaiGelombang = ''; tglMulaiISO = ''; linkHalaqah = ''; sudahBayar = false;
     if (!list.length) { box.hidden = true; renderMulai(); return; }
     var d = list[0];
+    linkHalaqah = d.link_grup || ''; sudahBayar = d.status === 'diterima';
     var idx = TAHAP.indexOf(d.status);
     var langkah = '<div class="pd-langkah">' + [0, 1, 2, 3].map(function (i) {
       return '<span class="' + (d.status === 'diterima' || (idx >= 0 && i <= idx) ? 'on' : '') + '"></span>';
@@ -302,11 +307,54 @@
   var pertemuanSelesai = null; /* diisi dari pencatatan pengajar (belum tersedia) */
   var MENIT_SESI = { silver: 10, gold: 20, platinum: 30 };
   function hariIniJakarta() { return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); }
+  var grupBesar = null, linkHalaqah = '', sudahBayar = false, hitungTimer = null;
+  var IKON_WA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.2-4.1A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.1-1.1z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.2-1.8-.9-.8.8c-1-.4-2-1.4-2.4-2.4l.8-.8-.9-1.8z"/></svg>';
+  var IKON_ORANG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3 3-4.8 6-4.8s5.4 1.8 6 4.8"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.4c2.4.2 4 1.8 4.5 4.6"/></svg>';
+  var IKON_CEK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function tglSingkat(iso) {
+    return new Date(iso + 'T00:00:00+07:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Jakarta' });
+  }
+  function renderGrup(belum) {
+    var kartu = $('pkGrup'), tahap = $('pkTahap');
+    if (!kartu || !tahap) return;
+    kartu.hidden = !belum; tahap.hidden = !belum;
+    if (!belum) return;
+    var adaBesar = !!(grupBesar && grupBesar.link);
+    var adaHalaqah = !!linkHalaqah;
+    $('grupBesarBaris').innerHTML =
+      '<span class="pk-ikon-grup">' + IKON_WA + '</span>' +
+      '<div class="pk-grup-isi"><b>Grup Besar</b><small>Grup utama seluruh peserta.</small></div>' +
+      (adaBesar
+        ? '<a class="pk-btn-hijau" href="' + esc(grupBesar.link) + '" target="_blank" rel="noopener">Masuk Grup</a>'
+        : '<span class="pk-pill-kuning">Belum tersedia</span>');
+    $('grupHalaqahBaris').innerHTML =
+      '<span class="pk-ikon-grup kuning">' + IKON_ORANG + '</span>' +
+      '<div class="pk-grup-isi"><b>Grup Halaqah</b><small>Grup briefing dengan ustadz &amp; anggota halaqah.</small></div>' +
+      (adaHalaqah
+        ? '<a class="pk-btn-hijau" href="' + esc(linkHalaqah) + '" target="_blank" rel="noopener">Masuk Grup</a>'
+        : '<div class="pk-tunggu"><span class="pk-pill-kuning">Menunggu Ustadz</span><small>Grup akan tersedia setelah ustadz ditetapkan.</small></div>');
+    var langkah = [
+      { judul: 'Pembayaran', sub: sudahBayar ? 'Lunas' : 'Belum lunas', selesai: sudahBayar, sedang: !sudahBayar },
+      { judul: 'Penetapan Ustadz', sub: adaHalaqah ? 'Ditetapkan' : '<span class="pk-pill-kuning">Sedang Diproses</span>', selesai: adaHalaqah, sedang: sudahBayar && !adaHalaqah },
+      { judul: 'Mulai Belajar', sub: tglSingkat(tglMulaiISO), selesai: false, sedang: false }
+    ];
+    $('pkTahapLangkah').innerHTML = langkah.map(function (l, n) {
+      var kelas = l.selesai ? 'selesai' : (l.sedang ? 'sedang' : '');
+      return '<div><span class="pk-titik ' + kelas + '">' + (l.selesai ? IKON_CEK : (n + 1)) + '</span>' +
+        '<div class="pk-tahap-judul">' + l.judul + '</div><div class="pk-tahap-sub">' + l.sub + '</div></div>';
+    }).join('');
+    $('pkTahapNote').textContent = adaHalaqah
+      ? 'Grup Halaqah sudah tersedia. Silakan masuk untuk briefing jadwal belajar bersama ustadz.'
+      : (adaBesar ? 'Anda sudah bergabung di Grup Besar. ' : '') +
+        'Grup Halaqah akan diberikan setelah ustadz ditetapkan. Di Grup Halaqah, Anda akan melakukan briefing jadwal belajar bersama ustadz.';
+  }
   function renderMulai() {
     var blok = $('pkBlok'), status = $('pkStatus'), meta = $('pkMeta'), kaki = $('pkKaki'), daftar = $('pbDaftar');
     if (!blok) return;
+    if (hitungTimer) { clearInterval(hitungTimer); hitungTimer = null; }
     if (!aktifPaket && !tglMulaiISO) {
       blok.hidden = true; status.hidden = true; meta.hidden = true; kaki.hidden = true;
+      renderGrup(false);
       if (daftar) daftar.hidden = false;
       return;
     }
@@ -314,15 +362,26 @@
     blok.hidden = false; status.hidden = false; meta.hidden = false; kaki.hidden = false;
     var kondisi = tglMulaiISO && tglMulaiISO > hariIniJakarta() ? 'belum'
       : (pertemuanSelesai !== null && pertemuanSelesai >= 15 ? 'selesai' : 'berjalan');
-    var label = { belum: 'Belum Mulai', berjalan: 'Sedang Berjalan', selesai: 'Selesai' }[kondisi];
+    var label = { belum: 'Menunggu Dimulai', berjalan: 'Sedang Berjalan', selesai: 'Selesai' }[kondisi];
     status.textContent = label;
     status.className = 'pk-status pk-' + kondisi;
     meta.textContent = paketKey
-      ? 'Sesi ' + MENIT_SESI[paketKey] + ' menit • Weekdays • 15 pertemuan'
-      : 'Weekdays • 15 pertemuan';
+      ? 'Sesi ' + MENIT_SESI[paketKey] + ' menit • Weekdays • 15 kali pertemuan'
+      : 'Weekdays • 15 kali pertemuan';
     if (kondisi === 'belum') {
-      blok.className = 'pk-blok';
-      blok.innerHTML = '<span class="pk-label">Mulai Belajar</span><b class="pk-nilai">' + esc(tglMulaiGelombang || '–') + '</b>';
+      blok.className = 'pk-blok pk-belum-blok';
+      blok.innerHTML = '<div class="pk-kolom"><span class="pk-label">Mulai Belajar</span><b class="pk-nilai">' + esc(tglMulaiGelombang || '–') + '</b></div>' +
+        '<div class="pk-kolom pk-kanan"><span class="pk-label">Waktu Mulai dalam</span><b class="pk-hitung" id="pkHitung">–</b></div>';
+      var target = new Date(tglMulaiISO + 'T00:00:00+07:00').getTime();
+      var dua = function (n) { return (n < 10 ? '0' : '') + n; };
+      var tik = function () {
+        var detik = Math.max(0, Math.floor((target - Date.now()) / 1000));
+        if (detik === 0) { renderMulai(); return; }
+        var hari = Math.floor(detik / 86400), sisa = detik % 86400;
+        $('pkHitung').textContent = hari + ' hari ' + dua(Math.floor(sisa / 3600)) + ':' + dua(Math.floor((sisa % 3600) / 60)) + ':' + dua(sisa % 60);
+      };
+      tik();
+      hitungTimer = setInterval(tik, 1000);
     } else if (kondisi === 'berjalan') {
       blok.className = 'pk-blok pk-hijau';
       blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">–</b></div>' +
@@ -333,7 +392,9 @@
     }
     kaki.innerHTML = '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span>' +
       '<button type="button" class="pk-ganti" disabled>Ganti Pengajar</button>';
+    renderGrup(kondisi === 'belum');
   }
+
   function tampilPaket(d) {
     setTier(d);
     aktifPaket = d.status === 'aktif';
