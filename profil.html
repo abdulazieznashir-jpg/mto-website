@@ -533,26 +533,29 @@
   .nj-wrap { margin-bottom: 12px; min-width: 0; }
   .nj-wrap[hidden] { display: none; }
   .nj-judul { font-size: 16px; font-weight: 700; margin: 0 0 10px; }
-  .nj-grid { display: grid; grid-template-columns: 1fr; gap: 12px; min-width: 0; }
-  @media (min-width: 640px) { .nj-grid { grid-template-columns: repeat(3, 1fr); } }
-  .nj-kartu { background: #fff; border-radius: 20px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .nj-setoran { background: #FFF8EC; }
-  .nj-libur { background: #FFF4E8; position: relative; overflow: hidden; }
-  .nj-libur p { margin: 0; font-size: 14px; color: #6E6E73; line-height: 1.5; }
-  .nj-sesi { background: #EEF9F0; }
-  .nj-atas { display: flex; gap: 12px; align-items: center; min-width: 0; }
-  .nj-atas > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .nj-atas b { font-size: 16px; }
-  .nj-atas small { font-size: 13px; color: #6E6E73; }
-  .nj-ikon { width: 44px; height: 44px; border-radius: 14px; background: #FBF0D6; color: #8A6A1F; display: grid; place-items: center; flex: 0 0 auto; }
-  .nj-ikon.hijau { background: #DDF3E2; color: #1E7B34; }
-  .nj-hitung { font: 700 26px Inter, system-ui, sans-serif; letter-spacing: .02em; color: #1D1D1F; font-variant-numeric: tabular-nums; }
-  .nj-masuk { border: 0; border-radius: 999px; padding: 12px 16px; font: 700 15px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); width: 100%; }
+  .nj-linimasa { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: stretch; }
+  .nj-garis { display: flex; flex-direction: column; align-items: center; padding-top: 14px; }
+  .nj-titik { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #C7C7CC; background: #fff; flex: 0 0 auto; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 700; }
+  .nj-titik.on { background: linear-gradient(#D4A337, #B8862B); border-color: #C9982F; }
+  .nj-jalur { flex: 1; width: 2px; background: linear-gradient(#C9982F, #C7C7CC); margin: 6px 0; min-height: 24px; }
+  .nj-isi { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .nj-kartu { border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; box-sizing: border-box; }
+  .nj-hari { background: linear-gradient(#FFF9EE, #FCF1DE); }
+  .nj-libur { background: #FFF4E8; }
+  .nj-besok { background: #F2F2F7; }
+  .nj-chip { align-self: flex-start; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: #FBF0D6; color: #8A6A1F; }
+  .nj-chip.abu { background: #E5E5EA; color: #1D1D1F; }
+  .nj-judul2 { font-size: 17px; line-height: 1.3; }
+  .nj-label { display: block; font-size: 13px; color: #6E6E73; }
+  .nj-hitung { font: 700 24px Inter, system-ui, sans-serif; color: #1D1D1F; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+  .nj-baris2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+  .nj-baris2 > div { min-width: 0; }
+  .nj-masuk { border: 0; border-radius: 999px; padding: 12px 18px; font: 700 15px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); display: inline-flex; align-items: center; gap: 8px; }
   .nj-masuk:disabled { background: #D8D8DC; color: #6E6E73; }
-  .nj-baris { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; min-width: 0; font-size: 15px; font-weight: 600; }
-  .nj-mulai { display: flex; flex-direction: column; align-items: flex-end; background: #DDF3E2; border-radius: 12px; padding: 8px 10px; }
-  .nj-mulai small { font-size: 11px; color: #1E7B34; font-weight: 500; }
-  .nj-mulai b { font-size: 15px; color: #1E7B34; }
+  .nj-catatan { margin: 2px 0 0; font-size: 14px; color: #6E6E73; line-height: 1.5; }
+  .nj-tgl-baris { display: flex; align-items: center; gap: 12px; min-width: 0; color: #6E6E73; }
+  .nj-tgl-baris > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .nj-tgl-baris > svg { flex: 0 0 auto; color: #6E6E73; }
   .gp-latar { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: flex-end; justify-content: center; z-index: 50; padding: 0 0 env(safe-area-inset-bottom, 0px); }
   .gp-latar[hidden] { display: none; }
   .gp-kartu { background: #fff; width: 100%; max-width: 520px; border-radius: 22px 22px 0 0; padding: 18px 16px 22px; display: flex; flex-direction: column; gap: 10px; max-height: 90vh; overflow-y: auto; box-sizing: border-box; }
@@ -789,7 +792,7 @@
 
   <section class="nj-wrap" id="notifJadwal" hidden>
     <p class="nj-judul">Notifikasi Jadwal &amp; Libur</p>
-    <div class="nj-grid" id="njIsi"></div>
+    <div id="njIsi"></div>
   </section>
 
   <div class="gp-latar" id="gantiSheet" hidden>

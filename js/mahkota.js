@@ -754,62 +754,76 @@
   function jamDetik(d) { return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds(); }
   function hitungJam(detik) { var j = Math.floor(detik / 3600), m = Math.floor((detik % 3600) / 60), s = detik % 60; return [j, m, s].map(function (x) { return (x < 10 ? '0' : '') + x; }).join(' : '); }
   var njTimer = null;
+  // Sisa waktu: jam dalam total, menit, dan detik (contoh: 18j 49m 14d)
+  function formatSisa(ms) {
+    var detik = Math.max(0, Math.floor(ms / 1000));
+    var dua = function (x) { return (x < 10 ? '0' : '') + x; };
+    return Math.floor(detik / 3600) + 'j ' + dua(Math.floor((detik % 3600) / 60)) + 'm ' + dua(detik % 60) + 'd';
+  }
+  function kartuNj(chip, kelas, judul, label, nilai, aksi, catatan) {
+    var atas = label ? '<small class="nj-label">' + esc(label) + '</small><div class="nj-hitung">' + esc(nilai) + '</div>' : '';
+    return '<div class="nj-kartu ' + kelas + '"><span class="nj-chip">' + esc(chip) + '</span>' +
+      '<b class="nj-judul2">' + esc(judul) + '</b>' +
+      (atas || aksi ? '<div class="nj-baris2"><div>' + atas + '</div>' + (aksi || '') + '</div>' : '') +
+      (catatan || '') + '</div>';
+  }
   function renderNotifJadwal(d) {
     var box = $('notifJadwal'), isi = $('njIsi');
     if (njTimer) { clearInterval(njTimer); njTimer = null; }
     if (!box || !isi) return;
-    if (!d || !d.jam || !d.hari || !d.ustadz || !d.sudah_mulai && !d.tanggal_mulai) { box.hidden = true; return; }
+    if (!d || !d.jam || !d.hari || !d.ustadz) { box.hidden = true; return; }
     box.hidden = false;
+    var p = d.jam.split(':').map(Number), menit = d.menit || 10;
+    var mulai = d.tanggal_mulai ? new Date(d.tanggal_mulai + 'T00:00:00') : null;
+    var hariSesi = hariSesiJm(d.hari);
+    var sesiDi = function (tgl) { return new Date(tgl.getFullYear(), tgl.getMonth(), tgl.getDate(), p[0], p[1]); };
+    var adaSesi = function (tgl) { return hariSesi.indexOf(tgl.getDay()) >= 0 && (!mulai || tgl >= mulai); };
+    var fmtTgl = function (dt) { return dt.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); };
     var gambar = function () {
-      var now = jakartaSekarang(), menit = d.menit || 10;
-      var p = d.jam.split(':').map(Number);
-      var mulai = d.tanggal_mulai ? new Date(d.tanggal_mulai + 'T00:00:00') : null;
-      var dimulai = mulai && mulai > now ? mulai : now;
-      var hariIni = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      var sesiHariIni = new Date(now.getFullYear(), now.getMonth(), now.getDate(), p[0], p[1]);
-      var selesaiHariIni = new Date(sesiHariIni.getTime() + menit * 60000);
-      var bisaHariIni = hariSesiJm(d.hari).indexOf(now.getDay()) >= 0 && (!mulai || mulai <= now);
-      var sesiNext = null;
-      for (var i = 0; i < 400 && !sesiNext; i++) {
-        var tg = new Date(dimulai.getFullYear(), dimulai.getMonth(), dimulai.getDate() + i);
-        if (hariSesiJm(d.hari).indexOf(tg.getDay()) < 0) continue;
-        var t = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate(), p[0], p[1]);
-        if (t >= now && (!mulai || t >= mulai)) sesiNext = t;
+      var now = jakartaSekarang();
+      var hari = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var besok = new Date(hari.getFullYear(), hari.getMonth(), hari.getDate() + 1);
+      var sesiHari = sesiDi(hari), selesaiHari = new Date(sesiHari.getTime() + menit * 60000);
+      var next = null;
+      for (var i = 0; i < 400 && !next; i++) {
+        var tg = new Date(hari.getFullYear(), hari.getMonth(), hari.getDate() + i);
+        if (adaSesi(tg)) { var t = sesiDi(tg); if (t >= now) next = t; }
       }
-      var setoran = '', libur = '';
-      var jamDetikMulai = null;
-      if (bisaHariIni && now < selesaiHariIni) {
-        var sedang = now >= sesiHariIni;
-        var bisaMasuk = now >= new Date(sesiHariIni.getTime() - 5 * 60000);
-        var hitung = sedang ? 'Sesi sedang berlangsung' : hitungJam(Math.max(0, Math.floor((sesiHariIni - now) / 1000)));
-        setoran = '<div class="nj-kartu nj-setoran"><div class="nj-atas"><span class="nj-ikon">' + IKON_LONCENG + '</span>' +
-          '<div><b>Setoran Hari Ini</b><small>' + (sedang ? 'Sesi live sedang berjalan' : 'Sesi live akan dimulai dalam') + '</small></div></div>' +
-          '<div class="nj-hitung">' + esc(hitung) + '</div>' +
-          '<button type="button" class="nj-masuk" id="njMasuk"' + (bisaMasuk ? '' : ' disabled') + '>Masuk Live</button></div>';
-        jamDetikMulai = !sedang;
-      } else if (bisaHariIni && now >= selesaiHariIni) {
-        setoran = '<div class="nj-kartu nj-setoran"><div class="nj-atas"><span class="nj-ikon">' + IKON_LONCENG + '</span>' +
-          '<div><b>Setoran Hari Ini</b><small>Sesi hari ini sudah selesai</small></div></div></div>';
-      } else if (!mulai || mulai <= now) {
-        libur = '<div class="nj-kartu nj-libur"><div class="nj-atas"><span class="nj-ikon">' + IKON_KALENDER + '</span>' +
-          '<div><b>Hari Ini Libur</b><small>' + esc(hariIni.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })) + '</small></div></div>' +
-          '<p>Manfaatkan waktu dengan baik untuk muroja’ah mandiri.</p></div>';
+      var sisaNext = next ? formatSisa(next - now) : '–';
+      var top;
+      if (adaSesi(hari) && now < selesaiHari) {
+        var sedang = now >= sesiHari;
+        var bisaMasuk = now >= new Date(sesiHari.getTime() - 5 * 60000) && now < selesaiHari;
+        var aksi = '<button type="button" class="nj-masuk" id="njMasuk"' + (bisaMasuk ? '' : ' disabled') + '>' + IKON_PLAY + 'Masuk Live</button>';
+        top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz',
+          sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
+          sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, '');
+      } else if (mulai && mulai > now) {
+        top = kartuNj('Mulai', 'nj-hari', 'Sesi Pertama', 'Mulai dalam', next ? formatSisa(next - now) : '–', '',
+          '<p class="nj-catatan">' + esc(fmtTgl(next || mulai)) + ' · Pukul ' + esc(d.jam) + ' WIB</p>');
+      } else if (adaSesi(hari)) {
+        top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz', 'Setoran berikutnya dalam', sisaNext, '',
+          '<p class="nj-catatan">Setoran hari ini sudah selesai.</p>');
+      } else {
+        top = kartuNj('Hari Ini', 'nj-libur', 'Hari Ini Libur', 'Setoran berikutnya dalam', sisaNext, '',
+          '<p class="nj-catatan">Manfaatkan waktu dengan baik untuk muroja’ah mandiri.</p>');
       }
-      var sesi = '';
-      if (sesiNext) {
-        var selisihHari = Math.round((new Date(sesiNext.getFullYear(), sesiNext.getMonth(), sesiNext.getDate()) - hariIni) / 86400000);
-        var mulaiDalam = selisihHari === 0
-          ? hitungJam(Math.max(0, Math.floor((sesiNext - now) / 1000)))
-          : selisihHari + ' hari';
-        sesi = '<div class="nj-kartu nj-sesi"><div class="nj-atas"><span class="nj-ikon hijau">' + IKON_KALENDER + '</span>' +
-          '<div><b>Sesi Berikutnya</b><small>' + esc(sesiNext.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })) + '</small></div></div>' +
-          '<div class="nj-baris"><span>Pukul ' + esc(d.jam) + ' WIB</span><span class="nj-mulai"><small>Mulai dalam</small><b>' + esc(mulaiDalam) + '</b></span></div></div>';
+      var bawah = '';
+      if (!mulai || besok >= mulai) {
+        bawah = adaSesi(besok)
+          ? '<div class="nj-kartu nj-besok"><span class="nj-chip abu">Besok</span><div class="nj-tgl-baris">' + IKON_KALENDER +
+            '<div><b class="nj-judul2">' + esc(fmtTgl(sesiDi(besok))) + '</b><small class="nj-label">Pukul ' + esc(d.jam) + ' WIB</small></div></div></div>'
+          : '<div class="nj-kartu nj-besok"><span class="nj-chip abu">Besok</span><div class="nj-tgl-baris">' + IKON_KALENDER +
+            '<div><b class="nj-judul2">Besok Libur</b><small class="nj-label">Tidak ada setoran besok.</small></div></div></div>';
       }
-      isi.innerHTML = (setoran || libur) + sesi;
+      isi.innerHTML = '<div class="nj-linimasa"><div class="nj-garis"><span class="nj-titik on">✓</span>' +
+        (bawah ? '<span class="nj-jalur"></span><span class="nj-titik"></span>' : '') +
+        '</div><div class="nj-isi">' + top + bawah + '</div></div>';
     };
     gambar();
     njTimer = setInterval(gambar, 1000);
   }
+  var IKON_PLAY = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
   var IKON_LONCENG = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8a6 6 0 1112 0c0 6 2 7 2 7H4s2-1 2-7z"/><path d="M10 19a2 2 0 004 0"/></svg>';
   var IKON_KALENDER = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
 
