@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Peserta — Mahkota Tahfidz Online</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --primary: #BE966A;
+    --primary-dark: #8B6E4E;
+    --primary-light: #F5EDE3;
+    --primary-lighter: #FAF5EE;
+    --gold: #D4A94F;
+    --gold-light: #FFF6DC;
+    --text: #1D1D1F;
+    --text-2: #6E6E73;
+    --text-3: #86868B;
+    --bg: #FBFBFD;
+    --card: #FFFFFF;
+    --gray: #F5F5F7;
+    --border: #E8E8ED;
+    --success: #2E7D5B;
+    --success-light: #E6F4EC;
+    --danger: #B3261E;
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    background: var(--bg); color: var(--text);
+    font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  input { font-family: inherit; }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,0.85); backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 1120px; margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .brand { font-weight: 700; font-size: 15px; color: var(--primary-dark); }
+  .brand small { display: block; font-weight: 500; color: var(--text-3); font-size: 12px; }
+  .mahkota-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-light); color: #7A5A12;
+    padding: 6px 14px; border-radius: 980px; font-weight: 600; font-size: 14px;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  .notice {
+    font-size: 12.5px; color: var(--text-2); background: var(--gray);
+    border-radius: 12px; padding: 10px 14px; margin-bottom: 20px;
+  }
+
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 880px) {
+    .grid { grid-template-columns: 340px 1fr; align-items: start; }
+  }
+  .stack { display: grid; gap: 20px; }
+
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 22px; border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.4px;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  /* PROFILE */
+  .profile { text-align: center; }
+  .avatar-wrap { position: relative; width: 116px; height: 116px; margin: 0 auto 14px; }
+  .avatar {
+    width: 116px; height: 116px; border-radius: 50%;
+    background: var(--primary-light); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    border: 3px solid var(--gold); font-size: 40px; color: var(--primary-dark); font-weight: 600;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-edit {
+    position: absolute; right: 0; bottom: 0;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--primary-dark); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-size: 16px;
+  }
+  .name-display { font-size: 20px; font-weight: 700; }
+  .rank-badge {
+    display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 600;
+    color: var(--primary-dark); background: var(--primary-light);
+    padding: 3px 10px; border-radius: 980px;
+  }
+  .edit-form { margin-top: 16px; text-align: left; display: none; }
+  .edit-form.open { display: block; }
+  .field-label { font-size: 12px; color: var(--text-2); margin-bottom: 6px; display: block; }
+  .field {
+    width: 100%; padding: 10px 12px; border-radius: 12px;
+    border: 1px solid var(--border); font-size: 15px; outline: none;
+  }
+  .field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(190,150,106,0.2); }
+  .field-hint { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+  .form-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .btn {
+    padding: 9px 16px; border-radius: 980px; font-size: 14px; font-weight: 600;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--primary-dark); color: #fff; }
+  .btn-ghost { background: var(--gray); color: var(--text); }
+  .btn-outline { border: 1px solid var(--border); color: var(--text-2); background: #fff; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-row { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .file-input { display: none; }
+  .profile-meta { margin-top: 18px; text-align: left; border-top: 1px solid var(--border); padding-top: 14px; }
+  .meta-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; gap: 12px; }
+  .meta-row span:first-child { color: var(--text-3); }
+  .meta-row span:last-child { font-weight: 500; text-align: right; }
+
+  /* STATS */
+  .stats { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 640px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 12px; color: var(--text-3); }
+  .stat-value { font-size: 26px; font-weight: 700; margin-top: 4px; letter-spacing: -0.5px; }
+  .stat-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+  .stat.highlight { background: linear-gradient(135deg, #FFF6DC, #FFFFFF); border-color: #EBD9A4; }
+
+  /* LOGIN / DAILY */
+  .daily {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: #fff; border-radius: var(--radius); padding: 20px 22px;
+  }
+  .daily h3 { font-size: 17px; font-weight: 700; }
+  .daily p { font-size: 13px; opacity: 0.9; margin-top: 2px; }
+  .daily .btn { background: #fff; color: var(--primary-dark); }
+  .daily .btn:disabled { background: rgba(255,255,255,0.35); color: #fff; opacity: 1; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 16px; }
+  .day { text-align: center; font-size: 11px; color: var(--text-3); }
+  .dot {
+    width: 100%; aspect-ratio: 1; max-width: 44px; margin: 6px auto 4px; border-radius: 12px;
+    background: var(--gray); display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: var(--text-3);
+  }
+  .dot.done { background: var(--gold); color: #fff; font-weight: 700; }
+  .dot.today { border: 2px solid var(--primary-dark); }
+
+  /* RULES */
+  .rules { display: grid; gap: 10px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .rules { grid-template-columns: 1fr 1fr; } }
+  .rule {
+    display: flex; gap: 12px; align-items: flex-start;
+    border: 1px solid var(--border); border-radius: 14px; padding: 14px;
+  }
+  .rule-icon {
+    flex: 0 0 38px; height: 38px; border-radius: 12px;
+    background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .rule-title { font-weight: 600; font-size: 14px; }
+  .rule-desc { font-size: 12.5px; color: var(--text-2); }
+  .rule-val { margin-left: auto; font-weight: 700; color: #7A5A12; white-space: nowrap; font-size: 14px; }
+
+  /* ACTIVITIES */
+  .act-list { list-style: none; display: grid; gap: 8px; }
+  .act {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    border-radius: 14px; background: var(--gray);
+  }
+  .act-info { flex: 1; min-width: 0; }
+  .act-name { font-weight: 600; font-size: 14px; }
+  .act-meta { font-size: 12px; color: var(--text-3); }
+  .act-btn {
+    font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 980px;
+    background: #fff; border: 1px solid var(--border); color: var(--primary-dark); white-space: nowrap;
+  }
+  .act-btn:disabled { color: var(--success); border-color: #BFE3CF; background: var(--success-light); cursor: default; }
+  .act-reward { font-size: 13px; font-weight: 700; color: #7A5A12; white-space: nowrap; }
+
+  /* LEADERBOARD */
+  .lb { list-style: none; display: grid; gap: 6px; }
+  .lb-row {
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center;
+    padding: 10px 12px; border-radius: 14px;
+  }
+  .lb-row.me { background: var(--primary-light); outline: 1px solid #E1CDB2; }
+  .lb-pos {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--gray);
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: var(--text-2);
+  }
+  .lb-row.top1 .lb-pos { background: #F6D77A; color: #6B4E06; }
+  .lb-row.top2 .lb-pos { background: #E4E6EB; color: #3A3A3C; }
+  .lb-row.top3 .lb-pos { background: #EBC59B; color: #6B4321; }
+  .lb-name { font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .lb-mini {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--primary-light);
+    color: var(--primary-dark); font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex: 0 0 28px;
+  }
+  .lb-name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lb-you { font-size: 11px; color: var(--primary-dark); font-weight: 600; margin-left: 4px; }
+  .lb-score { font-weight: 700; font-size: 14px; color: #7A5A12; white-space: nowrap; }
+  .lb-zone { font-size: 12px; color: var(--text-3); text-align: center; padding: 6px 0; }
+
+  .progress { height: 8px; background: var(--gray); border-radius: 980px; overflow: hidden; margin-top: 8px; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--primary), var(--gold)); border-radius: 980px; transition: width .5s ease; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-2); margin-top: 6px; }
+
+  /* HISTORY */
+  .hist { list-style: none; display: grid; gap: 0; }
+  .hist li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .hist li:last-child { border-bottom: none; }
+  .hist .when { font-size: 12px; color: var(--text-3); }
+  .hist .amt { font-weight: 700; color: #7A5A12; white-space: nowrap; }
+
+  .tiers { display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 640px) { .tiers { grid-template-columns: repeat(4, 1fr); } }
+  .tier { border-radius: 14px; padding: 12px; background: var(--gray); text-align: center; }
+  .tier.on { background: var(--primary-light); outline: 1px solid #E1CDB2; }
+  .tier b { display: block; font-size: 13px; }
+  .tier small { font-size: 11px; color: var(--text-2); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: #fff; padding: 10px 16px; border-radius: 980px;
+    font-size: 13px; opacity: 0; pointer-events: none; transition: all .3s ease; z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .err { color: var(--danger); font-size: 12px; margin-top: 6px; display: none; }
+  .err.show { display: block; }
+
+  .footer-note { text-align: center; font-size: 12px; color: var(--text-3); margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">Mahkota Tahfidz Online<small>Dashboard Peserta</small></div>
+    <div class="mahkota-pill">👑 <span id="topMahkota">0</span> Mahkota</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="notice">Tampilan ini memakai data contoh. Nilai Mahkota, peringkat, dan riwayat akan terisi otomatis setelah sumber data dihubungkan. Foto dan nama yang Anda ubah di halaman ini belum tersimpan permanen.</div>
+
+  <div class="grid">
+    <!-- LEFT COLUMN: PROFILE -->
+    <aside class="stack">
+      <section class="card profile">
+        <div class="avatar-wrap">
+          <div class="avatar" id="avatar"><span id="avatarInitial">P</span></div>
+          <button class="avatar-edit" id="avatarBtn" title="Ganti foto profil" aria-label="Ganti foto profil">📷</button>
+          <input type="file" id="photoInput" class="file-input" accept="image/png,image/jpeg,image/webp">
+        </div>
+        <div class="name-display" id="nameDisplay">Peserta Contoh</div>
+        <span class="rank-badge" id="rankBadge">Peringkat #—</span>
+
+        <div class="edit-form" id="editForm">
+          <label class="field-label" for="nameInput">Nama lengkap</label>
+          <input class="field" id="nameInput" maxlength="60" autocomplete="name">
+          <div class="err" id="nameErr">Nama lengkap wajib diisi (minimal 3 karakter).</div>
+          <div class="form-actions">
+            <button class="btn btn-ghost" id="cancelName" style="flex:1">Batal</button>
+            <button class="btn btn-primary" id="saveName" style="flex:1">Simpan</button>
+          </div>
+        </div>
+
+        <div class="btn-row" id="profileActions">
+          <button class="btn btn-outline" id="editNameBtn">Ubah nama</button>
+          <button class="btn btn-outline" id="removePhotoBtn">Hapus foto</button>
+        </div>
+
+        <div class="field-hint" style="margin-top:10px">Foto JPG, PNG, atau WEBP, maksimal 2 MB.</div>
+
+        <div class="profile-meta">
+          <div class="meta-row"><span>Program</span><span>Tahfidz Reguler</span></div>
+          <div class="meta-row"><span>Pengajar</span><span>Belum ditentukan</span></div>
+          <div class="meta-row"><span>Bergabung</span><span>Nov 2026</span></div>
+          <div class="meta-row"><span>Status</span><span>Aktif</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Aturan Mahkota</span></div>
+        <div class="rules">
+          <div class="rule">
+            <div class="rule-icon">📅</div>
+            <div><div class="rule-title">Login harian</div><div class="rule-desc">Sekali per hari saat membuka dashboard.</div></div>
+            <div class="rule-val">+1</div>
+          </div>
+          <div class="rule">
+            <div class="rule-icon">🏅</div>
+            <div><div class="rule-title">Aktivitas tertentu</div><div class="rule-desc">Setoran, muroja'ah, dan target mingguan.</div></div>
+            <div class="rule-val">+3</div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- RIGHT COLUMN -->
+    <div class="stack">
+      <section class="stats">
+        <div class="stat highlight">
+          <div class="stat-label">Total Mahkota</div>
+          <div class="stat-value" id="statMahkota">0</div>
+          <div class="stat-sub">Kumpulan sejak bergabung</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Peringkat</div>
+          <div class="stat-value" id="statRank">—</div>
+          <div class="stat-sub" id="statRankSub">dari peserta</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Streak login</div>
+          <div class="stat-value" id="statStreak">0</div>
+          <div class="stat-sub">hari berturut-turut</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Bulan ini</div>
+          <div class="stat-value" id="statMonth">0</div>
+          <div class="stat-sub">Mahkota diperoleh</div>
+        </div>
+      </section>
+
+      <section class="daily">
+        <div>
+          <h3 id="dailyTitle">Login hari ini belum diklaim</h3>
+          <p id="dailySub">Klaim untuk mendapatkan 1 Mahkota dan menjaga streak Anda.</p>
+        </div>
+        <button class="btn" id="claimBtn">Klaim +1 Mahkota</button>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Konsistensi 7 hari terakhir</span></div>
+        <div class="week" id="week"></div>
+        <div class="progress-label" style="margin-top:14px">
+          <span>Target streak berikutnya: <b id="nextMilestoneText"></b></span>
+          <span id="nextMilestoneCount"></span>
+        </div>
+        <div class="progress"><div id="milestoneBar" style="width:0%"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Aktivitas bernilai Mahkota</span><span>Sekali per hari</span></div>
+        <ul class="act-list" id="actList"></ul>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Papan peringkat</span><span>Diurutkan dari Mahkota terbanyak</span></div>
+        <ol class="lb" id="leaderboard"></ol>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Level Mahkota</span></div>
+        <div class="tiers" id="tiers"></div>
+        <div class="progress"><div id="levelBar" style="width:0%"></div></div>
+        <div class="progress-label"><span id="levelFrom"></span><span id="levelTo"></span></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>Riwayat Mahkota</span><span>Terbaru di atas</span></div>
+        <ul class="hist" id="history"></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="footer-note">Mahkota Tahfidz Online · Dashboard peserta versi awal</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- DATA CONTOH (akan diganti dengan sumber data nyata) ----------
+  var state = {
+    name: "Peserta Contoh",
+    photo: null,
+    mahkota: 42,
+    streak: 6,
+    lastClaimDate: null,           // "YYYY-MM-DD" bila login hari ini sudah diklaim
+    today: todayKey(),
+    activitiesDone: { setoran: false, murojaah: true, target: false },
+    history: [
+      { date: daysAgo(0), label: "Setoran hafalan selesai", amt: 3 },
+      { date: daysAgo(1), label: "Login harian", amt: 1 },
+      { date: daysAgo(1), label: "Muroja'ah pekanan", amt: 3 },
+      { date: daysAgo(2), label: "Login harian", amt: 1 },
+      { date: daysAgo(3), label: "Target minggu ini tercapai", amt: 3 }
+    ]
+  };
+
+  // Peserta lain (contoh). Nama dibuat generik agar tidak menampilkan data nyata.
+  var others = [
+    { name: "Peserta A", mahkota: 96 },
+    { name: "Peserta B", mahkota: 81 },
+    { name: "Peserta C", mahkota: 74 },
+    { name: "Peserta D", mahkota: 60 },
+    { name: "Peserta E", mahkota: 33 },
+    { name: "Peserta F", mahkota: 27 },
+    { name: "Peserta G", mahkota: 19 }
+  ];
+
+  var ACTIVITIES = [
+    { key: "setoran",  name: "Setoran hafalan",       meta: "Setor hafalan baru ke pengajar", reward: 3 },
+    { key: "murojaah", name: "Muroja'ah pekanan",     meta: "Ulang hafalan sesuai jadwal",     reward: 3 },
+    { key: "target",   name: "Target minggu ini",     meta: "Capai target halaman mingguan",   reward: 3 }
+  ];
+
+  var LEVELS = [
+    { name: "Pemula",    min: 0 },
+    { name: "Pejuang",   min: 25 },
+    { name: "Pembelajar", min: 60 },
+    { name: "Penghafal", min: 120 }
+  ];
+
+  var MILESTONES = [3, 7, 14, 30, 60, 100];
+
+  // ---------- HELPERS ----------
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function daysAgo(n) {
+    var d = new Date();
+    d.setDate(d.getDate() - n);
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function $(id) { return document.getElementById(id); }
+  function fmtDate(key) {
+    var p = key.split("-");
+    var months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+    return Number(p[2]) + " " + months[Number(p[1]) - 1];
+  }
+  function initials(name) {
+    var parts = name.trim().split(/\s+/);
+    var s = (parts[0] || "").charAt(0) + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : "");
+    return s.toUpperCase() || "P";
+  }
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove("show"); }, 2200);
+  }
+  function levelOf(total) {
+    var lv = LEVELS[0], idx = 0;
+    for (var i = 0; i < LEVELS.length; i++) if (total >= LEVELS[i].min) { lv = LEVELS[i]; idx = i; }
+    return { current: lv, index: idx, next: LEVELS[idx + 1] || null };
+  }
+  function rankOf(total) {
+    var list = others.map(function (o) { return o.mahkota; }).concat([total]);
+    list.sort(function (a, b) { return b - a; });
+    return list.indexOf(total) + 1;
+  }
+  function monthTotal() {
+    var prefix = todayKey().slice(0, 7);
+    return state.history.filter(function (h) { return h.date.indexOf(prefix) === 0; })
+                        .reduce(function (s, h) { return s + h.amt; }, 0);
+  }
+
+  // ---------- RENDER ----------
+  function renderProfile() {
+    $("nameDisplay").textContent = state.name;
+    $("avatarInitial").textContent = initials(state.name);
+    var av = $("avatar");
+    var existing = av.querySelector("img");
+    if (state.photo) {
+      if (!existing) { existing = document.createElement("img"); existing.alt = "Foto profil"; av.appendChild(existing); }
+      existing.src = state.photo;
+      $("avatarInitial").style.display = "none";
+    } else {
+      if (existing) existing.remove();
+      $("avatarInitial").style.display = "";
+    }
+    $("removePhotoBtn").disabled = !state.photo;
+  }
+
+  function renderStats() {
+    var rank = rankOf(state.mahkota);
+    $("topMahkota").textContent = state.mahkota;
+    $("statMahkota").textContent = state.mahkota;
+    $("statRank").textContent = "#" + rank;
+    $("statRankSub").textContent = "dari " + (others.length + 1) + " peserta";
+    $("rankBadge").textContent = "Peringkat #" + rank;
+    $("statStreak").textContent = state.streak;
+    $("statMonth").textContent = monthTotal();
+  }
+
+  function renderDaily() {
+    var claimed = state.lastClaimDate === todayKey();
+    $("claimBtn").disabled = claimed;
+    $("claimBtn").textContent = claimed ? "Sudah diklaim" : "Klaim +1 Mahkota";
+    $("dailyTitle").textContent = claimed ? "Login hari ini sudah diklaim" : "Login hari ini belum diklaim";
+    $("dailySub").textContent = claimed
+      ? "Streak Anda: " + state.streak + " hari. Sampai jumpa besok."
+      : "Klaim untuk mendapatkan 1 Mahkota dan menjaga streak Anda.";
+  }
+
+  function renderWeek() {
+    var box = $("week"), html = "", names = ["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+    for (var i = 6; i >= 0; i--) {
+      var key = daysAgo(i);
+      var d = new Date(); d.setDate(d.getDate() - i);
+      var done = (i === 0 && state.lastClaimDate === key) || (i > 0 && i < state.streak);
+      var cls = "dot" + (done ? " done" : "") + (i === 0 ? " today" : "");
+      html += '<div class="day">' + names[d.getDay()] +
+              '<div class="' + cls + '">' + (done ? "✓" : "") + '</div></div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function renderMilestone() {
+    var next = null;
+    for (var i = 0; i < MILESTONES.length; i++) if (state.streak < MILESTONES[i]) { next = MILESTONES[i]; break; }
+    if (!next) {
+      $("nextMilestoneText").textContent = "Semua target tercapai";
+      $("nextMilestoneCount").textContent = state.streak + " hari";
+      $("milestoneBar").style.width = "100%";
+      return;
+    }
+    var prev = 0;
+    for (var j = 0; j < MILESTONES.length; j++) if (MILESTONES[j] < next) prev = MILESTONES[j];
+    $("nextMilestoneText").textContent = next + " hari";
+    $("nextMilestoneCount").textContent = state.streak + " / " + next + " hari";
+    $("milestoneBar").style.width = Math.min(100, Math.round((state.streak - prev) / (next - prev) * 100)) + "%";
+  }
+
+  function renderActivities() {
+    var html = "";
+    ACTIVITIES.forEach(function (a) {
+      var done = !!state.activitiesDone[a.key];
+      html += '<li class="act">' +
+        '<div class="act-info"><div class="act-name">' + a.name + '</div><div class="act-meta">' + a.meta + '</div></div>' +
+        '<div class="act-reward">+' + a.reward + '</div>' +
+        '<button class="act-btn" data-act="' + a.key + '"' + (done ? " disabled" : "") + '>' + (done ? "Selesai ✓" : "Tandai selesai") + '</button>' +
+        '</li>';
+    });
+    $("actList").innerHTML = html;
+  }
+
+  function renderLeaderboard() {
+    var rows = others.map(function (o) { return { name: o.name, mahkota: o.mahkota, me: false }; });
+    rows.push({ name: state.name, mahkota: state.mahkota, me: true });
+    rows.sort(function (a, b) { return b.mahkota - a.mahkota; });
+    var html = "";
+    rows.forEach(function (r, i) {
+      var pos = i + 1;
+      var cls = "lb-row" + (r.me ? " me" : "") + (pos <= 3 ? " top" + pos : "");
+      html += '<li class="' + cls + '">' +
+        '<div class="lb-pos">' + pos + '</div>' +
+        '<div class="lb-name"><div class="lb-mini">' + initials(r.name) + '</div><span>' + escapeHtml(r.name) +
+        (r.me ? '</span><span class="lb-you">(Anda)</span>' : '</span>') + '</div>' +
+        '<div class="lb-score">👑 ' + r.mahkota + '</div></li>';
+    });
+    $("leaderboard").innerHTML = html;
+  }
+
+  function renderLevel() {
+    var lv = levelOf(state.mahkota);
+    var html = "";
+    LEVELS.forEach(function (l, i) {
+      html += '<div class="tier' + (i === lv.index ? " on" : "") + '"><b>' + l.name + '</b><small>' + l.min + '+ Mahkota</small></div>';
+    });
+    $("tiers").innerHTML = html;
+    var from = lv.current.min, to = lv.next ? lv.next.min : lv.current.min;
+    var pct = lv.next ? Math.round((state.mahkota - from) / (to - from) * 100) : 100;
+    $("levelBar").style.width = pct + "%";
+    $("levelFrom").textContent = "Level sekarang: " + lv.current.name;
+    $("levelTo").textContent = lv.next ? (to - state.mahkota) + " Mahkota lagi ke " + lv.next.name : "Level tertinggi";
+  }
+
+  function renderHistory() {
+    var html = "";
+    state.history.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).forEach(function (h) {
+      html += '<li><div><div>' + escapeHtml(h.label) + '</div><div class="when">' + fmtDate(h.date) + '</div></div>' +
+              '<div class="amt">+' + h.amt + '</div></li>';
+    });
+    $("history").innerHTML = html;
+  }
+
+  function renderAll() {
+    renderProfile(); renderStats(); renderDaily(); renderWeek();
+    renderMilestone(); renderActivities(); renderLeaderboard(); renderLevel(); renderHistory();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // ---------- ACTIONS ----------
+  function addMahkota(amt, label) {
+    state.mahkota += amt;
+    state.history.unshift({ date: todayKey(), label: label, amt: amt });
+  }
+
+  $("claimBtn").addEventListener("click", function () {
+    if (state.lastClaimDate === todayKey()) return;
+    state.lastClaimDate = todayKey();
+    state.streak += 1;
+    addMahkota(1, "Login harian");
+    renderAll();
+    toast("+1 Mahkota diterima. Streak: " + state.streak + " hari");
+  });
+
+  $("actList").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-act]");
+    if (!btn || btn.disabled) return;
+    var key = btn.getAttribute("data-act");
+    var act = ACTIVITIES.filter(function (a) { return a.key === key; })[0];
+    if (!act || state.activitiesDone[key]) return;
+    state.activitiesDone[key] = true;
+    addMahkota(act.reward, act.name);
+    renderAll();
+    toast("+" + act.reward + " Mahkota dari " + act.name);
+  });
+
+  // Ubah nama
+  $("editNameBtn").addEventListener("click", function () {
+    $("nameInput").value = state.name;
+    $("editForm").classList.add("open");
+    $("profileActions").style.display = "none";
+    $("nameInput").focus();
+  });
+  function closeNameForm() {
+    $("editForm").classList.remove("open");
+    $("profileActions").style.display = "";
+    $("nameErr").classList.remove("show");
+  }
+  $("cancelName").addEventListener("click", closeNameForm);
+  $("saveName").addEventListener("click", function () {
+    var v = $("nameInput").value.replace(/\s+/g, " ").trim();
+    if (v.length < 3) { $("nameErr").classList.add("show"); return; }
+    state.name = v;
+    closeNameForm();
+    renderAll();
+    toast("Nama lengkap diperbarui");
+  });
+  $("nameInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") $("saveName").click();
+    if (e.key === "Escape") closeNameForm();
+  });
+
+  // Foto profil (pratinjau di sisi klien)
+  $("avatarBtn").addEventListener("click", function () { $("photoInput").click(); });
+  $("photoInput").addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    var okType = ["image/png", "image/jpeg", "image/webp"].indexOf(file.type) !== -1;
+    if (!okType) { toast("Format harus JPG, PNG, atau WEBP"); return; }
+    if (file.size > 2 * 1024 * 1024) { toast("Ukuran foto maksimal 2 MB"); return; }
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      state.photo = ev.target.result;
+      renderProfile();
+      toast("Foto profil diperbarui");
+    };
+    reader.readAsDataURL(file);
+  });
+  $("removePhotoBtn").addEventListener("click", function () {
+    if (!state.photo) return;
+    state.photo = null;
+    renderProfile();
+    toast("Foto profil dihapus");
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
