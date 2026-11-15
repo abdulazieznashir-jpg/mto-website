@@ -4,6 +4,7 @@
 (function () {
   var sb = null;
   var user = null;
+  var usernameSaya = '';
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -42,6 +43,11 @@
     $('mkRank').textContent = d.peringkat || '–';
     $('mkRankKet').textContent = d.peringkat && d.peringkat <= 3 ? 'Posisi 3 besar' : 'Posisi Anda';
     $('mkStreak').textContent = d.streak;
+    usernameSaya = d.username || '';
+    $('vUsername').textContent = usernameSaya || 'Belum diatur';
+    $('pfUsername').textContent = usernameSaya ? '@' + usernameSaya : 'Belum ada username';
+    var akun = d.avatar_key ? cariAvatar(d.avatar_key) : null;
+    if (akun) $('pfAvatar').innerHTML = svgAvatar(akun);
 
     var sudah = !!d.sudah_login_hari_ini;
     $('btnKlaim').disabled = sudah;
@@ -49,9 +55,13 @@
     $('mkKlaimText').textContent = sudah ? 'Login hari ini sudah diklaim' : 'Login hari ini belum diklaim';
 
     var papan = (d.papan || []).map(function (p) {
+      var a = p.avatar ? cariAvatar(p.avatar) : null;
+      var gambar = a ? svgAvatar(a) : esc((p.username || 'P').charAt(0).toUpperCase());
+      var nama = p.username ? p.username : 'Peserta';
       return '<li class="mk-row' + (p.saya ? ' me' : '') + '">' +
              '<span class="mk-pos">' + p.peringkat + '</span>' +
-             '<span class="mk-nm">' + esc(p.inisial) + (p.saya ? ' <em>(Anda)</em>' : '') + '</span>' +
+             '<span class="mk-av">' + gambar + '</span>' +
+             '<span class="mk-nm">' + esc(nama) + (p.saya ? ' <em>(Anda)</em>' : '') + '</span>' +
              '<span class="mk-sc">' + p.total + '</span></li>';
     }).join('');
     $('mkPapan').innerHTML = papan || '<li class="pf-empty">Belum ada peserta.</li>';
@@ -149,13 +159,43 @@
 
   function pilihAvatar(e) {
     var k = e.currentTarget.getAttribute('data-k');
-    sb.auth.updateUser({ data: { avatar_key: k } }).then(function (r) {
+    sb.rpc('atur_profil_papan', { p_username: null, p_avatar: k }).then(function (r) {
       if (r.error) { note('Avatar belum tersimpan. Coba lagi.', true); return; }
-      user = r.data.user;
-      pasangAvatar(user);
-      $('pickAvatar').classList.add('hidden');
-      $('btnFoto').setAttribute('aria-expanded', 'false');
-      note('Avatar sudah disimpan.');
+      sb.auth.updateUser({ data: { avatar_key: k } }).then(function (r2) {
+        if (r2.data && r2.data.user) user = r2.data.user;
+        pasangAvatar(user);
+        $('pickAvatar').classList.add('hidden');
+        $('btnFoto').setAttribute('aria-expanded', 'false');
+        note('Avatar sudah disimpan.');
+        muat();
+      });
+    });
+  }
+
+  /* ---------- Username ---------- */
+  function bukaUsername() {
+    var f = $('formUsername');
+    f.classList.remove('hidden');
+    f.elements.username.value = usernameSaya;
+    f.elements.username.focus();
+  }
+
+  function simpanUsername(e) {
+    e.preventDefault();
+    var f = $('formUsername');
+    var v = f.elements.username.value.trim().toLowerCase();
+    if (!/^[a-z0-9_.]{3,20}$/.test(v)) {
+      note('Username 3-20 karakter: huruf kecil, angka, titik, atau garis bawah.', true);
+      return;
+    }
+    var b = $('btnSimpanUsername');
+    b.disabled = true;
+    sb.rpc('atur_profil_papan', { p_username: v, p_avatar: null }).then(function (r) {
+      b.disabled = false;
+      if (r.error) { note((r.error.message || 'Username belum tersimpan.'), true); return; }
+      f.classList.add('hidden');
+      note('Username sudah disimpan.');
+      muat();
     });
   }
 
@@ -165,6 +205,9 @@
     user = u;
     $('btnKlaim').addEventListener('click', klaim);
     $('btnFoto').addEventListener('click', bukaPilihan);
+    $('btnEditUsername').addEventListener('click', bukaUsername);
+    $('btnBatalUsername').addEventListener('click', function () { $('formUsername').classList.add('hidden'); });
+    $('formUsername').addEventListener('submit', simpanUsername);
     pasangAvatar(u);
     muat();
   }

@@ -199,6 +199,10 @@
   .pb-info { padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--pf-muted); }
   .pb-info strong { color: #1D1D1F; font-size: 15px; }
   .pb-info .pf-btn { align-self: flex-start; margin-top: 4px; text-decoration: none; }
+
+  .pb-user { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: #1D1D1F; }
+  .pf-group .mk-av { width: 32px; height: 32px; border-radius: 50%; flex: none; background: #F2EBE1; color: #5C3D0A; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .pf-group .mk-av svg { width: 18px; height: 18px; }
 </style>
 </head>
 <body>
@@ -233,6 +237,7 @@
         <div class="pb-id">
           <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
           <h1 class="pf-name" id="pfNama">Memuat…</h1>
+          <p class="pb-user" id="pfUsername"></p>
           <p class="pf-mail" id="pfEmail"></p>
           <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
           <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
@@ -310,6 +315,19 @@
       <span class="pf-label">Email</span>
       <span class="pf-value" id="vEmail">–</span>
     </div>
+    <div class="pf-row">
+      <span class="pf-label">Username</span>
+      <span class="pf-value" id="vUsername">–</span>
+      <button type="button" class="pf-action" id="btnEditUsername">Ubah</button>
+    </div>
+    <form id="formUsername" class="pf-edit hidden" novalidate>
+      <input type="text" name="username" autocomplete="username" maxlength="20" placeholder="3-20 karakter, huruf kecil, angka, titik, _" aria-label="Username">
+      <p class="pf-caption">Username tampil di papan skor, menggantikan nama Anda.</p>
+      <div class="pf-btns">
+        <button type="button" class="pf-btn pf-btn-ghost" id="btnBatalUsername">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri" id="btnSimpanUsername">Simpan</button>
+      </div>
+    </form>
     <div class="pf-row">
       <span class="pf-label">Bergabung</span>
       <span class="pf-value" id="vTgl">–</span>
