@@ -3,7 +3,7 @@
  */
 (function () {
   var sb = null;
-  var OWNER = 'abdulaziez.nashir@gmail.com';
+  var OWNER = 'mahkota.to3@gmail.com';
   var emailSaya = '';
   var user = null;
   var usernameSaya = '';
