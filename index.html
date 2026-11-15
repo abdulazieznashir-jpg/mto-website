@@ -375,6 +375,16 @@
   .ask-note, .ask-sum { font-size: 15px; line-height: 1.6; margin: 0; }
   .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
+  .rc { margin: 8px 0 16px; }
+  .rc-title { font-size: 18px; font-weight: 700; color: #2b1c0e; margin: 8px 0 10px; }
+  .rc-card { background: #fff; border-radius: 20px; border: 1px solid #e6dccf; padding: 16px 18px 14px; }
+  .rc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 15px; color: #4a4a4a; }
+  .rc-row > span:first-child, .rc-total > span:first-child { flex: 1; min-width: 0; }
+  .rc-row > span:last-child, .rc-total > span:last-child { white-space: nowrap; text-align: right; }
+  .rc-disc { color: #C62828; font-weight: 600; }
+  .rc-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 8px; padding-top: 14px; border-top: 1px solid #e6dccf; font-size: 16px; font-weight: 700; color: #5a3b1c; }
+  .rc-total strong { font-size: 18px; color: #2b1c0e; }
+  .rc-old { color: #8a8a8a; font-weight: 400; font-size: 14px; margin-right: 6px; }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -1169,6 +1179,18 @@
   }
   function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
   function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
+  // Ringkasan pembayaran bergaya kwitansi: harga, setiap diskon dengan labelnya, dan total.
+  function receiptBlock(k, m) {
+    var c = KELAS[k], n = S.peserta, base = c.asli * m * n;
+    var p1 = S.promoAwal !== false ? (c.asli - c.list) * m * n : 0;
+    var p2 = paketAktif(m) ? (c.list - c.paket) * m * n : 0;
+    var total = base - p1 - p2;
+    var rows = '<div class="rc-row"><span>Harga paket · ' + durasiLabel(m) + (n > 1 ? ' · ' + n + ' peserta' : '') + '</span><span>' + rupiah(base) + '</span></div>';
+    if (p1) rows += '<div class="rc-row rc-disc"><span>Diskon promo awal ' + promoPct(k) + '%</span><span>-' + rupiah(p1) + '</span></div>';
+    if (p2) rows += '<div class="rc-row rc-disc"><span>Potongan paket 3 bulan 12%</span><span>-' + rupiah(p2) + '</span></div>';
+    var tot = '<div class="rc-total"><span>Total pembayaran</span><span>' + ((p1 || p2) ? '<s class="rc-old">' + rupiah(base) + '</s>' : '') + '<strong>' + rupiah(total) + '</strong></span></div>';
+    return '<div class="rc"><div class="rc-title">Ringkasan pembayaran</div><div class="rc-card">' + rows + tot + '</div></div>';
+  }
   function durasiLabel(m) { return m === 12 ? '1 tahun' : m + ' bulan'; }
   var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   function tgl(d) { return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
@@ -1375,7 +1397,7 @@
       return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
     }).join('') + '</div>';
 
-    var harga = priceBlock(S.kelas, m);
+    var harga = receiptBlock(S.kelas, m);
 
     var edit = '<div class="cek-edit">' +
       '<button type="button" data-edit="kelas">Ubah kelas</button>' +
