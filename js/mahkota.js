@@ -3,6 +3,8 @@
  */
 (function () {
   var sb = null;
+  var OWNER = 'abdulaziez.nashir@gmail.com';
+  var emailSaya = '';
   var user = null;
   var usernameSaya = '';
 
@@ -184,12 +186,18 @@
       ].map(function (r) {
         return '<div class="pd-baris"><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>';
       }).join('');
+      var owner = emailSaya === OWNER;
       var aksi = '<button type="button" data-salin="' + i + '">Salin untuk WhatsApp</button>' +
-        (p.status === 'menunggu_verifikasi' ? '<button type="button" class="utama" data-terima="' + p.id + '">Tandai diterima</button>' : '');
+        (p.bukti_path ? '<button type="button" data-bukti="' + i + '">Lihat bukti</button>' : '') +
+        (owner && p.status === 'menunggu_verifikasi' ? '<button type="button" class="utama" data-terima="' + p.id + '">Konfirmasi pembayaran</button>' : '');
+      var jadwal = owner ? '<div class="pd-jadwal">' +
+        '<label>Mulai halaqah<input type="date" data-tglhalaqah="' + p.id + '" value="' + esc(p.tanggal_halaqah || '') + '"></label>' +
+        '<label>Link grup<input type="url" data-linkgrup="' + p.id + '" placeholder="https://chat.whatsapp.com/..." value="' + esc(p.link_grup || '') + '"></label>' +
+        '<button type="button" data-jadwal="' + p.id + '">Simpan jadwal</button></div>' : '';
       return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
         '<div class="pd-detail">' + baris + '</div>' +
-        '<div class="pd-aksi">' + aksi + '</div></div>';
+        '<div class="pd-aksi">' + aksi + '</div>' + jadwal + '</div>';
     }).join('');
   }
   function bindAdmin() {
@@ -205,10 +213,28 @@
           setTimeout(function () { t.textContent = 'Salin untuk WhatsApp'; }, 1500);
         });
       }
+      if (t.dataset.bukti !== undefined && sb) {
+        var pb = daftarAdmin[Number(t.dataset.bukti)];
+        if (!pb || !pb.bukti_path) return;
+        sb.storage.from('bukti-transfer').createSignedUrl(pb.bukti_path, 300).then(function (r) {
+          if (r.error || !r.data) { note('Bukti belum bisa dibuka.', true); return; }
+          window.open(r.data.signedUrl, '_blank', 'noopener');
+        });
+      }
       if (t.dataset.terima !== undefined && sb) {
-        t.disabled = true;
         sb.rpc('ubah_status_pendaftaran', { p_id: Number(t.dataset.terima), p_status: 'diterima' }).then(function (r) {
-          if (r.error) { t.disabled = false; note('Status belum berubah. Coba lagi.', true); return; }
+          if (r.error) { note('Pembayaran belum bisa dikonfirmasi. Coba lagi.', true); return; }
+          note('Pembayaran dikonfirmasi.');
+          muat();
+        });
+      }
+      if (t.dataset.jadwal !== undefined && sb) {
+        var id = t.dataset.jadwal;
+        var tg = box.querySelector('[data-tglhalaqah="' + id + '"]').value || null;
+        var lk = box.querySelector('[data-linkgrup="' + id + '"]').value || null;
+        sb.rpc('atur_halaqah', { p_id: Number(id), p_tanggal: tg, p_link: lk }).then(function (r) {
+          if (r.error) { note('Jadwal belum tersimpan. Coba lagi.', true); return; }
+          note('Jadwal halaqah tersimpan.');
           muat();
         });
       }
@@ -367,6 +393,7 @@
   function init(client, u) {
     sb = client;
     user = u;
+    emailSaya = ((u && u.email) || '').toLowerCase();
     $('btnKlaim').addEventListener('click', klaim);
     bindAdmin();
     $('btnFoto').addEventListener('click', bukaPilihan);
