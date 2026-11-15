@@ -54,6 +54,7 @@
     $('vEmail').textContent = user.email;
     $('vTgl').textContent = fmtTanggal(user.created_at);
     $('formNama').nama.value = nama;
+    if (window.MTO_MAHKOTA) window.MTO_MAHKOTA.pasangAvatar(user);
   }
 
   function bukaForm(form, tombolUbah, buka) {
@@ -135,6 +136,7 @@
         if (!r.data || !r.data.session) { window.location.replace('login.html'); return; }
         user = r.data.session.user;
         render();
+        if (window.MTO_MAHKOTA) window.MTO_MAHKOTA.init(sb, user);
       });
       sb.auth.onAuthStateChange(function (event) {
         if (event === 'SIGNED_OUT') window.location.replace('login.html');

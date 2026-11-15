@@ -63,6 +63,21 @@
   .pf-notice { margin: 16px 16px 0; font-size: 14px; text-align: center; color: var(--pf-muted); min-height: 0; }
   .pf-notice:empty { display: none; }
   .pf-notice.bad { color: #B42318; }
+
+  /* Mahkota */
+  .mk-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--pf-sep); }
+  .mk-stat { padding: 14px 6px; text-align: center; }
+  .mk-stat small { display: block; color: var(--pf-muted); font-size: 12px; }
+  .mk-stat b { display: block; font-size: 16px; margin-top: 4px; }
+  .mk-list { list-style: none; margin: 0; padding: 0; }
+  .mk-row { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 12px 16px; font-size: 15px; }
+  .mk-row + .mk-row { border-top: 1px solid var(--pf-sep); }
+  .mk-row.me { background: #FAF5EE; }
+  .mk-hist { grid-template-columns: 1fr auto; }
+  .mk-pos { color: var(--pf-muted); font-weight: 600; }
+  .mk-nm small { color: var(--pf-muted); font-size: 12px; }
+  .mk-nm em { font-style: normal; color: var(--pf-accent-dark); font-size: 13px; }
+  .mk-sc { font-weight: 600; color: var(--pf-accent-dark); }
 </style>
 </head>
 <body>
@@ -78,9 +93,39 @@
 
   <section class="pf-hero">
     <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
+    <button type="button" class="pf-action" id="btnFoto">Ganti foto</button>
+    <input type="file" id="fileFoto" accept="image/png,image/jpeg,image/webp" hidden>
     <h1 class="pf-name" id="pfNama">Memuat…</h1>
     <p class="pf-mail" id="pfEmail"></p>
   </section>
+
+  <p class="pf-section-title">Mahkota saya</p>
+  <div class="pf-group">
+    <div class="mk-stats">
+      <div class="mk-stat"><small>Total</small><b id="mkTotal">–</b></div>
+      <div class="mk-stat"><small>Peringkat</small><b id="mkRank">–</b></div>
+      <div class="mk-stat"><small>Streak</small><b id="mkStreak">–</b></div>
+      <div class="mk-stat"><small>Bulan ini</small><b id="mkBulan">–</b></div>
+    </div>
+    <div class="pf-row">
+      <span class="pf-label" id="mkKlaimText">Login hari ini</span>
+      <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim" disabled>Klaim +1</button>
+    </div>
+    <div class="pf-row">
+      <span class="pf-label">Aturan</span>
+      <span class="pf-value">Login +1 · Aktivitas +3</span>
+    </div>
+  </div>
+
+  <p class="pf-section-title">Papan peringkat</p>
+  <div class="pf-group">
+    <ol class="mk-list" id="mkPapan"></ol>
+  </div>
+
+  <p class="pf-section-title">Riwayat Mahkota</p>
+  <div class="pf-group">
+    <ul class="mk-list" id="mkRiwayat"></ul>
+  </div>
 
   <p class="pf-section-title">Data diri</p>
   <div class="pf-group">
@@ -142,6 +187,7 @@
 </main>
 
 <script src="js/pw.js"></script>
+<script src="js/mahkota.js"></script>
 <script src="js/profil.js"></script>
 </body>
 </html>
