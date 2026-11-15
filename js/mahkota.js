@@ -36,6 +36,9 @@
     sb.rpc('progres_juz_saya').then(function (r) {
       renderJus(r.error ? null : r.data);
     });
+    sb.rpc('profil_peserta_saya').then(function (r) {
+      if (!r.error && r.data) tampilPaket(r.data);
+    });
   }
 
   function tampil(d) {
@@ -74,6 +77,18 @@
     $('mkRiwayat').innerHTML = riwayat || '<li class="pf-empty">Belum ada riwayat Mahkota.</li>';
   }
 
+  /* ---------- Paket, pengampu, dan tanggal bergabung ---------- */
+  function tampilPaket(d) {
+    var box = $('pbPaket');
+    if (!box) return;
+    box.hidden = !d.paket;
+    if (d.paket) $('pbNamaPaket').textContent = 'Paket ' + d.paket;
+    $('pbPengampu').textContent = d.pengampu ? 'Pengampu: ' + d.pengampu : '';
+    $('pbBergabung').textContent = d.bergabung
+      ? 'Bergabung sejak ' + new Date(d.bergabung).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })
+      : '';
+  }
+
   /* ---------- Pencapaian: Juz 1 sampai 30, tiap juz 20 halaman ---------- */
   function renderJus(data) {
     var el = $('pbJus');
@@ -87,6 +102,10 @@
       return;
     }
     var juz = data.juz || {};
+    var selesai = 0;
+    for (var k = 1; k <= 30; k++) if (parseInt(juz[k], 10) >= 20) selesai++;
+    var ringkas = $('pbRingkas');
+    if (ringkas) ringkas.textContent = selesai + ' dari 30 juz selesai · sisa ' + (30 - selesai) + ' juz';
     var html = '';
     for (var n = 1; n <= 30; n++) {
       var h = Math.min(20, Math.max(0, parseInt(juz[n], 10) || 0));
