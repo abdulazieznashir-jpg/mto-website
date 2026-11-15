@@ -91,6 +91,21 @@
     } catch (e) { return ''; }
   }
 
+  // Salinan daftar untuk tab Notifikasi di bagian bawah, dan lencana merahnya.
+  function sinkronTab(belum) {
+    var tabBadge = document.getElementById('tabNotifBadge');
+    if (tabBadge) {
+      tabBadge.textContent = belum > 9 ? '9+' : String(belum);
+      tabBadge.hidden = belum === 0;
+    }
+    var paneList = document.getElementById('notifPane');
+    var paneKosong = document.getElementById('notifPaneKosong');
+    if (!paneList) return;
+    paneList.textContent = '';
+    Array.prototype.forEach.call(list.children, function (c) { paneList.appendChild(c.cloneNode(true)); });
+    if (paneKosong) paneKosong.hidden = list.children.length > 0;
+  }
+
   function render(data) {
     var perluVerif = !!data.perlu_verifikasi;
     var belum = Number(data.belum_dibaca || 0) + (perluVerif ? 1 : 0);
@@ -145,6 +160,8 @@
       pin.appendChild(tautan);
       list.insertBefore(pin, list.firstChild);
     }
+
+    sinkronTab(belum);
   }
 
   function muat() {
@@ -163,6 +180,7 @@
       list.querySelectorAll('.notif-item.belum').forEach(function (el) {
         el.classList.remove('belum');
       });
+      sinkronTab(0);
     });
   }
 
@@ -178,6 +196,9 @@
         muat();
         setInterval(muat, 5 * 60 * 1000);
         window.addEventListener('verifikasi:selesai', muat);
+        window.addEventListener('notifikasi:buka', function () {
+          if (badge && !badge.hidden) tandaiDibaca();
+        });
       });
     };
     document.head.appendChild(s);

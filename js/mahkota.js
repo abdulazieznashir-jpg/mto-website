@@ -243,7 +243,20 @@
 
   /* ---------- Paket, pengampu, dan tanggal bergabung ---------- */
   var IKON_KOIN = '<span class="pb-koin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>';
+  function setTier(d) {
+    var btn = $('pfTier');
+    if (!btn) return;
+    var p = String(d.paket || '').toLowerCase();
+    var ada = p === 'silver' || p === 'gold' || p === 'platinum';
+    btn.hidden = !(d.status === 'aktif' && ada);
+    btn.firstChild.nodeValue = ada ? p.charAt(0).toUpperCase() + p.slice(1) + ' ' : '';
+    document.querySelectorAll('#pfTierInfo li[data-paket]').forEach(function (li) {
+      li.classList.toggle('on', li.getAttribute('data-paket') === p);
+    });
+  }
+
   function tampilPaket(d) {
+    setTier(d);
     var box = $('pbPaket');
     if (!box) return;
     box.hidden = false;

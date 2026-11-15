@@ -1,25 +1,43 @@
-/* Tab akun (Beranda, Pengaturan, Afiliasi, Bantuan) dan menu avatar di pojok kanan atas.
- * Tab dipilih lewat hash di URL, tanpa memuat ulang halaman.
+/* Navigasi bawah akun: Beranda, Deals (halaman terpisah), Notifikasi, dan Saya.
+ * Saya memuat Pesanan Saya, Pengaturan, Afiliasi, dan Bantuan. Tab dipilih lewat hash di URL,
+ * tanpa memuat ulang halaman. Menu avatar di pojok kanan atas tetap berfungsi.
  */
 (function () {
-  var TAB = ['beranda', 'pengaturan', 'afiliasi', 'bantuan'];
+  var GRUP = {
+    beranda: ['beranda'],
+    notifikasi: ['notifikasi'],
+    saya: ['saya', 'pengaturan', 'afiliasi', 'bantuan']
+  };
+  // Bagian di dalam Saya: hash-nya tetap, lalu layar digulir ke bagian itu.
+  var DI_SAYA = { pengaturan: true, afiliasi: true, bantuan: true };
   var panes = document.querySelectorAll('.pf-pane');
-  var tabs = document.querySelectorAll('.pf-tab');
+  var tabs = document.querySelectorAll('.pf-tab[data-tab]');
   var menu = document.getElementById('pfMenu');
   var btnMenu = document.getElementById('btnMenu');
 
   function tampilkan(nama) {
-    if (TAB.indexOf(nama) < 0) nama = 'beranda';
+    var sub = DI_SAYA[nama] ? nama : null;
+    var grup = sub ? 'saya' : (GRUP[nama] ? nama : 'beranda');
+    var aktif = GRUP[grup];
     panes.forEach(function (p) {
-      p.classList.toggle('is-on', p.getAttribute('data-pane') === nama);
+      p.classList.toggle('is-on', aktif.indexOf(p.getAttribute('data-pane')) >= 0);
     });
     tabs.forEach(function (t) {
-      t.setAttribute('aria-selected', t.getAttribute('data-tab') === nama ? 'true' : 'false');
+      t.setAttribute('aria-selected', t.getAttribute('data-tab') === grup ? 'true' : 'false');
     });
-    if (location.hash !== '#' + nama) {
-      history.replaceState(null, '', '#' + nama);
+    var hashBaru = '#' + (sub || grup);
+    if (location.hash !== hashBaru) {
+      history.replaceState(null, '', hashBaru);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (sub) {
+      var el = document.querySelector('[data-pane="' + sub + '"]');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (grup === 'notifikasi') {
+      window.dispatchEvent(new CustomEvent('notifikasi:buka'));
+    }
   }
 
   function dariHash() {
@@ -37,6 +55,17 @@
       tampilkan(t.getAttribute('data-tab'));
     });
   });
+
+  var tier = document.getElementById('pfTier');
+  var tierInfo = document.getElementById('pfTierInfo');
+  if (tier && tierInfo) {
+    tier.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var buka = tierInfo.hidden;
+      tierInfo.hidden = !buka;
+      tier.setAttribute('aria-expanded', buka ? 'true' : 'false');
+    });
+  }
 
   if (btnMenu) {
     btnMenu.addEventListener('click', function (e) {
