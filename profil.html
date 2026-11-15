@@ -381,7 +381,6 @@
   .sy-paket { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 26px 18px 18px; }
   .sy-paket .pf-badge { margin-bottom: 12px; }
   .sy-paket .pf-tier { background: none; color: #1D1D1F; padding: 0; margin: 0; font: 700 22px Inter, system-ui, sans-serif; border-radius: 0; }
-  .sy-paket .pf-tier-info { text-align: left; }
   .sy-paket .pk-rows { width: 100%; text-align: left; margin-top: 14px; }
   .sy-btn-gold { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 18px; padding: 15px 16px; border-radius: 999px; background: linear-gradient(135deg, #E9C77A, #B8862B); color: #FFFFFF; font: 700 17px Inter, system-ui, sans-serif; text-decoration: none; box-shadow: 0 6px 16px rgba(184,134,43,0.28); box-sizing: border-box; }
   .sy-btn-gold[hidden] { display: none; }
@@ -421,7 +420,7 @@
   .sy-paket .pf-badge { margin: 0; flex-shrink: 0; }
   .sy-paket .pf-badge svg { width: 72px; height: 72px; display: block; }
   .sy-paket .pk-judul { min-width: 0; }
-  .sy-paket .pf-tier { font: 700 22px Inter, system-ui, sans-serif; }
+  .sy-paket .pf-tier { font: 700 22px Inter, system-ui, sans-serif; cursor: default; }
   .sy-paket .pk-status { display: inline-block; font: 600 13px Inter, system-ui, sans-serif; padding: 4px 10px; border-radius: 999px; margin-bottom: 6px; }
   .sy-paket .pk-status[hidden] { display: none; }
   .sy-paket .pk-belum { background: #FBF0D6; color: #8A6A1F; }
@@ -558,17 +557,9 @@
       <span class="pf-badge" id="pfBadge" aria-hidden="true"></span>
       <div class="pk-judul">
         <span class="pk-status" id="pkStatus" hidden></span>
-        <button type="button" class="pf-tier" id="pfTier" aria-expanded="false" aria-controls="pfTierInfo">Belum Ada Paket <span aria-hidden="true">›</span></button>
+        <span class="pf-tier" id="pfTier">Belum Ada Paket</span>
         <p class="pk-meta" id="pkMeta" hidden></p>
       </div>
-    </div>
-    <div class="pf-tier-info" id="pfTierInfo" hidden>
-      <p>Tiga paket yang tersedia:</p>
-      <ul>
-        <li data-paket="silver">Silver, sesi 10 menit</li>
-        <li data-paket="gold">Gold, sesi 20 menit</li>
-        <li data-paket="platinum">Platinum, sesi 30 menit</li>
-      </ul>
     </div>
     <div class="pk-blok" id="pkBlok" hidden></div>
     <div class="pk-kaki" id="pkKaki" hidden></div>

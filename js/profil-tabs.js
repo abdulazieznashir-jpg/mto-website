@@ -53,17 +53,6 @@
     tampilkan(a.getAttribute('data-go'));
   });
 
-  var tier = document.getElementById('pfTier');
-  var tierInfo = document.getElementById('pfTierInfo');
-  if (tier && tierInfo) {
-    tier.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var buka = tierInfo.hidden;
-      tierInfo.hidden = !buka;
-      tier.setAttribute('aria-expanded', buka ? 'true' : 'false');
-    });
-  }
-
   window.addEventListener('hashchange', dariHash);
   dariHash();
 })();

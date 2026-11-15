@@ -296,9 +296,6 @@
     if (btn && btn.firstChild) {
       btn.firstChild.nodeValue = (ada ? p.charAt(0).toUpperCase() + p.slice(1) : 'Belum Ada Paket') + ' ';
     }
-    document.querySelectorAll('#pfTierInfo li[data-paket]').forEach(function (li) {
-      li.classList.toggle('on', ada && li.getAttribute('data-paket') === p);
-    });
   }
 
   var aktifPaket = false, tglMulaiGelombang = '', tglMulaiISO = '', paketKey = '', pengampuNama = '';
