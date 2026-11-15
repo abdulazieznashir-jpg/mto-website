@@ -83,6 +83,16 @@
   .av-opt svg { width: 24px; height: 24px; }
   .av-opt:hover, .av-opt:focus-visible { border-color: var(--pf-accent); outline: none; }
   #pfAvatar svg { width: 44px; height: 44px; }
+  .af-intro { padding: 18px 16px 20px; }
+  .af-h { margin: 0 0 6px; font-size: 17px; font-weight: 700; }
+  .af-p { margin: 0 0 12px; font-size: 14px; color: var(--pf-muted); line-height: 1.5; }
+  .af-list { margin: 0 0 16px; padding-left: 18px; font-size: 14px; color: var(--text-primary); line-height: 1.6; }
+  .af-btn { width: 100%; box-sizing: border-box; text-align: center; }
+  .af-aktif { padding: 18px 16px 20px; text-align: center; }
+  .af-kode { margin: 0 0 12px; font-size: 26px; font-weight: 700; letter-spacing: 0.12em; color: var(--pf-accent-dark); }
+  .af-link { margin: 0 0 14px; font-size: 13px; color: var(--pf-muted); overflow-wrap: anywhere; }
+  .af-cek { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-primary); }
+  .af-cek input { width: auto; }
 </style>
 </head>
 <body>
@@ -156,6 +166,38 @@
     </div>
   </div>
 
+  <p class="pf-section-title">Afiliasi</p>
+  <div class="pf-group">
+    <div class="af-intro">
+      <h3 class="af-h">Ajak keluarga dan teman, dapatkan fee</h3>
+      <p class="af-p">Bagikan Mahkota Tahfizh Online lewat link pribadi Anda. Setiap peserta yang mendaftar lewat link Anda dan sudah aktif, Anda mendapat fee sesuai ketentuan program.</p>
+      <ul class="af-list">
+        <li>Fee hanya untuk peserta yang sudah membayar dan aktif.</li>
+        <li>Pencairan dilakukan ke rekening atas nama Anda.</li>
+      </ul>
+      <button type="button" class="pf-btn pf-btn-pri af-btn" id="btnGabung">Gabung afiliasi</button>
+    </div>
+
+    <div id="afAktif" class="af-aktif hidden">
+      <p class="af-p">Kode Anda</p>
+      <p class="af-kode" id="afKode"></p>
+      <p class="af-link" id="afLink"></p>
+      <button type="button" class="pf-btn pf-btn-ghost af-btn" id="btnSalin">Salin link</button>
+      <p class="af-p" id="afRek"></p>
+    </div>
+
+    <form id="formAfiliasi" class="pf-edit hidden" novalidate>
+      <input type="text" name="nama" placeholder="Nama pemilik rekening" aria-label="Nama pemilik rekening" autocomplete="name">
+      <input type="text" name="bank" placeholder="Bank atau e-wallet, misalnya BCA atau DANA" aria-label="Bank atau e-wallet">
+      <input type="text" name="nomor" inputmode="numeric" placeholder="Nomor rekening" aria-label="Nomor rekening">
+      <label class="af-cek"><input type="checkbox" name="setuju"> Saya setuju dengan syarat program afiliasi</label>
+      <div class="pf-btns">
+        <button type="button" class="pf-btn pf-btn-ghost" id="btnBatalGabung">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri" id="btnSimpanGabung">Simpan dan gabung</button>
+      </div>
+    </form>
+  </div>
+
   <p class="pf-section-title">Keamanan</p>
   <div class="pf-group">
     <button type="button" class="pf-row pf-link" id="btnEditPass" aria-expanded="false">
@@ -193,6 +235,7 @@
 
 <script src="js/pw.js"></script>
 <script src="js/mahkota.js"></script>
+<script src="js/afiliasi.js"></script>
 <script src="js/profil.js"></script>
 </body>
 </html>

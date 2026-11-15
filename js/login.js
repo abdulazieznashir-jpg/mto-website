@@ -120,6 +120,7 @@
     if (pass.length < 8) { note($('notice'), 'Password minimal 8 karakter.', true); return; }
     if (!sb) { note($('notice'), 'Layanan masuk belum tersedia.', true); return; }
 
+    var ref = (new URLSearchParams(window.location.search).get('ref') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
     var btn = $('btnKirim');
     var label = mode === 'daftar' ? 'Daftar' : 'Masuk';
     setBusy(btn, true, 'Memproses…');
@@ -129,7 +130,7 @@
       sb.auth.signUp({
         email: alamat,
         password: pass,
-        options: { data: { nama: n }, emailRedirectTo: pageUrl() }
+        options: { data: ref ? { nama: n, ref: ref } : { nama: n }, emailRedirectTo: pageUrl() }
       }).then(function (r) {
         setBusy(btn, false, label);
         if (r.error) { note($('notice'), msgErr(r.error), true); return; }

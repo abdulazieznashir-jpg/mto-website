@@ -137,6 +137,7 @@
         user = r.data.session.user;
         render();
         if (window.MTO_MAHKOTA) window.MTO_MAHKOTA.init(sb, user);
+        if (window.MTO_AFILIASI) window.MTO_AFILIASI.init(sb, user);
       });
       sb.auth.onAuthStateChange(function (event) {
         if (event === 'SIGNED_OUT') window.location.replace('login.html');
