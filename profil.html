@@ -494,6 +494,25 @@
   .gr-catatan { margin-top: 14px; background: #FBF7EF; border-radius: 12px; padding: 12px 14px; font-size: 13px; color: #48484A; }
   .gr-catatan b { display: block; margin-bottom: 6px; }
   .gr-catatan ul { margin: 0; padding-left: 18px; line-height: 1.5; }
+
+  /* Akun pengajar: murid saya */
+  .sy-pengajar[hidden] { display: none; }
+  .sy-pengajar { padding: 16px; }
+  .mr-judul { display: flex; flex-direction: column; gap: 2px; }
+  .mr-label { font-size: 13px; color: #6E6E73; }
+  .mr-judul b { font-size: 20px; }
+  .mr-sub { font-size: 13px; color: #6E6E73; line-height: 1.5; margin: 8px 0 0; }
+  .mr-item { border: 1px solid #EFE7D6; border-radius: 14px; padding: 12px; margin-top: 12px; background: #FFFCF6; }
+  .mr-atas { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .mr-atas b { font-size: 16px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mr-paket { font-size: 12px; background: #FBF0D6; color: #8A6A1F; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .mr-bar { height: 8px; background: #EFEFF2; border-radius: 999px; margin: 10px 0 8px; overflow: hidden; }
+  .mr-bar span { display: block; height: 100%; background: #1E7B34; border-radius: 999px; }
+  .mr-bawah { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .mr-bawah small { font-size: 13px; color: #6E6E73; }
+  .mr-btn { border: 0; border-radius: 999px; padding: 9px 14px; font: 600 14px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); }
+  .mr-btn:disabled { background: #D8D8DC; color: #6E6E73; }
+  .mr-kosong { font-size: 14px; color: #6E6E73; margin: 12px 0 0; }
 </style>
 </head>
 <body>
@@ -606,6 +625,12 @@
       <small id="mkKlaimText">Login hari ini belum diklaim</small>
       <button type="button" class="sy-btn-klaim" id="btnKlaim" data-sudah="0">Klaim +1</button>
     </div>
+  </section>
+
+  <section class="sy-card sy-pengajar" id="pengajarBox" hidden>
+    <div class="mr-judul"><span class="mr-label">Pengajar</span><b id="pengajarNama"></b></div>
+    <p class="mr-sub">Murid yang ditetapkan kepada Anda. Tekan "Catat Pertemuan" setelah sesi selesai; angka di akun murid berubah otomatis.</p>
+    <div id="muridList"><p class="mr-kosong">Memuat murid…</p></div>
   </section>
 
   <section class="sy-card sy-paket" id="pbPaket">

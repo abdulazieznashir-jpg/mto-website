@@ -64,6 +64,56 @@
     } catch (e) { return iso; }
   }
 
+  /* ---------- Pengajar: murid saya dan catat pertemuan ---------- */
+  var isPengajar = false, namaPengajar = '';
+  function renderMuridList(list) {
+    var el = $('muridList');
+    if (!el) return;
+    if (!list.length) { el.innerHTML = '<p class="mr-kosong">Belum ada murid yang ditetapkan ke Anda.</p>'; return; }
+    el.innerHTML = list.map(function (m) {
+      var n = Number(m.pertemuan || 0), penuh = n >= 15;
+      var pct = Math.min(100, Math.round(n / 15 * 100));
+      return '<div class="mr-item">' +
+        '<div class="mr-atas"><b>' + esc(m.nama || m.email) + '</b><span class="mr-paket">' + esc(m.paket ? 'Paket ' + m.paket.charAt(0).toUpperCase() + m.paket.slice(1) : '') + '</span></div>' +
+        '<div class="mr-bar"><span style="width:' + pct + '%"></span></div>' +
+        '<div class="mr-bawah"><small>' + n + ' / 15 pertemuan</small>' +
+        '<button type="button" class="mr-btn" data-catat="' + esc(m.email) + '" data-nama="' + esc(m.nama || m.email) + '"' + (penuh ? ' disabled' : '') + '>' + (penuh ? 'Lengkap' : 'Catat Pertemuan') + '</button></div>' +
+        '</div>';
+    }).join('');
+  }
+  function muatMurid() {
+    sb.rpc('murid_saya').then(function (r) {
+      if (r.error) { $('muridList').innerHTML = '<p class="mr-kosong">Daftar murid belum bisa dimuat.</p>'; return; }
+      renderMuridList(r.data || []);
+    });
+  }
+  function renderPengajar() {
+    var box = $('pengajarBox');
+    if (!box) return;
+    box.hidden = !isPengajar;
+    $('pbPaket').hidden = isPengajar;
+    if (isPengajar) {
+      $('pengajarNama').textContent = namaPengajar;
+      muatMurid();
+    }
+  }
+  var pengajarEvents = false;
+  function pasangPengajarEvents() {
+    if (pengajarEvents) return;
+    pengajarEvents = true;
+    $('muridList').addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-catat]');
+      if (!b || b.disabled) return;
+      var nama = b.getAttribute('data-nama');
+      if (!window.confirm('Catat 1 pertemuan untuk ' + nama + '? Tindakan ini tidak bisa dibatalkan dari aplikasi.')) return;
+      b.disabled = true;
+      sb.rpc('catat_pertemuan', { p_email: b.getAttribute('data-catat') }).then(function (r) {
+        if (r.error) { window.alert(r.error.message || 'Pertemuan belum bisa dicatat.'); }
+        muatMurid();
+      });
+    });
+  }
+
   /* ---------- Ringkasan ---------- */
   function muat() {
     sb.rpc('ringkasan_mahkota').then(function (r) {
@@ -75,6 +125,16 @@
     });
     sb.rpc('pendaftaran_saya').then(function (r) {
       if (!r.error) tampilDaftarSaya(r.data || []);
+    });
+    sb.rpc('profil_pengajar_saya').then(function (r) {
+      isPengajar = !r.error && !!(r.data && r.data.is_pengajar);
+      namaPengajar = isPengajar ? (r.data.nama || '') : '';
+      pasangPengajarEvents();
+      renderPengajar();
+    });
+    sb.rpc('pertemuan_saya').then(function (r) {
+      pertemuanSelesai = (!r.error && typeof r.data === 'number') ? r.data : null;
+      renderMulai();
     });
     sb.rpc('grup_besar_saya').then(function (r) {
       grupBesar = (!r.error && r.data && r.data.link) ? r.data : null;
@@ -416,7 +476,13 @@
     var blok = $('pkBlok'), status = $('pkStatus'), meta = $('pkMeta'), kaki = $('pkKaki'), daftar = $('pbDaftar');
     if (!blok) return;
     if (hitungTimer) { clearInterval(hitungTimer); hitungTimer = null; }
-    if (!aktifPaket && !tglMulaiISO) {
+    if (isPengajar) {
+      if (hitungTimer) { clearInterval(hitungTimer); hitungTimer = null; }
+      if (daftar) daftar.hidden = true;
+      renderGrup(false); renderGaransi();
+      return;
+    }
+    if (!paketKey && !tglMulaiISO) {
       blok.hidden = true; status.hidden = true; meta.hidden = true; kaki.hidden = true;
       renderGrup(false);
       if (daftar) daftar.hidden = false;
