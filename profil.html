@@ -78,6 +78,11 @@
   .mk-nm small { color: var(--pf-muted); font-size: 12px; }
   .mk-nm em { font-style: normal; color: var(--pf-accent-dark); font-size: 13px; }
   .mk-sc { font-weight: 600; color: var(--pf-accent-dark); }
+  .av-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 340px; margin: 14px auto 0; }
+  .av-opt { aspect-ratio: 1; width: 100%; border-radius: 50%; background: #FAF5EE; border: 2px solid transparent; color: var(--pf-accent-dark); display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; }
+  .av-opt svg { width: 24px; height: 24px; }
+  .av-opt:hover, .av-opt:focus-visible { border-color: var(--pf-accent); outline: none; }
+  #pfAvatar svg { width: 44px; height: 44px; }
 </style>
 </head>
 <body>
@@ -93,8 +98,8 @@
 
   <section class="pf-hero">
     <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
-    <button type="button" class="pf-action" id="btnFoto">Ganti foto</button>
-    <input type="file" id="fileFoto" accept="image/png,image/jpeg,image/webp" hidden>
+    <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
+    <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
     <h1 class="pf-name" id="pfNama">Memuat…</h1>
     <p class="pf-mail" id="pfEmail"></p>
   </section>

@@ -4,9 +4,6 @@
 (function () {
   var sb = null;
   var user = null;
-  var BUCKET = 'avatars';
-  var MAX_BYTES = 2 * 1024 * 1024;
-  var TIPE = ['image/png', 'image/jpeg', 'image/webp'];
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -75,48 +72,62 @@
     });
   }
 
-  /* ---------- Foto profil ---------- */
+  /* ---------- Avatar ---------- */
+  // 10 pilihan ikon non-makhluk hidup, bertema semangat dan belajar.
+  var AVATAR = [
+    { k: 'bintang', n: 'Bintang', d: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/>' },
+    { k: 'hati', n: 'Hati', d: '<path d="M12 20.5s-7.5-4.6-9.2-9.1C1.6 8.4 3.5 5 7 5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.5 0 5.4 3.4 4.2 6.4C19.5 15.9 12 20.5 12 20.5z"/>' },
+    { k: 'bulan', n: 'Bulan', d: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>' },
+    { k: 'api', n: 'Semangat', d: '<path d="M12 22c-4 0-7-2.9-7-6.8C5 11 9 9 9 5c3 2 4 4.5 4 6.5.9-.8 1.6-2.2 1.6-3.8C17.8 9 19 12.4 19 15.2 19 19.1 16 22 12 22z"/>' },
+    { k: 'lampu', n: 'Ide', d: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>' },
+    { k: 'buku', n: 'Buku', d: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/>' },
+    { k: 'pena', n: 'Pena', d: '<path d="M16.5 3.5l4 4L8 20l-5 1 1-5zM14 6l4 4"/>' },
+    { k: 'target', n: 'Target', d: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>' },
+    { k: 'mahkota', n: 'Mahkota', d: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>' },
+    { k: 'kompas', n: 'Kompas', d: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>' }
+  ];
+
+  function cariAvatar(k) {
+    for (var i = 0; i < AVATAR.length; i++) if (AVATAR[i].k === k) return AVATAR[i];
+    return null;
+  }
+
+  function svgAvatar(a) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + a.d + '</svg>';
+  }
+
   function pasangAvatar(u) {
     if (u) user = u;
     var av = $('pfAvatar');
-    if (!av || !sb) return;
-    var old = av.querySelector('img');
-    if (old) old.remove();
-    var path = user && user.user_metadata && user.user_metadata.avatar_path;
-    if (!path) return;
-    sb.storage.from(BUCKET).createSignedUrl(path, 3600).then(function (r) {
-      if (r.error || !r.data) return;
-      var img = document.createElement('img');
-      img.alt = 'Foto profil';
-      img.src = r.data.signedUrl;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%';
-      av.textContent = '';
-      av.appendChild(img);
-    });
+    if (!av) return;
+    var a = cariAvatar(user && user.user_metadata && user.user_metadata.avatar_key);
+    if (a) av.innerHTML = svgAvatar(a); // tanpa avatar, inisial nama tetap tampil
   }
 
-  function unggahFoto(e) {
-    var f = e.target.files && e.target.files[0];
-    e.target.value = '';
-    if (!f) return;
-    if (TIPE.indexOf(f.type) === -1) { note('Format foto harus JPG, PNG, atau WEBP.', true); return; }
-    if (f.size > MAX_BYTES) { note('Ukuran foto maksimal 2 MB.', true); return; }
+  function bukaPilihan() {
+    var g = $('pickAvatar');
+    var buka = g.classList.contains('hidden');
+    if (buka && !g.dataset.isi) {
+      g.innerHTML = AVATAR.map(function (a) {
+        return '<button type="button" class="av-opt" data-k="' + a.k + '" aria-label="' + a.n + '" title="' + a.n + '">' + svgAvatar(a) + '</button>';
+      }).join('');
+      g.dataset.isi = '1';
+      g.querySelectorAll('.av-opt').forEach(function (b) { b.addEventListener('click', pilihAvatar); });
+    }
+    g.classList.toggle('hidden', !buka);
+    $('btnFoto').setAttribute('aria-expanded', buka ? 'true' : 'false');
+  }
 
-    var path = user.id + '/avatar';
-    note('Mengunggah foto…');
-    sb.storage.from(BUCKET)
-      .upload(path, f, { upsert: true, contentType: f.type, cacheControl: '3600' })
-      .then(function (r) {
-        if (r.error) throw r.error;
-        return sb.auth.updateUser({ data: { avatar_path: path, avatar_v: Date.now() } });
-      })
-      .then(function (r) {
-        if (r.error) throw r.error;
-        user = r.data.user;
-        pasangAvatar(user);
-        note('Foto profil sudah disimpan.');
-      })
-      .catch(function () { note('Foto belum tersimpan. Coba lagi.', true); });
+  function pilihAvatar(e) {
+    var k = e.currentTarget.getAttribute('data-k');
+    sb.auth.updateUser({ data: { avatar_key: k } }).then(function (r) {
+      if (r.error) { note('Avatar belum tersimpan. Coba lagi.', true); return; }
+      user = r.data.user;
+      pasangAvatar(user);
+      $('pickAvatar').classList.add('hidden');
+      $('btnFoto').setAttribute('aria-expanded', 'false');
+      note('Avatar sudah disimpan.');
+    });
   }
 
   /* ---------- Inisialisasi ---------- */
@@ -124,8 +135,7 @@
     sb = client;
     user = u;
     $('btnKlaim').addEventListener('click', klaim);
-    $('btnFoto').addEventListener('click', function () { $('fileFoto').click(); });
-    $('fileFoto').addEventListener('change', unggahFoto);
+    $('btnFoto').addEventListener('click', bukaPilihan);
     pasangAvatar(u);
     muat();
   }
