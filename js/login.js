@@ -23,7 +23,7 @@
   function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
 
   function showView(id) {
-    ['viewAuth', 'viewCek', 'viewStatus', 'viewLupa', 'viewBaru'].forEach(function (v) {
+    ['viewAuth', 'viewCek', 'viewLupa', 'viewBaru'].forEach(function (v) {
       $(v).classList.toggle('hidden', v !== id);
     });
     window.scrollTo(0, 0);
@@ -66,50 +66,7 @@
     return 'Belum berhasil. Coba lagi.';
   }
 
-  /* ---------- Status akun ---------- */
-  function tampilkanStatus(status, namaPeserta) {
-    var v = {
-      belum: function () {
-        return '<div class="st-ico info" aria-hidden="true">!</div>' +
-          '<h1>Email ini belum terdaftar</h1>' +
-          '<p class="lg-sub">Daftar dulu untuk mulai belajar. Akun Anda aktif setelah pembayaran diverifikasi.</p>' +
-          '<div class="promo"><h3>Mulai hafalan Anda hari ini</h3>' +
-          '<p>Belajar privat 1-on-1, cukup dari rumah.</p>' +
-          '<ul><li><span>Silver · 10 menit</span><span>Mulai Rp199rb/bulan</span></li>' +
-          '<li><span>Gold · 20 menit</span><span>Pilihan terbanyak</span></li>' +
-          '<li><span>Platinum · 30 menit</span><span>Untuk target lebih besar</span></li></ul>' +
-          '<a class="btn btn-primary btn-lg btn-full" href="' + PAKET_URL + '">Daftar Sekarang</a></div>';
-      },
-      terdaftar: function () {
-        return '<div class="st-ico wait" aria-hidden="true">✓</div>' +
-          '<h1>Anda sudah terdaftar</h1>' +
-          '<p class="lg-sub">Silakan lakukan pembayaran, lalu kirim bukti transfer ke admin kami.</p>' +
-          '<a class="btn btn-secondary btn-lg btn-full" href="' + waLink('Assalamu\'alaikum Admin, saya sudah mendaftar dan ingin mengirim bukti transfer.') + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
-      },
-      menunggu: function () {
-        return '<div class="st-ico wait" aria-hidden="true">…</div>' +
-          '<h1>Bukti transfer diperiksa</h1>' +
-          '<p class="lg-sub">Kami akan memberi tahu Anda begitu akun aktif.</p>';
-      },
-      aktif: function () {
-        return '<div class="st-ico ok" aria-hidden="true">✓</div>' +
-          '<h1>Selamat datang' + (namaPeserta ? ', ' + esc(namaPeserta.split(' ')[0]) : '') + '</h1>' +
-          '<p class="lg-sub">Akun Anda aktif.</p>' +
-          '<button type="button" class="btn btn-primary btn-lg btn-full" disabled>Dashboard segera hadir</button>';
-      }
-    };
-    $('stBody').innerHTML = (v[status] || v.belum)();
-    showView('viewStatus');
-  }
-
-  function muatStatus(alamat) {
-    sb.from('peserta').select('nama,status').eq('email', alamat).maybeSingle().then(function (r) {
-      if (r.error) { note($('notice'), 'Status belum bisa dimuat. Coba lagi sebentar.', true); return; }
-      if (!r.data) { tampilkanStatus('belum'); return; }
-      tampilkanStatus(r.data.status, r.data.nama);
-    });
-  }
-
+  /* ---------- Pendaftar dan sesi ---------- */
   // Dipanggil setiap kali ada sesi aktif (setelah masuk atau konfirmasi email).
   // Pendaftar baru dibuatkan baris peserta dengan status awal 'terdaftar'.
   function pastikanPeserta(user) {
@@ -117,7 +74,7 @@
     var nama = (user.user_metadata && user.user_metadata.nama) || '';
     sb.from('peserta')
       .upsert({ email: alamat, nama: nama, status: 'terdaftar' }, { onConflict: 'email', ignoreDuplicates: true })
-      .then(function () { muatStatus(alamat); });
+      .then(function () { window.location.replace('profil.html'); });
   }
 
   /* ---------- Lupa password ---------- */
@@ -195,13 +152,6 @@
     }
   }
 
-  function keluar() {
-    if (sb) sb.auth.signOut();
-    $('formAuth').reset();
-    setMode('daftar');
-    showView('viewAuth');
-  }
-
   /* ---------- Inisialisasi ---------- */
   function mulai() {
     $('tabDaftar').addEventListener('click', function () { setMode('daftar'); });
@@ -212,7 +162,6 @@
       showView('viewAuth');
       $('formAuth').email.value = emailCek;
     });
-    $('btnKeluar').addEventListener('click', keluar);
     $('btnLupa').addEventListener('click', function () { note($('noticeLupa'), ''); showView('viewLupa'); });
     $('btnBatalLupa').addEventListener('click', function () { setMode('masuk'); showView('viewAuth'); });
     $('formLupa').addEventListener('submit', kirimReset);
