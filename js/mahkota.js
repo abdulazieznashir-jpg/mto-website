@@ -8,6 +8,41 @@
 
   var $ = function (id) { return document.getElementById(id); };
 
+  /* Pratinjau papan skor dengan data tetap, hanya jika alamat memuat ?simulasi=1 */
+  var SIMULASI = /[?&]simulasi=1/.test(location.search);
+  var NAMA_SIM = ['salsabila', 'yusuf', 'nadia', 'fauzan', 'aisyah', 'hamzah', 'zahra', 'ikhsan', 'maryam', 'rafi', 'hanifah', 'ilham', 'syifa', 'thariq'];
+  var SKOR_SIM = [52, 47, 44, 39, 35, 31, 28, 24, 21, 18, 15, 12, 9, 6];
+  var AVATAR_SIM = ['bintang', 'hati', 'bulan', 'api', 'lampu', 'buku', 'pena', 'target', 'mahkota', 'kompas'];
+  function papanSimulasi(d) {
+    var papan = NAMA_SIM.map(function (n, i) {
+      return { peringkat: i + 1, username: n, avatar: AVATAR_SIM[i % AVATAR_SIM.length], total: SKOR_SIM[i], saya: false };
+    });
+    papan.push({ peringkat: papan.length + 1, username: d.username || '', avatar: d.avatar_key || null, total: d.total, saya: true });
+    return Object.assign({}, d, { papan: papan, peringkat: papan.length });
+  }
+
+  /* Tampilkan 'n' baris pertama, sisanya lewat tombol Selengkapnya */
+  function lipat(ul, n) {
+    if (!ul) return;
+    var items = ul.querySelectorAll(':scope > li');
+    var lama = ul.parentNode.querySelector('.bk-more[data-for="' + ul.id + '"]');
+    if (lama) lama.remove();
+    items.forEach(function (li, i) { li.hidden = i >= n; });
+    if (items.length <= n) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'bk-more';
+    b.setAttribute('data-for', ul.id);
+    b.textContent = 'Selengkapnya';
+    b.onclick = function () {
+      var buka = b.getAttribute('data-buka') !== '1';
+      items.forEach(function (li, i) { li.hidden = !buka && i >= n; });
+      b.setAttribute('data-buka', buka ? '1' : '0');
+      b.textContent = buka ? 'Tutup' : 'Selengkapnya';
+    };
+    ul.parentNode.insertBefore(b, ul.nextSibling);
+  }
+
   function note(msg, bad) {
     var el = $('notice');
     if (!el) return;
@@ -42,6 +77,7 @@
   }
 
   function tampil(d) {
+    if (SIMULASI) d = papanSimulasi(d);
     $('mkTotal').textContent = d.total;
     $('mkRank').textContent = d.peringkat || '–';
     $('mkRankKet').textContent = d.peringkat && d.peringkat <= 3 ? 'Posisi 3 besar' : 'Posisi Anda';
@@ -68,6 +104,7 @@
              '<span class="mk-sc">' + p.total + '</span></li>';
     }).join('');
     $('mkPapan').innerHTML = papan || '<li class="pf-empty">Belum ada peserta.</li>';
+    lipat($('mkPapan'), 10);
 
     var riwayat = (d.riwayat || []).map(function (h) {
       return '<li class="mk-row mk-hist">' +
@@ -101,6 +138,7 @@
         '<span>Setelah terdaftar sebagai peserta Mahkota, guru akan mengisi progres hafalan Anda per juz. Progres akan tampil di sini.</span>' +
         '<a class="pf-btn pf-btn-ghost" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Tanya admin via WhatsApp</a>' +
         '</li>';
+      lipat(el, 10);
       return;
     }
     var juz = data.juz || {};
@@ -119,6 +157,7 @@
               '</div></li>';
     }
     el.innerHTML = html;
+    lipat(el, 10);
   }
 
   /* ---------- Klaim login harian ---------- */
