@@ -273,6 +273,8 @@
       if (!r.error) tampilDaftarSaya(r.data || []);
     });
     pasangJadwalMurid();
+    pasangGanti();
+    pasangLive();
     muatJadwalMurid();
     sb.rpc('profil_pengajar_saya').then(function (r) {
       isPengajar = !r.error && !!(r.data && r.data.is_pengajar);
@@ -301,6 +303,7 @@
         if (!r.error) tampilGelombang(r.data || []);
       });
       muatKeluar();
+      muatGanti();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -735,7 +738,159 @@
         'Grup Halaqah akan diberikan setelah ustadz ditetapkan. Di Grup Halaqah, Anda akan melakukan briefing jadwal belajar bersama ustadz.';
   }
   /* ---------- Penjadwalan belajar murid: ubah jadwal, usulan dari admin ---------- */
-  var jadwalMurid = null, jmEvents = false;
+  var jadwalMurid = null, jmEvents = false, gantiStatus = null;
+  // Sisa hari program: dari hari ini sampai tanggal mulai + durasi bulan
+  function sisaHariProgram() {
+    if (!jadwalMurid || !jadwalMurid.tanggal_mulai || !jadwalMurid.durasi) return null;
+    var m = jadwalMurid.tanggal_mulai.split('-').map(Number);
+    var akhir = Date.UTC(m[0], m[1] - 1 + Number(jadwalMurid.durasi), m[2]);
+    var h = hariIniJakarta().split('-').map(Number);
+    var hari = Math.round((akhir - Date.UTC(h[0], h[1] - 1, h[2])) / 86400000);
+    return Math.max(0, hari);
+  }
+  // Jam dinding Jakarta sebagai Date lokal; semua perbandingan memakai pola yang sama
+  function jakartaSekarang() { return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })); }
+  function hariSesiJm(hari) { return hari === 'weekend' ? [6, 0] : [1, 2, 3, 4, 5]; }
+  function jamDetik(d) { return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds(); }
+  function hitungJam(detik) { var j = Math.floor(detik / 3600), m = Math.floor((detik % 3600) / 60), s = detik % 60; return [j, m, s].map(function (x) { return (x < 10 ? '0' : '') + x; }).join(' : '); }
+  var njTimer = null;
+  function renderNotifJadwal(d) {
+    var box = $('notifJadwal'), isi = $('njIsi');
+    if (njTimer) { clearInterval(njTimer); njTimer = null; }
+    if (!box || !isi) return;
+    if (!d || !d.jam || !d.hari || !d.ustadz || !d.sudah_mulai && !d.tanggal_mulai) { box.hidden = true; return; }
+    box.hidden = false;
+    var gambar = function () {
+      var now = jakartaSekarang(), menit = d.menit || 10;
+      var p = d.jam.split(':').map(Number);
+      var mulai = d.tanggal_mulai ? new Date(d.tanggal_mulai + 'T00:00:00') : null;
+      var dimulai = mulai && mulai > now ? mulai : now;
+      var hariIni = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var sesiHariIni = new Date(now.getFullYear(), now.getMonth(), now.getDate(), p[0], p[1]);
+      var selesaiHariIni = new Date(sesiHariIni.getTime() + menit * 60000);
+      var bisaHariIni = hariSesiJm(d.hari).indexOf(now.getDay()) >= 0 && (!mulai || mulai <= now);
+      var sesiNext = null;
+      for (var i = 0; i < 400 && !sesiNext; i++) {
+        var tg = new Date(dimulai.getFullYear(), dimulai.getMonth(), dimulai.getDate() + i);
+        if (hariSesiJm(d.hari).indexOf(tg.getDay()) < 0) continue;
+        var t = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate(), p[0], p[1]);
+        if (t >= now && (!mulai || t >= mulai)) sesiNext = t;
+      }
+      var setoran = '', libur = '';
+      var jamDetikMulai = null;
+      if (bisaHariIni && now < selesaiHariIni) {
+        var sedang = now >= sesiHariIni;
+        var bisaMasuk = now >= new Date(sesiHariIni.getTime() - 5 * 60000);
+        var hitung = sedang ? 'Sesi sedang berlangsung' : hitungJam(Math.max(0, Math.floor((sesiHariIni - now) / 1000)));
+        setoran = '<div class="nj-kartu nj-setoran"><div class="nj-atas"><span class="nj-ikon">' + IKON_LONCENG + '</span>' +
+          '<div><b>Setoran Hari Ini</b><small>' + (sedang ? 'Sesi live sedang berjalan' : 'Sesi live akan dimulai dalam') + '</small></div></div>' +
+          '<div class="nj-hitung">' + esc(hitung) + '</div>' +
+          '<button type="button" class="nj-masuk" id="njMasuk"' + (bisaMasuk ? '' : ' disabled') + '>Masuk Live</button></div>';
+        jamDetikMulai = !sedang;
+      } else if (bisaHariIni && now >= selesaiHariIni) {
+        setoran = '<div class="nj-kartu nj-setoran"><div class="nj-atas"><span class="nj-ikon">' + IKON_LONCENG + '</span>' +
+          '<div><b>Setoran Hari Ini</b><small>Sesi hari ini sudah selesai</small></div></div></div>';
+      } else if (!mulai || mulai <= now) {
+        libur = '<div class="nj-kartu nj-libur"><div class="nj-atas"><span class="nj-ikon">' + IKON_KALENDER + '</span>' +
+          '<div><b>Hari Ini Libur</b><small>' + esc(hariIni.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })) + '</small></div></div>' +
+          '<p>Manfaatkan waktu dengan baik untuk muroja’ah mandiri.</p></div>';
+      }
+      var sesi = '';
+      if (sesiNext) {
+        var selisihHari = Math.round((new Date(sesiNext.getFullYear(), sesiNext.getMonth(), sesiNext.getDate()) - hariIni) / 86400000);
+        var mulaiDalam = selisihHari === 0
+          ? hitungJam(Math.max(0, Math.floor((sesiNext - now) / 1000)))
+          : selisihHari + ' hari';
+        sesi = '<div class="nj-kartu nj-sesi"><div class="nj-atas"><span class="nj-ikon hijau">' + IKON_KALENDER + '</span>' +
+          '<div><b>Sesi Berikutnya</b><small>' + esc(sesiNext.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })) + '</small></div></div>' +
+          '<div class="nj-baris"><span>Pukul ' + esc(d.jam) + ' WIB</span><span class="nj-mulai"><small>Mulai dalam</small><b>' + esc(mulaiDalam) + '</b></span></div></div>';
+      }
+      isi.innerHTML = (setoran || libur) + sesi;
+    };
+    gambar();
+    njTimer = setInterval(gambar, 1000);
+  }
+  var IKON_LONCENG = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8a6 6 0 1112 0c0 6 2 7 2 7H4s2-1 2-7z"/><path d="M10 19a2 2 0 004 0"/></svg>';
+  var IKON_KALENDER = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+
+  /* ---------- Ganti pengajar ---------- */
+  function bukaGanti() {
+    var s = $('gantiSheet');
+    if (!s) return;
+    s.hidden = false;
+    var ket = $('gpKet'); if (ket) ket.value = '';
+    var isi = $('gpIsi');
+    if (isi) isi.hidden = false;
+    var sukses = $('gpSukses'); if (sukses) sukses.hidden = true;
+  }
+  function tutupGanti() { var s = $('gantiSheet'); if (s) s.hidden = true; }
+  var gantiEvents = false, liveEvents = false;
+  function pasangGanti() {
+    var s = $('gantiSheet');
+    if (!s || gantiEvents) return;
+    gantiEvents = true;
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('#pkGanti') && !e.target.closest('#pkGanti').disabled) bukaGanti();
+    });
+    $('gpTutup').addEventListener('click', tutupGanti);
+    s.addEventListener('click', function (e) { if (e.target === s) tutupGanti(); });
+    $('gpKirim').addEventListener('click', function () {
+      var terpilih = document.querySelector('input[name="gpAlasan"]:checked');
+      var alasan = terpilih ? terpilih.value : 'Lainnya';
+      var ket = ($('gpKet').value || '').trim();
+      if (!window.confirm('Ajukan pergantian pengajar? Admin akan memprosesnya.')) return;
+      sb.rpc('minta_ganti_pengajar', { p_alasan: alasan, p_ket: ket }).then(function (r) {
+        if (r.error) { note(r.error.message || 'Permintaan belum bisa dikirim.', true); return; }
+        $('gpIsi').hidden = true;
+        $('gpSukses').hidden = false;
+        muat();
+      });
+    });
+  }
+  function tampilGanti(list) {
+    var box = $('gantiBox'), el = $('gantiList');
+    if (!box || !el) return;
+    box.hidden = !list.length;
+    el.innerHTML = list.map(function (k) {
+      return '<div class="pm-item"><b>' + esc(k.murid || 'Murid') + '</b>' +
+        '<small>Pengajar saat ini: ' + esc(k.pengajar || '-') + ' · Alasan: ' + esc(k.alasan || '-') + (k.keterangan ? ' — ' + esc(k.keterangan) : '') + '</small>' +
+        '<div class="pm-aksi"><button type="button" class="mr-btn" data-setuju-ganti="' + k.id + '">Setujui pergantian</button>' +
+        '<button type="button" class="pm-tolak" data-tolak-ganti="' + k.id + '">Tolak</button></div></div>';
+    }).join('');
+  }
+  function muatGanti() {
+    sb.rpc('daftar_ganti_admin').then(function (r) { if (!r.error) tampilGanti(r.data || []); });
+  }
+  function bindGanti() {
+    var el = $('gantiList');
+    if (!el) return;
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-setuju-ganti], button[data-tolak-ganti]');
+      if (!b || !sb) return;
+      var setuju = b.hasAttribute('data-setuju-ganti');
+      if (!window.confirm(setuju ? 'Setujui pergantian pengajar untuk murid ini?' : 'Tolak permintaan ini?')) return;
+      var id = Number(b.getAttribute(setuju ? 'data-setuju-ganti' : 'data-tolak-ganti'));
+      sb.rpc('respon_ganti', { p_id: id, p_setuju: setuju }).then(function (r) {
+        if (r.error) { note(r.error.message || 'Belum bisa diproses.', true); return; }
+        note(setuju ? 'Pergantian diproses. Tetapkan ustadz baru lewat tab Pendaftar.' : 'Permintaan ditolak.');
+        muatGanti();
+      });
+    });
+  }
+
+  /* ---------- Masuk live (murid) ---------- */
+  function pasangLive() {
+    if (liveEvents) return;
+    liveEvents = true;
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('#njMasuk');
+      if (!b || b.disabled || !sb) return;
+      sb.rpc('masuk_live_murid').then(function (r) {
+        if (r.error) { note(r.error.message || 'Belum bisa masuk live.', true); return; }
+        note('Pengajar sudah diberi tahu bahwa Anda masuk live.');
+      });
+    });
+  }
   function labelHariJm(h) { return h === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat'; }
   function isiJamMurid(pilih) {
     var sel = $('jmJam');
@@ -761,6 +916,9 @@
     var box = $('jadwalMurid');
     if (!box) return;
     jadwalMurid = d;
+    gantiStatus = d && d.ganti_status ? d.ganti_status : null;
+    renderNotifJadwal(d && d.pendaftaran_id ? d : null);
+    renderMulai();
     if (!d || !d.pendaftaran_id) { box.hidden = true; return; }
     box.hidden = false;
     var belum = !d.sudah_mulai;
@@ -923,15 +1081,20 @@
       tik();
       hitungTimer = setInterval(tik, 1000);
     } else if (kondisi === 'berjalan') {
+      var sisa = sisaHariProgram();
+      var n = pertemuanSelesai === null ? 0 : pertemuanSelesai;
       blok.className = 'pk-blok pk-hijau';
-      blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">–</b></div>' +
-        '<div><span class="pk-label">Pertemuan</span><b class="pk-nilai">' + (pertemuanSelesai === null ? '–' : pertemuanSelesai) + ' / 15</b></div>';
+      blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">' + (sisa === null ? '–' : sisa + ' hari') + '</b></div>' +
+        '<div><span class="pk-label">Pertemuan</span><b class="pk-nilai">' + n + ' / 15</b>' +
+        '<div class="pk-bar"><span style="width:' + Math.min(100, Math.round(n / 15 * 100)) + '%"></span></div></div>';
     } else {
       blok.className = 'pk-blok';
       blok.innerHTML = '<b class="pk-nilai">Program telah selesai</b><span class="pk-label">15 / 15 pertemuan</span>';
     }
+    var bisaGanti = !!pengampuNama && !gantiStatus && kondisi !== 'selesai';
+    var tombolGanti = gantiStatus === 'menunggu' ? 'Diproses' : (gantiStatus === 'diproses' ? 'Pergantian diproses' : 'Ganti Pengajar');
     kaki.innerHTML = '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span>' +
-      '<button type="button" class="pk-ganti" disabled>Ganti Pengajar</button>';
+      '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + tombolGanti + '</button>';
     renderGrup(kondisi === 'belum');
     renderGaransi();
   }
@@ -1078,6 +1241,7 @@
     $('btnKlaim').addEventListener('click', klaim);
     bindAdmin();
     bindKeluar();
+    bindGanti();
     $('btnFoto').addEventListener('click', bukaPilihan);
     $('btnEditUsername').addEventListener('click', bukaUsername);
     $('btnBatalUsername').addEventListener('click', function () { $('formUsername').classList.add('hidden'); });
