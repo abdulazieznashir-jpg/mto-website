@@ -148,6 +148,53 @@
   .pf-tabbar .pf-tab { background: none; border: 0; box-shadow: none; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 4px; color: var(--pf-muted); font-size: 11px; font-weight: 500; }
   .pf-tabbar .pf-tab svg { width: 24px; height: 24px; }
   .pf-tabbar .pf-tab[aria-selected="true"] { color: #1D1D1F; }
+
+  /* REVISI 2: beranda gaya referensi (profil, papan skor, pencapaian Jus) */
+  .pf-wrap { max-width: 980px; }
+  .pb-grid { display: grid; gap: 8px; }
+  .pb-profil { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 18px; overflow: hidden; margin-bottom: 14px; text-align: center; }
+  .pb-sampul { height: 120px; background: linear-gradient(135deg, #EAF6FD 0%, #F2EBE1 100%); }
+  .pb-id { padding: 0 16px 20px; margin-top: -44px; }
+  .pb-id .pf-avatar { margin: 0 auto 10px; }
+  .pb-id .pf-name { font-size: 22px; margin: 0; }
+  .pb-id .pf-mail { margin: 4px 0 8px; font-size: 14px; color: var(--pf-muted); }
+  .pb-id .av-grid { margin-top: 12px; }
+  .pb-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .pb-stat { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; padding: 12px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .pb-stat b { font-size: 20px; font-weight: 700; color: #1D1D1F; }
+  .pb-stat small { font-size: 12px; color: var(--pf-muted); }
+  .pb-ikon { width: 24px; height: 24px; margin-bottom: 4px; }
+  .pb-angka-emas { width: 28px; height: 28px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #5C3D0A; background: linear-gradient(145deg, #F8E08E, #D4A337 60%, #B9841F); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(184,132,31,.35); margin-bottom: 4px; }
+  .pb-tingkat { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .pb-tingkat b { display: block; font-size: 17px; color: #1D1D1F; }
+  .pb-tingkat small { font-size: 13px; color: var(--pf-muted); }
+  .pb-ikon-besar { width: 40px; height: 40px; flex: none; }
+  .pb-klaim { background: #FFFFFF; border: 1px solid var(--pf-sep); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .pb-klaim .pf-caption { margin: 2px 0 0; }
+  .pb-kanan .pf-section-title { margin-top: 22px; }
+  .pb-kanan .pf-section-title:first-child { margin-top: 0; }
+  .pf-group .mk-list { list-style: none; margin: 0; padding: 0; }
+  .pf-group .mk-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--pf-sep); font-size: 15px; }
+  .pf-group .mk-row:last-child { border-bottom: 0; }
+  .pf-group .mk-row.me { background: #F2F8FC; }
+  .pf-group .mk-pos { width: 26px; font-weight: 700; color: #1D1D1F; text-align: center; }
+  .pf-group .mk-nm { flex: 1; color: #1D1D1F; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pf-group .mk-nm em { font-style: normal; color: var(--pf-muted); font-size: 13px; }
+  .pf-group .mk-sc { font-weight: 700; color: #1D1D1F; font-variant-numeric: tabular-nums; }
+  .pf-group .mk-hist small { color: var(--pf-muted); }
+  .pb-jus { list-style: none; margin: 0; padding: 0; }
+  .pb-juz { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--pf-sep); }
+  .pb-juz:last-child { border-bottom: 0; }
+  .pb-pena { width: 44px; height: 44px; border-radius: 12px; flex: none; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: #5C3D0A; background: linear-gradient(145deg, #F8E08E, #D4A337 60%, #B9841F); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(184,132,31,.35); }
+  .pb-juz-isi { flex: 1; min-width: 0; }
+  .pb-juz-judul { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: #1D1D1F; margin-bottom: 6px; }
+  .pb-juz-judul span { font-size: 13px; font-weight: 500; color: var(--pf-muted); font-variant-numeric: tabular-nums; }
+  .pb-bar { height: 8px; border-radius: 99px; background: #E5E5EA; overflow: hidden; }
+  .pb-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #F2C94C, #D4A337); }
+  @media (min-width: 900px) {
+    .pb-grid { grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+    .pb-kiri { position: sticky; top: 16px; }
+  }
 </style>
 </head>
 <body>
@@ -169,43 +216,73 @@
 <main class="pf-wrap">
 
   <div class="pf-pane is-on" data-pane="beranda">
-    <div class="verif-banner hidden" id="verifBanner" role="alert">
-      <div class="verif-banner-ikon" aria-hidden="true">!</div>
-      <div class="verif-banner-isi"><strong>Data diri belum lengkap</strong><span>Lengkapi usia dan jenis kelamin Anda.</span></div>
-      <button type="button" class="verif-banner-btn" data-verif-buka>Verifikasi</button>
-    </div>
-
-  <section class="pf-hero">
-    <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
-    <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
-    <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
-    <h1 class="pf-name" id="pfNama">Memuat…</h1>
-    <p class="pf-mail" id="pfEmail"></p>
-  </section>
-
-  <p class="pf-section-title">Mahkota saya</p>
-  <p class="pf-caption">Login +1 · Aktivitas +3</p>
-  <div class="pf-group">
-    <div class="mk-stats">
-      <div class="mk-stat"><small>Total</small><b id="mkTotal">–</b></div>
-      <div class="mk-stat"><small>Peringkat</small><b id="mkRank">–</b></div>
-      <div class="mk-stat"><small>Streak</small><b id="mkStreak">–</b></div>
-      <div class="mk-stat"><small>Bulan ini</small><b id="mkBulan">–</b></div>
-    </div>
-    <div class="pf-row">
-      <span class="pf-label" id="mkKlaimText">Login hari ini</span>
-      <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim" disabled>Klaim +1</button>
-    </div>
+  <div class="verif-banner hidden" id="verifBanner" role="alert">
+    <div class="verif-banner-ikon" aria-hidden="true">!</div>
+    <div class="verif-banner-isi"><strong>Data diri belum lengkap</strong><span>Lengkapi usia dan jenis kelamin Anda.</span></div>
+    <button type="button" class="verif-banner-btn" data-verif-buka>Verifikasi</button>
   </div>
 
-  <p class="pf-section-title">Papan peringkat</p>
-  <div class="pf-group">
-    <ol class="mk-list" id="mkPapan"></ol>
-  </div>
+  <div class="pb-grid">
+    <div class="pb-kiri">
+      <section class="pb-profil">
+        <div class="pb-sampul" aria-hidden="true"></div>
+        <div class="pb-id">
+          <div class="pf-avatar" id="pfAvatar" aria-hidden="true">·</div>
+          <h1 class="pf-name" id="pfNama">Memuat…</h1>
+          <p class="pf-mail" id="pfEmail"></p>
+          <button type="button" class="pf-action" id="btnFoto" aria-expanded="false">Ubah avatar</button>
+          <div id="pickAvatar" class="av-grid hidden" role="group" aria-label="Pilih avatar"></div>
+        </div>
+      </section>
 
-  <p class="pf-section-title">Riwayat Mahkota</p>
-  <div class="pf-group">
-    <ul class="mk-list" id="mkRiwayat"></ul>
+      <section class="pb-stats" aria-label="Ringkasan Mahkota">
+        <div class="pb-stat">
+          <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF9600" d="M12 2c1 3.5 5 5.5 5 10.5A5 5 0 0 1 7 12.5c0-2.4 1.3-3.9 2.5-5 .3 1.6 1 2.6 2 3C11 7.5 11.2 5 12 2z"/></svg>
+          <b id="mkStreak">–</b><small>Runtunan hari</small>
+        </div>
+        <div class="pb-stat">
+          <svg class="pb-ikon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FFC800" d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
+          <b id="mkTotal">–</b><small>XP</small>
+        </div>
+        <div class="pb-stat">
+          <span class="pb-angka-emas" aria-hidden="true">1</span>
+          <b id="mkRank">–</b><small id="mkRankKet">Posisi</small>
+        </div>
+      </section>
+
+      <section class="pb-tingkat" aria-label="Tingkatan saat ini">
+        <svg class="pb-ikon-besar" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1CB0F6" d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>
+        <div>
+          <b>Safir</b>
+          <small>Tingkatan saat ini</small>
+        </div>
+      </section>
+
+      <div class="pb-klaim">
+        <div>
+          <span class="pf-label" id="mkKlaimText">Login hari ini</span>
+          <p class="pf-caption">Login +1 · Aktivitas +3</p>
+        </div>
+        <button type="button" class="pf-btn pf-btn-pri" id="btnKlaim" disabled>Klaim +1</button>
+      </div>
+    </div>
+
+    <div class="pb-kanan">
+      <p class="pf-section-title">Papan skor</p>
+      <div class="pf-group">
+        <ol class="mk-list" id="mkPapan"></ol>
+      </div>
+
+      <p class="pf-section-title">Pencapaian</p>
+      <div class="pf-group">
+        <ol class="pb-jus" id="pbJus"></ol>
+      </div>
+
+      <p class="pf-section-title">Riwayat Mahkota</p>
+      <div class="pf-group">
+        <ul class="mk-list" id="mkRiwayat"></ul>
+      </div>
+    </div>
   </div>
 
   </div>

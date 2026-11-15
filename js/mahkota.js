@@ -36,9 +36,10 @@
 
   function tampil(d) {
     $('mkTotal').textContent = d.total;
-    $('mkRank').textContent = d.peringkat ? '#' + d.peringkat + ' / ' + d.jumlah_peserta : '–';
-    $('mkStreak').textContent = d.streak + ' hari';
-    $('mkBulan').textContent = d.bulan_ini;
+    $('mkRank').textContent = d.peringkat || '–';
+    $('mkRankKet').textContent = d.peringkat && d.peringkat <= 3 ? 'Posisi 3 besar' : 'Posisi Anda';
+    $('mkStreak').textContent = d.streak;
+    renderJus(d.jus || {});
 
     var sudah = !!d.sudah_login_hari_ini;
     $('btnKlaim').disabled = sudah;
@@ -59,6 +60,23 @@
              '<span class="mk-sc">+' + h.jumlah + '</span></li>';
     }).join('');
     $('mkRiwayat').innerHTML = riwayat || '<li class="pf-empty">Belum ada riwayat Mahkota.</li>';
+  }
+
+  /* ---------- Pencapaian: Jus 1 sampai 30, tiap jus 20 halaman ---------- */
+  function renderJus(data) {
+    var el = $('pbJus');
+    if (!el) return;
+    var html = '';
+    for (var n = 1; n <= 30; n++) {
+      var h = Math.min(20, Math.max(0, parseInt(data[n], 10) || 0));
+      html += '<li class="pb-juz">' +
+              '<span class="pb-pena">' + n + '</span>' +
+              '<div class="pb-juz-isi">' +
+              '<div class="pb-juz-judul">Jus ' + n + '<span>' + h + '/20</span></div>' +
+              '<div class="pb-bar"><i style="width:' + (h / 20 * 100) + '%"></i></div>' +
+              '</div></li>';
+    }
+    el.innerHTML = html;
   }
 
   /* ---------- Klaim login harian ---------- */
