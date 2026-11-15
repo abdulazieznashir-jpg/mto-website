@@ -147,6 +147,14 @@
       ? 'Selesaikan pembayaran sebelum ' + tglJam(d.batas_bayar) + '.'
       : (d.status === 'kedaluwarsa' ? 'Hubungi admin untuk dibukakan kembali.' : 'Progres pendaftaran Anda.');
     var lanjut = d.status === 'menunggu_bayar' ? '<div class="pd-aksi"><a class="pf-btn pf-btn-pri" href="pembayaran.html">Lanjutkan pembayaran</a></div>' : '';
+    var mulai = d.tanggal_halaqah ? new Date(d.tanggal_halaqah + 'T00:00:00+07:00') : null;
+    if (d.status === 'diterima' && mulai && mulai > new Date()) {
+      var tgl = mulai.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
+      $('daftarSaya').innerHTML = '<p class="pd-status">Belum Mulai</p>' +
+        '<p class="pd-sub">Mulai belajar</p><p class="pd-status" style="font-size:20px">' + esc(tgl) + '</p>';
+      box.hidden = false;
+      return;
+    }
     $('daftarSaya').innerHTML = '<p class="pd-status">' + esc(LABEL_STATUS[d.status] || d.status) + '</p>' +
       '<p class="pd-sub">' + esc(sub) + '</p>' + langkah + lanjut;
     box.hidden = false;
