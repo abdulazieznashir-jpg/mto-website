@@ -20,7 +20,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 - << 'EOF'
-          import os, json, urllib.request
+          import os, json, urllib.request, urllib.error
+
+          api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+          if not api_key:
+              print("ERROR: GEMINI_API_KEY kosong! Pastikan nama secret di GitHub adalah GEMINI_API_KEY.")
+              exit(1)
 
           if not os.path.exists("PLAN.md"):
               print("PLAN.md tidak ditemukan.")
@@ -33,7 +38,6 @@ jobs:
               print("Semua tugas di PLAN.md sudah selesai!")
               exit(0)
 
-          # Baca file kode website (HTML, CSS, JS, MD) tanpa menyentuh asset gambar/git/workflows
           allowed_ext = (".html", ".css", ".js", ".md", ".sql", ".json")
           repo_files = {}
           for root, dirs, files in os.walk("."):
@@ -57,14 +61,14 @@ jobs:
 
           INSTRUKSI WAJIB:
           1. Ambil HANYA SATU tugas pertama yang masih bertanda `- [ ]` di PLAN.md.
-          2. Kerjakan tugas tersebut secara lengkap, rapi, konsisten dengan desain Mahkota Tahfidz yang sudah ada, dan siap jalan.
-          3. Jangan merusak konfigurasi koneksi Supabase yang sudah ada.
+          2. Kerjakan tugas tersebut secara lengkap, rapi, konsisten dengan desain Apple Style Mahkota Tahfidz Online, dan siap jalan.
+          3. Jangan merusak konfigurasi koneksi Supabase dan penjagaan akses Owner yang sudah ada.
           4. Ubah tanda `- [ ]` menjadi `- [x]` pada tugas yang baru saja kamu selesaikan di PLAN.md.
           5. Kembalikan output HANYA dalam format JSON valid dengan struktur:
              {{"files": {{"nama_file_atau_path": "isi_lengkap_file", "PLAN.md": "isi_lengkap_PLAN_terbaru"}}}}
           Jangan tambahkan teks penjelasan di luar JSON."""
 
-          url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={os.environ['GEMINI_API_KEY']}"
+          url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
           payload = {
               "contents": [{"parts": [{"text": prompt}]}],
               "generationConfig": {"responseMimeType": "application/json"}
@@ -73,11 +77,20 @@ jobs:
           req = urllib.request.Request(
               url,
               data=json.dumps(payload).encode("utf-8"),
-              headers={"Content-Type": "application/json"}
+              headers={
+                  "Content-Type": "application/json",
+                  "x-goog-api-key": api_key,
+                  "User-Agent": "Mozilla/5.0 (compatible; GitHubActionsBot/1.0)"
+              }
           )
 
-          with urllib.request.urlopen(req) as resp:
-              result = json.loads(resp.read().decode("utf-8"))
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  result = json.loads(resp.read().decode("utf-8"))
+          except urllib.error.HTTPError as e:
+              err_body = e.read().decode("utf-8", errors="replace")
+              print(f"HTTP Error {e.code}: {err_body}")
+              exit(1)
 
           text_out = result["candidates"][0]["content"]["parts"][0]["text"]
           parsed = json.loads(text_out)
