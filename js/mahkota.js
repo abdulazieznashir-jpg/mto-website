@@ -792,14 +792,10 @@
   }
   /* ---------- Penjadwalan belajar murid: ubah jadwal, usulan dari admin ---------- */
   var jadwalMurid = null, jmEvents = false, gantiStatus = null;
-  // Sisa hari program: dari hari ini sampai tanggal mulai + durasi bulan
+  // Sisa hari program: dihitung sistem dari tanggal selesai periode (gelombang 1: tgl 10, gelombang 2: tgl 25)
   function sisaHariProgram() {
-    if (!jadwalMurid || !jadwalMurid.tanggal_mulai || !jadwalMurid.durasi) return null;
-    var m = jadwalMurid.tanggal_mulai.split('-').map(Number);
-    var akhir = Date.UTC(m[0], m[1] - 1 + Number(jadwalMurid.durasi), m[2]);
-    var h = hariIniJakarta().split('-').map(Number);
-    var hari = Math.round((akhir - Date.UTC(h[0], h[1] - 1, h[2])) / 86400000);
-    return Math.max(0, hari);
+    if (!jadwalMurid || jadwalMurid.sisa_hari === null || jadwalMurid.sisa_hari === undefined) return null;
+    return Number(jadwalMurid.sisa_hari);
   }
   // Jam dinding Jakarta sebagai Date lokal; semua perbandingan memakai pola yang sama
   function jakartaSekarang() { return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })); }
@@ -991,8 +987,8 @@
     box.hidden = false;
     var belum = !d.sudah_mulai;
     $('jmSub').textContent = belum
-      ? 'Bisa diganti kapan saja selama belum mulai belajar.'
-      : 'Sudah mulai belajar. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
+      ? 'Bisa diganti kapan saja selama periode belum dimulai.'
+      : 'Periode sudah dimulai. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
     $('jmPill').textContent = d.usulan ? 'Ada usulan dari admin' : (d.ustadz ? 'Ustadz ditetapkan' : 'Menunggu Ustadz');
     var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
     var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc((d.jam || '-').replace(':', '.')) + ' WIB</b>' +
@@ -1036,15 +1032,14 @@
     var catatan = $('pkJadwalCatatan');
     if (catatan) {
       catatan.hidden = bisa;
-      catatan.textContent = 'Batas 3 kali perubahan setelah mulai belajar sudah habis.';
+      catatan.textContent = 'Batas 3 kali perubahan setelah periode dimulai sudah habis.';
     }
   }
   // Tanggal berakhir program (sama dengan perhitungan sisa hari)
   function sampaiProgram() {
-    if (!jadwalMurid || !jadwalMurid.tanggal_mulai || !jadwalMurid.durasi) return '';
-    var m = jadwalMurid.tanggal_mulai.split('-').map(Number);
-    var akhir = new Date(Date.UTC(m[0], m[1] - 1 + Number(jadwalMurid.durasi), m[2]));
-    return akhir.toLocaleDateString('id-ID', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+    if (!jadwalMurid || !jadwalMurid.tanggal_selesai) return '';
+    var s = jadwalMurid.tanggal_selesai.split('-').map(Number);
+    return new Date(Date.UTC(s[0], s[1] - 1, s[2])).toLocaleDateString('id-ID', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
   }
   function pasangJadwalMurid() {
     if (jmEvents) return;
