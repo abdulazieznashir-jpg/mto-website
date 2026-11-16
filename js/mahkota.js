@@ -941,6 +941,7 @@
       ? 'Bisa diganti kapan saja selama belum mulai belajar.'
       : 'Sudah mulai belajar. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
     $('jmPill').textContent = d.usulan ? 'Ada usulan dari admin' : (d.ustadz ? 'Ustadz ditetapkan' : 'Menunggu Ustadz');
+    var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
     var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc(d.jam || '-') + ' WIB</b>' +
       (d.ustadz ? '<small>Ustadz: ' + esc(d.ustadz) + '</small>' : '') + '</div>';
     if (d.usulan) {
@@ -953,9 +954,8 @@
         '<em>' + (selisih >= 0 ? '+' : '') + selisih + ' menit</em></div></div>' +
         '<small>Ustadz: ' + esc(u.ustadz) + '</small>' +
         '<div class="jm-aksi"><button type="button" class="pf-btn pf-btn-pri" data-setuju-usulan="' + u.id + '">Setuju Waktu Ini</button>' +
-        '<button type="button" class="pf-btn" id="jmLain">Ajukan Waktu Lain</button></div></div>';
+        '<button type="button" class="pf-btn" id="jmLain"' + (bisaUbah ? '' : ' disabled') + '>Ajukan Waktu Lain</button></div></div>';
     }
-    var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
     isi += '<div class="jm-aksi" style="margin-top:12px">' +
       '<button type="button" class="pf-btn" id="jmEdit"' + (bisaUbah ? '' : ' disabled') + '>Edit Waktu</button></div>' +
       (bisaUbah ? '' : '<p class="jm-note">Batas 3 kali perubahan setelah mulai sudah habis.</p>');
@@ -1015,13 +1015,25 @@
     });
     $('jmForm').addEventListener('submit', function (e) {
       e.preventDefault();
+      var kirim = e.target.querySelector('button[type="submit"]');
+      if (kirim && kirim.disabled) return;
       var hari = $('jmPaket').value, jam = $('jmJam').value;
+      if (!hari || !jam) { note('Pilih hari dan jam terlebih dahulu.', true); return; }
+      if (jadwalMurid && hari === jadwalMurid.hari && jam === jadwalMurid.jam) {
+        note('Jadwal ini sama dengan jadwal Anda sekarang. Pilih hari atau jam yang berbeda.', true);
+        return;
+      }
       if (!window.confirm('Ajukan jadwal ' + labelHariJm(hari) + ', pukul ' + jam + ' WIB? Admin akan mencarikan ustadz yang sesuai.')) return;
+      if (kirim) kirim.disabled = true;
       sb.rpc('ajukan_ubah_jadwal', { p_hari: hari, p_jam: jam }).then(function (r) {
+        if (kirim) kirim.disabled = false;
         if (r.error) { note(r.error.message || 'Permintaan belum bisa dikirim.', true); return; }
         $('jmForm').hidden = true;
         note('Permintaan jadwal sudah dikirim. Admin akan mengabari Anda.');
         muat();
+      }).catch(function () {
+        if (kirim) kirim.disabled = false;
+        note('Koneksi bermasalah. Silakan coba lagi.', true);
       });
     });
   }
