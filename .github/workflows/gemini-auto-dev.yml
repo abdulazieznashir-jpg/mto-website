@@ -62,13 +62,14 @@ jobs:
           INSTRUKSI WAJIB:
           1. Ambil HANYA SATU tugas pertama yang masih bertanda `- [ ]` di PLAN.md.
           2. Kerjakan tugas tersebut secara lengkap, rapi, konsisten dengan desain Apple Style Mahkota Tahfidz Online, dan siap jalan.
-          3. Jangan merusak konfigurasi koneksi Supabase dan penjagaan akses Owner yang sudah ada.
-          4. Ubah tanda `- [ ]` menjadi `- [x]` pada tugas yang baru saja kamu selesaikan di PLAN.md.
-          5. Kembalikan output HANYA dalam format JSON valid dengan struktur:
+          3. JANGAN MENGUBAH atau menghapus angka harga paket, diskon, maupun struktur biaya terbaru yang sudah ada di file kode website saat ini.
+          4. Jangan merusak konfigurasi koneksi Supabase dan penjagaan akses Owner yang sudah ada.
+          5. Ubah tanda `- [ ]` menjadi `- [x]` pada tugas yang baru saja kamu selesaikan di PLAN.md.
+          6. Kembalikan output HANYA dalam format JSON valid dengan struktur:
              {{"files": {{"nama_file_atau_path": "isi_lengkap_file", "PLAN.md": "isi_lengkap_PLAN_terbaru"}}}}
           Jangan tambahkan teks penjelasan di luar JSON."""
 
-          url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+          url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
           payload = {
               "contents": [{"parts": [{"text": prompt}]}],
               "generationConfig": {"responseMimeType": "application/json"}
