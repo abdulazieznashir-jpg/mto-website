@@ -1404,7 +1404,7 @@
     if (!paketKey && !tglMulaiISO) {
       blok.hidden = true; status.hidden = true; meta.hidden = true; kaki.hidden = true;
       renderGrup(false);
-      if (daftar) daftar.hidden = false;
+      var kartuPaket = $('pbPaket'); if (kartuPaket) kartuPaket.hidden = true;
       return;
     }
     if (daftar) daftar.hidden = true;

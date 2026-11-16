@@ -867,7 +867,6 @@
       <div id="njIsi"></div>
     </section>
     <div class="pk-kaki" id="pkKaki" hidden></div>
-    <a class="sy-btn-gold" id="pbDaftar" href="index.html#daftar">Daftar Sekarang <span aria-hidden="true">›</span></a>
   </section>
 
   <section class="sy-card sy-grup" id="pkGrup" hidden>
@@ -974,6 +973,20 @@
           <p class="pd-sub">Permintaan ganti pengajar</p>
           <div id="gantiList"></div>
         </div>
+        <div class="pd-gelombang" id="grupAdminBox" hidden>
+          <p class="pd-sub">Daftar admin: murid tanpa akun, per pengampu</p>
+          <div class="adm-search"><input type="search" id="grupAdminCari" placeholder="Cari nama murid…" aria-label="Cari nama murid"></div>
+          <div class="adm-tabs" role="tablist" aria-label="Status murid" style="margin:12px 0">
+            <button type="button" role="tab" aria-selected="true" data-adm-status="semua">Semua</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="aktif">Aktif</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="jeda">Jeda</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="selesai">Selesai</button>
+          </div>
+          <p class="pd-sub" id="grupAdminKosong" hidden></p>
+          <div id="grupAdminList"></div>
+        </div>
+        <div id="adminList"></div>
+        <p class="pf-section-title" style="margin-top:28px">Pengaturan</p>
         <div class="pd-gelombang" id="gelombangBox" hidden>
           <p class="pd-sub">Tanggal mulai gelombang</p>
           <div id="gelombangForm"></div>
@@ -986,18 +999,6 @@
           <p class="pd-sub">Atur gelombang murid yang belum punya gelombang</p>
           <p class="pd-sub" id="periodeInfo"></p>
           <div id="periodeList"></div>
-        </div>
-        <div class="pd-gelombang" id="grupAdminBox" hidden>
-          <p class="pd-sub">Daftar admin: murid tanpa akun, per pengampu</p>
-          <div class="adm-search"><input type="search" id="grupAdminCari" placeholder="Cari nama murid…" aria-label="Cari nama murid"></div>
-          <div class="adm-tabs" role="tablist" aria-label="Status murid" style="margin:12px 0">
-            <button type="button" role="tab" aria-selected="true" data-adm-status="semua">Semua</button>
-            <button type="button" role="tab" aria-selected="false" data-adm-status="aktif">Aktif</button>
-            <button type="button" role="tab" aria-selected="false" data-adm-status="jeda">Jeda</button>
-            <button type="button" role="tab" aria-selected="false" data-adm-status="selesai">Selesai</button>
-          </div>
-          <p class="pd-sub" id="grupAdminKosong" hidden></p>
-          <div id="grupAdminList"></div>
         </div>
         <div class="pd-gelombang" id="pengumumanBox" hidden>
           <p class="pd-sub">Kirim pengumuman / promo ke murid</p>
@@ -1015,7 +1016,6 @@
             <p class="pd-sub" id="pgInfo" aria-live="polite"></p>
           </form>
         </div>
-        <div id="adminList"></div>
       </section>
   </div>
 
