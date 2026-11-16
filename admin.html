@@ -111,6 +111,11 @@
   .adm-murid-kartu-baris { display: flex; justify-content: space-between; gap: 12px; color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
   .adm-murid-kartu-baris span:last-child { color: var(--adm-ink, #1D1D1F); text-align: right; min-width: 0; overflow-wrap: anywhere; }
   .adm-murid-tabel-wrap { display: none; }
+  .adm-murid-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .adm-murid-pager[hidden] { display: none !important; }
+  .adm-murid-info { margin: 0; color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
+  .adm-murid-tombol { display: flex; gap: 8px; }
+  .adm-murid-page:disabled { opacity: .4; cursor: default; }
   @media (min-width: 900px) {
     .adm-murid-wrap { padding-inline: 32px; }
     .adm-murid-kartu { display: none; }
@@ -260,6 +265,13 @@
             </tbody>
           </table>
         </div>
+        <div class="adm-murid-pager" id="muridPager" hidden>
+          <p class="adm-murid-info" id="muridInfo"></p>
+          <div class="adm-murid-tombol">
+            <button type="button" class="adm-ikon-btn adm-murid-page" id="muridSebelum" aria-label="Halaman sebelumnya">‹</button>
+            <button type="button" class="adm-ikon-btn adm-murid-page" id="muridBerikut" aria-label="Halaman berikutnya">›</button>
+          </div>
+        </div>
       </div>
     </section>
     <section class="adm-view" data-view="pengajar" hidden><p class="adm-kerangka">Pengajar (belum dibuat)</p></section>
@@ -308,58 +320,104 @@
     el.textContent = (teks === null || teks === undefined || teks === '') ? '—' : String(teks);
     return el;
   }
+  var MURID = [];
+  var HALAMAN_UKURAN = 20;
+  var halamanAktif = 1;
+
   function muatMurid() {
     var body = document.getElementById('muridBody');
     if (!body) return;
+    sb.rpc('admin_daftar_murid').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
+      MURID = r.data;
+      halamanAktif = 1;
+      tampilMurid();
+    }).catch(function () { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); });
+  }
+
+  function pesanMurid(pesan) {
+    var body = document.getElementById('muridBody');
     var kartu = document.getElementById('muridKartu');
-    function kosong(pesan) {
+    if (body) {
       body.innerHTML = '';
       var tr = document.createElement('tr');
       var td = document.createElement('td');
       td.colSpan = 6; td.className = 'adm-murid-kosong'; td.textContent = pesan;
       tr.appendChild(td); body.appendChild(tr);
-      if (kartu) {
-        kartu.innerHTML = '';
-        kartu.appendChild(sel('p', pesan));
-      }
     }
-    function baris(label, nilai) {
-      var div = document.createElement('div');
-      div.className = 'adm-murid-kartu-baris';
-      div.appendChild(sel('span', label));
-      div.appendChild(sel('span', nilai));
-      return div;
-    }
-    sb.rpc('admin_daftar_murid').then(function (r) {
-      if (r.error || !Array.isArray(r.data)) { kosong('Daftar murid belum bisa dimuat.'); return; }
-      if (r.data.length === 0) { kosong('Belum ada murid.'); return; }
-      body.innerHTML = '';
-      if (kartu) kartu.innerHTML = '';
-      r.data.forEach(function (m) {
-        var status = m.jeda_sejak ? 'Jeda' : m.status;
-        var tr = document.createElement('tr');
-        tr.appendChild(sel('td', m.nama));
-        tr.appendChild(sel('td', m.wa));
-        tr.appendChild(sel('td', m.gelombang));
-        tr.appendChild(sel('td', m.durasi));
-        tr.appendChild(sel('td', m.pengampu_nama));
-        tr.appendChild(sel('td', status));
-        body.appendChild(tr);
-
-        if (kartu) {
-          var item = document.createElement('article');
-          item.className = 'adm-murid-kartu-item';
-          item.appendChild(sel('div', m.nama));
-          item.lastChild.className = 'adm-murid-kartu-nama';
-          item.appendChild(baris('Gelombang', m.gelombang));
-          item.appendChild(baris('Durasi', m.durasi));
-          item.appendChild(baris('Pengampu', m.pengampu_nama));
-          item.appendChild(baris('Status', status));
-          kartu.appendChild(item);
-        }
-      });
-    }).catch(function () { kosong('Daftar murid belum bisa dimuat.'); });
+    if (kartu) { kartu.innerHTML = ''; kartu.appendChild(sel('p', pesan)); }
+    var info = document.getElementById('muridInfo');
+    if (info) info.textContent = '';
   }
+
+  function baris(label, nilai) {
+    var div = document.createElement('div');
+    div.className = 'adm-murid-kartu-baris';
+    div.appendChild(sel('span', label));
+    div.appendChild(sel('span', nilai));
+    return div;
+  }
+
+  function tampilMurid() {
+    var body = document.getElementById('muridBody');
+    var kartu = document.getElementById('muridKartu');
+    var info = document.getElementById('muridInfo');
+    var pager = document.getElementById('muridPager');
+    if (!body) return;
+    if (MURID.length === 0) { pesanMurid('Belum ada murid.'); if (pager) pager.hidden = true; return; }
+
+    var total = MURID.length;
+    var halamanTotal = Math.ceil(total / HALAMAN_UKURAN);
+    if (halamanAktif > halamanTotal) halamanAktif = halamanTotal;
+    if (halamanAktif < 1) halamanAktif = 1;
+    var mulai = (halamanAktif - 1) * HALAMAN_UKURAN;
+    var akhir = Math.min(mulai + HALAMAN_UKURAN, total);
+    var potongan = MURID.slice(mulai, akhir);
+
+    body.innerHTML = '';
+    if (kartu) kartu.innerHTML = '';
+    potongan.forEach(function (m) {
+      var status = m.jeda_sejak ? 'Jeda' : m.status;
+      var tr = document.createElement('tr');
+      tr.appendChild(sel('td', m.nama));
+      tr.appendChild(sel('td', m.wa));
+      tr.appendChild(sel('td', m.gelombang));
+      tr.appendChild(sel('td', m.durasi));
+      tr.appendChild(sel('td', m.pengampu_nama));
+      tr.appendChild(sel('td', status));
+      body.appendChild(tr);
+
+      if (kartu) {
+        var item = document.createElement('article');
+        item.className = 'adm-murid-kartu-item';
+        var nama = sel('div', m.nama);
+        nama.className = 'adm-murid-kartu-nama';
+        item.appendChild(nama);
+        item.appendChild(baris('Gelombang', m.gelombang));
+        item.appendChild(baris('Durasi', m.durasi));
+        item.appendChild(baris('Pengampu', m.pengampu_nama));
+        item.appendChild(baris('Status', status));
+        kartu.appendChild(item);
+      }
+    });
+
+    if (info) info.textContent = 'Menampilkan ' + (mulai + 1) + '–' + akhir + ' dari ' + total + ' murid';
+    if (pager) {
+      pager.hidden = halamanTotal <= 1;
+      var sebelum = document.getElementById('muridSebelum');
+      var berikut = document.getElementById('muridBerikut');
+      if (sebelum) sebelum.disabled = halamanAktif <= 1;
+      if (berikut) berikut.disabled = halamanAktif >= halamanTotal;
+    }
+  }
+
+  function bindMurid() {
+    var sebelum = document.getElementById('muridSebelum');
+    var berikut = document.getElementById('muridBerikut');
+    if (sebelum) sebelum.addEventListener('click', function () { halamanAktif--; tampilMurid(); });
+    if (berikut) berikut.addEventListener('click', function () { halamanAktif++; tampilMurid(); });
+  }
+  bindMurid();
 
   /* Dashboard: isi angka dari admin_ringkasan_lengkap. Jika gagal, angka tetap "—". */
   function muatDashboard() {
