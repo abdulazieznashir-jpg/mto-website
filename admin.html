@@ -121,6 +121,13 @@
   .adm-detail-daftar { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 16px; }
   .adm-detail-daftar dt { color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
   .adm-detail-daftar dd { margin: 0; overflow-wrap: anywhere; }
+  .adm-detail-aksi { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .adm-detail-aksi:empty { display: none; }
+  .adm-detail-aksi button {
+    border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-surface, #FFFFFF);
+    color: var(--adm-ink, #1D1D1F); border-radius: 999px; padding: 10px 16px; cursor: pointer; font: inherit;
+  }
+  .adm-detail-aksi button:disabled { opacity: .5; cursor: default; }
   /* HP: detail tampil sebagai halaman penuh di atas daftar, dengan tombol kembali */
   @media (max-width: 899px) {
     .adm-detail {
@@ -363,6 +370,7 @@
             <button type="button" class="adm-ikon-btn" id="detailTutup" aria-label="Kembali ke daftar murid">✕</button>
           </div>
           <dl class="adm-detail-daftar" id="detailDaftar"></dl>
+          <div class="adm-detail-aksi" id="detailAksi"></div>
         </aside>
       </div>
     </section>
@@ -665,6 +673,28 @@
       daftar.appendChild(sel('dt', pair[0]));
       daftar.appendChild(sel('dd', pair[1]));
     });
+    var aksi = document.getElementById('detailAksi');
+    if (aksi) {
+      aksi.innerHTML = '';
+      var jedaSekarang = !!m.jeda_sejak;
+      var tombol = document.createElement('button');
+      tombol.type = 'button';
+      tombol.textContent = jedaSekarang ? 'Aktifkan kembali' : 'Jadikan jeda';
+      tombol.addEventListener('click', function () {
+        var pesan = jedaSekarang
+          ? 'Aktifkan kembali murid ini dari status jeda?'
+          : 'Jadikan murid ini jeda?';
+        if (!window.confirm(pesan)) return;
+        tombol.disabled = true;
+        sb.rpc('admin_set_jeda', { p_id: m.id, p_jeda: !jedaSekarang }).then(function (r) {
+          tombol.disabled = false;
+          if (r.error) { window.alert('Gagal: ' + (r.error.message || 'coba lagi')); return; }
+          tutupDetail();
+          muatMurid();
+        }).catch(function () { tombol.disabled = false; window.alert('Gagal menyimpan status jeda.'); });
+      });
+      aksi.appendChild(tombol);
+    }
     panel.hidden = false;
     panel.scrollIntoView && panel.scrollIntoView({ block: 'nearest' });
   }
