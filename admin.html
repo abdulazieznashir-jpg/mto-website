@@ -61,6 +61,28 @@
     .adm-topbar-aksi .adm-ikon-btn:not(.adm-ikon-btn-titik) { display: inline-flex; }
   }
 
+  /* Navigasi bawah HP (di bawah 900px saja) */
+  .adm-bottomnav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    display: flex; justify-content: space-around; align-items: stretch;
+    height: calc(var(--adm-bottomnav-h, 64px) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
+    background: var(--adm-surface, #FFFFFF);
+    border-top: 1px solid var(--adm-line, #ECE7DE);
+    box-sizing: border-box;
+  }
+  .adm-bottomnav a {
+    flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; color: var(--adm-muted, #6E6E73); text-decoration: none; font-size: var(--adm-xs, 12px);
+  }
+  .adm-bottomnav a[aria-current="page"] { color: var(--adm-gold-ink, #8A6A1F); font-weight: 600; }
+  .adm-bottomnav-ikon { font-size: 18px; line-height: 1; }
+  @media (min-width: 900px) { .adm-bottomnav { display: none; } }
+  @media (max-width: 899px) {
+    body { padding-bottom: calc(var(--adm-bottomnav-h, 64px) + env(safe-area-inset-bottom, 0px)); }
+  }
+
   /* Sidebar desktop (layar lebar saja; HP memakai navigasi bawah pada langkah 6) */
   .adm-shell { display: block; }
   .adm-side { display: none; }
@@ -140,6 +162,14 @@
     <div class="adm-kerangka" id="admKerangka">Memuat halaman admin…</div>
   </main>
 </div>
+
+<nav class="adm-bottomnav" aria-label="Navigasi admin HP">
+  <a href="#dashboard" aria-current="page"><span class="adm-bottomnav-ikon" aria-hidden="true">⌂</span>Dashboard</a>
+  <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true">☺</span>Murid</a>
+  <a href="#jadwal"><span class="adm-bottomnav-ikon" aria-hidden="true">▦</span>Jadwal</a>
+  <a href="#periode"><span class="adm-bottomnav-ikon" aria-hidden="true">▤</span>Laporan</a>
+  <a href="#pengaturan"><span class="adm-bottomnav-ikon" aria-hidden="true">⋯</span>Lainnya</a>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script>
