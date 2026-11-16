@@ -388,7 +388,22 @@
         </div>
       </div>
     </section>
-    <section class="adm-view" data-view="periode" hidden><p class="adm-kerangka">Periode (belum dibuat)</p></section>
+    <section class="adm-view" data-view="periode" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Periode</h1>
+        <div class="adm-jadwal-hp" id="periodeKartu" aria-label="Daftar periode"></div>
+        <div class="adm-jadwal-tabel-wrap">
+          <table class="adm-murid-tabel">
+            <thead>
+              <tr><th scope="col">Periode</th><th scope="col">Gelombang</th><th scope="col">Mulai</th><th scope="col">Berakhir</th></tr>
+            </thead>
+            <tbody id="periodeBody">
+              <tr><td colspan="4" class="adm-murid-kosong">Memuat periode…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
     <section class="adm-view" data-view="permintaan" hidden><p class="adm-kerangka">Permintaan (belum dibuat)</p></section>
     <section class="adm-view" data-view="pengaturan" hidden><p class="adm-kerangka">Pengaturan (belum dibuat)</p></section>
   </main>
@@ -426,6 +441,7 @@
     muatPengajar();
     muatJadwal();
     muatPertemuan();
+    muatPeriode();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -757,6 +773,55 @@
         }
       });
     }).catch(function () { pesan('Pertemuan belum bisa dimuat.'); });
+  }
+
+  /* Periode: isi tabel dan kartu dari admin_jadwal_gelombang (fungsi yang sudah ada) */
+  function tglPeriode(t) {
+    if (!t) return '—';
+    var d = new Date(String(t).slice(0, 10) + 'T00:00:00');
+    if (isNaN(d.getTime())) return String(t);
+    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+  function namaGelombang(k) {
+    return k === 'gelombang_1' ? 'Gelombang 1' : (k === 'gelombang_2' ? 'Gelombang 2' : (k || '—'));
+  }
+  function muatPeriode() {
+    var body = document.getElementById('periodeBody');
+    var kartu = document.getElementById('periodeKartu');
+    if (!body) return;
+    function pesan(teks) {
+      body.innerHTML = '';
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = teks;
+      tr.appendChild(td); body.appendChild(tr);
+      if (kartu) { kartu.innerHTML = ''; kartu.appendChild(sel('p', teks)); }
+    }
+    sb.rpc('admin_jadwal_gelombang').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) { pesan('Periode belum bisa dimuat.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada periode.'); return; }
+      body.innerHTML = '';
+      if (kartu) kartu.innerHTML = '';
+      r.data.forEach(function (g) {
+        var tr = document.createElement('tr');
+        tr.appendChild(sel('td', g.periode));
+        tr.appendChild(sel('td', namaGelombang(g.kode)));
+        tr.appendChild(sel('td', tglPeriode(g.mulai)));
+        tr.appendChild(sel('td', tglPeriode(g.berakhir)));
+        body.appendChild(tr);
+
+        if (kartu) {
+          var item = document.createElement('article');
+          item.className = 'adm-murid-kartu-item';
+          var judul = sel('div', (g.periode || '—') + ' · ' + namaGelombang(g.kode));
+          judul.className = 'adm-murid-kartu-nama';
+          item.appendChild(judul);
+          item.appendChild(baris('Mulai', tglPeriode(g.mulai)));
+          item.appendChild(baris('Berakhir', tglPeriode(g.berakhir)));
+          kartu.appendChild(item);
+        }
+      });
+    }).catch(function () { pesan('Periode belum bisa dimuat.'); });
   }
 
   function bindMurid() {
