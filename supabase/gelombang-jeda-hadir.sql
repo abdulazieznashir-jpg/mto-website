@@ -77,3 +77,10 @@ begin
       case when status = 'menunggu_bayar' and now() > batas_bayar then 'kedaluwarsa' else status end as status
     from public.pendaftaran) x);
 end; $$;
+
+-- 6. Durasi murid berdasarkan label periode (dihitung dari P77 = Nov 2026, Gelombang 1)
+--    P77-3BLN-P79 -> 3 bulan, berakhir 10 Feb 2027.  P77-6BLN-P82 -> 6 bulan, berakhir 10 Mei 2027.
+--    P77 (1 bulan) -> berakhir 10 Des 2026.
+update public.pendaftaran set durasi = 3 where status = 'diterima' and periode_label = 'P77-3BLN-P79' and gelombang = 'gelombang_1';
+update public.pendaftaran set durasi = 6 where status = 'diterima' and periode_label = 'P77-6BLN-P82' and gelombang = 'gelombang_1';
+update public.pendaftaran set durasi = 1 where status = 'diterima' and periode_label = 'P77' and gelombang = 'gelombang_1' and durasi is null;
