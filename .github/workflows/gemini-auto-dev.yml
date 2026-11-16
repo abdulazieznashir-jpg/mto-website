@@ -20,7 +20,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 - << 'EOF'
-          import os, json, time, urllib.request, urllib.error
+          import os, re, json, time, urllib.request, urllib.error
 
           api_key = os.environ.get("GEMINI_API_KEY", "").strip()
           if not api_key:
@@ -34,55 +34,80 @@ jobs:
           with open("PLAN.md", "r", encoding="utf-8") as f:
               plan = f.read()
 
-          if "- [ ]" not in plan:
+          unchecked = [line.strip() for line in plan.splitlines() if line.strip().startswith("- [ ]")]
+          if not unchecked:
               print("Semua tugas di PLAN.md sudah selesai!")
               exit(0)
 
+          current_task = unchecked[0]
+          print(f"Mengerjakan tugas: {current_task}")
+
+          # Pilih hanya file yang relevan dengan tugas saat ini agar hemat token (< 250k TPM)
+          mentioned_files = set(re.findall(r'[\w\-/]+\.(?:html|css|js|md|sql|json)', current_task))
+          mentioned_files.add("PLAN.md")
+          if "admin.html" in mentioned_files:
+              mentioned_files.update(["js/supabase-config.js", "js/auth.js", "supabase/schema.sql"])
+
           allowed_ext = (".html", ".css", ".js", ".md", ".sql", ".json")
           repo_files = {}
+          total_chars = 0
+          MAX_CHARS = 320000  # ~80.000 token, aman di bawah limit 250.000 token/menit
+
           for root, dirs, files in os.walk("."):
               if ".git" in root or ".github" in root:
                   continue
               for file in files:
                   if file.endswith(allowed_ext):
                       path = os.path.join(root, file)[2:]
-                      try:
-                          with open(path, "r", encoding="utf-8") as fp:
-                              repo_files[path] = fp.read()
-                      except Exception:
-                          pass
+                      if path in mentioned_files or any(m in path for m in mentioned_files):
+                          try:
+                              with open(path, "r", encoding="utf-8") as fp:
+                                  content = fp.read()
+                              if total_chars + len(content) <= MAX_CHARS:
+                                  repo_files[path] = content
+                                  total_chars += len(content)
+                          except Exception:
+                              pass
+
+          # Jika belum ada file spesifik yang disebut di tugas, ambil daftar nama file saja sebagai referensi
+          all_paths = []
+          for root, dirs, files in os.walk("."):
+              if ".git" in root or ".github" in root:
+                  continue
+              for file in files:
+                  all_paths.append(os.path.join(root, file)[2:])
 
           prompt = f"""Kamu adalah Senior Frontend & Supabase Web Developer untuk Website Mahkota Tahfidz Online.
-          Berikut adalah daftar tugas di PLAN.md:
-          {plan}
+          Tugas saat ini yang WAJIB kamu selesaikan HANYA SATU tugas berikut:
+          {current_task}
 
-          Berikut adalah isi file kode website saat ini (format JSON path: isi):
+          Daftar seluruh file yang ada di repositori:
+          {json.dumps(all_paths, ensure_ascii=False)}
+
+          Isi file relevan saat ini (format JSON path: isi):
           {json.dumps(repo_files, ensure_ascii=False)}
 
-          INSTRUKSI WAJIB:
-          1. Ambil HANYA SATU tugas pertama yang masih bertanda `- [ ]` di PLAN.md.
-          2. Kerjakan tugas tersebut secara lengkap, rapi, konsisten dengan desain Apple Style Mahkota Tahfidz Online, dan siap jalan.
-          3. JANGAN MENGUBAH atau menghapus angka harga paket, diskon, maupun struktur biaya terbaru yang sudah ada di file kode website saat ini.
-          4. Jangan merusak konfigurasi koneksi Supabase dan penjagaan akses Owner yang sudah ada.
-          5. Ubah tanda `- [ ]` menjadi `- [x]` pada tugas yang baru saja kamu selesaikan di PLAN.md.
-          6. Kembalikan output HANYA dalam format JSON valid dengan struktur:
-             {{"files": {{"nama_file_atau_path": "isi_lengkap_file", "PLAN.md": "isi_lengkap_PLAN_terbaru"}}}}
-          Jangan tambahkan teks penjelasan di luar JSON."""
+          Isi lengkap PLAN.md saat ini:
+          {plan}
 
-          models_to_try = [
-              "gemini-3.8-flash",
-              "gemini-3.8-flash",
-              "gemini-3.8-flash-lite"
-          ]
+          INSTRUKSI WAJIB:
+          1. Kerjakan HANYA tugas `{current_task}` secara lengkap, rapi, konsisten dengan desain Apple Style Mahkota Tahfidz Online, dan siap jalan.
+          2. JANGAN MENGUBAH atau menghapus angka harga paket, diskon, maupun struktur biaya terbaru yang sudah ada di file kode website saat ini.
+          3. Jangan merusak konfigurasi koneksi Supabase dan penjagaan akses Owner (`abdulaziez.nashir@gmail.com`) yang sudah ada.
+          4. Pada `PLAN.md`, ubah tanda `- [ ]` menjadi `- [x]` HANYA pada tugas yang baru saja kamu selesaikan ini, dan biarkan baris lainnya utuh.
+          5. Kembalikan output HANYA dalam format JSON valid dengan struktur:
+             {{"files": {{"nama_file_yang_diubah": "isi_lengkap_file", "PLAN.md": "isi_lengkap_PLAN_terbaru"}}}}
+          Jangan tambahkan teks penjelasan di luar JSON."""
 
           payload = {
               "contents": [{"parts": [{"text": prompt}]}],
               "generationConfig": {"responseMimeType": "application/json"}
           }
 
+          url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
           result = None
-          for attempt, model_name in enumerate(models_to_try, 1):
-              url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent"
+
+          for attempt in range(1, 4):
               req = urllib.request.Request(
                   url,
                   data=json.dumps(payload).encode("utf-8"),
@@ -93,15 +118,17 @@ jobs:
                   }
               )
               try:
-                  print(f"Percobaan {attempt} menggunakan {model_name}...")
+                  print(f"Percobaan {attempt} mengirim {total_chars} karakter ke gemini-3.8-flash...")
                   with urllib.request.urlopen(req) as resp:
                       result = json.loads(resp.read().decode("utf-8"))
                   break
               except urllib.error.HTTPError as e:
                   err_body = e.read().decode("utf-8", errors="replace")
-                  print(f"HTTP Error {e.code} pada {model_name}: {err_body}")
-                  if e.code in (429, 500, 503) and attempt < len(models_to_try):
-                      time.sleep(15)
+                  print(f"HTTP Error {e.code} pada percobaan {attempt}: {err_body}")
+                  if e.code in (429, 500, 503) and attempt < 3:
+                      wait_sec = 40 if e.code == 429 else 15
+                      print(f"Menunggu {wait_sec} detik sebelum mencoba ulang...")
+                      time.sleep(wait_sec)
                       continue
                   exit(1)
 
