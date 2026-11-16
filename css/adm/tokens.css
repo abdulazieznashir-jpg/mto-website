@@ -1,0 +1,35 @@
+/* Token desain admin MTO (langkah 2). Sumber: referensi 01–08 di /home/claude/referensi-ui.
+   Dipakai hanya oleh admin.html. Tidak mengubah css/style.css. */
+:root {
+  --adm-bg: #FAF8F4;
+  --adm-surface: #FFFFFF;
+  --adm-sidebar: #FFFFFF;
+  --adm-ink: #1D1D1F;
+  --adm-muted: #6E6E73;
+  --adm-line: #ECE7DE;
+  --adm-line-strong: #D8D0C2;
+  --adm-gold: #B8912F;
+  --adm-gold-ink: #8A6A1F;
+  --adm-gold-soft: #F6EEDC;
+  --adm-btn: #8B6E4E;
+  --adm-btn-ink: #FFFFFF;
+  --adm-ok-bg: #E6F4EA; --adm-ok-ink: #1E6B34;
+  --adm-warn-bg: #FFF4DE; --adm-warn-ink: #7A5200;
+  --adm-off-bg: #EFEFF2; --adm-off-ink: #48484A;
+  --adm-danger: #B3261E;
+  --adm-radius-xl: 22px;
+  --adm-radius: 16px;
+  --adm-radius-sm: 10px;
+  --adm-shadow: 0 1px 2px rgba(0,0,0,.04), 0 6px 24px rgba(60,40,10,.06);
+  --adm-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --adm-fs-xs: 12px;
+  --adm-fs-sm: 13px;
+  --adm-fs-base: 15px;
+  --adm-fs-lg: 18px;
+  --adm-fs-xl: 26px;
+  --adm-fs-h1: 32px;
+  --adm-sp-1: 4px; --adm-sp-2: 8px; --adm-sp-3: 12px; --adm-sp-4: 16px; --adm-sp-5: 24px; --adm-sp-6: 32px;
+  --adm-sidebar-w: 240px;
+  --adm-topbar-h: 72px;
+  --adm-bottomnav-h: 64px;
+}
