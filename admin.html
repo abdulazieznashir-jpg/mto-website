@@ -568,7 +568,7 @@
   function muatMurid() {
     var body = document.getElementById('muridBody');
     if (!body) return;
-    sb.rpc('admin_daftar_murid').then(function (r) {
+    sb.rpc('admin_daftar_murid_baru').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
       halamanAktif = 1;

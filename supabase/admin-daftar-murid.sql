@@ -1,8 +1,9 @@
+-- Nama fungsi di database: admin_daftar_murid_baru (admin_daftar_murid sudah ada dengan tipe kembalian lain).
 -- Daftar murid untuk halaman admin baru (read-only).
 -- Hanya Owner (mahkota.to3@gmail.com) yang boleh memanggil.
 -- Mengambil murid yang sudah diterima dari tabel pendaftaran.
 
-create or replace function public.admin_daftar_murid()
+create or replace function public.admin_daftar_murid_baru()
 returns table (
   id bigint,
   email text,
@@ -39,6 +40,6 @@ begin
 end;
 $$;
 
-revoke all on function public.admin_daftar_murid() from public;
-revoke all on function public.admin_daftar_murid() from anon;
-grant execute on function public.admin_daftar_murid() to authenticated;
+revoke all on function public.admin_daftar_murid_baru() from public;
+revoke all on function public.admin_daftar_murid_baru() from anon;
+grant execute on function public.admin_daftar_murid_baru() to authenticated;
