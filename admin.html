@@ -94,6 +94,16 @@
     .adm-dash-kartu { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
 
+  .adm-bayar { margin: 0 0 16px; background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0; }
+  .adm-bayar-info { color: var(--adm-muted, #6E6E73); margin: 0 0 8px; }
+  .adm-bayar-kolom { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 900px) { .adm-bayar-kolom { grid-template-columns: 1fr 1fr; } }
+  .adm-bayar-sub { font-size: var(--adm-md, 15px); margin: 0 0 6px; }
+  .adm-bayar-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .adm-bayar-daftar li { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--adm-line, #ECE7DE); min-width: 0; }
+  .adm-bayar-daftar li span { overflow-wrap: anywhere; }
+  .adm-bayar-daftar li small { color: var(--adm-muted, #6E6E73); white-space: nowrap; }
+
   /* Murid: tabel di desktop; di HP tabel disembunyikan (kartu HP menyusul) */
   .adm-murid-wrap {
     padding-block: var(--adm-s-6, 24px);
@@ -396,6 +406,20 @@
     <section class="adm-view" data-view="murid" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Murid</h1>
+        <section class="adm-bayar" aria-labelledby="bayarJudul">
+          <h2 class="adm-dash-h2" id="bayarJudul">Pembayaran pendaftar</h2>
+          <p class="adm-bayar-info" id="bayarInfo">Memuat…</p>
+          <div class="adm-bayar-kolom">
+            <div>
+              <h3 class="adm-bayar-sub">Belum bayar <span id="bayarJumlahBelum">0</span></h3>
+              <ul class="adm-bayar-daftar" id="bayarBelum"></ul>
+            </div>
+            <div>
+              <h3 class="adm-bayar-sub">Sudah bayar <span id="bayarJumlahSudah">0</span></h3>
+              <ul class="adm-bayar-daftar" id="bayarSudah"></ul>
+            </div>
+          </div>
+        </section>
         <div class="adm-murid-cari">
           <label class="adm-pengaturan-label" for="muridCari">Cari nama murid</label>
           <input type="search" id="muridCari" placeholder="Ketik nama murid…" autocomplete="off">
@@ -613,6 +637,7 @@
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     muatDashboard();
     muatMurid();
+    muatPembayaran();
     muatPengajar();
     muatJadwal();
     muatPertemuan();
@@ -630,6 +655,42 @@
   var MURID = [];
   var HALAMAN_UKURAN = 20;
   var halamanAktif = 1;
+
+  function muatPembayaran() {
+    var info = document.getElementById('bayarInfo');
+    if (!info) return;
+    sb.rpc('admin_daftar_pembayaran').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) {
+        info.textContent = 'Daftar pembayaran belum bisa dimuat.';
+        return;
+      }
+      var belum = document.getElementById('bayarBelum');
+      var sudah = document.getElementById('bayarSudah');
+      belum.textContent = '';
+      sudah.textContent = '';
+      var nBelum = 0, nSudah = 0;
+      r.data.forEach(function (d) {
+        var li = document.createElement('li');
+        var nama = document.createElement('span');
+        nama.textContent = d.nama || '(tanpa nama)';
+        var ket = document.createElement('small');
+        if (d.bukti_at) {
+          ket.textContent = d.gelombang || '';
+          li.appendChild(nama); li.appendChild(ket);
+          sudah.appendChild(li); nSudah++;
+        } else {
+          ket.textContent = d.batas_bayar ? 'batas ' + new Date(d.batas_bayar).toLocaleDateString('id-ID') : '';
+          li.appendChild(nama); li.appendChild(ket);
+          belum.appendChild(li); nBelum++;
+        }
+      });
+      if (!nBelum) { var k = document.createElement('li'); k.textContent = 'Tidak ada.'; belum.appendChild(k); }
+      if (!nSudah) { var k2 = document.createElement('li'); k2.textContent = 'Belum ada bukti bayar.'; sudah.appendChild(k2); }
+      document.getElementById('bayarJumlahBelum').textContent = String(nBelum);
+      document.getElementById('bayarJumlahSudah').textContent = String(nSudah);
+      info.textContent = 'Sudah bayar berarti bukti pembayaran sudah diunggah.';
+    }).catch(function () { info.textContent = 'Daftar pembayaran belum bisa dimuat.'; });
+  }
 
   function muatMurid() {
     var body = document.getElementById('muridBody');
