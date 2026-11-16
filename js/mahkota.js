@@ -337,6 +337,7 @@
       muatKeluar();
       muatGanti();
       bukaPengumuman();
+      bukaTabAdmin();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -585,6 +586,23 @@
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
     if (semuaAdmin.length) tampilAdmin(semuaAdmin);
+  }
+  function bukaTabAdmin() {
+    var box = $('adminBox');
+    if (!box || box.dataset.tabSiap) return;
+    box.dataset.tabSiap = '1';
+    var tabs = box.querySelectorAll('[data-adm-tab]');
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var pilih = t.getAttribute('data-adm-tab');
+        tabs.forEach(function (x) { x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+        var bagian = { murid: ['adminList', 'grupAdminBox'], permintaan: ['keluarBox', 'gantiBox'], pengaturan: ['gelombangBox', 'pengumumanBox'] };
+        ['adminList', 'grupAdminBox', 'keluarBox', 'gantiBox', 'gelombangBox', 'pengumumanBox'].forEach(function (id) {
+          var el = $(id);
+          if (el) el.style.display = (bagian[pilih].indexOf(id) >= 0) ? '' : 'none';
+        });
+      });
+    });
   }
   function bukaPengumuman() {
     var box = $('pengumumanBox'), form = $('pengumumanForm');

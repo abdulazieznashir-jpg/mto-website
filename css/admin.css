@@ -72,3 +72,7 @@
   .adm-table tr { background: var(--adm-surface); border: 1px solid var(--adm-line); border-radius: var(--adm-radius); padding: 12px; margin-bottom: 10px; box-shadow: var(--adm-shadow); }
   .adm-table td { border: 0; padding: 6px 0; }
 }
+
+/* Kerangka admin (langkah 3) */
+.adm-head { margin-bottom: 18px; }
+.adm-head .adm-tabs { margin-top: 16px; }
