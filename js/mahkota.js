@@ -469,7 +469,7 @@
     el.innerHTML = Object.keys(kelompok).sort().map(function (k) {
       var isi = kelompok[k].map(function (p) {
         var chips = [
-          p.kelas, p.tipe_pendaftar, p.periode_label, p.program,
+          p.jenis_kelamin, p.kelas, p.tipe_pendaftar, p.periode_label, p.program,
           p.durasi ? p.durasi + ' bulan' : 'durasi belum diisi',
           p.hari_diminta ? hariLabel(p.hari_diminta) : null,
           p.jam_diminta ? jamLabel(p.jam_diminta) : null,
