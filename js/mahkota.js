@@ -1032,7 +1032,8 @@
     $('pkJadwalJam').textContent = (d.jam || '-') + ' WIB';
     var tombol = $('pkEditWaktu');
     tombol.disabled = !bisa;
-    tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span>' + (belum ? '' : '<em class="pk-jatah">Jatah: ' + sisa + ' kali</em>');
+    tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span><i class="pk-edit-garis" aria-hidden="true"></i>' +
+      '<span class="pk-jatah-label">Jatah:</span><em class="pk-jatah">' + (belum ? 'Kapan saja' : sisa + ' kali') + '</em>';
   }
   // Tanggal berakhir program (sama dengan perhitungan sisa hari)
   function sampaiProgram() {

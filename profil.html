@@ -444,15 +444,19 @@
   .sy-paket .pk-blok.pk-hijau > div + div { border-left: 1px solid #C7E8CF; }
   .sy-paket .pk-blok.pk-hijau .pk-nilai.pk-kecil { font-size: 17px; }
   .sy-paket .pk-blok.pk-hijau .pk-sub { font-size: 12px; color: #6E6E73; }
-  .sy-paket .pk-jadwal { display: flex; align-items: center; gap: 12px; margin-top: 14px; min-width: 0; }
+  .sy-paket .pk-jadwal { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; min-width: 0; }
   .sy-paket .pk-jadwal[hidden] { display: none; }
-  .sy-paket .pk-jadwal-ikon { width: 44px; height: 44px; border-radius: 12px; background: #FBF0D6; color: #8A6A1F; display: grid; place-items: center; flex: 0 0 auto; }
-  .sy-paket .pk-jadwal-info { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
-  .sy-paket .pk-jadwal-info b { font-size: 15px; font-weight: 600; color: #1D1D1F; }
-  .sy-paket .pk-jadwal-info small { font-size: 17px; font-weight: 700; color: #1D1D1F; }
-  .sy-paket .pk-edit { flex: 0 0 auto; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; border: 1.2px solid #C9982F; background: #fff; color: #8A6A1F; border-radius: 22px; padding: 8px 14px; font: 600 14px Inter, system-ui, sans-serif; }
+  .sy-paket .pk-jadwal-baris { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .sy-paket .pk-jadwal-ikon { width: 44px; height: 44px; border-radius: 12px; background: #FBF0D6; color: #B8862B; display: grid; place-items: center; flex: 0 0 auto; }
+  .sy-paket .pk-jadwal-baris > b { font-size: 22px; font-weight: 700; color: #1D1D1F; min-width: 0; }
+  .sy-paket .pk-jadwal-hari { flex: 1 1 auto; }
+  .sy-paket .pk-garis { width: 1px; height: 26px; background: #D8D8DC; flex: 0 0 auto; }
+  .sy-paket .pk-edit { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid #C9982F; background: #fff; color: #B8862B; border-radius: 22px; padding: 8px 14px; font: 600 16px Inter, system-ui, sans-serif; box-sizing: border-box; }
   .sy-paket .pk-edit:disabled { opacity: 0.5; }
-  .sy-paket .pk-jatah { font-style: normal; font-size: 12px; font-weight: 600; background: #FBF0D6; color: #8A6A1F; border-radius: 999px; padding: 2px 8px; }
+  .sy-paket .pk-edit svg { flex: 0 0 auto; }
+  .sy-paket .pk-edit-garis { width: 1px; height: 18px; background: #D8D8DC; flex: 0 0 auto; }
+  .sy-paket .pk-jatah-label { font-size: 14px; font-weight: 500; color: #6E6E73; }
+  .sy-paket .pk-jatah { font-style: normal; font-size: 13px; font-weight: 600; background: #FBF0D6; color: #8A6A1F; border-radius: 999px; padding: 3px 10px; }
   .sy-paket .nj-wrap { margin: 14px 0 0; }
   .sy-paket .nj-judul { display: none; }
   .sy-paket .pk-kaki { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #EFEFF2; }
@@ -808,7 +812,12 @@
     <div class="pk-blok" id="pkBlok" hidden></div>
     <div class="pk-jadwal" id="pkJadwal" hidden>
       <span class="pk-jadwal-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
-      <div class="pk-jadwal-info"><b id="pkJadwalHari"></b><small id="pkJadwalJam"></small></div>
+      <div class="pk-jadwal-baris">
+        <span class="pk-jadwal-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+        <b class="pk-jadwal-hari" id="pkJadwalHari"></b>
+        <span class="pk-garis" aria-hidden="true"></span>
+        <b id="pkJadwalJam"></b>
+      </div>
       <button type="button" class="pk-edit" id="pkEditWaktu"></button>
     </div>
     <section class="nj-wrap" id="notifJadwal" hidden>
