@@ -260,6 +260,27 @@
   }
   .adm-bottomnav a[aria-current="page"] { color: var(--adm-gold-ink, #8A6A1F); font-weight: 600; }
   .adm-bottomnav-ikon { font-size: 18px; line-height: 1; }
+  .adm-bottomnav-lainnya {
+    flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; color: var(--adm-muted, #6E6E73); background: none; border: 0; padding: 0;
+    font: inherit; font-size: var(--adm-xs, 12px); cursor: pointer;
+  }
+  .adm-lembar { position: fixed; inset: 0; z-index: 30; }
+  .adm-lembar-latar { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+  .adm-lembar-isi {
+    position: absolute; left: 0; right: 0; bottom: 0; background: var(--adm-surface, #FFFFFF);
+    border-radius: 16px 16px 0 0; padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    box-sizing: border-box; max-height: 70vh; overflow-y: auto;
+  }
+  .adm-lembar-judul { margin: 0 0 8px; font-size: var(--adm-lg, 18px); }
+  .adm-lembar-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .adm-lembar-daftar a, .adm-lembar-segera {
+    display: flex; justify-content: space-between; align-items: center; min-height: 44px;
+    color: inherit; text-decoration: none; border-bottom: 1px solid var(--adm-line, #ECE7DE);
+  }
+  .adm-lembar-segera { color: var(--adm-muted, #6E6E73); }
+  .adm-lembar-segera em { font-style: normal; font-size: var(--adm-xs, 12px); }
+
   @media (min-width: 900px) { .adm-bottomnav { display: none; } }
   @media (max-width: 899px) {
     body { padding-bottom: calc(var(--adm-bottomnav-h, 64px) + env(safe-area-inset-bottom, 0px)); }
@@ -553,8 +574,20 @@
   <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>Murid</a>
   <a href="#jadwal"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v4M16 4v4"/></svg></span>Jadwal</a>
   <a href="#periode"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a>
-  <a href="#pengaturan"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></span>Lainnya</a>
+  <button type="button" class="adm-bottomnav-lainnya" id="btnLainnya" aria-expanded="false" aria-controls="lainnyaLembar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></span>Lainnya</button>
 </nav>
+<div class="adm-lembar" id="lainnyaLembar" role="dialog" aria-modal="true" aria-label="Menu lainnya" hidden>
+  <div class="adm-lembar-latar" data-tutup-lembar></div>
+  <div class="adm-lembar-isi">
+    <h2 class="adm-lembar-judul">Lainnya</h2>
+    <ul class="adm-lembar-daftar">
+      <li><a href="#pengaturan">Pengaturan</a></li>
+      <li><span class="adm-lembar-segera">Paket &amp; Pembayaran <em>segera</em></span></li>
+      <li><span class="adm-lembar-segera">Progres <em>segera</em></span></li>
+      <li><span class="adm-lembar-segera">Komunikasi <em>segera</em></span></li>
+    </ul>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script>
@@ -1173,6 +1206,23 @@
   }
 
   /* Top bar: tombol cari membuka halaman murid dan fokus ke kolom cari; lonceng membuka daftar yang menunggu keputusan */
+  function bindLainnya() {
+    var tombol = document.getElementById('btnLainnya');
+    var lembar = document.getElementById('lainnyaLembar');
+    if (!tombol || !lembar) return;
+    function buka(on) {
+      lembar.hidden = !on;
+      tombol.setAttribute('aria-expanded', on ? 'true' : 'false');
+    }
+    tombol.addEventListener('click', function () { buka(lembar.hidden); });
+    lembar.addEventListener('click', function (e) {
+      if (e.target.hasAttribute('data-tutup-lembar') || e.target.closest('a')) buka(false);
+    });
+    window.addEventListener('hashchange', function () { buka(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') buka(false); });
+  }
+  bindLainnya();
+
   function bindTopBar() {
     var cari = document.getElementById('topCari');
     if (cari) cari.addEventListener('click', function () {
