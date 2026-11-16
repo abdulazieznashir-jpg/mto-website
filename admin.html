@@ -1249,6 +1249,11 @@
       }
       var data = r.data;
       isiNotifikasi(data);
+      var jumlahMenunggu = Number(data.permintaan_keluar || 0) + Number(data.permintaan_ganti || 0) + Number(data.usulan_jadwal || 0);
+      document.querySelectorAll('[data-lencana="permintaan"]').forEach(function (el) {
+        el.textContent = String(jumlahMenunggu);
+        el.hidden = jumlahMenunggu <= 0;
+      });
       var sel = document.querySelectorAll('[data-stat]');
       for (var i = 0; i < sel.length; i++) {
         var k = sel[i].getAttribute('data-stat');
