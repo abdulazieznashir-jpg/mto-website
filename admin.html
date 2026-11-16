@@ -628,6 +628,7 @@
   }
   function muatJadwal() {
     var body = document.getElementById('jadwalBody');
+    var kartu = document.getElementById('jadwalKartu');
     if (!body) return;
     function pesan(teks) {
       body.innerHTML = '';
@@ -635,11 +636,13 @@
       var td = document.createElement('td');
       td.colSpan = 5; td.className = 'adm-murid-kosong'; td.textContent = teks;
       tr.appendChild(td); body.appendChild(tr);
+      if (kartu) { kartu.innerHTML = ''; kartu.appendChild(sel('p', teks)); }
     }
     sb.rpc('admin_daftar_jadwal').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { pesan('Jadwal belum bisa dimuat.'); return; }
       if (r.data.length === 0) { pesan('Belum ada jadwal.'); return; }
       body.innerHTML = '';
+      if (kartu) kartu.innerHTML = '';
       r.data.forEach(function (j) {
         var tr = document.createElement('tr');
         tr.appendChild(sel('td', namaHari(j.hari)));
@@ -650,6 +653,22 @@
         td.appendChild(linkAman(j.link_meet));
         tr.appendChild(td);
         body.appendChild(tr);
+
+        if (kartu) {
+          var item = document.createElement('article');
+          item.className = 'adm-murid-kartu-item';
+          var judul = sel('div', namaHari(j.hari) + ' · ' + jamSingkat(j.jam));
+          judul.className = 'adm-murid-kartu-nama';
+          item.appendChild(judul);
+          item.appendChild(baris('Pengajar', j.pengajar_nama || j.pengajar_email));
+          item.appendChild(baris('Murid', j.peserta_nama || j.peserta_email));
+          var meet = document.createElement('div');
+          meet.className = 'adm-murid-kartu-baris';
+          meet.appendChild(sel('span', 'Link meet'));
+          meet.appendChild(linkAman(j.link_meet));
+          item.appendChild(meet);
+          kartu.appendChild(item);
+        }
       });
     }).catch(function () { pesan('Jadwal belum bisa dimuat.'); });
   }
