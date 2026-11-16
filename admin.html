@@ -96,6 +96,11 @@
 
   .adm-bayar { margin: 0 0 16px; background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0; }
   .adm-bayar-tombol { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--adm-gold, #B8912F); background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); font: inherit; cursor: pointer; }
+  .adm-murid-filter { display: flex; flex-direction: column; gap: 8px; margin: 0 0 12px; min-width: 0; }
+  .adm-murid-tab { display: flex; gap: 6px; flex-wrap: wrap; }
+  .adm-murid-tab-btn { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-surface, #FFFFFF); color: var(--adm-ink, #1D1D1F); font: inherit; cursor: pointer; }
+  .adm-murid-tab-btn[aria-pressed="true"] { background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); border-color: var(--adm-gold, #B8912F); font-weight: 600; }
+  .adm-murid-gel select { min-height: 36px; font: inherit; max-width: 100%; }
   .adm-tempat-form { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; margin-top: 8px; }
   .adm-tempat-label { display: flex; flex-direction: column; gap: 4px; font-size: var(--adm-sm, 13px); min-width: 0; }
   .adm-tempat-label input, .adm-tempat-label select { min-height: 36px; font: inherit; min-width: 0; }
@@ -435,6 +440,16 @@
         <div class="adm-murid-cari">
           <label class="adm-pengaturan-label" for="muridCari">Cari nama murid</label>
           <input type="search" id="muridCari" placeholder="Ketik nama murid…" autocomplete="off">
+        </div>
+        <div class="adm-murid-filter">
+          <div class="adm-murid-tab" role="group" aria-label="Filter status murid">
+            <button type="button" class="adm-murid-tab-btn" data-tab="semua" aria-pressed="true">Semua <span id="tabSemua">0</span></button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="aktif" aria-pressed="false">Aktif <span id="tabAktif">0</span></button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="jeda" aria-pressed="false">Jeda <span id="tabJeda">0</span></button>
+          </div>
+          <label class="adm-tempat-label adm-murid-gel">Gelombang
+            <select id="muridGelombang"><option value="">Semua gelombang</option></select>
+          </label>
         </div>
         <div class="adm-murid-kartu" id="muridKartu" aria-label="Daftar murid"></div>
         <div class="adm-murid-tabel-wrap">
@@ -895,6 +910,7 @@
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
       halamanAktif = 1;
+      isiGelombangMurid();
       tampilMurid();
     }).catch(function () { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); });
   }
@@ -928,6 +944,7 @@
     var info = document.getElementById('muridInfo');
     var pager = document.getElementById('muridPager');
     if (!body) return;
+    hitungTabMurid();
     if (MURID.length === 0) { pesanMurid('Belum ada murid.'); if (pager) pager.hidden = true; return; }
     if (filterMurid().length === 0) { pesanMurid('Tidak ada murid yang cocok dengan pencarian.'); if (pager) pager.hidden = true; return; }
 
@@ -1464,13 +1481,64 @@
   }
   bindPengaturan();
 
+  var MURID_TAB = 'semua';
+  var MURID_GEL = '';
   function filterMurid() {
     var q = (document.getElementById('muridCari') || { value: '' }).value.trim().toLowerCase();
-    if (!q) return MURID;
     return MURID.filter(function (m) {
-      return String(m.nama || '').toLowerCase().indexOf(q) !== -1;
+      if (MURID_TAB === 'aktif' && m.jeda_sejak) return false;
+      if (MURID_TAB === 'jeda' && !m.jeda_sejak) return false;
+      if (MURID_GEL && String(m.gelombang || '') !== MURID_GEL) return false;
+      if (q && String(m.nama || '').toLowerCase().indexOf(q) === -1) return false;
+      return true;
     });
   }
+  function hitungTabMurid() {
+    var a = 0, j = 0;
+    MURID.forEach(function (m) { if (m.jeda_sejak) j++; else a++; });
+    var ids = { tabSemua: MURID.length, tabAktif: a, tabJeda: j };
+    Object.keys(ids).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = String(ids[id]);
+    });
+  }
+  function isiGelombangMurid() {
+    var pilih = document.getElementById('muridGelombang');
+    if (!pilih) return;
+    var nilai = {};
+    MURID.forEach(function (m) { if (m.gelombang) nilai[String(m.gelombang)] = true; });
+    var sebelum = pilih.value;
+    pilih.textContent = '';
+    var semua = document.createElement('option');
+    semua.value = ''; semua.textContent = 'Semua gelombang';
+    pilih.appendChild(semua);
+    Object.keys(nilai).sort().forEach(function (g) {
+      var o = document.createElement('option');
+      o.value = g; o.textContent = g;
+      pilih.appendChild(o);
+    });
+    pilih.value = nilai[sebelum] ? sebelum : '';
+    MURID_GEL = pilih.value;
+  }
+  function bindFilterMurid() {
+    document.querySelectorAll('.adm-murid-tab-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        MURID_TAB = b.getAttribute('data-tab') || 'semua';
+        document.querySelectorAll('.adm-murid-tab-btn').forEach(function (x) {
+          x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+        });
+        halamanAktif = 1;
+        tampilMurid();
+      });
+    });
+    var pilih = document.getElementById('muridGelombang');
+    if (pilih) pilih.addEventListener('change', function () {
+      MURID_GEL = pilih.value;
+      halamanAktif = 1;
+      tampilMurid();
+    });
+  }
+  bindFilterMurid();
 
   /* Top bar: tombol cari membuka halaman murid dan fokus ke kolom cari; lonceng membuka daftar yang menunggu keputusan */
   function bindLainnya() {
