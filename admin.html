@@ -943,7 +943,7 @@
     body.innerHTML = '';
     if (kartu) kartu.innerHTML = '';
     potongan.forEach(function (m) {
-      var status = m.jeda_sejak ? 'Jeda' : m.status;
+      var status = labelStatusMurid(m);
       var tr = document.createElement('tr');
       tr.appendChild(sel('td', m.nama));
       tr.appendChild(sel('td', m.wa));
@@ -987,7 +987,7 @@
     if (!panel || !daftar) return;
     if (nama) nama.textContent = m.nama || '—';
     daftar.innerHTML = '';
-    var status = m.jeda_sejak ? 'Jeda sejak ' + m.jeda_sejak : m.status;
+    var status = m.jeda_sejak ? 'Jeda sejak ' + m.jeda_sejak : labelStatusMurid(m);
     var isi = [
       ['WA', m.wa], ['Gelombang', m.gelombang], ['Periode', m.periode_label],
       ['Durasi', m.durasi], ['Pengampu', m.pengampu_nama], ['Kelas', m.kelas],
@@ -1030,6 +1030,13 @@
   }
   var tutup = document.getElementById('detailTutup');
   if (tutup) tutup.addEventListener('click', tutupDetail);
+
+  function labelStatusMurid(m) {
+    if (m.jeda_sejak) return 'Jeda';
+    if (m.status === 'diterima' || m.status === 'terdaftar' || m.status === 'aktif') return 'Aktif';
+    if (m.status === 'selesai') return 'Selesai';
+    return m.status || '';
+  }
 
   /* Pengajar: isi tabel dan panel detail dari admin_daftar_pengajar */
   var PENGAJAR = [];
