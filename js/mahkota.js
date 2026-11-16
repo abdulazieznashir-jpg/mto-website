@@ -338,6 +338,7 @@
       muatGanti();
       bukaPengumuman();
       bukaTabAdmin();
+      bukaFilterGrup();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -505,7 +506,7 @@
     semuaAdmin = list;
     daftarAdmin = list.filter(function (p) { return !!p.email; });
     list = daftarAdmin;
-    tampilGrupAdmin(semuaAdmin.filter(function (p) { return !p.email; }));
+    renderGrupFilter();
     box.hidden = false;
     if (!list.length) { $('adminList').innerHTML = '<p class="pd-sub">Belum ada pendaftar.</p>'; return; }
     $('adminList').innerHTML = list.map(function (p, i) {
@@ -586,6 +587,38 @@
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
     if (semuaAdmin.length) tampilAdmin(semuaAdmin);
+  }
+  var adminCari = '', adminStatus = 'semua';
+  function filterGrupAdmin(list) {
+    var q = adminCari.trim().toLowerCase();
+    return list.filter(function (p) {
+      if (adminStatus === 'jeda' || adminStatus === 'selesai') return false; // data belum tersedia
+      return !q || String(p.nama || '').toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  function renderGrupFilter() {
+    var basis = semuaAdmin.filter(function (p) { return !p.email; });
+    tampilGrupAdmin(filterGrupAdmin(basis));
+    var kosong = $('grupAdminKosong');
+    if (kosong) {
+      var hasil = filterGrupAdmin(basis).length;
+      kosong.hidden = hasil > 0;
+      kosong.textContent = adminStatus === 'jeda' ? 'Belum ada murid berstatus Jeda.' :
+        adminStatus === 'selesai' ? 'Belum ada murid yang selesai periode.' : 'Tidak ada murid yang cocok.';
+    }
+  }
+  function bukaFilterGrup() {
+    var cari = $('grupAdminCari'), tabs = document.querySelectorAll('[data-adm-status]');
+    if (!cari || cari.dataset.siap) return;
+    cari.dataset.siap = '1';
+    cari.addEventListener('input', function () { adminCari = cari.value; renderGrupFilter(); });
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        adminStatus = t.getAttribute('data-adm-status');
+        tabs.forEach(function (x) { x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+        renderGrupFilter();
+      });
+    });
   }
   function bukaTabAdmin() {
     var box = $('adminBox');

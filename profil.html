@@ -978,6 +978,14 @@
         </div>
         <div class="pd-gelombang" id="grupAdminBox" hidden>
           <p class="pd-sub">Daftar admin: murid tanpa akun, per pengampu</p>
+          <div class="adm-search"><input type="search" id="grupAdminCari" placeholder="Cari nama murid…" aria-label="Cari nama murid"></div>
+          <div class="adm-tabs" role="tablist" aria-label="Status murid" style="margin:12px 0">
+            <button type="button" role="tab" aria-selected="true" data-adm-status="semua">Semua</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="aktif">Aktif</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="jeda">Jeda</button>
+            <button type="button" role="tab" aria-selected="false" data-adm-status="selesai">Selesai</button>
+          </div>
+          <p class="pd-sub" id="grupAdminKosong" hidden></p>
           <div id="grupAdminList"></div>
         </div>
         <div class="pd-gelombang" id="pengumumanBox" hidden>
