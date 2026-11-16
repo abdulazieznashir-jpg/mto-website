@@ -7,7 +7,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'mahkota.to3@gmail.com' then
+  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Akses khusus admin';
   end if;
   return json_build_object(

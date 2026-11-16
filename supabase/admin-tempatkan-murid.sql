@@ -4,7 +4,7 @@ returns void
 language plpgsql security definer set search_path to 'public'
 as $function$
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh menempatkan murid';
   end if;
   if not exists (select 1 from pengajar g where g.email = p_pengajar_email and g.aktif) then

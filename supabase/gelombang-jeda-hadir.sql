@@ -33,7 +33,7 @@ on conflict (kode, mulai) do nothing;
 create or replace function public.admin_jadwal_gelombang()
 returns json language plpgsql security definer set search_path = public as $$
 begin
-  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'mahkota.to3@gmail.com' then raise exception 'Akses khusus admin'; end if;
+  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'abdulaziez.nashir@gmail.com' then raise exception 'Akses khusus admin'; end if;
   return (select coalesce(json_agg(x order by x.mulai, x.kode), '[]'::json) from public.jadwal_gelombang x);
 end; $$;
 revoke all on function public.admin_jadwal_gelombang() from public, anon;
@@ -46,7 +46,7 @@ alter table public.pertemuan add column if not exists hadir boolean;
 create or replace function public.admin_set_jeda(p_id bigint, p_jeda boolean)
 returns void language plpgsql security definer set search_path = public as $$
 begin
-  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'mahkota.to3@gmail.com' then raise exception 'Akses khusus admin'; end if;
+  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'abdulaziez.nashir@gmail.com' then raise exception 'Akses khusus admin'; end if;
   update public.pendaftaran set jeda_sejak = case when p_jeda then coalesce(jeda_sejak, (now() at time zone 'Asia/Jakarta')::date) else null end where id = p_id;
 end; $$;
 revoke all on function public.admin_set_jeda(bigint, boolean) from public, anon;
@@ -55,7 +55,7 @@ grant execute on function public.admin_set_jeda(bigint, boolean) to authenticate
 create or replace function public.admin_set_hadir(p_pertemuan bigint, p_hadir boolean)
 returns void language plpgsql security definer set search_path = public as $$
 begin
-  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'mahkota.to3@gmail.com' then raise exception 'Akses khusus admin'; end if;
+  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'abdulaziez.nashir@gmail.com' then raise exception 'Akses khusus admin'; end if;
   update public.pertemuan set hadir = p_hadir where id = p_pertemuan;
 end; $$;
 revoke all on function public.admin_set_hadir(bigint, boolean) from public, anon;
@@ -70,7 +70,7 @@ update public.pendaftaran
 create or replace function public.pendaftaran_admin()
 returns json language plpgsql security definer set search_path = public as $$
 begin
-  if lower(coalesce(auth.jwt() ->> 'email','')) not in ('mahkota.to3@gmail.com') then raise exception 'Akses khusus admin'; end if;
+  if lower(coalesce(auth.jwt() ->> 'email','')) not in ('abdulaziez.nashir@gmail.com') then raise exception 'Akses khusus admin'; end if;
   return (select coalesce(json_agg(x order by x.dibuat_at desc), '[]'::json) from (
     select id, nama, email, wa, jenis_kelamin, tanggal_lahir, kota, kelas, durasi, peserta, total, ringkasan, hari_diminta, jam_diminta, gelombang, dibuat_at, bukti_at, bukti_path, bukti_nama, diterima_at, tanggal_halaqah, link_grup, batas_bayar,
       pengampu_nama, tipe_pendaftar, periode_label, program, opsi_waktu, sumber, jeda_sejak,

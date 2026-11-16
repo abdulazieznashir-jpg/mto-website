@@ -1,5 +1,5 @@
 -- Daftar pertemuan untuk halaman admin baru (read-only).
--- Hanya Owner (mahkota.to3@gmail.com) yang boleh memanggil.
+-- Hanya Owner (abdulaziez.nashir@gmail.com) yang boleh memanggil.
 
 create or replace function public.admin_daftar_pertemuan()
 returns table (
@@ -16,7 +16,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh membuka daftar pertemuan';
   end if;
 

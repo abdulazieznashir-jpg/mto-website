@@ -12,7 +12,7 @@ declare
   isi text := trim(coalesce(p_isi, ''));
   n int;
 begin
-  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'mahkota.to3@gmail.com' then
+  if lower(coalesce(auth.jwt() ->> 'email', '')) <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Akses khusus admin';
   end if;
   if judul = '' or length(judul) > 80 then raise exception 'Judul wajib diisi (maksimal 80 karakter)'; end if;

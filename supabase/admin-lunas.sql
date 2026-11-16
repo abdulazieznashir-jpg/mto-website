@@ -6,7 +6,7 @@ returns table(id bigint, email text, nama text, kelas text, gelombang text, tota
 language plpgsql security definer set search_path to 'public'
 as $function$
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh membuka daftar lunas';
   end if;
   return query
@@ -21,7 +21,7 @@ returns void
 language plpgsql security definer set search_path to 'public'
 as $function$
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh mengonfirmasi pembayaran';
   end if;
   update pendaftaran set lunas_at = now()

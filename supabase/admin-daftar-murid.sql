@@ -1,6 +1,6 @@
 -- Nama fungsi di database: admin_daftar_murid_baru (admin_daftar_murid sudah ada dengan tipe kembalian lain).
 -- Daftar murid untuk halaman admin baru (read-only).
--- Hanya Owner (mahkota.to3@gmail.com) yang boleh memanggil.
+-- Hanya Owner (abdulaziez.nashir@gmail.com) yang boleh memanggil.
 -- Mengambil murid yang sudah diterima dari tabel pendaftaran.
 
 create or replace function public.admin_daftar_murid_baru()
@@ -26,7 +26,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh membuka daftar murid';
   end if;
 

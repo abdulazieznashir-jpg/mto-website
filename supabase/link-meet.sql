@@ -12,7 +12,7 @@ declare
   pe text := lower(trim(coalesce(p_peserta_email, '')));
   l text := nullif(trim(coalesce(p_link, '')), '');
 begin
-  if e not in ('mahkota.to3@gmail.com', 'abdulaziez.nashir@gmail.com')
+  if e not in ('abdulaziez.nashir@gmail.com', 'abdulaziez.nashir@gmail.com')
      and not exists (
        select 1 from public.penugasan t
        join public.pengajar g on lower(g.email) = lower(t.pengajar_email)

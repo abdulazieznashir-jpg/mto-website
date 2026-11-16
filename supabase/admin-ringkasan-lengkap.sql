@@ -1,5 +1,5 @@
 -- Ringkasan lengkap untuk dashboard admin baru (read-only).
--- Hanya Owner (mahkota.to3@gmail.com) yang boleh memanggil.
+-- Hanya Owner (abdulaziez.nashir@gmail.com) yang boleh memanggil.
 
 create or replace function public.admin_ringkasan_lengkap()
 returns json
@@ -10,7 +10,7 @@ as $$
 declare
   hasil json;
 begin
-  if coalesce(auth.jwt() ->> 'email', '') <> 'mahkota.to3@gmail.com' then
+  if coalesce(auth.jwt() ->> 'email', '') <> 'abdulaziez.nashir@gmail.com' then
     raise exception 'Hanya admin yang boleh membuka ringkasan';
   end if;
 
