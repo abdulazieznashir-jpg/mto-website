@@ -154,6 +154,16 @@
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
   .adm-murid-baris { cursor: pointer; }
+  /* Pengajar: tabel di desktop; HP memakai kartu (langkah 19) */
+  .adm-pengajar-tabel-wrap { display: none; }
+  .adm-pengajar-hp { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 900px) {
+    .adm-pengajar-tabel-wrap {
+      display: block; overflow-x: auto; background: var(--adm-surface, #FFFFFF);
+      border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-lg, 16px);
+    }
+    .adm-pengajar-hp { display: none; }
+  }
   .adm-murid-baris:hover td { background: var(--adm-bg, #FAF8F4); }
   .adm-murid-kosong { text-align: center; color: var(--adm-muted, #6E6E73); }
 
@@ -307,7 +317,29 @@
         </aside>
       </div>
     </section>
-    <section class="adm-view" data-view="pengajar" hidden><p class="adm-kerangka">Pengajar (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pengajar" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Pengajar</h1>
+        <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
+        <div class="adm-pengajar-tabel-wrap">
+          <table class="adm-murid-tabel">
+            <thead>
+              <tr><th scope="col">Nama</th><th scope="col">Email</th><th scope="col">Jumlah murid</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody id="pengajarBody">
+              <tr><td colspan="4" class="adm-murid-kosong">Memuat daftar pengajar…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <aside class="adm-detail" id="pengajarDetail" aria-label="Detail pengajar" hidden>
+          <div class="adm-detail-head">
+            <h2 class="adm-detail-nama" id="pengajarDetailNama"></h2>
+            <button type="button" class="adm-ikon-btn" id="pengajarDetailTutup" aria-label="Tutup detail pengajar">✕</button>
+          </div>
+          <dl class="adm-detail-daftar" id="pengajarDetailDaftar"></dl>
+        </aside>
+      </div>
+    </section>
     <section class="adm-view" data-view="jadwal" hidden><p class="adm-kerangka">Jadwal (belum dibuat)</p></section>
     <section class="adm-view" data-view="pertemuan" hidden><p class="adm-kerangka">Pertemuan (belum dibuat)</p></section>
     <section class="adm-view" data-view="periode" hidden><p class="adm-kerangka">Periode (belum dibuat)</p></section>
@@ -345,6 +377,7 @@
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     muatDashboard();
     muatMurid();
+    muatPengajar();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -475,6 +508,71 @@
   }
   var tutup = document.getElementById('detailTutup');
   if (tutup) tutup.addEventListener('click', tutupDetail);
+
+  /* Pengajar: isi tabel dan panel detail dari admin_daftar_pengajar */
+  var PENGAJAR = [];
+  function muatPengajar() {
+    sb.rpc('admin_daftar_pengajar').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) { tampilPengajar(null); return; }
+      PENGAJAR = r.data;
+      tampilPengajar(PENGAJAR);
+    }).catch(function () { tampilPengajar(null); });
+  }
+
+  function tampilPengajar(list) {
+    var body = document.getElementById('pengajarBody');
+    var kartu = document.getElementById('pengajarKartu');
+    if (!body) return;
+    body.innerHTML = '';
+    if (kartu) kartu.innerHTML = '';
+    if (!list) {
+      var gagal = document.createElement('tr');
+      var sel1 = document.createElement('td');
+      sel1.colSpan = 4; sel1.className = 'adm-murid-kosong';
+      sel1.textContent = 'Daftar pengajar belum bisa dimuat.';
+      gagal.appendChild(sel1); body.appendChild(gagal);
+      return;
+    }
+    if (list.length === 0) {
+      var kosong = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = 'Belum ada pengajar.';
+      kosong.appendChild(td); body.appendChild(kosong);
+      return;
+    }
+    list.forEach(function (g) {
+      var status = g.aktif ? 'Aktif' : 'Nonaktif';
+      var tr = document.createElement('tr');
+      tr.className = 'adm-murid-baris';
+      tr.appendChild(sel('td', g.nama));
+      tr.appendChild(sel('td', g.email));
+      tr.appendChild(sel('td', g.jumlah_murid));
+      tr.appendChild(sel('td', status));
+      tr.addEventListener('click', function () { bukaDetailPengajar(g); });
+      body.appendChild(tr);
+    });
+  }
+
+  function bukaDetailPengajar(g) {
+    var panel = document.getElementById('pengajarDetail');
+    var nama = document.getElementById('pengajarDetailNama');
+    var daftar = document.getElementById('pengajarDetailDaftar');
+    if (!panel || !daftar) return;
+    if (nama) nama.textContent = g.nama || '—';
+    daftar.innerHTML = '';
+    [['Email', g.email], ['Jumlah murid', g.jumlah_murid], ['Status', g.aktif ? 'Aktif' : 'Nonaktif']]
+      .forEach(function (pair) {
+        daftar.appendChild(sel('dt', pair[0]));
+        daftar.appendChild(sel('dd', pair[1]));
+      });
+    panel.hidden = false;
+  }
+
+  var tutupPengajar = document.getElementById('pengajarDetailTutup');
+  if (tutupPengajar) tutupPengajar.addEventListener('click', function () {
+    var panel = document.getElementById('pengajarDetail');
+    if (panel) panel.hidden = true;
+  });
 
   function bindMurid() {
     var sebelum = document.getElementById('muridSebelum');
