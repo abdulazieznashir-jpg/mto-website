@@ -154,6 +154,21 @@
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
   .adm-murid-baris { cursor: pointer; }
+  /* Permintaan: daftar kartu dengan tombol respon */
+  .adm-permintaan-daftar { display: flex; flex-direction: column; gap: 12px; }
+  .adm-permintaan-item {
+    background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
+    border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .adm-permintaan-item p { margin: 0; overflow-wrap: anywhere; }
+  .adm-permintaan-aksi { display: flex; gap: 8px; flex-wrap: wrap; }
+  .adm-permintaan-aksi button {
+    border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-surface, #FFFFFF);
+    color: var(--adm-ink, #1D1D1F); border-radius: 999px; padding: 8px 16px; cursor: pointer; font: inherit;
+  }
+  .adm-permintaan-aksi button.setuju { background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); border-color: transparent; font-weight: 600; }
+  .adm-permintaan-aksi button:disabled { opacity: .5; cursor: default; }
   /* Pertemuan: memakai pola yang sama dengan jadwal */
   .adm-pertemuan-hadir { font-weight: 600; }
   .adm-pertemuan-hadir.ya { color: var(--adm-ok, #2E7D32); }
@@ -404,7 +419,20 @@
         </div>
       </div>
     </section>
-    <section class="adm-view" data-view="permintaan" hidden><p class="adm-kerangka">Permintaan (belum dibuat)</p></section>
+    <section class="adm-view" data-view="permintaan" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Permintaan</h1>
+        <p class="adm-dash-sub" id="permintaanRingkas">Memuat permintaan…</p>
+
+        <h2 class="adm-dash-h2">Permintaan keluar</h2>
+        <div class="adm-permintaan-daftar" id="permintaanKeluar"></div>
+
+        <h2 class="adm-dash-h2">Ganti pengajar</h2>
+        <div class="adm-permintaan-daftar" id="permintaanGanti"></div>
+
+        <p class="adm-dash-catatan" id="permintaanCatatan" hidden></p>
+      </div>
+    </section>
     <section class="adm-view" data-view="pengaturan" hidden><p class="adm-kerangka">Pengaturan (belum dibuat)</p></section>
   </main>
 </div>
@@ -442,6 +470,7 @@
     muatJadwal();
     muatPertemuan();
     muatPeriode();
+    muatPermintaan();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -822,6 +851,99 @@
         }
       });
     }).catch(function () { pesan('Periode belum bisa dimuat.'); });
+  }
+
+  /* Permintaan: daftar dari daftar_keluar_admin dan daftar_ganti_admin, respon lewat respon_keluar dan respon_ganti */
+  function kartuPermintaan(judul, baris, onSetuju, onTolak) {
+    var item = document.createElement('article');
+    item.className = 'adm-permintaan-item';
+    var t = sel('p', judul); t.style.fontWeight = '600';
+    item.appendChild(t);
+    baris.forEach(function (teks) { item.appendChild(sel('p', teks)); });
+    var aksi = document.createElement('div');
+    aksi.className = 'adm-permintaan-aksi';
+    var bSetuju = document.createElement('button');
+    bSetuju.type = 'button'; bSetuju.className = 'setuju'; bSetuju.textContent = 'Setujui';
+    var bTolak = document.createElement('button');
+    bTolak.type = 'button'; bTolak.textContent = 'Tolak';
+    bSetuju.addEventListener('click', function () { onSetuju(bSetuju, bTolak); });
+    bTolak.addEventListener('click', function () { onTolak(bSetuju, bTolak); });
+    aksi.appendChild(bSetuju); aksi.appendChild(bTolak);
+    item.appendChild(aksi);
+    return item;
+  }
+
+  function responPermintaan(fungsi, id, setuju, tombol, pesanYa, pesanTidak) {
+    var catatan = document.getElementById('permintaanCatatan');
+    var pesan = setuju ? pesanYa : pesanTidak;
+    if (!window.confirm(pesan)) return;
+    tombol.forEach(function (b) { b.disabled = true; });
+    sb.rpc(fungsi, { p_id: id, p_setuju: setuju }).then(function (r) {
+      if (r.error) {
+        if (catatan) { catatan.hidden = false; catatan.textContent = 'Respon belum tersimpan. Coba lagi.'; }
+        tombol.forEach(function (b) { b.disabled = false; });
+        return;
+      }
+      muatPermintaan();
+    }).catch(function () {
+      if (catatan) { catatan.hidden = false; catatan.textContent = 'Respon belum tersimpan. Coba lagi.'; }
+      tombol.forEach(function (b) { b.disabled = false; });
+    });
+  }
+
+  function isiPermintaan(elId, list, fungsi, kosong, bentuk) {
+    var el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = '';
+    if (!list.length) { el.appendChild(sel('p', kosong)); return; }
+    list.forEach(function (x) {
+      var b = bentuk(x);
+      el.appendChild(kartuPermintaan(b.judul, b.baris, function (ya, tidak) {
+        responPermintaan(fungsi, x.id, true, [ya, tidak], b.tanyaYa, b.tanyaTidak);
+      }, function (ya, tidak) {
+        responPermintaan(fungsi, x.id, false, [ya, tidak], b.tanyaYa, b.tanyaTidak);
+      }));
+    });
+  }
+
+  function muatPermintaan() {
+    var ringkas = document.getElementById('permintaanRingkas');
+    var catatan = document.getElementById('permintaanCatatan');
+    if (catatan) catatan.hidden = true;
+    sb.rpc('daftar_keluar_admin').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) {
+        var el = document.getElementById('permintaanKeluar');
+        if (el) { el.innerHTML = ''; el.appendChild(sel('p', 'Permintaan keluar belum bisa dimuat.')); }
+        return;
+      }
+      isiPermintaan('permintaanKeluar', r.data, 'respon_keluar', 'Tidak ada permintaan keluar.', function (k) {
+        return {
+          judul: k.murid || 'Murid',
+          baris: ['Diminta keluar oleh ' + (k.pengajar || 'pengajar'), k.alasan ? 'Alasan: ' + k.alasan : ''].filter(Boolean),
+          tanyaYa: 'Setujui permintaan keluar ini? Murid akan dikeluarkan dari penugasan.',
+          tanyaTidak: 'Tolak permintaan keluar ini?'
+        };
+      });
+    }).catch(function () {});
+    sb.rpc('daftar_ganti_admin').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) {
+        var el = document.getElementById('permintaanGanti');
+        if (el) { el.innerHTML = ''; el.appendChild(sel('p', 'Permintaan ganti belum bisa dimuat.')); }
+        return;
+      }
+      isiPermintaan('permintaanGanti', r.data, 'respon_ganti', 'Tidak ada permintaan ganti pengajar.', function (g) {
+        return {
+          judul: g.murid || 'Murid',
+          baris: ['Ingin ganti pengajar. Pengajar saat ini: ' + (g.pengajar || '—'), g.keterangan ? 'Keterangan: ' + g.keterangan : ''].filter(Boolean),
+          tanyaYa: 'Setujui permintaan ganti pengajar ini?',
+          tanyaTidak: 'Tolak permintaan ganti pengajar ini?'
+        };
+      });
+    }).catch(function () {});
+    sb.rpc('admin_ringkasan_lengkap').then(function (r) {
+      if (!ringkas || r.error || !r.data) return;
+      ringkas.textContent = 'Usulan jadwal menunggu keputusan: ' + r.data.usulan_jadwal + '. Daftar usulan belum ditampilkan di halaman ini.';
+    }).catch(function () {});
   }
 
   function bindMurid() {
