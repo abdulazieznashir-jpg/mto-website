@@ -121,7 +121,19 @@
   .adm-detail-daftar { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 16px; }
   .adm-detail-daftar dt { color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
   .adm-detail-daftar dd { margin: 0; overflow-wrap: anywhere; }
-  @media (max-width: 899px) { .adm-detail { display: none; } }
+  /* HP: detail tampil sebagai halaman penuh di atas daftar, dengan tombol kembali */
+  @media (max-width: 899px) {
+    .adm-detail {
+      position: fixed; inset: 0; z-index: 30; overflow-y: auto;
+      border: 0; border-radius: 0; background: var(--adm-bg, #FAF8F4);
+      padding-top: calc(20px + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .adm-detail-head { position: sticky; top: 0; background: var(--adm-bg, #FAF8F4); padding-block: 8px; }
+    .adm-detail-nama { font-size: var(--adm-xl, 26px); }
+  }
   @media (min-width: 900px) { .adm-detail { margin-top: 4px; } }
   .adm-murid-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .adm-murid-pager[hidden] { display: none !important; }
@@ -289,7 +301,7 @@
         <aside class="adm-detail" id="muridDetail" aria-label="Detail murid" hidden>
           <div class="adm-detail-head">
             <h2 class="adm-detail-nama" id="detailNama"></h2>
-            <button type="button" class="adm-ikon-btn" id="detailTutup" aria-label="Tutup detail">✕</button>
+            <button type="button" class="adm-ikon-btn" id="detailTutup" aria-label="Kembali ke daftar murid">✕</button>
           </div>
           <dl class="adm-detail-daftar" id="detailDaftar"></dl>
         </aside>
