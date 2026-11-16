@@ -1144,6 +1144,16 @@
   var HARI_NAMA = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
   function namaHari(h) { return HARI_NAMA[h] || (h === null || h === undefined ? '—' : String(h)); }
   function jamSingkat(j) { return j ? String(j).slice(0, 5) : '—'; }
+  function rentangJam(j, menit) {
+    if (!j) return '—';
+    var awal = String(j).slice(0, 5).replace(':', '.');
+    var n = Number(menit);
+    if (!isFinite(n) || n <= 0) return awal;
+    var p = String(j).split(':');
+    var total = Number(p[0]) * 60 + Number(p[1]) + n;
+    var akhir = String(Math.floor(total / 60) % 24).padStart(2, '0') + '.' + String(total % 60).padStart(2, '0');
+    return awal + '–' + akhir;
+  }
   function linkAman(url) {
     var a = document.createElement('a');
     if (typeof url === 'string' && /^https:\/\//.test(url)) {
@@ -1173,7 +1183,7 @@
       r.data.forEach(function (j) {
         var tr = document.createElement('tr');
         tr.appendChild(sel('td', namaHari(j.hari)));
-        tr.appendChild(sel('td', jamSingkat(j.jam)));
+        tr.appendChild(sel('td', rentangJam(j.jam, j.menit)));
         tr.appendChild(sel('td', j.pengajar_nama || j.pengajar_email));
         tr.appendChild(sel('td', j.peserta_nama || j.peserta_email));
         var td = document.createElement('td');
