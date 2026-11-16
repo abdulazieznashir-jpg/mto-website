@@ -1445,7 +1445,7 @@
           kartu.appendChild(item);
         }
       });
-    });
+    }).catch(function () { var trG = document.createElement('tr'); var tdG = document.createElement('td'); tdG.colSpan = 4; tdG.className = 'adm-murid-kosong'; tdG.textContent = 'Jadwal gelombang belum bisa dimuat.'; trG.appendChild(tdG); body.innerHTML = ''; body.appendChild(trG); });
   }
   function bindPengaturan() {
     document.querySelectorAll('[data-simpan-gelombang]').forEach(function (btn) {
