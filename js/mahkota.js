@@ -813,7 +813,7 @@
   function kartuNj(chip, kelas, judul, label, nilai, aksi, catatan) {
     var atas = label ? '<small class="nj-label">' + esc(label) + '</small><div class="nj-hitung">' + esc(nilai) + '</div>' : '';
     return '<div class="nj-kartu ' + kelas + '"><span class="nj-chip">' + esc(chip) + '</span>' +
-      '<b class="nj-judul2">' + esc(judul) + '</b>' +
+      (judul ? '<b class="nj-judul2">' + esc(judul) + '</b>' : '') +
       (atas || aksi ? '<div class="nj-baris2"><div>' + atas + '</div>' + (aksi || '') + '</div>' : '') +
       (catatan || '') + '</div>';
   }
@@ -824,6 +824,7 @@
     if (!d || !d.jam || !d.hari || !d.ustadz) { box.hidden = true; return; }
     box.hidden = false;
     var p = d.jam.split(':').map(Number), menit = d.menit || 10;
+    var jamTitik = d.jam.replace(':', '.');
     var mulai = d.tanggal_mulai ? new Date(d.tanggal_mulai + 'T00:00:00') : null;
     var hariSesi = hariSesiJm(d.hari);
     var sesiDi = function (tgl) { return new Date(tgl.getFullYear(), tgl.getMonth(), tgl.getDate(), p[0], p[1]); };
@@ -851,14 +852,14 @@
         var catatanMeet = !bisaMasuk && !sedang
           ? '<p class="nj-catatan">Tombol Masuk Live aktif 5 menit sebelum sesi dimulai.</p>'
           : (linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>');
-        top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz',
+        top = kartuNj('Hari Ini', 'nj-hari', '',
           sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
           sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, catatanMeet);
       } else if (mulai && mulai > now) {
         top = kartuNj('Mulai', 'nj-hari', 'Sesi Pertama', 'Mulai dalam', next ? formatSisa(next - now) : '–', '',
-          '<p class="nj-catatan">' + esc(fmtTgl(next || mulai)) + ' · Pukul ' + esc(d.jam) + ' WIB</p>');
+          '<p class="nj-catatan">' + esc(fmtTgl(next || mulai)) + ' · ' + esc(jamTitik) + ' WIB</p>');
       } else if (adaSesi(hari)) {
-        top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz', 'Setoran berikutnya dalam', sisaNext, '',
+        top = kartuNj('Hari Ini', 'nj-hari', '', 'Setoran berikutnya dalam', sisaNext, '',
           '<p class="nj-catatan">Setoran hari ini sudah selesai.</p>');
       } else {
         top = kartuNj('Hari Ini', 'nj-libur', 'Hari Ini Libur', 'Setoran berikutnya dalam', sisaNext, '',
@@ -866,15 +867,11 @@
       }
       var bawah = '';
       if (!mulai || besok >= mulai) {
-        bawah = adaSesi(besok)
-          ? '<div class="nj-kartu nj-besok"><span class="nj-chip abu">Besok</span><div class="nj-tgl-baris">' + IKON_KALENDER +
-            '<div><b class="nj-judul2">' + esc(fmtTgl(sesiDi(besok))) + '</b><small class="nj-label">Pukul ' + esc(d.jam) + ' WIB</small></div></div></div>'
-          : '<div class="nj-kartu nj-besok"><span class="nj-chip abu">Besok</span><div class="nj-tgl-baris">' + IKON_KALENDER +
-            '<div><b class="nj-judul2">Besok Libur</b><small class="nj-label">Tidak ada setoran besok.</small></div></div></div>';
+        var besokPendek = besok.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+        bawah = '<div class="nj-besok-baris">' + IKON_KALENDER + '<span>Besok: ' +
+          (adaSesi(besok) ? esc(besokPendek) + ' · ' + esc(jamTitik) + ' WIB' : 'Libur') + '</span></div>';
       }
-      isi.innerHTML = '<div class="nj-linimasa"><div class="nj-garis"><span class="nj-titik on">✓</span>' +
-        (bawah ? '<span class="nj-jalur"></span><span class="nj-titik"></span>' : '') +
-        '</div><div class="nj-isi">' + top + bawah + '</div></div>';
+      isi.innerHTML = '<div class="nj-blok">' + top + bawah + '</div>';
     };
     gambar();
     njTimer = setInterval(gambar, 1000);
@@ -998,7 +995,7 @@
       : 'Sudah mulai belajar. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
     $('jmPill').textContent = d.usulan ? 'Ada usulan dari admin' : (d.ustadz ? 'Ustadz ditetapkan' : 'Menunggu Ustadz');
     var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
-    var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc(d.jam || '-') + ' WIB</b>' +
+    var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc((d.jam || '-').replace(':', '.')) + ' WIB</b>' +
       (d.ustadz ? '<small>Ustadz: ' + esc(d.ustadz) + '</small>' : '') + '</div>';
     if (d.usulan) {
       var u = d.usulan, selisih = Number(u.selisih || 0);
@@ -1031,7 +1028,7 @@
     row.hidden = false;
     var belum = !d.sudah_mulai, sisa = Number(d.sisa_ubah || 0), bisa = belum || sisa > 0;
     $('pkJadwalHari').textContent = labelHariJm(d.hari);
-    $('pkJadwalJam').textContent = (d.jam || '-') + ' WIB';
+    $('pkJadwalJam').textContent = (d.jam || '-').replace(':', '.') + ' WIB';
     var tombol = $('pkEditWaktu');
     tombol.disabled = !bisa;
     tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span><i class="pk-edit-garis" aria-hidden="true"></i>' +
