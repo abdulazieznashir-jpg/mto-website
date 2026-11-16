@@ -163,6 +163,14 @@
       </div>
     </header>
     <div class="adm-kerangka" id="admKerangka">Memuat halaman admin…</div>
+    <section class="adm-view" data-view="dashboard" hidden><p class="adm-kerangka">Dashboard (belum dibuat)</p></section>
+    <section class="adm-view" data-view="murid" hidden><p class="adm-kerangka">Murid (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pengajar" hidden><p class="adm-kerangka">Pengajar (belum dibuat)</p></section>
+    <section class="adm-view" data-view="jadwal" hidden><p class="adm-kerangka">Jadwal (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pertemuan" hidden><p class="adm-kerangka">Pertemuan (belum dibuat)</p></section>
+    <section class="adm-view" data-view="periode" hidden><p class="adm-kerangka">Periode (belum dibuat)</p></section>
+    <section class="adm-view" data-view="permintaan" hidden><p class="adm-kerangka">Permintaan (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pengaturan" hidden><p class="adm-kerangka">Pengaturan (belum dibuat)</p></section>
   </main>
 </div>
 
@@ -192,11 +200,33 @@
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || email !== OWNER) { kembali(); return; }
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER };
+    if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
   }).catch(kembali);
 
   sb.auth.onAuthStateChange(function (event) {
     if (event === 'SIGNED_OUT') kembali();
   });
+
+  /* Router hash: #dashboard, #murid, ... Hash tidak dikenal kembali ke #dashboard. */
+  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan'];
+  function tampilRute() {
+    var h = (window.location.hash || '').replace(/^#/, '');
+    if (RUTE.indexOf(h) === -1) h = 'dashboard';
+    var views = document.querySelectorAll('.adm-view');
+    for (var i = 0; i < views.length; i++) {
+      views[i].hidden = views[i].getAttribute('data-view') !== h;
+    }
+    var links = document.querySelectorAll('.adm-side a, .adm-bottomnav a');
+    for (var j = 0; j < links.length; j++) {
+      var cocok = links[j].getAttribute('href') === '#' + h;
+      if (cocok) links[j].setAttribute('aria-current', 'page');
+      else links[j].removeAttribute('aria-current');
+    }
+    var kerangka = document.getElementById('admKerangka');
+    if (kerangka) kerangka.hidden = true;
+  }
+  window.addEventListener('hashchange', function () { if (window.MTO_ADMIN) tampilRute(); });
+  window.MTO_TAMPIL_RUTE = tampilRute;
 })();
 </script>
 </body>
