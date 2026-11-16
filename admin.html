@@ -88,6 +88,8 @@
   }
   .adm-dash-h2 { margin: 0 0 8px; font-size: var(--adm-lg, 18px); }
   .adm-dash-daftar { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .adm-dash-tautan { color: inherit; text-decoration: none; display: block; padding: 4px 0; min-height: 32px; }
+  .adm-dash-tautan:hover, .adm-dash-tautan:focus-visible { color: var(--adm-gold-ink, #8A6A1F); text-decoration: underline; }
   .adm-dash-catatan { color: var(--adm-danger, #B3261E); margin: 8px 0 0; }
   @media (min-width: 900px) {
     .adm-dash-wrap { padding-inline: 32px; }
@@ -359,9 +361,9 @@
         <div class="adm-dash-tugas" aria-label="Tugas hari ini">
           <h2 class="adm-dash-h2">Tugas Hari Ini</h2>
           <ul class="adm-dash-daftar">
-            <li><span data-stat="permintaan_keluar">—</span> permintaan keluar menunggu keputusan</li>
-            <li><span data-stat="permintaan_ganti">—</span> permintaan ganti jadwal menunggu keputusan</li>
-            <li><span data-stat="usulan_jadwal">—</span> usulan jadwal menunggu keputusan</li>
+            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="permintaan_keluar">—</span> permintaan keluar menunggu keputusan</a></li>
+            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="permintaan_ganti">—</span> permintaan ganti jadwal menunggu keputusan</a></li>
+            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="usulan_jadwal">—</span> usulan jadwal menunggu keputusan</a></li>
           </ul>
           <p class="adm-dash-catatan" id="dashGagal" hidden>Ringkasan belum bisa dimuat. Muat ulang halaman.</p>
         </div>
