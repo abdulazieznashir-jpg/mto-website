@@ -179,6 +179,24 @@
     background: var(--adm-btn, #8B6E4E); color: var(--adm-btn-ink, #FFFFFF);
   }
   .adm-pengaturan-tombol:disabled { opacity: .5; cursor: default; }
+  /* Notifikasi dan pencarian */
+  .adm-notif-wrap { position: relative; }
+  .adm-notif-panel {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 40; width: min(320px, 90vw);
+    background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
+    border-radius: var(--adm-r-lg, 16px); box-shadow: var(--adm-shadow, 0 8px 24px rgba(0,0,0,.08));
+    padding: 12px 16px; box-sizing: border-box;
+  }
+  .adm-notif-panel[hidden] { display: none !important; }
+  .adm-notif-judul { margin: 0 0 8px; font-weight: 700; }
+  .adm-notif-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .adm-notif-daftar a { color: var(--adm-gold-ink, #8A6A1F); text-decoration: none; font-weight: 600; }
+  .adm-murid-cari { display: flex; flex-direction: column; gap: 6px; }
+  .adm-murid-cari input {
+    font: inherit; color: var(--adm-ink, #1D1D1F); background: var(--adm-surface, #FFFFFF);
+    border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-sm, 10px); padding: 10px 12px;
+    max-width: 100%; box-sizing: border-box; width: 100%;
+  }
   /* Permintaan: daftar kartu dengan tombol respon */
   .adm-permintaan-daftar { display: flex; flex-direction: column; gap: 12px; }
   .adm-permintaan-item {
@@ -316,8 +334,14 @@
         <span class="adm-side-peran">Admin</span>
       </div>
       <div class="adm-topbar-aksi">
-        <button type="button" class="adm-ikon-btn" aria-label="Cari">⌕</button>
-        <button type="button" class="adm-ikon-btn adm-ikon-btn-titik" aria-label="Notifikasi">🔔︎</button>
+        <button type="button" class="adm-ikon-btn" id="topCari" aria-label="Cari murid" aria-controls="muridCari">⌕</button>
+        <div class="adm-notif-wrap">
+          <button type="button" class="adm-ikon-btn adm-ikon-btn-titik" id="topNotif" aria-label="Notifikasi" aria-expanded="false" aria-controls="notifPanel">🔔︎</button>
+          <div class="adm-notif-panel" id="notifPanel" hidden>
+            <p class="adm-notif-judul">Menunggu keputusan</p>
+            <ul class="adm-notif-daftar" id="notifDaftar"><li>Memuat…</li></ul>
+          </div>
+        </div>
         <span class="adm-avatar" aria-hidden="true">A</span>
       </div>
     </header>
@@ -346,6 +370,10 @@
     <section class="adm-view" data-view="murid" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Murid</h1>
+        <div class="adm-murid-cari">
+          <label class="adm-pengaturan-label" for="muridCari">Cari nama murid</label>
+          <input type="search" id="muridCari" placeholder="Ketik nama murid…" autocomplete="off">
+        </div>
         <div class="adm-murid-kartu" id="muridKartu" aria-label="Daftar murid"></div>
         <div class="adm-murid-tabel-wrap">
           <table class="adm-murid-tabel">
@@ -606,14 +634,16 @@
     var pager = document.getElementById('muridPager');
     if (!body) return;
     if (MURID.length === 0) { pesanMurid('Belum ada murid.'); if (pager) pager.hidden = true; return; }
+    if (filterMurid().length === 0) { pesanMurid('Tidak ada murid yang cocok dengan pencarian.'); if (pager) pager.hidden = true; return; }
 
-    var total = MURID.length;
+    var daftarTampil = filterMurid();
+    var total = daftarTampil.length;
     var halamanTotal = Math.ceil(total / HALAMAN_UKURAN);
     if (halamanAktif > halamanTotal) halamanAktif = halamanTotal;
     if (halamanAktif < 1) halamanAktif = 1;
     var mulai = (halamanAktif - 1) * HALAMAN_UKURAN;
     var akhir = Math.min(mulai + HALAMAN_UKURAN, total);
-    var potongan = MURID.slice(mulai, akhir);
+    var potongan = daftarTampil.slice(mulai, akhir);
 
     body.innerHTML = '';
     if (kartu) kartu.innerHTML = '';
@@ -1132,6 +1162,75 @@
   }
   bindPengaturan();
 
+  function filterMurid() {
+    var q = (document.getElementById('muridCari') || { value: '' }).value.trim().toLowerCase();
+    if (!q) return MURID;
+    return MURID.filter(function (m) {
+      return String(m.nama || '').toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  /* Top bar: tombol cari membuka halaman murid dan fokus ke kolom cari; lonceng membuka daftar yang menunggu keputusan */
+  function bindTopBar() {
+    var cari = document.getElementById('topCari');
+    if (cari) cari.addEventListener('click', function () {
+      window.location.hash = 'murid';
+      var input = document.getElementById('muridCari');
+      if (input) setTimeout(function () { input.focus(); }, 50);
+    });
+    var catatanCari = document.getElementById('muridCari');
+    if (catatanCari) catatanCari.addEventListener('input', function () {
+      halamanAktif = 1;
+      tampilMurid();
+    });
+
+    var notif = document.getElementById('topNotif');
+    var panel = document.getElementById('notifPanel');
+    if (notif && panel) {
+      notif.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var buka = panel.hidden;
+        panel.hidden = !buka;
+        notif.setAttribute('aria-expanded', buka ? 'true' : 'false');
+      });
+      document.addEventListener('click', function (e) {
+        if (!panel.contains(e.target) && e.target !== notif) {
+          panel.hidden = true;
+          notif.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  }
+  bindTopBar();
+
+  function isiNotifikasi(data) {
+    var daftar = document.getElementById('notifDaftar');
+    if (!daftar) return;
+    daftar.innerHTML = '';
+    var item = [
+      ['permintaan_keluar', 'Permintaan keluar', '#permintaan'],
+      ['permintaan_ganti', 'Permintaan ganti pengajar', '#permintaan'],
+      ['usulan_jadwal', 'Usulan jadwal', '#permintaan'],
+      ['murid_tanpa_gelombang', 'Murid belum punya gelombang', '#murid']
+    ];
+    var ada = false;
+    item.forEach(function (it) {
+      var n = Number(data[it[0]] || 0);
+      if (n <= 0) return;
+      ada = true;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = it[2];
+      a.textContent = it[1] + ': ' + n;
+      li.appendChild(a);
+      daftar.appendChild(li);
+    });
+    if (!ada) {
+      var kosong = document.createElement('li');
+      kosong.textContent = 'Tidak ada yang menunggu keputusan.';
+      daftar.appendChild(kosong);
+    }
+  }
   function bindMurid() {
     var sebelum = document.getElementById('muridSebelum');
     var berikut = document.getElementById('muridBerikut');
@@ -1149,6 +1248,7 @@
         return;
       }
       var data = r.data;
+      isiNotifikasi(data);
       var sel = document.querySelectorAll('[data-stat]');
       for (var i = 0; i < sel.length; i++) {
         var k = sel[i].getAttribute('data-stat');
