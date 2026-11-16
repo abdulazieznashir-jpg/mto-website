@@ -455,10 +455,38 @@
     var awal = b.join('\n');
     return p.ringkasan ? awal + '\n\n' + p.ringkasan : awal;
   }
+  var semuaAdmin = [];
+  function tampilGrupAdmin(list) {
+    var box = $('grupAdminBox'), el = $('grupAdminList');
+    if (!box || !el) return;
+    box.hidden = !list.length;
+    if (!list.length) { el.innerHTML = ''; return; }
+    var kelompok = {};
+    list.forEach(function (p) {
+      var k = p.pengampu_nama || 'Belum ada pengampu';
+      (kelompok[k] = kelompok[k] || []).push(p);
+    });
+    el.innerHTML = Object.keys(kelompok).sort().map(function (k) {
+      var isi = kelompok[k].map(function (p) {
+        var chips = [
+          p.kelas, p.tipe_pendaftar, p.periode_label, p.program,
+          p.durasi ? p.durasi + ' bulan' : 'durasi belum diisi',
+          p.hari_diminta ? hariLabel(p.hari_diminta) : null,
+          p.jam_diminta ? jamLabel(p.jam_diminta) : null,
+          p.opsi_waktu || null
+        ].filter(Boolean).map(function (c) { return '<span class="grup-chip">' + esc(c) + '</span>'; }).join('');
+        return '<div class="grup-baris"><b>' + esc(p.nama) + '</b><small>+' + esc(p.wa) + '</small><div>' + chips + '</div></div>';
+      }).join('');
+      return '<div class="grup-ustadz"><p class="pd-sub"><b>' + esc(k) + '</b> · ' + kelompok[k].length + ' murid</p>' + isi + '</div>';
+    }).join('');
+  }
   function tampilAdmin(list) {
     var box = $('adminBox');
     if (!box) return;
-    daftarAdmin = list;
+    semuaAdmin = list;
+    daftarAdmin = list.filter(function (p) { return !!p.email; });
+    list = daftarAdmin;
+    tampilGrupAdmin(semuaAdmin.filter(function (p) { return !p.email; }));
     box.hidden = false;
     if (!list.length) { $('adminList').innerHTML = '<p class="pd-sub">Belum ada pendaftar.</p>'; return; }
     $('adminList').innerHTML = list.map(function (p, i) {
@@ -538,7 +566,7 @@
         '<input type="date" data-gtgl="' + esc(g.kode) + '" value="' + esc(g.tanggal_mulai || '') + '"></label>' +
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
-    if (daftarAdmin.length) tampilAdmin(daftarAdmin);
+    if (semuaAdmin.length) tampilAdmin(semuaAdmin);
   }
   function tampilKeluar(list) {
     var box = $('keluarBox'), el = $('keluarList');

@@ -295,6 +295,12 @@
   .pd-gelombang-baris label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #86868B; min-width: 0; flex: 1 1 160px; }
   .pd-gelombang-baris input { font: 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 8px 10px; border: 1px solid #D2D2D7; border-radius: 10px; max-width: 100%; }
   .pd-gelombang-baris button { font-family: inherit; }
+  .grup-ustadz { margin-bottom: 16px; }
+  .grup-baris { padding: 10px 0; border-bottom: 1px solid #F0F0F2; min-width: 0; }
+  .grup-baris b { display: block; font-weight: 500; color: #1D1D1F; word-break: break-word; }
+  .grup-baris small { color: #86868B; font-size: 12px; }
+  .grup-baris > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .grup-chip { font-size: 12px; color: #1D1D1F; background: #F5F5F7; border-radius: 999px; padding: 3px 9px; max-width: 100%; overflow-wrap: anywhere; }
 
   .pf-brand { display: inline-flex; align-items: center; gap: 8px; }
   .pf-logo { width: 28px; height: 28px; flex-shrink: 0; }
@@ -948,6 +954,10 @@
         <div class="pd-gelombang" id="gelombangBox" hidden>
           <p class="pd-sub">Tanggal mulai gelombang</p>
           <div id="gelombangForm"></div>
+        </div>
+        <div class="pd-gelombang" id="grupAdminBox" hidden>
+          <p class="pd-sub">Daftar admin: murid tanpa akun, per pengampu</p>
+          <div id="grupAdminList"></div>
         </div>
         <div id="adminList"></div>
       </section>
