@@ -1173,15 +1173,12 @@
       return;
     }
     if (daftar) daftar.hidden = true;
-    blok.hidden = false; status.hidden = false; meta.hidden = false; kaki.hidden = false;
+    blok.hidden = false; status.hidden = false; meta.hidden = true; kaki.hidden = false;
     var kondisi = tglMulaiISO && tglMulaiISO > hariIniJakarta() ? 'belum'
       : (pertemuanSelesai !== null && pertemuanSelesai >= 15 ? 'selesai' : 'berjalan');
     var label = { belum: 'Menunggu Dimulai', berjalan: 'Sedang Berjalan', selesai: 'Selesai' }[kondisi];
     status.textContent = label;
     status.className = 'pk-status pk-' + kondisi;
-    meta.textContent = paketKey
-      ? 'Sesi ' + MENIT_SESI[paketKey] + ' menit • Weekdays • 15 kali pertemuan'
-      : 'Weekdays • 15 kali pertemuan';
     if (kondisi === 'belum') {
       blok.className = 'pk-blok pk-belum-blok';
       blok.innerHTML = '<div class="pk-kolom"><span class="pk-label">Mulai Belajar</span><b class="pk-nilai">' + esc(tglMulaiGelombang || '–') + '</b></div>' +
