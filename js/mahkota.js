@@ -340,6 +340,7 @@
       bukaTabAdmin();
       bukaFilterGrup();
       bukaProfilTab();
+      muatRingkasanAdmin();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -644,6 +645,23 @@
       var wrap = t.closest('.adm-profil'), pilih = t.getAttribute('data-profil-tab');
       wrap.querySelectorAll('[data-profil-tab]').forEach(function (x) { x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
       wrap.querySelectorAll('[data-profil-panel]').forEach(function (x) { x.hidden = x.getAttribute('data-profil-panel') !== pilih; });
+    });
+  }
+  function muatRingkasanAdmin() {
+    var box = $('admStats');
+    if (!box || !sb) return;
+    sb.rpc('admin_ringkasan').then(function (r) {
+      if (r.error || !r.data) return;
+      var d = r.data;
+      var kartu = [
+        [d.murid_diterima, 'Murid diterima', false],
+        [d.belum_gelombang, 'Belum punya gelombang', true],
+        [d.permintaan_keluar, 'Permintaan keluar', false],
+        [d.permintaan_ganti + d.usulan_jadwal, 'Ganti pengajar & usulan jadwal', false]
+      ];
+      box.innerHTML = kartu.map(function (k) {
+        return '<div class="adm-stat' + (k[2] ? ' hl' : '') + '"><b>' + esc(String(k[0])) + '</b><span>' + esc(k[1]) + '</span></div>';
+      }).join('');
     });
   }
   function bukaFilterGrup() {
