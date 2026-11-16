@@ -156,7 +156,7 @@
   .adm-murid-baris { cursor: pointer; }
   /* Pengajar: tabel di desktop; HP memakai kartu (langkah 19) */
   .adm-pengajar-tabel-wrap { display: none; }
-  .adm-pengajar-hp { display: flex; flex-direction: column; gap: 12px; }
+  .adm-pengajar-hp { display: flex; flex-direction: column; gap: 12px; padding-block: 0; }
   @media (min-width: 900px) {
     .adm-pengajar-tabel-wrap {
       display: block; overflow-x: auto; background: var(--adm-surface, #FFFFFF);
@@ -550,6 +550,18 @@
       tr.appendChild(sel('td', status));
       tr.addEventListener('click', function () { bukaDetailPengajar(g); });
       body.appendChild(tr);
+
+      if (kartu) {
+        var item = document.createElement('article');
+        item.className = 'adm-murid-kartu-item adm-pengajar-kartu-item';
+        item.addEventListener('click', function () { bukaDetailPengajar(g); });
+        var nama = sel('div', g.nama);
+        nama.className = 'adm-murid-kartu-nama';
+        item.appendChild(nama);
+        item.appendChild(baris('Jumlah murid', g.jumlah_murid));
+        item.appendChild(baris('Status', status));
+        kartu.appendChild(item);
+      }
     });
   }
 
