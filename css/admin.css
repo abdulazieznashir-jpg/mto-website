@@ -76,3 +76,5 @@
 /* Kerangka admin (langkah 3) */
 .adm-head { margin-bottom: 18px; }
 .adm-head .adm-tabs { margin-top: 16px; }
+.adm-profil .adm-tabs { margin-bottom: 10px; }
+.adm-panel[hidden] { display: none; }

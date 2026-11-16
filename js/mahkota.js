@@ -339,6 +339,7 @@
       bukaPengumuman();
       bukaTabAdmin();
       bukaFilterGrup();
+      bukaProfilTab();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -474,19 +475,45 @@
       return '<div class="pd-baris"><span>' + esc(label) + '</span><b>' + esc(nilai) + '</b></div>';
     }
     function detailMurid(p) {
-      return '<div class="grup-detail">' +
-        baris('Jenis kelamin', p.jenis_kelamin === 'perempuan' ? 'Perempuan' : 'Laki-laki') +
-        baris('Kelas', p.kelas || '-') +
-        baris('Tipe pendaftar', p.tipe_pendaftar || '-') +
-        baris('Periode', p.periode_label || '-') +
-        baris('Program', p.program || '-') +
-        baris('Durasi', p.durasi ? p.durasi + ' bulan' : 'Belum diisi') +
-        baris('Hari', p.hari_diminta ? hariLabel(p.hari_diminta) : '-') +
-        baris('Jam', p.jam_diminta ? jamLabel(p.jam_diminta) : '-') +
-        baris('Opsi waktu', p.opsi_waktu || '-') +
-        baris('Gelombang', p.gelombang ? namaGelombang(p.gelombang) : 'Belum dipilih') +
-        baris('Mulai halaqah', p.tanggal_halaqah ? tglLahir(p.tanggal_halaqah) : 'Belum diatur') +
-        baris('WhatsApp', '+' + p.wa) +
+      var tgl = function (t) { return t ? tglLahir(t) : 'Belum ada'; };
+      var panel = {
+        ringkasan:
+          baris('Jenis kelamin', p.jenis_kelamin === 'perempuan' ? 'Perempuan' : 'Laki-laki') +
+          baris('Kelas', p.kelas || '-') +
+          baris('Tipe pendaftar', p.tipe_pendaftar || '-') +
+          baris('Periode', p.periode_label || '-') +
+          baris('Program', p.program || '-') +
+          baris('Durasi', p.durasi ? p.durasi + ' bulan' : 'Belum diisi') +
+          baris('Gelombang', p.gelombang ? namaGelombang(p.gelombang) : 'Belum dipilih') +
+          baris('Mulai halaqah', p.tanggal_halaqah ? tglLahir(p.tanggal_halaqah) : 'Belum diatur') +
+          baris('WhatsApp', '+' + p.wa),
+        jadwal:
+          baris('Pengampu', p.pengampu_nama || 'Belum ditentukan') +
+          baris('Hari', p.hari_diminta ? hariLabel(p.hari_diminta) : '-') +
+          baris('Jam', p.jam_diminta ? jamLabel(p.jam_diminta) : '-') +
+          baris('Opsi waktu', p.opsi_waktu || '-'),
+        pertemuan:
+          '<p class="pd-sub">Belum ada data kehadiran. Pencatatan pertemuan baru berjalan untuk murid yang sudah punya akun.</p>',
+        paket:
+          baris('Paket', p.kelas || '-') +
+          baris('Durasi', p.durasi ? p.durasi + ' bulan' : 'Belum diisi') +
+          baris('Jumlah peserta', p.peserta || 1),
+        catatan:
+          '<p class="pd-sub">Belum ada catatan untuk murid ini.</p>',
+        riwayat:
+          baris('Daftar', tgl(p.dibuat_at)) +
+          baris('Diterima', tgl(p.diterima_at)) +
+          baris('Status', p.status || '-')
+      };
+      var tabs = [['ringkasan', 'Ringkasan'], ['jadwal', 'Jadwal'], ['pertemuan', 'Pertemuan'], ['paket', 'Paket'], ['catatan', 'Catatan'], ['riwayat', 'Riwayat']];
+      return '<div class="grup-detail adm-profil">' +
+        '<div class="adm-tabs" role="tablist" aria-label="Profil murid">' +
+        tabs.map(function (t, i) {
+          return '<button type="button" role="tab" data-profil-tab="' + t[0] + '" aria-selected="' + (i === 0) + '">' + t[1] + '</button>';
+        }).join('') + '</div>' +
+        tabs.map(function (t, i) {
+          return '<div class="adm-panel" data-profil-panel="' + t[0] + '"' + (i === 0 ? '' : ' hidden') + '>' + panel[t[0]] + '</div>';
+        }).join('') +
         '</div>';
     }
     el.innerHTML = ['Ikhwan', 'Akhwat'].filter(function (g) { return Object.keys(grup[g]).length; }).map(function (g) {
@@ -606,6 +633,18 @@
       kosong.textContent = adminStatus === 'jeda' ? 'Belum ada murid berstatus Jeda.' :
         adminStatus === 'selesai' ? 'Belum ada murid yang selesai periode.' : 'Tidak ada murid yang cocok.';
     }
+  }
+  function bukaProfilTab() {
+    var el = $('grupAdminList');
+    if (!el || el.dataset.profilSiap) return;
+    el.dataset.profilSiap = '1';
+    el.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('[data-profil-tab]');
+      if (!t) return;
+      var wrap = t.closest('.adm-profil'), pilih = t.getAttribute('data-profil-tab');
+      wrap.querySelectorAll('[data-profil-tab]').forEach(function (x) { x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+      wrap.querySelectorAll('[data-profil-panel]').forEach(function (x) { x.hidden = x.getAttribute('data-profil-panel') !== pilih; });
+    });
   }
   function bukaFilterGrup() {
     var cari = $('grupAdminCari'), tabs = document.querySelectorAll('[data-adm-status]');
