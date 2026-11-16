@@ -154,6 +154,17 @@
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
   .adm-murid-baris { cursor: pointer; }
+  /* Jadwal: tabel di desktop; HP memakai kartu (langkah 21) */
+  .adm-jadwal-tabel-wrap { display: none; }
+  .adm-jadwal-hp { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 900px) {
+    .adm-jadwal-tabel-wrap {
+      display: block; overflow-x: auto; background: var(--adm-surface, #FFFFFF);
+      border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-lg, 16px);
+    }
+    .adm-jadwal-hp { display: none; }
+  }
+  .adm-jadwal-tabel-wrap a { color: var(--adm-gold-ink, #8A6A1F); overflow-wrap: anywhere; }
   /* Pengajar: tabel di desktop; HP memakai kartu (langkah 19) */
   .adm-pengajar-tabel-wrap { display: none; }
   .adm-pengajar-hp { display: flex; flex-direction: column; gap: 12px; padding-block: 0; }
@@ -340,7 +351,22 @@
         </aside>
       </div>
     </section>
-    <section class="adm-view" data-view="jadwal" hidden><p class="adm-kerangka">Jadwal (belum dibuat)</p></section>
+    <section class="adm-view" data-view="jadwal" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Jadwal</h1>
+        <div class="adm-jadwal-hp" id="jadwalKartu" aria-label="Daftar jadwal"></div>
+        <div class="adm-jadwal-tabel-wrap">
+          <table class="adm-murid-tabel">
+            <thead>
+              <tr><th scope="col">Hari</th><th scope="col">Jam</th><th scope="col">Pengajar</th><th scope="col">Murid</th><th scope="col">Link meet</th></tr>
+            </thead>
+            <tbody id="jadwalBody">
+              <tr><td colspan="5" class="adm-murid-kosong">Memuat jadwal…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
     <section class="adm-view" data-view="pertemuan" hidden><p class="adm-kerangka">Pertemuan (belum dibuat)</p></section>
     <section class="adm-view" data-view="periode" hidden><p class="adm-kerangka">Periode (belum dibuat)</p></section>
     <section class="adm-view" data-view="permintaan" hidden><p class="adm-kerangka">Permintaan (belum dibuat)</p></section>
@@ -378,6 +404,7 @@
     muatDashboard();
     muatMurid();
     muatPengajar();
+    muatJadwal();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -585,6 +612,47 @@
     var panel = document.getElementById('pengajarDetail');
     if (panel) panel.hidden = true;
   });
+
+  /* Jadwal: isi tabel dari admin_daftar_jadwal */
+  var HARI_NAMA = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+  function namaHari(h) { return HARI_NAMA[h] || (h === null || h === undefined ? '—' : String(h)); }
+  function jamSingkat(j) { return j ? String(j).slice(0, 5) : '—'; }
+  function linkAman(url) {
+    var a = document.createElement('a');
+    if (typeof url === 'string' && /^https:\/\//.test(url)) {
+      a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = 'Buka link';
+      return a;
+    }
+    return sel('span', url || '—');
+  }
+  function muatJadwal() {
+    var body = document.getElementById('jadwalBody');
+    if (!body) return;
+    function pesan(teks) {
+      body.innerHTML = '';
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 5; td.className = 'adm-murid-kosong'; td.textContent = teks;
+      tr.appendChild(td); body.appendChild(tr);
+    }
+    sb.rpc('admin_daftar_jadwal').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) { pesan('Jadwal belum bisa dimuat.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada jadwal.'); return; }
+      body.innerHTML = '';
+      r.data.forEach(function (j) {
+        var tr = document.createElement('tr');
+        tr.appendChild(sel('td', namaHari(j.hari)));
+        tr.appendChild(sel('td', jamSingkat(j.jam)));
+        tr.appendChild(sel('td', j.pengajar_nama || j.pengajar_email));
+        tr.appendChild(sel('td', j.peserta_nama || j.peserta_email));
+        var td = document.createElement('td');
+        td.appendChild(linkAman(j.link_meet));
+        tr.appendChild(td);
+        body.appendChild(tr);
+      });
+    }).catch(function () { pesan('Jadwal belum bisa dimuat.'); });
+  }
 
   function bindMurid() {
     var sebelum = document.getElementById('muridSebelum');
