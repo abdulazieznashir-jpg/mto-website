@@ -1015,6 +1015,36 @@
       </div>
     </form>
   </div>
+  <div id="kontakDaftar" hidden>
+  <p class="pf-section-title">Kontak pendaftaran</p>
+  <div class="pf-group">
+    <div class="pf-row">
+      <span class="pf-label">Nomor WhatsApp</span>
+      <span class="pf-value" id="vWa">–</span>
+      <button type="button" class="pf-action" id="btnEditWa">Ubah</button>
+    </div>
+    <form id="formWa" class="pf-edit hidden" novalidate>
+      <input type="tel" name="wa" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890" aria-label="Nomor WhatsApp">
+      <div class="pf-btns">
+        <button type="button" class="pf-btn pf-btn-ghost" id="btnBatalWa">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri" id="btnSimpanWa">Simpan</button>
+      </div>
+    </form>
+    <div class="pf-row">
+      <span class="pf-label">Kota</span>
+      <span class="pf-value" id="vKota">–</span>
+      <button type="button" class="pf-action" id="btnEditKota">Ubah</button>
+    </div>
+    <form id="formKota" class="pf-edit hidden" novalidate>
+      <input type="text" name="kota" autocomplete="address-level2" maxlength="60" placeholder="Nama kota" aria-label="Kota">
+      <div class="pf-btns">
+        <button type="button" class="pf-btn pf-btn-ghost" id="btnBatalKota">Batal</button>
+        <button type="submit" class="pf-btn pf-btn-pri" id="btnSimpanKota">Simpan</button>
+      </div>
+    </form>
+    <p class="pf-caption">Kelas, durasi, dan jadwal diatur dari halaman Saya atau oleh admin.</p>
+  </div>
+  </div>
 
   <p class="pf-section-title">Keamanan</p>
   <div class="pf-group">

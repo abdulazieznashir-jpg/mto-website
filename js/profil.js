@@ -85,6 +85,51 @@
     });
   }
 
+  /* ---------- Kontak pendaftaran (WA dan kota) ---------- */
+  var daftarSaya = null;
+
+  function muatKontak() {
+    sb.rpc('pendaftaran_saya_lengkap').then(function (r) {
+      if (r.error || !r.data) { $('kontakDaftar').hidden = true; return; }
+      daftarSaya = r.data;
+      $('kontakDaftar').hidden = false;
+      $('vWa').textContent = daftarSaya.wa || '–';
+      $('vKota').textContent = daftarSaya.kota || '–';
+      $('formWa').wa.value = daftarSaya.wa || '';
+      $('formKota').kota.value = daftarSaya.kota || '';
+    });
+  }
+
+  function toggleKontak(form, tombol, fokus) {
+    var buka = form.classList.contains('hidden');
+    bukaForm(form, tombol, buka);
+    if (buka) form[fokus].focus();
+  }
+
+  function simpanKontak(e) {
+    e.preventDefault();
+    var form = e.target;
+    var wa = (form.wa ? form.wa.value : daftarSaya.wa) || '';
+    var kota = (form.kota ? form.kota.value : daftarSaya.kota) || '';
+    var isWa = form.id === 'formWa';
+    var btn = isWa ? $('btnSimpanWa') : $('btnSimpanKota');
+    if (isWa && !wa.replace(/\D/g, '')) { note('Tulis nomor WhatsApp Anda.', true); return; }
+    if (!isWa && !kota.trim()) { note('Tulis nama kota Anda.', true); return; }
+    btn.disabled = true;
+    sb.rpc('ubah_kontak_pendaftaran', { p_wa: isWa ? wa : (daftarSaya.wa || ''), p_kota: isWa ? (daftarSaya.kota || '') : kota }).then(function (r) {
+      btn.disabled = false;
+      if (r.error) { note((r.error.message && r.error.message.indexOf('tidak valid') !== -1) || (r.error.message && r.error.message.indexOf('wajib') !== -1) ? r.error.message : 'Belum tersimpan. Coba lagi.', true); return; }
+      daftarSaya.wa = r.data.wa;
+      daftarSaya.kota = r.data.kota;
+      $('vWa').textContent = daftarSaya.wa;
+      $('vKota').textContent = daftarSaya.kota;
+      $('formWa').wa.value = daftarSaya.wa;
+      $('formKota').kota.value = daftarSaya.kota;
+      bukaForm(form, null, false);
+      note('Kontak sudah disimpan.');
+    });
+  }
+
   /* ---------- Password ---------- */
   function togglePass() {
     var buka = $('formPass').classList.contains('hidden');
@@ -121,6 +166,13 @@
     $('btnBatalNama').addEventListener('click', function () { bukaForm($('formNama'), null, false); render(); });
     $('formNama').addEventListener('submit', simpanNama);
 
+    $('btnEditWa').addEventListener('click', function () { toggleKontak($('formWa'), null, 'wa'); });
+    $('btnBatalWa').addEventListener('click', function () { bukaForm($('formWa'), null, false); $('formWa').wa.value = daftarSaya ? daftarSaya.wa || '' : ''; });
+    $('formWa').addEventListener('submit', simpanKontak);
+    $('btnEditKota').addEventListener('click', function () { toggleKontak($('formKota'), null, 'kota'); });
+    $('btnBatalKota').addEventListener('click', function () { bukaForm($('formKota'), null, false); $('formKota').kota.value = daftarSaya ? daftarSaya.kota || '' : ''; });
+    $('formKota').addEventListener('submit', simpanKontak);
+
     $('btnEditPass').addEventListener('click', togglePass);
     $('btnBatalPass').addEventListener('click', function () { $('formPass').reset(); bukaForm($('formPass'), $('btnEditPass'), false); });
     $('formPass').addEventListener('submit', simpanPass);
@@ -135,6 +187,7 @@
         if (!r.data || !r.data.session) { window.location.replace('login.html'); return; }
         user = r.data.session.user;
         render();
+        muatKontak();
         if (window.MTO_MAHKOTA) window.MTO_MAHKOTA.init(sb, user);
         if (window.MTO_AFILIASI) window.MTO_AFILIASI.init(sb, user);
       });
