@@ -20,11 +20,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 - << 'EOF'
-          import os, json, urllib.request, urllib.error
+          import os, json, time, urllib.request, urllib.error
 
           api_key = os.environ.get("GEMINI_API_KEY", "").strip()
           if not api_key:
-              print("ERROR: GEMINI_API_KEY kosong! Pastikan nama secret di GitHub adalah GEMINI_API_KEY.")
+              print("ERROR: GEMINI_API_KEY kosong!")
               exit(1)
 
           if not os.path.exists("PLAN.md"):
@@ -69,29 +69,41 @@ jobs:
              {{"files": {{"nama_file_atau_path": "isi_lengkap_file", "PLAN.md": "isi_lengkap_PLAN_terbaru"}}}}
           Jangan tambahkan teks penjelasan di luar JSON."""
 
-          url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
+          models_to_try = [
+              "gemini-3.8-flash",
+              "gemini-3.8-flash",
+              "gemini-3.8-flash-lite"
+          ]
+
           payload = {
               "contents": [{"parts": [{"text": prompt}]}],
               "generationConfig": {"responseMimeType": "application/json"}
           }
 
-          req = urllib.request.Request(
-              url,
-              data=json.dumps(payload).encode("utf-8"),
-              headers={
-                  "Content-Type": "application/json",
-                  "x-goog-api-key": api_key,
-                  "User-Agent": "Mozilla/5.0 (compatible; GitHubActionsBot/1.0)"
-              }
-          )
-
-          try:
-              with urllib.request.urlopen(req) as resp:
-                  result = json.loads(resp.read().decode("utf-8"))
-          except urllib.error.HTTPError as e:
-              err_body = e.read().decode("utf-8", errors="replace")
-              print(f"HTTP Error {e.code}: {err_body}")
-              exit(1)
+          result = None
+          for attempt, model_name in enumerate(models_to_try, 1):
+              url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent"
+              req = urllib.request.Request(
+                  url,
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={
+                      "Content-Type": "application/json",
+                      "x-goog-api-key": api_key,
+                      "User-Agent": "Mozilla/5.0 (compatible; GitHubActionsBot/1.0)"
+                  }
+              )
+              try:
+                  print(f"Percobaan {attempt} menggunakan {model_name}...")
+                  with urllib.request.urlopen(req) as resp:
+                      result = json.loads(resp.read().decode("utf-8"))
+                  break
+              except urllib.error.HTTPError as e:
+                  err_body = e.read().decode("utf-8", errors="replace")
+                  print(f"HTTP Error {e.code} pada {model_name}: {err_body}")
+                  if e.code in (429, 500, 503) and attempt < len(models_to_try):
+                      time.sleep(15)
+                      continue
+                  exit(1)
 
           text_out = result["candidates"][0]["content"]["parts"][0]["text"]
           parsed = json.loads(text_out)
