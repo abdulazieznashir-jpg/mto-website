@@ -985,12 +985,12 @@
     renderPkJadwal(d);
     if (!d || !d.pendaftaran_id) { box.hidden = true; return; }
     box.hidden = false;
-    var belum = !d.sudah_mulai;
+    var belum = d.status_periode === 'sebelum';
     $('jmSub').textContent = belum
-      ? 'Bisa diganti kapan saja selama periode belum dimulai.'
-      : 'Periode sudah dimulai. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.';
+      ? 'Bisa diganti kapan saja di luar periode berjalan.'
+      : (d.status_periode === 'selesai' ? 'Program sudah selesai.' : 'Periode berjalan. Sisa perubahan: ' + (d.sisa_ubah || 0) + ' kali.');
     $('jmPill').textContent = d.usulan ? 'Ada usulan dari admin' : (d.ustadz ? 'Ustadz ditetapkan' : 'Menunggu Ustadz');
-    var bisaUbah = belum || (d.sisa_ubah || 0) > 0;
+    var bisaUbah = d.bisa_ubah !== undefined ? !!d.bisa_ubah : (belum || (d.sisa_ubah || 0) > 0);
     var isi = '<div class="jm-waktu"><small>Waktu yang Anda Ajukan</small><b>' + esc(labelHariJm(d.hari)) + ', ' + esc((d.jam || '-').replace(':', '.')) + ' WIB</b>' +
       (d.ustadz ? '<small>Ustadz: ' + esc(d.ustadz) + '</small>' : '') + '</div>';
     if (d.usulan) {
@@ -1022,17 +1022,19 @@
     if (!row) return;
     if (!d || !d.pendaftaran_id || isPengajar) { row.hidden = true; return; }
     row.hidden = false;
-    var belum = !d.sudah_mulai, sisa = Number(d.sisa_ubah || 0), bisa = belum || sisa > 0;
+    var selesai = d.status_periode === 'selesai';
+    var belum = d.status_periode === 'sebelum', sisa = Number(d.sisa_ubah || 0);
+    var bisa = d.bisa_ubah !== undefined ? !!d.bisa_ubah : (belum || sisa > 0);
     $('pkJadwalHari').textContent = labelHariJm(d.hari);
     $('pkJadwalJam').textContent = (d.jam || '-').replace(':', '.') + ' WIB';
     var tombol = $('pkEditWaktu');
     tombol.disabled = !bisa;
     tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span><i class="pk-edit-garis" aria-hidden="true"></i>' +
-      '<span class="pk-jatah-label">Jatah:</span><em class="pk-jatah">' + (belum ? 'Tidak terbatas' : sisa + ' kali') + '</em>';
+      '<span class="pk-jatah-label">Jatah:</span><em class="pk-jatah">' + (belum ? 'Tidak terbatas' : (selesai ? '0' : sisa) + ' kali') + '</em>';
     var catatan = $('pkJadwalCatatan');
     if (catatan) {
       catatan.hidden = bisa;
-      catatan.textContent = 'Batas 3 kali perubahan setelah periode dimulai sudah habis.';
+      catatan.textContent = selesai ? 'Program sudah selesai, jadwal tidak bisa diubah.' : 'Batas 3 kali perubahan dalam periode ini sudah habis.';
     }
   }
   // Tanggal berakhir program (sama dengan perhitungan sisa hari)
