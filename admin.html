@@ -104,6 +104,8 @@
   .adm-tempat-form { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; margin-top: 8px; }
   .adm-tempat-label { display: flex; flex-direction: column; gap: 4px; font-size: var(--adm-sm, 13px); min-width: 0; }
   .adm-tempat-label input, .adm-tempat-label select { min-height: 36px; font: inherit; min-width: 0; }
+  .adm-jadwal-hari td { font-weight: 700; background: var(--adm-bg, #FAF8F4); color: var(--adm-gold-ink, #8A6A1F); }
+  .adm-jadwal-hari-kartu { margin: 12px 0 4px; font-size: var(--adm-md, 15px); color: var(--adm-gold-ink, #8A6A1F); }
   .adm-guru-kartu { margin: 0 0 12px; }
   .adm-bayar-info { color: var(--adm-muted, #6E6E73); margin: 0 0 8px; }
   .adm-bayar-kolom { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -1180,7 +1182,23 @@
       if (r.data.length === 0) { pesan('Belum ada jadwal.'); return; }
       body.innerHTML = '';
       if (kartu) kartu.innerHTML = '';
+      var hariTerakhir = null;
       r.data.forEach(function (j) {
+        if (j.hari !== hariTerakhir) {
+          hariTerakhir = j.hari;
+          var judulTr = document.createElement('tr');
+          judulTr.className = 'adm-jadwal-hari';
+          var judulTd = document.createElement('td');
+          judulTd.colSpan = 5;
+          judulTd.textContent = namaHari(j.hari);
+          judulTr.appendChild(judulTd);
+          body.appendChild(judulTr);
+          if (kartu) {
+            var judulKartu = sel('h3', namaHari(j.hari));
+            judulKartu.className = 'adm-jadwal-hari-kartu';
+            kartu.appendChild(judulKartu);
+          }
+        }
         var tr = document.createElement('tr');
         tr.appendChild(sel('td', namaHari(j.hari)));
         tr.appendChild(sel('td', rentangJam(j.jam, j.menit)));
