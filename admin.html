@@ -411,6 +411,8 @@
           <h2 class="adm-dash-h2" id="guruJudul">Guru dan muridnya</h2>
           <p class="adm-bayar-info" id="guruInfo">Memuat…</p>
           <div id="guruDaftar"></div>
+          <h3 class="adm-bayar-sub">Belum punya guru <span id="belumJumlah">0</span></h3>
+          <ul class="adm-bayar-daftar" id="belumDaftar"></ul>
         </section>
         <section class="adm-bayar" aria-labelledby="bayarJudul">
           <h2 class="adm-dash-h2" id="bayarJudul">Pembayaran pendaftar</h2>
@@ -645,6 +647,7 @@
     muatMurid();
     muatPembayaran();
     muatGuru();
+    muatBelumGuru();
     muatPengajar();
     muatJadwal();
     muatPertemuan();
@@ -744,6 +747,41 @@
         wadah.appendChild(kartu);
       });
     }).catch(function () { info.textContent = 'Daftar guru belum bisa dimuat.'; });
+  }
+
+  function muatBelumGuru() {
+    var wadah = document.getElementById('belumDaftar');
+    if (!wadah) return;
+    sb.rpc('admin_daftar_belum_guru').then(function (r) {
+      wadah.textContent = '';
+      if (r.error || !Array.isArray(r.data)) {
+        var g = document.createElement('li');
+        g.textContent = 'Daftar murid tanpa guru belum bisa dimuat.';
+        wadah.appendChild(g);
+        return;
+      }
+      document.getElementById('belumJumlah').textContent = String(r.data.length);
+      if (!r.data.length) {
+        var k = document.createElement('li');
+        k.textContent = 'Semua murid sudah punya guru.';
+        wadah.appendChild(k);
+        return;
+      }
+      r.data.forEach(function (m) {
+        var li = document.createElement('li');
+        var nama = document.createElement('span');
+        nama.textContent = m.nama || m.email || '(tanpa nama)';
+        var ket = document.createElement('small');
+        ket.textContent = [m.paket, m.status].filter(Boolean).join(' · ');
+        li.appendChild(nama); li.appendChild(ket);
+        wadah.appendChild(li);
+      });
+    }).catch(function () {
+      wadah.textContent = '';
+      var g = document.createElement('li');
+      g.textContent = 'Daftar murid tanpa guru belum bisa dimuat.';
+      wadah.appendChild(g);
+    });
   }
 
   function muatMurid() {
