@@ -743,7 +743,7 @@
         }
       });
       if (!nBelum) { var k = document.createElement('li'); k.textContent = 'Tidak ada.'; belum.appendChild(k); }
-      if (!nSudah) { var k2 = document.createElement('li'); k2.textContent = 'Belum ada yang lunas.'; sudah.appendChild(k2); }
+      if (!nSudah) { var k2 = document.createElement('li'); k2.textContent = 'Belum ada yang lunas. Konfirmasi lunas dari daftar Belum lunas.'; sudah.appendChild(k2); }
       document.getElementById('bayarJumlahBelum').textContent = String(nBelum);
       document.getElementById('bayarJumlahSudah').textContent = String(nSudah);
       info.textContent = 'Sudah lunas berarti pembayaran sudah dikonfirmasi admin.';
@@ -772,7 +772,7 @@
         kelompok[kunci].murid.push(d);
       });
       if (!urutan.length) {
-        info.textContent = 'Belum ada murid yang punya guru.';
+        info.textContent = 'Belum ada murid yang punya guru. Tempatkan murid dari daftar Belum punya guru.';
         return;
       }
       info.textContent = 'Setiap guru dan murid yang diampunya.';
@@ -959,7 +959,7 @@
     var pager = document.getElementById('muridPager');
     if (!body) return;
     hitungTabMurid();
-    if (MURID.length === 0) { pesanMurid('Belum ada murid.'); if (pager) pager.hidden = true; return; }
+    if (MURID.length === 0) { pesanMurid('Belum ada murid. Murid muncul setelah pendaftaran diterima.'); if (pager) pager.hidden = true; return; }
     if (filterMurid().length === 0) { pesanMurid('Tidak ada murid yang cocok dengan pencarian.'); if (pager) pager.hidden = true; return; }
 
     var daftarTampil = filterMurid();
@@ -1101,7 +1101,7 @@
     if (list.length === 0) {
       var kosong = document.createElement('tr');
       var td = document.createElement('td');
-      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = 'Belum ada pengajar.';
+      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = 'Belum ada pengajar. Pengajar muncul setelah data pengajar tersedia.';
       kosong.appendChild(td); body.appendChild(kosong);
       return;
     }
@@ -1188,7 +1188,7 @@
     }
     sb.rpc('admin_daftar_jadwal').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { pesan('Jadwal belum bisa dimuat.'); return; }
-      if (r.data.length === 0) { pesan('Belum ada jadwal.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada jadwal. Jadwal muncul setelah jadwal pengajar diisi.'); return; }
       body.innerHTML = '';
       if (kartu) kartu.innerHTML = '';
       var hariTerakhir = null;
@@ -1270,7 +1270,7 @@
     }
     sb.rpc('admin_daftar_pertemuan').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { pesan('Pertemuan belum bisa dimuat.'); return; }
-      if (r.data.length === 0) { pesan('Belum ada pertemuan.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada pertemuan. Pertemuan muncul setelah jadwal halaqah dibuat.'); return; }
       body.innerHTML = '';
       if (kartu) kartu.innerHTML = '';
       r.data.forEach(function (p) {
@@ -1326,7 +1326,7 @@
     }
     sb.rpc('admin_jadwal_gelombang').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { pesan('Periode belum bisa dimuat.'); return; }
-      if (r.data.length === 0) { pesan('Belum ada periode.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada periode. Atur tanggal mulai gelombang di menu Pengaturan.'); return; }
       body.innerHTML = '';
       if (kartu) kartu.innerHTML = '';
       r.data.forEach(function (g) {
