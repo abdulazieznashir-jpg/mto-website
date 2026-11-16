@@ -535,6 +535,7 @@
     daftarAdmin = list.filter(function (p) { return !!p.email; });
     list = daftarAdmin;
     renderGrupFilter();
+    tampilPeriode();
     box.hidden = false;
     if (!list.length) { $('adminList').innerHTML = '<p class="pd-sub">Belum ada pendaftar.</p>'; return; }
     $('adminList').innerHTML = list.map(function (p, i) {
@@ -615,6 +616,7 @@
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
     if (semuaAdmin.length) tampilAdmin(semuaAdmin);
+    tampilPeriode();
   }
   var adminCari = '', adminStatus = 'semua';
   function filterGrupAdmin(list) {
@@ -663,6 +665,35 @@
         return '<div class="adm-stat' + (k[2] ? ' hl' : '') + '"><b>' + esc(String(k[0])) + '</b><span>' + esc(k[1]) + '</span></div>';
       }).join('');
     });
+  }
+  function tampilPeriode() {
+    var box = $('periodeBox'), list = $('periodeList'), info = $('periodeInfo');
+    if (!box || !list || !info) return;
+    var belum = (semuaAdmin || []).filter(function (p) { return !p.email && !p.gelombang && p.id != null; });
+    var tanggalAda = {};
+    (gelombangList || []).forEach(function (g) { tanggalAda[g.kode] = !!g.tanggal_mulai; });
+    box.hidden = !belum.length;
+    info.textContent = (tanggalAda.gelombang_1 && tanggalAda.gelombang_2) ? belum.length + ' murid belum punya gelombang.' :
+      'Tanggal mulai gelombang belum diatur, jadi penyimpanan dikunci. Atur dulu tanggal gelombang di bagian Tanggal mulai gelombang.';
+    list.innerHTML = belum.map(function (p, i) {
+      return '<div class="pd-gelombang-baris" data-periode-id="' + p.id + '">' +
+        '<span style="flex:1;min-width:0">' + esc(p.nama || 'Tanpa nama') + ' <small>' + esc(p.pengampu_nama || '') + '</small></span>' +
+        '<select data-periode-kode aria-label="Gelombang">' +
+        '<option value="gelombang_1">Gelombang 1</option><option value="gelombang_2">Gelombang 2</option></select>' +
+        '<button type="button" data-periode-simpan="' + p.id + '"' + (tanggalAda.gelombang_1 && tanggalAda.gelombang_2 ? '' : ' disabled') + '>Simpan</button></div>';
+    }).join('');
+    list.onclick = function (e) {
+      var b = e.target.closest && e.target.closest('button[data-periode-simpan]');
+      if (!b || !sb) return;
+      var baris = b.closest('[data-periode-id]'), kode = baris.querySelector('[data-periode-kode]').value;
+      var link = (belum.filter(function (x) { return String(x.id) === baris.getAttribute('data-periode-id'); })[0] || {}).link_grup || null;
+      if (!window.confirm('Simpan gelombang ini untuk murid tersebut?')) return;
+      b.disabled = true;
+      sb.rpc('atur_jadwal_pendaftaran', { p_id: Number(baris.getAttribute('data-periode-id')), p_kode: kode, p_link: link }).then(function (r) {
+        if (r.error) { b.disabled = false; window.alert('Gagal: ' + r.error.message); return; }
+        baris.remove();
+      });
+    };
   }
   function bukaFilterGrup() {
     var cari = $('grupAdminCari'), tabs = document.querySelectorAll('[data-adm-status]');
