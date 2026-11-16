@@ -154,6 +154,24 @@
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
   .adm-murid-baris { cursor: pointer; }
+  /* Pengaturan: diletakkan di bawah dan dipisah per blok */
+  .adm-pengaturan-blok {
+    background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
+    border-radius: var(--adm-r-lg, 16px); padding: 20px; min-width: 0;
+    display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;
+  }
+  .adm-pengaturan-blok .adm-dash-h2 { margin: 0; }
+  .adm-pengaturan-form { display: flex; flex-direction: column; gap: 10px; }
+  .adm-pengaturan-label { display: flex; flex-direction: column; gap: 6px; color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
+  .adm-pengaturan-label input, .adm-pengaturan-label select, .adm-pengaturan-label textarea {
+    font: inherit; color: var(--adm-ink, #1D1D1F); background: var(--adm-bg, #FAF8F4);
+    border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-sm, 10px); padding: 10px 12px; min-width: 0; max-width: 100%; box-sizing: border-box;
+  }
+  .adm-pengaturan-tombol {
+    align-self: flex-start; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; font: inherit; font-weight: 600;
+    background: var(--adm-btn, #8B6E4E); color: var(--adm-btn-ink, #FFFFFF);
+  }
+  .adm-pengaturan-tombol:disabled { opacity: .5; cursor: default; }
   /* Permintaan: daftar kartu dengan tombol respon */
   .adm-permintaan-daftar { display: flex; flex-direction: column; gap: 12px; }
   .adm-permintaan-item {
@@ -433,7 +451,62 @@
         <p class="adm-dash-catatan" id="permintaanCatatan" hidden></p>
       </div>
     </section>
-    <section class="adm-view" data-view="pengaturan" hidden><p class="adm-kerangka">Pengaturan (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pengaturan" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Pengaturan</h1>
+
+        <div class="adm-pengaturan-blok">
+          <h2 class="adm-dash-h2">Tanggal mulai gelombang</h2>
+          <p class="adm-dash-sub">Tanggal mulai menentukan jadwal periode. Perubahan diminta konfirmasi sebelum disimpan.</p>
+          <form class="adm-pengaturan-form" id="gelombangForm">
+            <label class="adm-pengaturan-label">Gelombang 1
+              <input type="date" id="gtglGelombang1">
+            </label>
+            <button type="button" class="adm-pengaturan-tombol" data-simpan-gelombang="gelombang_1">Simpan Gelombang 1</button>
+            <label class="adm-pengaturan-label">Gelombang 2
+              <input type="date" id="gtglGelombang2">
+            </label>
+            <button type="button" class="adm-pengaturan-tombol" data-simpan-gelombang="gelombang_2">Simpan Gelombang 2</button>
+            <p class="adm-dash-catatan" id="gelombangInfo" aria-live="polite" hidden></p>
+          </form>
+        </div>
+
+        <div class="adm-pengaturan-blok">
+          <h2 class="adm-dash-h2">Jadwal gelombang</h2>
+          <div class="adm-jadwal-hp" id="pengaturanJadwalKartu"></div>
+          <div class="adm-jadwal-tabel-wrap">
+            <table class="adm-murid-tabel">
+              <thead><tr><th scope="col">Periode</th><th scope="col">Gelombang</th><th scope="col">Mulai</th><th scope="col">Berakhir</th></tr></thead>
+              <tbody id="pengaturanJadwalBody">
+                <tr><td colspan="4" class="adm-murid-kosong">Memuat jadwal gelombang…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="adm-pengaturan-blok">
+          <h2 class="adm-dash-h2">Pengumuman untuk murid</h2>
+          <p class="adm-dash-sub">Pesan dikirim ke murid dan tidak bisa ditarik kembali. Selalu diminta konfirmasi sebelum terkirim.</p>
+          <form class="adm-pengaturan-form" id="pengumumanForm">
+            <label class="adm-pengaturan-label">Judul
+              <input type="text" id="pgJudul" maxlength="80" required>
+            </label>
+            <label class="adm-pengaturan-label">Isi pesan
+              <textarea id="pgIsi" rows="3" maxlength="500" required></textarea>
+            </label>
+            <label class="adm-pengaturan-label">Kepada
+              <select id="pgTarget">
+                <option value="semua">Semua murid</option>
+                <option value="perempuan">Akhwat (perempuan)</option>
+                <option value="laki-laki">Ikhwan (laki-laki)</option>
+              </select>
+            </label>
+            <button type="submit" class="adm-pengaturan-tombol" id="pgKirim">Kirim pengumuman</button>
+            <p class="adm-dash-catatan" id="pgInfo" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -471,6 +544,7 @@
     muatPertemuan();
     muatPeriode();
     muatPermintaan();
+    muatPengaturanJadwal();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -945,6 +1019,88 @@
       ringkas.textContent = 'Usulan jadwal menunggu keputusan: ' + r.data.usulan_jadwal + '. Daftar usulan belum ditampilkan di halaman ini.';
     }).catch(function () {});
   }
+
+  /* Pengaturan: tanggal gelombang (atur_gelombang), jadwal gelombang (admin_jadwal_gelombang), pengumuman (admin_kirim_pengumuman) */
+  function pesanGelombang(teks, galat) {
+    var info = document.getElementById('gelombangInfo');
+    if (!info) return;
+    info.hidden = false; info.textContent = teks;
+    info.style.color = galat ? 'var(--adm-danger, #B3261E)' : '';
+  }
+  function muatPengaturanJadwal() {
+    var body = document.getElementById('pengaturanJadwalBody');
+    var kartu = document.getElementById('pengaturanJadwalKartu');
+    if (!body) return;
+    sb.rpc('admin_jadwal_gelombang').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) {
+        body.innerHTML = ''; var tr0 = document.createElement('tr'); var td0 = document.createElement('td');
+        td0.colSpan = 4; td0.className = 'adm-murid-kosong'; td0.textContent = 'Jadwal gelombang belum bisa dimuat.';
+        tr0.appendChild(td0); body.appendChild(tr0);
+        return;
+      }
+      body.innerHTML = '';
+      if (kartu) kartu.innerHTML = '';
+      r.data.forEach(function (g) {
+        var tr = document.createElement('tr');
+        tr.appendChild(sel('td', g.periode));
+        tr.appendChild(sel('td', namaGelombang(g.kode)));
+        tr.appendChild(sel('td', tglPeriode(g.mulai)));
+        tr.appendChild(sel('td', tglPeriode(g.berakhir)));
+        body.appendChild(tr);
+        if (kartu) {
+          var item = document.createElement('article');
+          item.className = 'adm-murid-kartu-item';
+          var judul = sel('div', (g.periode || '—') + ' · ' + namaGelombang(g.kode));
+          judul.className = 'adm-murid-kartu-nama';
+          item.appendChild(judul);
+          item.appendChild(baris('Mulai', tglPeriode(g.mulai)));
+          item.appendChild(baris('Berakhir', tglPeriode(g.berakhir)));
+          kartu.appendChild(item);
+        }
+      });
+    });
+  }
+  function bindPengaturan() {
+    document.querySelectorAll('[data-simpan-gelombang]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var kode = btn.getAttribute('data-simpan-gelombang');
+        var input = document.getElementById(kode === 'gelombang_1' ? 'gtglGelombang1' : 'gtglGelombang2');
+        var tgl = input ? input.value : '';
+        if (!tgl) { pesanGelombang('Isi tanggal mulai dulu.', true); return; }
+        if (!window.confirm('Simpan tanggal mulai ' + namaGelombang(kode) + ' menjadi ' + tgl + '?')) return;
+        btn.disabled = true;
+        sb.rpc('atur_gelombang', { p_kode: kode, p_tanggal: tgl }).then(function (r) {
+          btn.disabled = false;
+          if (r.error) { pesanGelombang('Tanggal gelombang belum tersimpan.', true); return; }
+          pesanGelombang('Tanggal ' + namaGelombang(kode) + ' tersimpan.', false);
+          muatPengaturanJadwal();
+        }).catch(function () { btn.disabled = false; pesanGelombang('Tanggal gelombang belum tersimpan.', true); });
+      });
+    });
+
+    var form = document.getElementById('pengumumanForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var info = document.getElementById('pgInfo');
+      var tombol = document.getElementById('pgKirim');
+      var judul = document.getElementById('pgJudul').value.trim();
+      var isi = document.getElementById('pgIsi').value.trim();
+      var target = document.getElementById('pgTarget').value;
+      if (!judul || !isi) { info.textContent = 'Judul dan isi wajib diisi.'; return; }
+      var label = { semua: 'semua murid', perempuan: 'akhwat', 'laki-laki': 'ikhwan' }[target];
+      if (!window.confirm('Kirim pengumuman ini ke ' + label + '? Pesan tidak bisa ditarik kembali.')) return;
+      tombol.disabled = true;
+      info.textContent = 'Mengirim…';
+      sb.rpc('admin_kirim_pengumuman', { p_judul: judul, p_isi: isi, p_target: target }).then(function (r) {
+        tombol.disabled = false;
+        if (r.error) { info.textContent = 'Gagal: ' + (r.error.message || 'coba lagi'); return; }
+        info.textContent = 'Terkirim ke ' + r.data + ' murid.';
+        form.reset();
+      }).catch(function () { tombol.disabled = false; info.textContent = 'Gagal mengirim. Coba lagi.'; });
+    });
+  }
+  bindPengaturan();
 
   function bindMurid() {
     var sebelum = document.getElementById('muridSebelum');
