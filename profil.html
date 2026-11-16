@@ -295,12 +295,22 @@
   .pd-gelombang-baris label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #86868B; min-width: 0; flex: 1 1 160px; }
   .pd-gelombang-baris input { font: 14px Inter, system-ui, sans-serif; color: #1D1D1F; padding: 8px 10px; border: 1px solid #D2D2D7; border-radius: 10px; max-width: 100%; }
   .pd-gelombang-baris button { font-family: inherit; }
-  .grup-ustadz { margin-bottom: 16px; }
-  .grup-baris { padding: 10px 0; border-bottom: 1px solid #F0F0F2; min-width: 0; }
-  .grup-baris b { display: block; font-weight: 500; color: #1D1D1F; word-break: break-word; }
-  .grup-baris small { color: #86868B; font-size: 12px; }
-  .grup-baris > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .grup-chip { font-size: 12px; color: #1D1D1F; background: #F5F5F7; border-radius: 999px; padding: 3px 9px; max-width: 100%; overflow-wrap: anywhere; }
+  .grup-gender, .grup-ustadz, .grup-murid { border-bottom: 1px solid #F0F0F2; min-width: 0; }
+  .grup-gender > summary { font-size: 15px; font-weight: 600; padding: 12px 0; }
+  .grup-ustadz { margin-left: 8px; }
+  .grup-ustadz > summary { font-size: 14px; font-weight: 500; padding: 10px 0; }
+  .grup-murid { margin-left: 8px; }
+  .grup-murid > summary { font-size: 13px; padding: 9px 0; }
+  .grup-murid .grup-detail { margin: 4px 0 12px 8px; padding-left: 10px; border-left: 2px solid #F0F0F2; }
+  .grup-gender > summary, .grup-ustadz > summary, .grup-murid > summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; list-style: none; min-width: 0;
+  }
+  .grup-gender > summary::-webkit-details-marker, .grup-ustadz > summary::-webkit-details-marker, .grup-murid > summary::-webkit-details-marker { display: none; }
+  .grup-gender > summary > span:first-child, .grup-ustadz > summary > span:first-child, .grup-murid > summary > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+  .grup-aksi { flex: none; font-size: 12px; color: #86868B; white-space: nowrap; }
+  .grup-aksi::after { content: " ▾"; }
+  .grup-gender[open] > summary .grup-aksi::after, .grup-ustadz[open] > summary .grup-aksi::after, .grup-murid[open] > summary .grup-aksi::after { content: " ▴"; }
+  .grup-gender .pd-baris, .grup-ustadz .pd-baris { font-size: 13px; }
 
   .pf-brand { display: inline-flex; align-items: center; gap: 8px; }
   .pf-logo { width: 28px; height: 28px; flex-shrink: 0; }

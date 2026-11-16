@@ -461,23 +461,40 @@
     if (!box || !el) return;
     box.hidden = !list.length;
     if (!list.length) { el.innerHTML = ''; return; }
-    var kelompok = {};
+    var grup = { Ikhwan: {}, Akhwat: {} };
     list.forEach(function (p) {
+      var g = p.jenis_kelamin === 'perempuan' ? 'Akhwat' : 'Ikhwan';
       var k = p.pengampu_nama || 'Belum ada pengampu';
-      (kelompok[k] = kelompok[k] || []).push(p);
+      (grup[g][k] = grup[g][k] || []).push(p);
     });
-    el.innerHTML = Object.keys(kelompok).sort().map(function (k) {
-      var isi = kelompok[k].map(function (p) {
-        var chips = [
-          p.jenis_kelamin, p.kelas, p.tipe_pendaftar, p.periode_label, p.program,
-          p.durasi ? p.durasi + ' bulan' : 'durasi belum diisi',
-          p.hari_diminta ? hariLabel(p.hari_diminta) : null,
-          p.jam_diminta ? jamLabel(p.jam_diminta) : null,
-          p.opsi_waktu || null
-        ].filter(Boolean).map(function (c) { return '<span class="grup-chip">' + esc(c) + '</span>'; }).join('');
-        return '<div class="grup-baris"><b>' + esc(p.nama) + '</b><small>+' + esc(p.wa) + '</small><div>' + chips + '</div></div>';
+    function baris(label, nilai) {
+      return '<div class="pd-baris"><span>' + esc(label) + '</span><b>' + esc(nilai) + '</b></div>';
+    }
+    function detailMurid(p) {
+      return '<div class="grup-detail">' +
+        baris('Jenis kelamin', p.jenis_kelamin === 'perempuan' ? 'Perempuan' : 'Laki-laki') +
+        baris('Kelas', p.kelas || '-') +
+        baris('Tipe pendaftar', p.tipe_pendaftar || '-') +
+        baris('Periode', p.periode_label || '-') +
+        baris('Program', p.program || '-') +
+        baris('Durasi', p.durasi ? p.durasi + ' bulan' : 'Belum diisi') +
+        baris('Hari', p.hari_diminta ? hariLabel(p.hari_diminta) : '-') +
+        baris('Jam', p.jam_diminta ? jamLabel(p.jam_diminta) : '-') +
+        baris('Opsi waktu', p.opsi_waktu || '-') +
+        baris('Gelombang', p.gelombang ? namaGelombang(p.gelombang) : 'Belum dipilih') +
+        baris('Mulai halaqah', p.tanggal_halaqah ? tglLahir(p.tanggal_halaqah) : 'Belum diatur') +
+        baris('WhatsApp', '+' + p.wa) +
+        '</div>';
+    }
+    el.innerHTML = ['Ikhwan', 'Akhwat'].filter(function (g) { return Object.keys(grup[g]).length; }).map(function (g) {
+      var total = Object.keys(grup[g]).reduce(function (n, k) { return n + grup[g][k].length; }, 0);
+      var pengampu = Object.keys(grup[g]).sort().map(function (k) {
+        var murid = grup[g][k].map(function (p) {
+          return '<details class="grup-murid"><summary><span>' + esc(p.nama) + '</span><span class="grup-aksi">Detail</span></summary>' + detailMurid(p) + '</details>';
+        }).join('');
+        return '<details class="grup-ustadz"><summary><span>' + esc(k) + '</span><span class="grup-aksi">' + grup[g][k].length + ' murid · Detail</span></summary>' + murid + '</details>';
       }).join('');
-      return '<div class="grup-ustadz"><p class="pd-sub"><b>' + esc(k) + '</b> · ' + kelompok[k].length + ' murid</p>' + isi + '</div>';
+      return '<details class="grup-gender"><summary><span>' + g + '</span><span class="grup-aksi">' + total + ' murid · Detail</span></summary>' + pengampu + '</details>';
     }).join('');
   }
   function tampilAdmin(list) {
