@@ -969,6 +969,22 @@
           <p class="pd-sub">Daftar admin: murid tanpa akun, per pengampu</p>
           <div id="grupAdminList"></div>
         </div>
+        <div class="pd-gelombang" id="pengumumanBox" hidden>
+          <p class="pd-sub">Kirim pengumuman / promo ke murid</p>
+          <form id="pengumumanForm" class="pd-gelombang-baris" style="flex-direction:column;align-items:stretch">
+            <label>Judul<input type="text" id="pgJudul" maxlength="80" required></label>
+            <label>Isi pesan<textarea id="pgIsi" rows="3" maxlength="500" required></textarea></label>
+            <label>Kepada
+              <select id="pgTarget">
+                <option value="semua">Semua murid</option>
+                <option value="perempuan">Akhwat (perempuan)</option>
+                <option value="laki-laki">Ikhwan (laki-laki)</option>
+              </select>
+            </label>
+            <button type="submit">Kirim</button>
+            <p class="pd-sub" id="pgInfo" aria-live="polite"></p>
+          </form>
+        </div>
         <div id="adminList"></div>
       </section>
   </div>

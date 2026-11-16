@@ -336,6 +336,7 @@
       });
       muatKeluar();
       muatGanti();
+      bukaPengumuman();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -584,6 +585,28 @@
         '<button type="button" data-gsimpan="' + esc(g.kode) + '">Simpan</button></div>';
     }).join('');
     if (semuaAdmin.length) tampilAdmin(semuaAdmin);
+  }
+  function bukaPengumuman() {
+    var box = $('pengumumanBox'), form = $('pengumumanForm');
+    if (!box || !form || form.dataset.siap) return;
+    form.dataset.siap = '1';
+    box.hidden = false;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var info = $('pgInfo'), tombol = form.querySelector('button[type="submit"]');
+      var judul = $('pgJudul').value.trim(), isi = $('pgIsi').value.trim(), target = $('pgTarget').value;
+      if (!judul || !isi) { info.textContent = 'Judul dan isi wajib diisi.'; return; }
+      var label = { semua: 'semua murid', perempuan: 'akhwat', 'laki-laki': 'ikhwan' }[target];
+      if (!window.confirm('Kirim pengumuman ini ke ' + label + '? Pesan tidak bisa ditarik kembali.')) return;
+      tombol.disabled = true;
+      info.textContent = 'Mengirim…';
+      sb.rpc('admin_kirim_pengumuman', { p_judul: judul, p_isi: isi, p_target: target }).then(function (r) {
+        tombol.disabled = false;
+        if (r.error) { info.textContent = 'Gagal: ' + (r.error.message || 'coba lagi'); return; }
+        info.textContent = 'Terkirim ke ' + r.data + ' murid.';
+        form.reset();
+      });
+    });
   }
   function tampilKeluar(list) {
     var box = $('keluarBox'), el = $('keluarList');
