@@ -933,6 +933,7 @@
     gantiStatus = d && d.ganti_status ? d.ganti_status : null;
     renderNotifJadwal(d && d.pendaftaran_id ? d : null);
     renderMulai();
+    renderPkJadwal(d);
     if (!d || !d.pendaftaran_id) { box.hidden = true; return; }
     box.hidden = false;
     var belum = !d.sudah_mulai;
@@ -965,9 +966,36 @@
       renderJadwalMurid(r.error ? null : r.data);
     });
   }
+  // Baris jadwal di kartu paket: hari, jam, dan Edit Waktu (jatah hanya tampil setelah mulai)
+  var IKON_PENSIL = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>';
+  function renderPkJadwal(d) {
+    var row = $('pkJadwal');
+    if (!row) return;
+    if (!d || !d.pendaftaran_id || isPengajar) { row.hidden = true; return; }
+    row.hidden = false;
+    var belum = !d.sudah_mulai, sisa = Number(d.sisa_ubah || 0), bisa = belum || sisa > 0;
+    $('pkJadwalHari').textContent = labelHariJm(d.hari);
+    $('pkJadwalJam').textContent = (d.jam || '-') + ' WIB';
+    var tombol = $('pkEditWaktu');
+    tombol.disabled = !bisa;
+    tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span>' + (belum ? '' : '<em class="pk-jatah">Jatah: ' + sisa + ' kali</em>');
+  }
+  // Tanggal berakhir program (sama dengan perhitungan sisa hari)
+  function sampaiProgram() {
+    if (!jadwalMurid || !jadwalMurid.tanggal_mulai || !jadwalMurid.durasi) return '';
+    var m = jadwalMurid.tanggal_mulai.split('-').map(Number);
+    var akhir = new Date(Date.UTC(m[0], m[1] - 1 + Number(jadwalMurid.durasi), m[2]));
+    return akhir.toLocaleDateString('id-ID', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+  }
   function pasangJadwalMurid() {
     if (jmEvents) return;
     jmEvents = true;
+    var pe = $('pkEditWaktu');
+    if (pe) pe.addEventListener('click', function () {
+      bukaFormJadwal();
+      var kartu = $('jadwalMurid');
+      if (kartu && kartu.scrollIntoView) kartu.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
     var box = $('jadwalMurid');
     if (!box) return;
     isiJamMurid();
@@ -1098,16 +1126,21 @@
       var sisa = sisaHariProgram();
       var n = pertemuanSelesai === null ? 0 : pertemuanSelesai;
       blok.className = 'pk-blok pk-hijau';
-      blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">' + (sisa === null ? '–' : sisa + ' hari') + '</b></div>' +
+      var sampai = sampaiProgram();
+      blok.innerHTML = '<div><span class="pk-label">Sisa Waktu</span><b class="pk-nilai">' + (sisa === null ? '–' : sisa + ' hari') + '</b>' +
+        (sampai ? '<span class="pk-sub">s.d. ' + esc(sampai) + '</span>' : '') + '</div>' +
         '<div><span class="pk-label">Pertemuan</span><b class="pk-nilai">' + n + ' / 15</b>' +
-        '<div class="pk-bar"><span style="width:' + Math.min(100, Math.round(n / 15 * 100)) + '%"></span></div></div>';
+        '<div class="pk-bar"><span style="width:' + Math.min(100, Math.round(n / 15 * 100)) + '%"></span></div></div>' +
+        '<div><span class="pk-label">Durasi</span><b class="pk-nilai pk-kecil">' + (paketKey ? MENIT_SESI[paketKey] + ' menit' : '–') + '</b>' +
+        '<span class="pk-sub">per pertemuan</span></div>';
     } else {
       blok.className = 'pk-blok';
       blok.innerHTML = '<b class="pk-nilai">Program telah selesai</b><span class="pk-label">15 / 15 pertemuan</span>';
     }
     var bisaGanti = !!pengampuNama && !gantiStatus && kondisi !== 'selesai';
-    var tombolGanti = gantiStatus === 'menunggu' ? 'Diproses' : (gantiStatus === 'diproses' ? 'Pergantian diproses' : 'Ganti Pengajar');
-    kaki.innerHTML = '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span>' +
+    var tombolGanti = gantiStatus === 'menunggu' ? 'Diproses' : (gantiStatus === 'diproses' ? 'Pergantian diproses' : 'Ajukan Ganti Pengajar');
+    kaki.innerHTML = '<div class="pk-tutor"><span class="pk-tutor-ikon" aria-hidden="true">' + IKON_ORANG + '</span>' +
+      '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span></div>' +
       '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + tombolGanti + '</button>';
     renderGrup(kondisi === 'belum');
     renderGaransi();
