@@ -188,6 +188,10 @@
     text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--adm-line, #ECE7DE); vertical-align: middle;
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
+  .adm-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .adm-badge-hijau { background: #E3F4EA; color: #1E6B3A; }
+  .adm-badge-kuning { background: #FFF4D6; color: #7A5A00; }
+  .adm-badge-abu { background: #ECECEF; color: #4A4A4F; }
   .adm-murid-baris { cursor: pointer; }
   /* Pengaturan: diletakkan di bawah dan dipisah per blok */
   .adm-pengaturan-blok {
@@ -977,7 +981,12 @@
       tr.appendChild(sel('td', m.gelombang));
       tr.appendChild(sel('td', m.durasi));
       tr.appendChild(sel('td', m.pengampu_nama));
-      tr.appendChild(sel('td', status));
+      var tdStatus = document.createElement('td');
+      var badge = document.createElement('span');
+      badge.className = 'adm-badge adm-badge-' + (status === 'Aktif' ? 'hijau' : status === 'Jeda' ? 'kuning' : 'abu');
+      badge.textContent = status;
+      tdStatus.appendChild(badge);
+      tr.appendChild(tdStatus);
       tr.className = 'adm-murid-baris';
       tr.addEventListener('click', function () { bukaDetail(m); });
       body.appendChild(tr);
