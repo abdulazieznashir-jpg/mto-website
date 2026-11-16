@@ -463,9 +463,22 @@
   .sy-paket .nj-judul { display: none; }
   .sy-paket .pk-kaki { display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #EFEFF2; }
   .sy-paket .pk-tutor { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .sy-paket .pk-tutor-ikon { width: 40px; height: 40px; border-radius: 50%; background: #FBF0D6; color: #8A6A1F; display: grid; place-items: center; flex: 0 0 auto; }
-  .sy-paket .pk-tutor-ikon svg { width: 20px; height: 20px; }
-  .sy-paket .pk-ganti { width: 100%; min-height: 44px; border-radius: 22px; font-size: 15px; }
+  .sy-paket .pk-tutor-ikon { width: 44px; height: 44px; border-radius: 12px; background: #FBF0D6; color: #B8862B; display: grid; place-items: center; flex: 0 0 auto; }
+  .sy-paket .pk-tutor-ikon svg { width: 22px; height: 22px; }
+  .sy-paket .pk-tutor .pk-pengajar { font-size: 16px; }
+  .sy-paket .pk-ganti { width: 100%; min-height: 44px; border-radius: 22px; font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1.2px solid #D8D8DC; color: #1D1D1F; }
+  .sy-paket .pk-ganti svg { width: 20px; height: 20px; flex: 0 0 auto; }
+  .sy-paket .pk-judul { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+  .sy-paket .pk-status { margin: 0; }
+  .sy-paket .pf-tier { font-size: 24px; }
+  .sy-paket .pk-durasi-baris { display: flex; align-items: center; gap: 6px; }
+  .sy-paket .pk-durasi-baris svg { color: #1D1D1F; flex: 0 0 auto; }
+  .sy-paket .nj-blok > .nj-kartu.nj-hari { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 12px; row-gap: 10px; }
+  .sy-paket .nj-blok > .nj-kartu.nj-hari > .nj-chip { margin: 0; }
+  .sy-paket .nj-blok > .nj-kartu.nj-hari > .nj-catatan { grid-column: 1 / -1; }
+  .sy-paket .nj-blok .nj-baris2 { margin: 0; justify-content: flex-start; gap: 12px; }
+  .sy-paket .nj-blok .nj-baris2 > div:first-child { border-left: 1px solid #E8D9B5; padding-left: 12px; }
+  .sy-paket .nj-blok .nj-hitung { font-size: 22px; }
   .sy-paket .pk-kaki[hidden] { display: none; }
   .sy-paket .pk-pengajar { font-size: 15px; font-weight: 600; color: #1D1D1F; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sy-paket .pk-ganti { flex-shrink: 0; min-height: 44px; border: 1px solid #D8D8DC; background: #fff; border-radius: 999px; padding: 8px 14px; font: 600 14px Inter, system-ui, sans-serif; color: #1D1D1F; }
@@ -811,8 +824,8 @@
     <div class="pk-atas">
       <span class="pf-badge" id="pfBadge" aria-hidden="true"></span>
       <div class="pk-judul">
-        <span class="pk-status" id="pkStatus" hidden></span>
         <span class="pf-tier" id="pfTier">Belum Ada Paket</span>
+        <span class="pk-status" id="pkStatus" hidden></span>
         <p class="pk-meta" id="pkMeta" hidden></p>
       </div>
     </div>

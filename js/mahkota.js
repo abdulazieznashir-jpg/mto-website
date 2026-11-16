@@ -744,6 +744,9 @@
 
   var aktifPaket = false, tglMulaiGelombang = '', tglMulaiISO = '', paketKey = '', pengampuNama = '';
   var pertemuanSelesai = null; /* diisi dari pencatatan pengajar (belum tersedia) */
+  var IKON_ORANG1 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.8-3.8 3.7-6 7.5-6s6.7 2.2 7.5 6"/></svg>';
+  var IKON_TUKAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>';
+  var IKON_JAM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
   var MENIT_SESI = { silver: 10, gold: 20, platinum: 30 };
   function hariIniJakarta() { return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); }
   var grupBesar = null, linkHalaqah = '', sudahBayar = false, hitungTimer = null;
@@ -1199,7 +1202,7 @@
         (sampai ? '<span class="pk-sub">s.d. ' + esc(sampai) + '</span>' : '') + '</div>' +
         '<div><span class="pk-label">Pertemuan</span><b class="pk-nilai">' + n + ' / 15</b>' +
         '<div class="pk-bar"><span style="width:' + Math.min(100, Math.round(n / 15 * 100)) + '%"></span></div></div>' +
-        '<div><span class="pk-label">Durasi</span><b class="pk-nilai pk-kecil">' + (paketKey ? MENIT_SESI[paketKey] + ' menit' : '–') + '</b>' +
+        '<div><span class="pk-label">Durasi</span><span class="pk-durasi-baris">' + IKON_JAM + '<b class="pk-nilai pk-kecil">' + (paketKey ? MENIT_SESI[paketKey] + ' menit' : '–') + '</b></span>' +
         '<span class="pk-sub">per pertemuan</span></div>';
     } else {
       blok.className = 'pk-blok';
@@ -1210,9 +1213,9 @@
     var alasanGanti = !pengampuNama ? 'Pengajar belum ditetapkan admin.'
       : (gantiStatus ? 'Permintaan pergantian sedang diproses admin.'
       : (kondisi === 'selesai' ? 'Program sudah selesai.' : ''));
-    kaki.innerHTML = '<div class="pk-tutor"><span class="pk-tutor-ikon" aria-hidden="true">' + IKON_ORANG + '</span>' +
+    kaki.innerHTML = '<div class="pk-tutor"><span class="pk-tutor-ikon" aria-hidden="true">' + IKON_ORANG1 + '</span>' +
       '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span></div>' +
-      '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + tombolGanti + '</button>' +
+      '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + IKON_TUKAR + '<span>' + tombolGanti + '</span></button>' +
       (!bisaGanti && alasanGanti ? '<p class="pk-catatan">' + esc(alasanGanti) + '</p>' : '');
     renderGrup(kondisi === 'belum');
     renderGaransi();
