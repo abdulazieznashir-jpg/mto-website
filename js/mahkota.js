@@ -849,7 +849,7 @@
           ? '<a class="nj-masuk" id="njMasuk" href="' + esc(linkMeet) + '" target="_blank" rel="noopener">' + IKON_PLAY + 'Masuk Live</a>'
           : '<button type="button" class="nj-masuk" id="njMasuk" disabled>' + IKON_PLAY + 'Masuk Live</button>';
         var catatanMeet = !bisaMasuk && !sedang
-          ? '<p class="nj-catatan">Tombol Live aktif 5 menit sebelum sesi dimulai.</p>'
+          ? '<p class="nj-catatan">Tombol Masuk Live aktif 5 menit sebelum sesi dimulai.</p>'
           : (linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>');
         top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz',
           sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
