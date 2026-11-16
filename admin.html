@@ -154,6 +154,11 @@
   }
   .adm-murid-tabel th { color: var(--adm-muted, #6E6E73); font-weight: 600; background: var(--adm-bg, #FAF8F4); }
   .adm-murid-baris { cursor: pointer; }
+  /* Pertemuan: memakai pola yang sama dengan jadwal */
+  .adm-pertemuan-hadir { font-weight: 600; }
+  .adm-pertemuan-hadir.ya { color: var(--adm-ok, #2E7D32); }
+  .adm-pertemuan-hadir.tidak { color: var(--adm-danger, #B3261E); }
+  .adm-pertemuan-hadir.belum { color: var(--adm-muted, #6E6E73); font-weight: 400; }
   /* Jadwal: tabel di desktop; HP memakai kartu (langkah 21) */
   .adm-jadwal-tabel-wrap { display: none; }
   .adm-jadwal-hp { display: flex; flex-direction: column; gap: 12px; }
@@ -367,7 +372,22 @@
         </div>
       </div>
     </section>
-    <section class="adm-view" data-view="pertemuan" hidden><p class="adm-kerangka">Pertemuan (belum dibuat)</p></section>
+    <section class="adm-view" data-view="pertemuan" hidden>
+      <div class="adm-murid-wrap">
+        <h1 class="adm-dash-judul">Pertemuan</h1>
+        <div class="adm-jadwal-hp" id="pertemuanKartu" aria-label="Daftar pertemuan"></div>
+        <div class="adm-jadwal-tabel-wrap">
+          <table class="adm-murid-tabel">
+            <thead>
+              <tr><th scope="col">Tanggal</th><th scope="col">Murid</th><th scope="col">Pengajar</th><th scope="col">Kehadiran</th></tr>
+            </thead>
+            <tbody id="pertemuanBody">
+              <tr><td colspan="4" class="adm-murid-kosong">Memuat pertemuan…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
     <section class="adm-view" data-view="periode" hidden><p class="adm-kerangka">Periode (belum dibuat)</p></section>
     <section class="adm-view" data-view="permintaan" hidden><p class="adm-kerangka">Permintaan (belum dibuat)</p></section>
     <section class="adm-view" data-view="pengaturan" hidden><p class="adm-kerangka">Pengaturan (belum dibuat)</p></section>
@@ -405,6 +425,7 @@
     muatMurid();
     muatPengajar();
     muatJadwal();
+    muatPertemuan();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
@@ -671,6 +692,71 @@
         }
       });
     }).catch(function () { pesan('Jadwal belum bisa dimuat.'); });
+  }
+
+  /* Pertemuan: isi tabel dan kartu dari admin_daftar_pertemuan */
+  function tanggalWaktu(t) {
+    if (!t) return '—';
+    var d = new Date(t);
+    if (isNaN(d.getTime())) return String(t);
+    return d.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  function labelHadir(h) {
+    if (h === true) return { teks: 'Hadir', kelas: 'ya' };
+    if (h === false) return { teks: 'Tidak hadir', kelas: 'tidak' };
+    return { teks: 'Belum dicatat', kelas: 'belum' };
+  }
+  function kehadiranEl(h) {
+    var l = labelHadir(h);
+    var span = document.createElement('span');
+    span.className = 'adm-pertemuan-hadir ' + l.kelas;
+    span.textContent = l.teks;
+    return span;
+  }
+  function muatPertemuan() {
+    var body = document.getElementById('pertemuanBody');
+    var kartu = document.getElementById('pertemuanKartu');
+    if (!body) return;
+    function pesan(teks) {
+      body.innerHTML = '';
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = teks;
+      tr.appendChild(td); body.appendChild(tr);
+      if (kartu) { kartu.innerHTML = ''; kartu.appendChild(sel('p', teks)); }
+    }
+    sb.rpc('admin_daftar_pertemuan').then(function (r) {
+      if (r.error || !Array.isArray(r.data)) { pesan('Pertemuan belum bisa dimuat.'); return; }
+      if (r.data.length === 0) { pesan('Belum ada pertemuan.'); return; }
+      body.innerHTML = '';
+      if (kartu) kartu.innerHTML = '';
+      r.data.forEach(function (p) {
+        var tr = document.createElement('tr');
+        tr.appendChild(sel('td', tanggalWaktu(p.dicatat_at)));
+        tr.appendChild(sel('td', p.peserta_nama || p.peserta_email));
+        tr.appendChild(sel('td', p.pengajar_nama || p.pengajar_email));
+        var tdHadir = document.createElement('td');
+        tdHadir.appendChild(kehadiranEl(p.hadir));
+        tr.appendChild(tdHadir);
+        body.appendChild(tr);
+
+        if (kartu) {
+          var item = document.createElement('article');
+          item.className = 'adm-murid-kartu-item';
+          var judul = sel('div', p.peserta_nama || p.peserta_email);
+          judul.className = 'adm-murid-kartu-nama';
+          item.appendChild(judul);
+          item.appendChild(baris('Tanggal', tanggalWaktu(p.dicatat_at)));
+          item.appendChild(baris('Pengajar', p.pengajar_nama || p.pengajar_email));
+          var k = document.createElement('div');
+          k.className = 'adm-murid-kartu-baris';
+          k.appendChild(sel('span', 'Kehadiran'));
+          k.appendChild(kehadiranEl(p.hadir));
+          item.appendChild(k);
+          kartu.appendChild(item);
+        }
+      });
+    }).catch(function () { pesan('Pertemuan belum bisa dimuat.'); });
   }
 
   function bindMurid() {
