@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kebijakan Privasi — Mahkota Tahfizh Online</title>
+<meta name="description" content="Kebijakan privasi Mahkota Tahfizh Online: data apa yang kami kumpulkan, untuk apa, dan bagaimana kami melindunginya.">
+<meta name="author" content="Mahkota Tahfizh Online">
+<link rel="canonical" href="https://mahkotatahfizh.com/kebijakan-privasi.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .tentang-hero { padding: calc(var(--nav-height) + 80px) 0 72px; background: var(--bg-off-white); text-align: center; }
+  .tentang-hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.1; letter-spacing: -0.03em; max-width: 820px; margin: 0 auto 20px; }
+  .tentang-hero p { max-width: 640px; margin: 0 auto; color: var(--text-secondary); font-size: 18px; line-height: 1.6; }
+  .tentang-sec { padding: 80px 0; }
+  .tentang-sec.alt { background: var(--bg-gray); }
+  .tentang-sec h2 { font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.02em; margin-bottom: 14px; }
+  .tentang-lead { color: var(--text-secondary); font-size: 17px; line-height: 1.65; max-width: 680px; }
+  .tentang-visi { font-size: clamp(22px, 3.2vw, 28px); line-height: 1.4; font-weight: 500; letter-spacing: -0.01em; max-width: 760px; }
+  .tentang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 36px; }
+  .tentang-card { background: white; border-radius: 18px; padding: 24px; border: 1px solid var(--border-light); }
+  .tentang-card .tentang-num { font-size: 13px; color: var(--primary-dark); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .tentang-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .tentang-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+  .tentang-cta { text-align: center; }
+  .tentang-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+</style>
+<!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
+<script>
+  (function () {
+    var PIXEL_ID = 'PIXEL_ID';
+    if (!PIXEL_ID || PIXEL_ID === 'PIXEL_ID') return;
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', PIXEL_ID);
+    window.fbq('track', 'PageView');
+
+    // Lead: saat pendaftar menekan tombol WhatsApp dari alur daftar
+    // Contact: saat tautan WhatsApp lain diklik
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
+      if (!a || !window.fbq) return;
+      window.fbq('track', a.id === 'flowWa' ? 'Lead' : 'Contact');
+    });
+  })();
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1" alt=""/></noscript>
+</head>
+<body class="tentang-page">
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="currentColor">
+        <path d="M16 3L4 10v4l12-7 12 7v-4L16 3zm0 8L6 17v11h5v-7h10v7h5V17L16 11z"/>
+      </svg>
+      Mahkota Tahfizh
+    </a>
+    <ul class="nav-menu">
+      <li><a href="tentang.html">Tentang</a></li>
+      <li><a href="index.html#program">Program</a></li>
+      <li><a href="testimoni.html">Testimoni</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="nav-masuk">Masuk</a>
+      <a href="index.html#daftar" class="btn btn-primary">Daftar Sekarang</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="tentang.html">Tentang Kami</a></li>
+    <li><a href="index.html#program">Program</a></li>
+    <li><a href="testimoni.html">Testimoni</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="login.html">Masuk</a></li>
+  </ul>
+  <div class="mobile-menu-cta">
+    <a href="index.html#daftar" class="btn btn-primary btn-lg">Daftar Sekarang</a>
+    <a href="https://wa.me/6285727533000" class="btn btn-secondary btn-lg">Chat WhatsApp</a>
+  </div>
+</div>
+
+
+
+
+<header class="tentang-hero">
+  <div class="container">
+    <h1>Kebijakan Privasi</h1>
+    <p>Terakhir diperbarui: 16 November 2026</p>
+  </div>
+</header>
+
+<section class="tentang-sec">
+  <div class="container" style="max-width:760px">
+    <div class="privasi-isi">
+      <h2>1. Siapa kami</h2>
+      <p>Mahkota Tahfizh Online (MTO) adalah layanan belajar Al-Qur'an privat 1-on-1 secara online yang berbasis di Sleman, Yogyakarta. Kebijakan ini menjelaskan data apa yang kami kumpulkan ketika Anda mendaftar dan memakai layanan kami, untuk apa data itu digunakan, dan bagaimana kami menjaganya.</p>
+
+      <h2>2. Data yang kami kumpulkan</h2>
+      <ul>
+        <li><b>Data pendaftaran:</b> nama, alamat email, nomor WhatsApp, kota, paket dan kelas yang dipilih, serta jadwal yang diminta.</li>
+        <li><b>Data diri:</b> tanggal lahir dan jenis kelamin, yang digunakan untuk mengatur pengajar dan kelompok belajar.</li>
+        <li><b>Data pembayaran:</b> bukti transfer yang Anda unggah. Kami tidak menyimpan nomor rekening atau kartu Anda.</li>
+        <li><b>Data belajar:</b> riwayat pertemuan, progres hafalan (juz), dan jadwal sesi.</li>
+        <li><b>Data akun:</b> username dan avatar yang Anda pilih, serta riwayat login untuk fitur klaim harian.</li>
+      </ul>
+
+      <h2>3. Untuk apa data digunakan</h2>
+      <ul>
+        <li>Memproses pendaftaran, verifikasi pembayaran, dan pengaturan jadwal belajar.</li>
+        <li>Menghubungkan Anda dengan pengajar, dan mengirim pengingat sesi atau pengumuman melalui aplikasi.</li>
+        <li>Menghubungi Anda lewat WhatsApp atau email terkait layanan Anda.</li>
+        <li>Memperbaiki layanan. Kami tidak memakai data Anda untuk iklan pihak ketiga.</li>
+      </ul>
+
+      <h2>4. Dengan siapa data dibagikan</h2>
+      <p>Kami tidak menjual data Anda. Data hanya dibagikan kepada pengajar yang mengajar Anda, sejauh diperlukan untuk sesi belajar, dan kepada penyedia layanan teknis yang kami gunakan untuk menyimpan data (Supabase dan hosting website). Kami juga dapat membagikan data jika diwajibkan oleh hukum.</p>
+
+      <h2>5. Cara kami melindungi data</h2>
+      <p>Data disimpan di server yang dilindungi dengan kontrol akses. Hanya akun yang berwenang yang dapat melihat data pendaftaran. Kata sandi disimpan dalam bentuk terenkripsi dan tidak dapat dibaca oleh tim kami.</p>
+
+      <h2>6. Berapa lama data disimpan</h2>
+      <p>Data akun dan belajar disimpan selama Anda menjadi murid atau selama diperlukan untuk kewajiban administrasi dan keuangan. Setelah itu, kami menghapus atau menganonimkan data Anda.</p>
+
+      <h2>7. Hak Anda</h2>
+      <p>Anda berhak meminta salinan data Anda, memperbaiki data yang keliru, atau meminta penghapusan akun. Hubungi kami melalui WhatsApp di <a href="https://wa.me/6285727533000">0857-2753-3000</a>, dan kami akan merespons secepatnya.</p>
+
+      <h2>8. Perubahan kebijakan</h2>
+      <p>Jika kebijakan ini berubah, kami akan memperbarui halaman ini dan mengubah tanggal "terakhir diperbarui" di atasnya.</p>
+
+      <h2>9. Hubungi kami</h2>
+      <p>Pertanyaan tentang kebijakan ini dapat disampaikan lewat WhatsApp di <a href="https://wa.me/6285727533000">0857-2753-3000</a>.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .privasi-isi h2 { font-size: 20px; margin: 32px 0 10px; }
+  .privasi-isi p, .privasi-isi li { color: var(--text-secondary); font-size: 16px; line-height: 1.7; }
+  .privasi-isi ul { padding-left: 20px; margin: 0 0 8px; }
+  .privasi-isi li { margin-bottom: 6px; }
+</style>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h4>Mahkota Tahfizh Online</h4>
+        <p>Private Tahsin dan Tahfidz Al-Qur'an 1-on-1 bersama pengajar hafidz 30 Juz.</p>
+        <p style="margin-top:-8px;">Jl. Panggeran XII No. 06/43, Triharjo, Kec. Sleman, Kab. Sleman, Daerah Istimewa Yogyakarta 55514</p>
+        <div class="footer-social">
+          <a href="index.html#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg></a>
+          <a href="index.html#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="index.html#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/><path d="M9.75 15.02l5.75-3.27-5.75-3.27v6.54z"/></svg></a>
+          <a href="index.html#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Program</h5>
+        <ul>
+          <li><a href="index.html#daftar" data-program="tahsin">Tahsin</a></li>
+          <li><a href="index.html#daftar" data-program="tahfidz" data-jenis="ziyadah">Tahfidz Ziyadah</a></li>
+          <li><a href="index.html#daftar" data-program="tahfidz" data-jenis="murojaah">Tahfidz Muroja'ah</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Perusahaan</h5>
+        <ul>
+          <li><a href="tentang.html">Tentang Kami</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Bantuan</h5>
+        <ul>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="https://wa.me/6285727533000">Chat WhatsApp</a></li>
+          <li><a href="kebijakan-privasi.html">Kebijakan Privasi</a></li>
+          <li><a href="index.html#">Syarat &amp; Ketentuan</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Mahkota Tahfizh Online. Semua hak dilindungi.</div>
+      <div>Dibuat dengan hati di Sleman, Yogyakarta 🇮🇩</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
