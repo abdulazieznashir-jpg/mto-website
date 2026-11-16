@@ -339,7 +339,7 @@
           <button type="button" class="adm-ikon-btn adm-ikon-btn-titik" id="topNotif" aria-label="Notifikasi" aria-expanded="false" aria-controls="notifPanel">🔔︎</button>
           <div class="adm-notif-panel" id="notifPanel" hidden>
             <p class="adm-notif-judul">Menunggu keputusan</p>
-            <ul class="adm-notif-daftar" id="notifDaftar"><li>Memuat…</li></ul>
+            <ul class="adm-notif-daftar" id="notifDaftar"><li>Tidak ada yang menunggu keputusan.</li></ul>
           </div>
         </div>
         <span class="adm-avatar" aria-hidden="true">A</span>
@@ -1203,6 +1203,15 @@
   }
   bindTopBar();
 
+  function gagalNotifikasi() {
+    var daftar = document.getElementById('notifDaftar');
+    if (!daftar) return;
+    daftar.innerHTML = '';
+    var li = document.createElement('li');
+    li.textContent = 'Notifikasi belum bisa dimuat.';
+    daftar.appendChild(li);
+  }
+
   function isiNotifikasi(data) {
     var daftar = document.getElementById('notifDaftar');
     if (!daftar) return;
@@ -1245,6 +1254,7 @@
       if (r.error || !r.data) {
         var g = document.getElementById('dashGagal');
         if (g) g.hidden = false;
+        gagalNotifikasi();
         return;
       }
       var data = r.data;
@@ -1262,6 +1272,7 @@
     }).catch(function () {
       var g = document.getElementById('dashGagal');
       if (g) g.hidden = false;
+      gagalNotifikasi();
     });
   }
 
