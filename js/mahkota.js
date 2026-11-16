@@ -66,6 +66,8 @@
 
   /* ---------- Pengajar: murid saya dan catat pertemuan ---------- */
   var isPengajar = false, namaPengajar = '';
+  // Link Google Meet: hanya tautan meet.google.com (kosong = hapus link)
+  var LINK_MEET_RE = /^https:\/\/meet\.google\.com\/[a-z0-9-]+/i;
   function renderMuridList(list) {
     var el = $('muridList');
     if (!el) return;
@@ -79,11 +81,40 @@
         '<p class="mr-jam">Jam ' + esc(m.jam || '-') + ' WIB</p>' +
         '<div class="mr-bawah"><small>' + n + ' / 15 pertemuan</small>' +
         '<button type="button" class="mr-btn" data-catat="' + esc(m.email) + '" data-nama="' + esc(m.nama || m.email) + '"' + (penuh ? ' disabled' : '') + '>' + (penuh ? 'Lengkap' : 'Catat Pertemuan') + '</button></div>' +
+        '<div class="mr-meet"><label>Link Google Meet<input type="url" data-meet-input="' + esc(m.email) + '" value="' + esc(m.link_meet || '') + '" placeholder="https://meet.google.com/..."></label>' +
+          '<button type="button" class="mr-btn" data-meet-simpan="' + esc(m.email) + '">Simpan</button></div>' +
         '<div class="mr-bawah">' + (m.keluar_status === 'menunggu'
           ? '<span class="mr-tunggu">Menunggu persetujuan admin</span>'
           : '<button type="button" class="mr-btn mr-keluar" data-keluar="' + esc(m.email) + '" data-nama="' + esc(m.nama || m.email) + '">Keluarkan dari murid</button>') + '</div>' +
         '</div>';
     }).join('');
+  }
+  var meetPengajarEvents = false;
+  function pasangMeetPengajar() {
+    var el = $('muridList');
+    if (!el || meetPengajarEvents) return;
+    meetPengajarEvents = true;
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-meet-simpan]');
+      if (!b || !sb) return;
+      var email = b.getAttribute('data-meet-simpan');
+      var inp = el.querySelector('input[data-meet-input="' + email + '"]');
+      var link = inp ? (inp.value || '').trim() : '';
+      if (link && !LINK_MEET_RE.test(link)) {
+        note('Link harus berupa tautan Google Meet, contoh: https://meet.google.com/abc-defg-hij', true);
+        return;
+      }
+      b.disabled = true;
+      sb.rpc('atur_link_meet', { p_peserta_email: email, p_link: link || null }).then(function (r) {
+        b.disabled = false;
+        if (r.error) { note(r.error.message || 'Link belum tersimpan. Coba lagi.', true); return; }
+        note(link ? 'Link Google Meet tersimpan.' : 'Link Google Meet dihapus.');
+        muatMurid();
+      }).catch(function () {
+        b.disabled = false;
+        note('Koneksi bermasalah. Silakan coba lagi.', true);
+      });
+    });
   }
   function muatMurid() {
     sb.rpc('murid_saya').then(function (r) {
@@ -98,6 +129,7 @@
     $('pbPaket').hidden = isPengajar;
     if (isPengajar) {
       $('pengajarNama').textContent = namaPengajar;
+      pasangMeetPengajar();
       muatMurid();
       pasangJadwalEvents();
       pasangPermintaanEvents();
@@ -460,10 +492,12 @@
         '<label>Gelombang<select data-gelombang="' + p.id + '">' + opsi + '</select></label>' +
         '<label>Link grup<input type="url" data-linkgrup="' + p.id + '" placeholder="https://chat.whatsapp.com/..." value="' + esc(p.link_grup || '') + '"></label>' +
         '<button type="button" data-jadwal="' + p.id + '">Simpan jadwal</button></div>' : '';
+      var meetAdmin = p.status === 'diterima' ? '<div class="pd-jadwal pd-meet"><label>Link Google Meet<input type="url" data-meet="' + esc(p.email) + '" placeholder="https://meet.google.com/..."></label>' +
+        '<button type="button" data-simpan-meet="' + esc(p.email) + '">Simpan link Meet</button></div>' : '';
       return '<div class="pd-item"><b>' + esc(p.nama) + '</b>' +
         '<small>' + esc(LABEL_STATUS[p.status] || p.status) + '</small>' +
         '<div class="pd-detail">' + baris + '</div>' + ringkas +
-        '<div class="pd-aksi">' + aksi + '</div>' + jadwal +
+        '<div class="pd-aksi">' + aksi + '</div>' + jadwal + meetAdmin +
         (p.status === 'diterima' ? '<div class="cocok" data-cocok="' + p.id + '"><small>Mencari ustadz yang cocok…</small></div>' +
           '<div class="cocok" data-terdekat="' + p.id + '"></div>' : '') +
         '</div>';
@@ -618,6 +652,22 @@
         sb.rpc('ubah_status_pendaftaran', { p_id: Number(t.dataset.terima), p_status: 'diterima' }).then(function (r) {
           if (r.error) { note('Pembayaran belum bisa dikonfirmasi. Coba lagi.', true); return; }
           note('Pembayaran dikonfirmasi.');
+          muat();
+        });
+      }
+      if (t.dataset.simpanMeet !== undefined && sb) {
+        var emailMeet = t.dataset.simpanMeet;
+        var inpMeet = null, semuaMeet = box.querySelectorAll('input[data-meet]');
+        for (var im = 0; im < semuaMeet.length; im++) { if (semuaMeet[im].getAttribute('data-meet') === emailMeet) inpMeet = semuaMeet[im]; }
+        var linkMeet = inpMeet ? (inpMeet.value || '').trim() : '';
+        if (linkMeet && !LINK_MEET_RE.test(linkMeet)) {
+          note('Link harus berupa tautan Google Meet, contoh: https://meet.google.com/abc-defg-hij', true);
+          return;
+        }
+        sb.rpc('atur_link_meet', { p_peserta_email: emailMeet, p_link: linkMeet || null }).then(function (r) {
+          if (r.error) { note(r.error.message || 'Link belum tersimpan. Coba lagi.', true); return; }
+          note(linkMeet ? 'Link Google Meet tersimpan.' : 'Link Google Meet dihapus.');
+          if (inpMeet) inpMeet.value = '';
           muat();
         });
       }
@@ -794,10 +844,14 @@
       if (adaSesi(hari) && now < selesaiHari) {
         var sedang = now >= sesiHari;
         var bisaMasuk = now >= new Date(sesiHari.getTime() - 5 * 60000) && now < selesaiHari;
-        var aksi = '<button type="button" class="nj-masuk" id="njMasuk"' + (bisaMasuk ? '' : ' disabled') + '>' + IKON_PLAY + 'Masuk Live</button>';
+        var linkMeet = d.link_meet || '';
+        var aksi = bisaMasuk && linkMeet
+          ? '<a class="nj-masuk" id="njMasuk" href="' + esc(linkMeet) + '" target="_blank" rel="noopener">' + IKON_PLAY + 'Masuk Live</a>'
+          : '<button type="button" class="nj-masuk" id="njMasuk" disabled>' + IKON_PLAY + 'Masuk Live</button>';
+        var catatanMeet = linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>';
         top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz',
           sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
-          sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, '');
+          sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, catatanMeet);
       } else if (mulai && mulai > now) {
         top = kartuNj('Mulai', 'nj-hari', 'Sesi Pertama', 'Mulai dalam', next ? formatSisa(next - now) : '–', '',
           '<p class="nj-catatan">' + esc(fmtTgl(next || mulai)) + ' · Pukul ' + esc(d.jam) + ' WIB</p>');
