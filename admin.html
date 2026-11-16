@@ -130,6 +130,12 @@
   .adm-murid-kartu-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow-wrap: anywhere; }
   .adm-murid-kartu-baris { display: flex; justify-content: space-between; gap: 12px; color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
   .adm-murid-kartu-baris span:last-child { color: var(--adm-ink, #1D1D1F); text-align: right; min-width: 0; overflow-wrap: anywhere; }
+  .adm-murid-dua { min-width: 0; }
+  @media (min-width: 900px) {
+    .adm-murid-dua { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 16px; align-items: start; }
+    .adm-murid-dua > .adm-detail { position: sticky; top: 16px; }
+    .adm-murid-dua > .adm-detail[hidden] { display: none !important; }
+  }
   .adm-murid-tabel-wrap { display: none; }
   .adm-detail {
     background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
@@ -452,6 +458,7 @@
           </label>
         </div>
         <div class="adm-murid-kartu" id="muridKartu" aria-label="Daftar murid"></div>
+        <div class="adm-murid-dua">
         <div class="adm-murid-tabel-wrap">
           <table class="adm-murid-tabel">
             <thead>
@@ -477,6 +484,7 @@
           <dl class="adm-detail-daftar" id="detailDaftar"></dl>
           <div class="adm-detail-aksi" id="detailAksi"></div>
         </aside>
+        </div>
       </div>
     </section>
     <section class="adm-view" data-view="pengajar" hidden>
