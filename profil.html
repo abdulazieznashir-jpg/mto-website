@@ -456,6 +456,8 @@
   .sy-paket .pk-edit svg { flex: 0 0 auto; }
   .sy-paket .pk-edit-garis { width: 1px; height: 18px; background: #D8D8DC; flex: 0 0 auto; }
   .sy-paket .pk-jatah-label { font-size: 14px; font-weight: 500; color: #6E6E73; }
+  .sy-paket .pk-catatan { margin: 0; font-size: 13px; color: #6E6E73; line-height: 1.5; }
+  .sy-paket .pk-catatan[hidden] { display: none; }
   .sy-paket .pk-jatah { font-style: normal; font-size: 13px; font-weight: 600; background: #FBF0D6; color: #8A6A1F; border-radius: 999px; padding: 3px 10px; }
   .sy-paket .nj-wrap { margin: 14px 0 0; }
   .sy-paket .nj-judul { display: none; }
@@ -786,11 +788,11 @@
 
     <div class="pj-blok">
       <b class="pj-judul">Jadwal Kosong</b>
-      <p class="mr-sub">Pilih salah satu paket: Senin–Jumat atau Sabtu–Ahad. Paket selalu penuh (Senin sampai Jumat, atau Sabtu dan Ahad sekaligus). Tentukan waktu mulai dan waktu berakhir (per 10 menit), lalu tekan Tambahkan. Setiap 10 menit di dalam rentang itu menjadi jam kosong. Rentang yang bertabrakan dengan jadwal yang sudah ada tidak bisa disimpan.</p>
+      <p class="mr-sub">Pilih salah satu paket: Weekdays atau Weekend. Paket selalu penuh (Senin sampai Jumat, atau Sabtu dan Ahad sekaligus). Tentukan waktu mulai dan waktu berakhir (per 10 menit), lalu tekan Tambahkan. Setiap 10 menit di dalam rentang itu menjadi jam kosong. Rentang yang bertabrakan dengan jadwal yang sudah ada tidak bisa disimpan.</p>
       <div class="pj-form">
         <select id="jPaket" aria-label="Paket hari">
-          <option value="weekday">Senin–Jumat</option>
-          <option value="weekend">Sabtu–Ahad</option>
+          <option value="weekday">Weekdays</option>
+          <option value="weekend">Weekend</option>
         </select>
         <label class="pj-waktu">Mulai<select id="jMulai" aria-label="Waktu mulai"></select></label>
         <label class="pj-waktu">Berakhir<select id="jBerakhir" aria-label="Waktu berakhir"></select></label>
@@ -819,6 +821,7 @@
         <b id="pkJadwalJam"></b>
       </div>
       <button type="button" class="pk-edit" id="pkEditWaktu"></button>
+      <p class="pk-catatan" id="pkJadwalCatatan" hidden></p>
     </div>
     <section class="nj-wrap" id="notifJadwal" hidden>
       <p class="nj-judul">Notifikasi Jadwal &amp; Libur</p>
@@ -862,7 +865,7 @@
     </div>
     <div id="jmIsi"></div>
     <form id="jmForm" class="jm-form" hidden>
-      <label>Paket hari<select id="jmPaket"><option value="weekday">Senin–Jumat</option><option value="weekend">Sabtu–Ahad</option></select></label>
+      <label>Paket hari<select id="jmPaket"><option value="weekday">Weekdays</option><option value="weekend">Weekend</option></select></label>
       <label>Jam mulai<select id="jmJam" aria-label="Jam mulai"></select></label>
       <div class="jm-tombol">
         <button type="button" class="pf-btn" id="jmBatal">Batal</button>

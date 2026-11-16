@@ -175,7 +175,7 @@
     { nama: 'Sore', dari: '15:00', sampai: '17:50' },
     { nama: 'Malam', dari: '18:00', sampai: '23:50' }
   ];
-  var PAKET_NAMA = { weekday: 'Senin–Jumat', weekend: 'Sabtu–Ahad' };
+  var PAKET_NAMA = { weekday: 'Weekdays', weekend: 'Weekend' };
   function daftarJam() {
     var out = [];
     for (var m = 4 * 60; m <= 23 * 60 + 50; m += 10) {
@@ -263,7 +263,7 @@
     $('permintaanList').innerHTML = list.map(function (x) {
       return '<div class="pm-item"><b>' + esc(x.nama) + '</b>' +
         '<small>' + esc(x.kelas || '-') + ' · ' + esc(String(x.durasi || '-')) + ' bulan · +' + esc(x.wa || '') + '</small>' +
-        '<small>' + (x.hari_diminta === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat') + ', pukul ' + esc(String(x.jam_diminta || '').slice(0, 5)) + ' WIB</small>' +
+        '<small>' + (x.hari_diminta === 'weekend' ? 'Weekend' : 'Weekdays') + ', pukul ' + esc(String(x.jam_diminta || '').slice(0, 5)) + ' WIB</small>' +
         '<div class="pm-aksi"><button type="button" class="mr-btn" data-terima="' + x.id + '">Terima</button>' +
         '<button type="button" class="pm-tolak" data-tolak="' + x.id + '">Tolak</button></div></div>';
     }).join('');
@@ -432,7 +432,7 @@
 
   var daftarAdmin = [];
   var gelombangList = [];
-  function hariLabel(h) { return h === 'weekday' ? 'Senin–Jumat' : h === 'weekend' ? 'Sabtu–Ahad' : '-'; }
+  function hariLabel(h) { return h === 'weekday' ? 'Weekdays' : h === 'weekend' ? 'Weekend' : '-'; }
   function jamLabel(j) { return j ? String(j).slice(0, 5) + ' WIB' : '-'; }
   function namaGelombang(k) {
     var g = gelombangList.filter(function (x) { return x.kode === k; })[0];
@@ -520,7 +520,7 @@
         if (!slot) return;
         if (r.error) { slot.innerHTML = '<small>Ustadz belum bisa dicari.</small>'; return; }
         var daftar = r.data || [];
-        if (!daftar.length) { slot.innerHTML = '<small>Belum ada ustadz yang kosong untuk ' + (p.hari_diminta === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat') + ' pukul ' + esc(String(p.jam_diminta || '').slice(0, 5)) + ' WIB.</small>'; return; }
+        if (!daftar.length) { slot.innerHTML = '<small>Belum ada ustadz yang kosong untuk ' + (p.hari_diminta === 'weekend' ? 'Weekend' : 'Weekdays') + ' pukul ' + esc(String(p.jam_diminta || '').slice(0, 5)) + ' WIB.</small>'; return; }
         slot.innerHTML = '<small>Ustadz yang cocok:</small>' + daftar.map(function (u) {
           return '<div class="cocok-baris"><b>' + esc(u.nama) + '</b>' +
             '<button type="button" data-ajukan="' + p.id + '" data-ustadz="' + esc(u.email) + '">Ajukan ke ustadz</button></div>';
@@ -848,7 +848,9 @@
         var aksi = bisaMasuk && linkMeet
           ? '<a class="nj-masuk" id="njMasuk" href="' + esc(linkMeet) + '" target="_blank" rel="noopener">' + IKON_PLAY + 'Masuk Live</a>'
           : '<button type="button" class="nj-masuk" id="njMasuk" disabled>' + IKON_PLAY + 'Masuk Live</button>';
-        var catatanMeet = linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>';
+        var catatanMeet = !bisaMasuk && !sedang
+          ? '<p class="nj-catatan">Tombol Live aktif 5 menit sebelum sesi dimulai.</p>'
+          : (linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>');
         top = kartuNj('Hari Ini', 'nj-hari', 'Setoran Tahfidz',
           sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
           sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, catatanMeet);
@@ -959,7 +961,7 @@
       });
     });
   }
-  function labelHariJm(h) { return h === 'weekend' ? 'Sabtu–Ahad' : 'Senin–Jumat'; }
+  function labelHariJm(h) { return h === 'weekend' ? 'Weekend' : 'Weekdays'; }
   function isiJamMurid(pilih) {
     var sel = $('jmJam');
     if (!sel) return;
@@ -1033,7 +1035,12 @@
     var tombol = $('pkEditWaktu');
     tombol.disabled = !bisa;
     tombol.innerHTML = IKON_PENSIL + '<span>Edit Waktu</span><i class="pk-edit-garis" aria-hidden="true"></i>' +
-      '<span class="pk-jatah-label">Jatah:</span><em class="pk-jatah">' + (belum ? 'Kapan saja' : sisa + ' kali') + '</em>';
+      '<span class="pk-jatah-label">Jatah:</span><em class="pk-jatah">' + (belum ? 'Tidak terbatas' : sisa + ' kali') + '</em>';
+    var catatan = $('pkJadwalCatatan');
+    if (catatan) {
+      catatan.hidden = bisa;
+      catatan.textContent = 'Batas 3 kali perubahan setelah mulai belajar sudah habis.';
+    }
   }
   // Tanggal berakhir program (sama dengan perhitungan sisa hari)
   function sampaiProgram() {
@@ -1206,9 +1213,13 @@
     }
     var bisaGanti = !!pengampuNama && !gantiStatus && kondisi !== 'selesai';
     var tombolGanti = gantiStatus === 'menunggu' ? 'Diproses' : (gantiStatus === 'diproses' ? 'Pergantian diproses' : 'Ajukan Ganti Pengajar');
+    var alasanGanti = !pengampuNama ? 'Pengajar belum ditetapkan admin.'
+      : (gantiStatus ? 'Permintaan pergantian sedang diproses admin.'
+      : (kondisi === 'selesai' ? 'Program sudah selesai.' : ''));
     kaki.innerHTML = '<div class="pk-tutor"><span class="pk-tutor-ikon" aria-hidden="true">' + IKON_ORANG + '</span>' +
       '<span class="pk-pengajar">' + esc(pengampuNama || 'Belum ada pengajar') + '</span></div>' +
-      '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + tombolGanti + '</button>';
+      '<button type="button" class="pk-ganti" id="pkGanti"' + (bisaGanti ? '' : ' disabled') + '>' + tombolGanti + '</button>' +
+      (!bisaGanti && alasanGanti ? '<p class="pk-catatan">' + esc(alasanGanti) + '</p>' : '');
     renderGrup(kondisi === 'belum');
     renderGaransi();
   }
