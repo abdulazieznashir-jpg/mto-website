@@ -850,14 +850,11 @@
         var bisaMasuk = now >= new Date(sesiHari.getTime() - 5 * 60000) && now < selesaiHari;
         var linkMeet = d.link_meet || '';
         var aksi = bisaMasuk && linkMeet
-          ? '<a class="nj-masuk" id="njMasuk" href="' + esc(linkMeet) + '" target="_blank" rel="noopener">' + IKON_PLAY + 'Masuk Live</a>'
-          : '<button type="button" class="nj-masuk" id="njMasuk" disabled>' + IKON_PLAY + 'Masuk Live</button>';
-        var catatanMeet = !bisaMasuk && !sedang
-          ? '<p class="nj-catatan">Tombol Masuk Live aktif 5 menit sebelum sesi dimulai.</p>'
-          : (linkMeet ? '' : '<p class="nj-catatan">Link Google Meet belum diisi pengajar. Tombol aktif setelah link tersedia.</p>');
+          ? '<a class="nj-masuk" id="njMasuk" href="' + esc(linkMeet) + '" target="_blank" rel="noopener">' + IKON_PLAY + 'Live</a>'
+          : '<button type="button" class="nj-masuk" id="njMasuk" disabled>' + IKON_PLAY + 'Live</button>';
         top = kartuNj('Hari Ini', 'nj-hari', '',
           sedang ? 'Sesi berakhir dalam' : 'Mulai dalam',
-          sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, catatanMeet);
+          sedang ? formatSisa(selesaiHari - now) : formatSisa(sesiHari - now), aksi, '');
       } else if (mulai && mulai > now) {
         top = kartuNj('Mulai', 'nj-hari', 'Sesi Pertama', 'Mulai dalam', next ? formatSisa(next - now) : '–', '',
           '<p class="nj-catatan">' + esc(fmtTgl(next || mulai)) + ' · ' + esc(jamTitik) + ' WIB</p>');
