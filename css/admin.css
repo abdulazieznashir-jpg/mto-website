@@ -78,3 +78,4 @@
 .adm-head .adm-tabs { margin-top: 16px; }
 .adm-profil .adm-tabs { margin-bottom: 10px; }
 .adm-panel[hidden] { display: none; }
+.adm-profil .pd-aksi { display: flex; }

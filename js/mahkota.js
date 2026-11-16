@@ -341,6 +341,8 @@
       bukaFilterGrup();
       bukaProfilTab();
       muatRingkasanAdmin();
+      bukaJedaBtn();
+      muatJadwalGelombang();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) tampilAdmin(r.data || []);
@@ -487,7 +489,8 @@
           baris('Durasi', p.durasi ? p.durasi + ' bulan' : 'Belum diisi') +
           baris('Gelombang', p.gelombang ? namaGelombang(p.gelombang) : 'Belum dipilih') +
           baris('Mulai halaqah', p.tanggal_halaqah ? tglLahir(p.tanggal_halaqah) : 'Belum diatur') +
-          baris('WhatsApp', '+' + p.wa),
+          baris('WhatsApp', '+' + p.wa) +
+          '<div class="pd-aksi" style="margin-top:10px"><button type="button" class="adm-btn' + (p.jeda_sejak ? ' ghost' : '') + '" data-jeda-id="' + p.id + '" data-jeda-nilai="' + (p.jeda_sejak ? '0' : '1') + '">' + (p.jeda_sejak ? 'Aktifkan lagi (batal jeda)' : 'Tandai jeda') + '</button></div>',
         jadwal:
           baris('Pengampu', p.pengampu_nama || 'Belum ditentukan') +
           baris('Hari', p.hari_diminta ? hariLabel(p.hari_diminta) : '-') +
@@ -622,7 +625,8 @@
   function filterGrupAdmin(list) {
     var q = adminCari.trim().toLowerCase();
     return list.filter(function (p) {
-      if (adminStatus === 'jeda' || adminStatus === 'selesai') return false; // data belum tersedia
+      var cocokStatus = adminStatus === 'semua' || adminStatus === 'aktif' ? !p.jeda_sejak : adminStatus === 'jeda' ? !!p.jeda_sejak : false;
+      if (!cocokStatus) return false;
       return !q || String(p.nama || '').toLowerCase().indexOf(q) >= 0;
     });
   }
@@ -633,9 +637,39 @@
     if (kosong) {
       var hasil = filterGrupAdmin(basis).length;
       kosong.hidden = hasil > 0;
-      kosong.textContent = adminStatus === 'jeda' ? 'Belum ada murid berstatus Jeda.' :
+      kosong.textContent = adminStatus === 'jeda' ? 'Belum ada murid yang dijeda.' :
         adminStatus === 'selesai' ? 'Belum ada murid yang selesai periode.' : 'Tidak ada murid yang cocok.';
     }
+  }
+  function bukaJedaBtn() {
+    var el = $('grupAdminList');
+    if (!el || el.dataset.jedaSiap) return;
+    el.dataset.jedaSiap = '1';
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-jeda-id]');
+      if (!b || !sb) return;
+      var jeda = b.getAttribute('data-jeda-nilai') === '1';
+      if (!window.confirm(jeda ? 'Tandai murid ini sebagai jeda?' : 'Batalkan jeda murid ini?')) return;
+      b.disabled = true;
+      sb.rpc('admin_set_jeda', { p_id: Number(b.getAttribute('data-jeda-id')), p_jeda: jeda }).then(function (r) {
+        if (r.error) { b.disabled = false; window.alert('Gagal: ' + r.error.message); return; }
+        tampilAdminUlang();
+      });
+    });
+  }
+  function tampilAdminUlang() {
+    sb.rpc('pendaftaran_admin').then(function (r) { if (!r.error) tampilAdmin(r.data || []); });
+  }
+  function muatJadwalGelombang() {
+    var el = $('jadwalGelombangList');
+    if (!el || !sb) return;
+    sb.rpc('admin_jadwal_gelombang').then(function (r) {
+      if (r.error || !r.data) return;
+      el.innerHTML = '<table class="adm-table"><thead><tr><th>Periode</th><th>Gelombang</th><th>Mulai</th><th>Berakhir</th></tr></thead><tbody>' +
+        r.data.map(function (g) {
+          return '<tr><td>' + esc(g.periode) + '</td><td>' + (g.kode === 'gelombang_1' ? 'Gelombang 1' : 'Gelombang 2') + '</td><td>' + esc(tglLahir(g.mulai)) + '</td><td>' + esc(tglLahir(g.berakhir)) + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    });
   }
   function bukaProfilTab() {
     var el = $('grupAdminList');
