@@ -1,11 +1,18 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 6 dari 300
+Total langkah: 7 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 45%
+- Beranda: 85% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
+- Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
+- Peserta: 0% (tabel lama belum diubah)
+- Detail Halaqoh dan Detail Peserta: 0%
+- Navigasi dan menu: 100%
 
 ## Selesai
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
+- [x] Langkah 7: halaman Halaqoh berbentuk kartu dengan judul, subjudul, filter, dan inisial
 - [x] Langkah 6: ikon di kartu Beranda dan kartu Halaqoh sesuai referensi terakhir
 - [x] Langkah 5: cek ID elemen. Semua 55 ID yang dipakai JavaScript masih ada, tidak ada fungsi yang putus.
 - [x] Langkah 4: kartu Beranda disusun ulang (3 kartu + kartu lebar Halaqoh). Subjudul ganda dihapus.
@@ -24,6 +31,7 @@ Total langkah: 6 dari 300
 - Halaqoh = halaman Pengajar (kartu referensi bertuliskan "Halaqoh (Pengajar)")
 - Notifikasi = panel lonceng yang sudah ada
 - Kartu Pendaftar Baru dan Belum Bayar tampil "—" sampai ada sumber data
+- Filter Ikhwan/Akhwat di Halaqoh belum ditambahkan karena belum ada data gender pengajar. Saya tidak menebak dari nama.
 
 ## Menunggu keputusan pemilik
 - Kartu "Pendaftar Baru" dan "Belum Bayar" belum punya data. Ringkasan database belum punya angka ini. Perlu fungsi SQL baru (di luar izin saat ini) atau isi placeholder dulu?
