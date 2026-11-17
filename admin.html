@@ -11,6 +11,40 @@
 <style>
 .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 1100; background: #8C6526; color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 600; }
 .skip-link:focus { left: 8px; }
+
+.tr-ringkas{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #ECE6DC;border-radius:16px;padding:16px 20px;margin:16px 0}
+.tr-ringkas-kiri{display:flex;gap:12px;align-items:center}
+.tr-ringkas-ikon{width:44px;height:44px;border-radius:12px;background:#F5EEDF;display:grid;place-items:center;color:#8C6526;font-size:20px;flex:none}
+.tr-ringkas-kiri b{display:block}
+.tr-ringkas-kiri span{color:#6b6b6b;font-size:14px}
+.tr-pill{background:#F3EFE8;border-radius:999px;padding:6px 14px;font-size:14px;color:#555}
+.tr-pill-emas{background:#F5EEDF;color:#8C6526}
+.tr-tab{display:flex;gap:4px;background:#F3EFE8;border-radius:999px;padding:4px;overflow-x:auto;margin:16px 0;max-width:100%}
+.tr-tab button{border:0;background:transparent;border-radius:999px;padding:9px 16px;font:inherit;font-size:14px;color:#555;white-space:nowrap;cursor:pointer}
+.tr-tab button[aria-selected="true"]{background:#8C6526;color:#fff}
+.tr-tab button:disabled{opacity:.6;cursor:not-allowed}
+.tr-tab em,.tr-aksi-tombol em{font-style:normal;font-size:11px;margin-left:4px}
+.tr-kartu{background:#fff;border:1px solid #ECE6DC;border-radius:16px;padding:20px}
+.tr-kartu-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tr-kartu-head h2{font-size:18px;margin:0}
+.tr-catatan{color:#6b6b6b;font-size:13px;margin:6px 0 4px}
+.tr-usulan{display:grid;gap:10px;padding:14px 0;border-top:1px solid #ECE6DC}
+.tr-usulan-orang{display:flex;gap:10px;align-items:center}
+.tr-avatar{width:36px;height:36px;border-radius:50%;background:#F5EEDF;color:#8C6526;display:grid;place-items:center;font-weight:700;flex:none}
+.tr-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:#EEF0F3;color:#555;margin:4px 4px 0 0}
+.tr-tag-biru{background:#E3EEFF;color:#1F4E9C}
+.tr-tag-emas{background:#F5EEDF;color:#8C6526}
+.tr-tag-merah{background:#FDE7DF;color:#B43C12}
+.tr-kutipan{margin:0;padding:10px 12px;background:#FAF8F4;border-radius:10px;font-size:14px;color:#333}
+.tr-sumber{font-size:12px;color:#777}
+.tr-aksi p{margin:0 0 8px;font-weight:600;font-size:14px}
+.tr-aksi-tombol{display:flex;gap:8px;flex-wrap:wrap}
+.tr-aksi-tombol button{border:1px solid #D8CBB4;background:#fff;border-radius:10px;padding:9px 14px;font:inherit;font-size:14px;color:#8C6526;cursor:not-allowed;opacity:.7}
+.tr-aksi-tombol button.utama{background:#1E6B3A;border-color:#1E6B3A;color:#fff}
+@media (min-width:900px){
+  .tr-usulan{grid-template-columns:minmax(200px,1.1fr) minmax(220px,1.5fr) minmax(170px,1fr) minmax(220px,1.2fr);align-items:center;gap:16px}
+  .tr-tab{width:max-content}
+}
   /* Kerangka halaman admin. Konten belum dibuat (langkah 3 dari 29).
    Satu titik pemisah untuk seluruh halaman: 900px.
    - Atas 900px: sidebar desktop + top bar lengkap; navigasi bawah disembunyikan.
@@ -975,12 +1009,81 @@
       </div>
     </section>
     <section class="adm-view" data-view="transkrip" hidden>
-      <div class="adm-murid-wrap nt-wrap">
+      <div class="adm-murid-wrap nt-wrap tr-wrap">
         <h1 class="adm-dash-judul">Transkrip</h1>
-        <p class="adm-dash-sub">Kelengkapan transkrip chat per admin. Usulan dari transkrip tetap menunggu persetujuan Anda.</p>
-        <div class="nt-bar"><span id="trRingkas">Memuat…</span></div>
-        <h2 class="adm-dash-h2">Kelengkapan per admin</h2>
+        <p class="adm-dash-sub">Kelola transkrip chat, lihat hasil bacaan, dan tinjau usulan.</p>
+
+        <div class="tr-ringkas">
+          <div class="tr-ringkas-kiri">
+            <span class="tr-ringkas-ikon" aria-hidden="true">▤</span>
+            <div><b>Transkrip Hari Ini</b><span>Kelengkapan keseluruhan</span></div>
+          </div>
+          <span class="tr-pill" id="trRingkas">Memuat…</span>
+        </div>
         <div id="trAdmin"></div>
+
+        <div class="tr-tab" role="tablist" aria-label="Bagian transkrip">
+          <button type="button" role="tab" aria-selected="true">Hasil Bacaan (Usulan)</button>
+          <button type="button" role="tab" aria-selected="false" disabled>Daftar Transkrip<em>segera</em></button>
+          <button type="button" role="tab" aria-selected="false" disabled>Riwayat Keputusan<em>segera</em></button>
+        </div>
+
+        <section class="tr-kartu" aria-labelledby="trJudulUsulan">
+          <div class="tr-kartu-head">
+            <h2 id="trJudulUsulan">Hasil Bacaan (Usulan)</h2>
+            <span class="tr-pill tr-pill-emas">Contoh</span>
+          </div>
+          <p class="tr-catatan">Tampilan contoh. Usulan asli muncul setelah transkrip dibaca. Tombol aksi dinonaktifkan sampai alurnya disetujui.</p>
+
+          <article class="tr-usulan">
+            <div class="tr-usulan-orang">
+              <span class="tr-avatar" aria-hidden="true">A</span>
+              <div><b>Peserta A</b><br><span class="tr-tag tr-tag-emas">Daftar ulang</span><span class="tr-tag">Contoh</span></div>
+            </div>
+            <blockquote class="tr-kutipan">Saya berminat untuk lanjut ke periode berikutnya ya, Ustadzah.</blockquote>
+            <div class="tr-sumber">17 Nov 2026, 09:14<br>Dari: WA_KelasA_17Nov.txt</div>
+            <div class="tr-aksi">
+              <p>Pindahkan peserta ke P78?</p>
+              <div class="tr-aksi-tombol">
+                <button type="button" class="utama" disabled>Ya, pindahkan<em>segera</em></button>
+                <button type="button" disabled>Belum</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="tr-usulan">
+            <div class="tr-usulan-orang">
+              <span class="tr-avatar" aria-hidden="true">B</span>
+              <div><b>Peserta B</b><br><span class="tr-tag tr-tag-biru">Daftar baru</span><span class="tr-tag tr-tag-emas">Mungkin duplikat</span></div>
+            </div>
+            <blockquote class="tr-kutipan">Assalamu’alaikum, saya ingin daftar program tahfidz di MTO.</blockquote>
+            <div class="tr-sumber">17 Nov 2026, 10:27<br>Dari: WA_KelasB_17Nov.txt</div>
+            <div class="tr-aksi">
+              <p>Nomor WA ini sudah pernah daftar?</p>
+              <div class="tr-aksi-tombol">
+                <button type="button" class="utama" disabled>Daftarkan baru<em>segera</em></button>
+                <button type="button" disabled>Sudah ada</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="tr-usulan">
+            <div class="tr-usulan-orang">
+              <span class="tr-avatar" aria-hidden="true">C</span>
+              <div><b>Peserta C</b><br><span class="tr-tag tr-tag-merah">Kritis</span><span class="tr-tag">Contoh</span></div>
+            </div>
+            <blockquote class="tr-kutipan">Mohon maaf, jadwal halaqohnya sering berubah, jadi agak bingung.</blockquote>
+            <div class="tr-sumber">17 Nov 2026, 11:03<br>Dari: WA_KelasC_17Nov.txt</div>
+            <div class="tr-aksi">
+              <p>Sudah ditindaklanjuti?</p>
+              <div class="tr-aksi-tombol">
+                <button type="button" class="utama" disabled>Sudah<em>segera</em></button>
+                <button type="button" disabled>Simpan catatan</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
         <h2 class="adm-dash-h2">Chat masuk hari ini</h2>
         <p class="nt-kosong" id="trChatKosong">Belum ada screenshot yang diunggah. Menunggu data.</p>
       </div>
