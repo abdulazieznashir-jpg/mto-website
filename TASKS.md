@@ -115,3 +115,5 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 96): cek meta viewport di setiap halaman HTML. Semua halaman punya. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 97): cek skrip dan stylesheet eksternal tanpa integrity. Hanya skrip Supabase di admin.html yang sudah tercatat sebagai A21. Font Google dimuat dinamis, jadi SRI tidak berlaku. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 98): verifikasi setiap <a target="_blank"> punya rel noopener, dicek per tag lintas baris. Semua punya. Tidak ada perubahan.
+- [A] A23: piksel Facebook masih memakai placeholder 'PIXEL_ID' (facebook.com/tr?id=PIXEL_ID) di sekitar 10 halaman (blog, deals, index, kebijakan-privasi, paket-belajar, program-afiliasi, syarat-ketentuan, tentang, testimoni, dan lainnya). Perlu ID piksel asli dari pemilik. Tidak diubah karena ID tidak boleh dikarang. Tanpa ID asli, pelacakan Meta tidak berfungsi. (Temuan putaran 99)
+- 18 Nov 2026 (putaran 99): cek alt kosong dan tabindex positif. Alt kosong pada piksel Facebook wajar. Tabindex positif tidak ada. Temuan baru: piksel Facebook masih berisi placeholder PIXEL_ID, dicatat sebagai A23 [A].
