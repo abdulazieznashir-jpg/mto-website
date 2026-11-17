@@ -71,7 +71,8 @@
   }
   .adm-dash-judul { margin: 0; font-size: var(--adm-xl, 26px); line-height: 1.2; }
   .adm-dash-sub { margin: 0; color: var(--adm-muted, #6E6E73); }
-  .adm-dash-kartu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .adm-dash-kartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .adm-dash-stat-lebar { display: block; margin-top: 12px; text-decoration: none; color: inherit; }
   .adm-dash-stat {
     background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
     border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0;
@@ -91,7 +92,7 @@
   .adm-dash-catatan { color: var(--adm-danger, #B3261E); margin: 8px 0 0; }
   @media (min-width: 900px) {
     .adm-dash-wrap { padding-inline: 32px; }
-    .adm-dash-kartu { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .adm-dash-kartu { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
   .adm-bayar { margin: 0 0 16px; background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE); border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0; }
@@ -408,13 +409,12 @@
       <div class="adm-dash-wrap">
         <h1 class="adm-dash-judul">Beranda</h1>
         <p class="adm-dash-sub">Ringkasan pendaftaran dan halaqoh</p>
-        <p class="adm-dash-sub">Kelola pembelajaran, peserta, dan program Tahfizh dengan lebih mudah.</p>
         <div class="adm-dash-kartu" id="dashKartu">
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Murid Diterima</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Pengajar Aktif</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="murid_tanpa_gelombang">—</span><span class="adm-dash-label">Belum Ada Gelombang</span></div>
-          <div class="adm-dash-stat adm-dash-stat-soroti"><span class="adm-dash-angka" data-stat="murid_jeda">—</span><span class="adm-dash-label">Murid Jeda</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="pendaftar_baru">—</span><span class="adm-dash-label">Pendaftar Baru</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="belum_bayar">—</span><span class="adm-dash-label">Belum Bayar</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Peserta Aktif</span></div>
         </div>
+        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></a>
         <div class="adm-dash-tugas" aria-label="Tugas hari ini">
           <h2 class="adm-dash-h2">Tugas Hari Ini</h2>
           <ul class="adm-dash-daftar">
