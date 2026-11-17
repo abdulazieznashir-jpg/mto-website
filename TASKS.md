@@ -133,3 +133,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 113): cek meta viewport yang memblokir zoom (user-scalable=no atau maximum-scale=1). Tidak ada. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 114): cek tautan eksternal memakai https dan tautan target=_blank punya rel. Semua https, tidak ada yang kurang. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 115): cek <a> dan <button> kosong. Satu tombol kosong: pkEditWaktu di profil.html. Isinya diisi js/mahkota.js baris 1271 dan 1290 (innerHTML dengan ikon, teks 'Edit Waktu', dan jatah). Ini disengaja. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 116): cek canonical per halaman. Halaman tanpa canonical: admin, pembayaran, profil (ketiganya noindex, jadi wajar), dan login (sudah tercatat sebagai A13). Tidak ada perubahan.
