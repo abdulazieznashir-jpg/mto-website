@@ -6,6 +6,7 @@
 
 :root {
   --primary: #BE966A;
+  --primary-text: #8C6526;
   --primary-dark: #8B6E4E;
   --primary-darker: #6B5238;
   --primary-light: #F5EDE3;
@@ -44,7 +45,7 @@ body {
 
 img, svg { max-width: 100%; display: block; }
 
-a { color: var(--primary); text-decoration: none; transition: opacity 0.2s; }
+a { color: var(--primary-text); text-decoration: none; transition: opacity 0.2s; }
 a:hover { opacity: 0.7; }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -54,7 +55,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* TYPOGRAPHY */
 .eyebrow {
   font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
-  text-transform: uppercase; color: var(--primary); margin-bottom: 12px;
+  text-transform: uppercase; color: var(--primary-text); margin-bottom: 12px;
 }
 
 h1, .h1 {
@@ -84,11 +85,11 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap; min-height: 48px;
 }
-.btn-primary { background: var(--primary); color: white; }
+.btn-primary { background: var(--primary-text); color: white; }
 .btn-primary:hover { background: var(--primary-dark); opacity: 1; transform: translateY(-1px); }
-.btn-secondary { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
-.btn-secondary:hover { background: var(--primary); color: white; opacity: 1; }
-.btn-ghost { color: var(--primary); padding: 8px 0; }
+.btn-secondary { background: transparent; color: var(--primary-text); border: 1.5px solid var(--primary); }
+.btn-secondary:hover { background: var(--primary-text); color: white; opacity: 1; }
+.btn-ghost { color: var(--primary-text); padding: 8px 0; }
 .btn-ghost::after { content: '›'; margin-left: 4px; font-size: 20px; line-height: 1; transition: transform 0.25s; }
 .btn-ghost:hover::after { transform: translateX(4px); }
 .btn-lg { padding: 16px 36px; font-size: 17px; min-height: 54px; }
@@ -117,7 +118,7 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 .nav-menu { display: flex; gap: 32px; list-style: none; }
 .nav-menu a { color: var(--text-primary); font-size: 14px; font-weight: 400; opacity: 0.85; }
 .nav-menu a:hover { opacity: 1; }
-.nav-menu a.active { color: var(--primary); opacity: 1; font-weight: 500; }
+.nav-menu a.active { color: var(--primary-text); opacity: 1; font-weight: 500; }
 .nav-cta { display: flex; gap: 12px; align-items: center; }
 .nav-cta .btn { padding: 8px 20px; min-height: 36px; font-size: 14px; }
 .nav-masuk { color: var(--text-primary); font-size: 14px; font-weight: 500; opacity: 0.85; padding: 8px 6px; }
@@ -307,7 +308,7 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
   text-transform: uppercase;
 }
 .pricing-tier {
-  font-size: 13px; font-weight: 600; color: var(--primary);
+  font-size: 13px; font-weight: 600; color: var(--primary-text);
   text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
 }
 .pricing-name {
@@ -357,7 +358,7 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
   text-align: left; font-size: 18px; font-weight: 500;
   color: var(--text-primary); letter-spacing: -0.01em; transition: color 0.2s;
 }
-.faq-question:hover { color: var(--primary); }
+.faq-question:hover { color: var(--primary-text); }
 .faq-icon { width: 24px; height: 24px; color: var(--primary); transition: transform 0.3s; flex-shrink: 0; }
 .faq-item.open .faq-icon { transform: rotate(45deg); }
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
