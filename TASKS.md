@@ -61,3 +61,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 47): cek select tanpa label. Empat dari lima select di admin/profil sudah dibungkus label; satu di index.html belum (diperbaiki sebagai C7).
 - 17 Nov 2026 (putaran 48): tidak ada tabindex positif dan tidak ada autofocus. Hasil kosong.
 - 17 Nov 2026 (putaran 49): panjang judul dan deskripsi meta. Dicatat sebagai A18 (teks pemasaran, keputusan pemilik).
+- 17 Nov 2026 (putaran 50): tag br sangat sedikit (profil 1, index 2), tidak ada br berurutan. Hasil kosong.
