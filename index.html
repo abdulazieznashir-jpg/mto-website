@@ -460,14 +460,14 @@
       Mahkota Tahfizh
     </a>
     <ul class="nav-menu">
-      <li><a href="tentang.html">Tentang</a></li>
+      <li><a href="tentang">Tentang</a></li>
       <li><a href="index.html#program">Program</a></li>
-      <li><a href="testimoni.html">Testimoni</a></li>
+      <li><a href="testimoni">Testimoni</a></li>
       <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="blog.html">Blog</a></li>
+      <li><a href="blog">Blog</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="login.html" class="nav-masuk" id="navMasuk">Masuk</a>
+      <a href="login" class="nav-masuk" id="navMasuk">Masuk</a>
       <a href="#daftar" class="btn btn-primary" data-daftar>Daftar Sekarang</a>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -480,12 +480,12 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <ul>
-    <li><a href="tentang.html">Tentang Kami</a></li>
+    <li><a href="tentang">Tentang Kami</a></li>
     <li><a href="index.html#program">Program</a></li>
-    <li><a href="testimoni.html">Testimoni</a></li>
+    <li><a href="testimoni">Testimoni</a></li>
     <li><a href="index.html#faq">FAQ</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="login.html" id="navMasukMobile">Masuk</a></li>
+    <li><a href="blog">Blog</a></li>
+    <li><a href="login" id="navMasukMobile">Masuk</a></li>
   </ul>
   <div class="mobile-menu-cta">
     <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
@@ -699,7 +699,7 @@
       </div>
     </div>
     <div style="text-align: center; margin-top: 32px;">
-      <a href="testimoni.html" class="btn-ghost testi-link">Lihat ratusan testimoni lainnya</a>
+      <a href="testimoni" class="btn-ghost testi-link">Lihat ratusan testimoni lainnya</a>
     </div>
   </div>
 </section>
@@ -914,8 +914,8 @@
       <div class="footer-col">
         <h5>Perusahaan</h5>
         <ul>
-          <li><a href="tentang.html">Tentang Kami</a></li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="tentang">Tentang Kami</a></li>
+          <li><a href="blog">Blog</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -923,8 +923,8 @@
         <ul>
           <li><a href="index.html#faq">FAQ</a></li>
           <li><a href="https://wa.me/6285727533000">Chat WhatsApp</a></li>
-          <li><a href="kebijakan-privasi.html">Kebijakan Privasi</a></li>
-          <li><a href="syarat-ketentuan.html">Syarat &amp; Ketentuan</a></li>
+          <li><a href="kebijakan-privasi">Kebijakan Privasi</a></li>
+          <li><a href="syarat-ketentuan">Syarat &amp; Ketentuan</a></li>
         </ul>
       </div>
     </div>
@@ -1714,7 +1714,7 @@
       simpanPendaftaran(function (err) {
         if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
         try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
-        window.location.href = 'pembayaran.html';
+        window.location.href = 'pembayaran';
       });
       return;
     }
@@ -1948,7 +1948,7 @@
   document.head.appendChild(s);
 })();
 </script>
-<div id="pendingBar" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:#1D1D1F;color:#fff;font:500 14px/1.4 Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.18)"><span id="pendingTeks"></span><a href="pembayaran.html" style="color:#fff;font-weight:600;text-decoration:none;white-space:nowrap">Lanjutkan</a></div>
+<div id="pendingBar" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:#1D1D1F;color:#fff;font:500 14px/1.4 Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.18)"><span id="pendingTeks"></span><a href="pembayaran" style="color:#fff;font-weight:600;text-decoration:none;white-space:nowrap">Lanjutkan</a></div>
 <script>
 (function () {
   var simpan = null;

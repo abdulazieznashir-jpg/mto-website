@@ -154,9 +154,9 @@
 
   /* ---------- Keluar ---------- */
   function keluar() {
-    if (!sb) { window.location.replace('login.html'); return; }
+    if (!sb) { window.location.replace('login'); return; }
     sb.auth.signOut().then(function () {
-      window.location.replace('login.html');
+      window.location.replace('login');
     });
   }
 
@@ -184,7 +184,7 @@
     s.onload = function () {
       sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       sb.auth.getSession().then(function (r) {
-        if (!r.data || !r.data.session) { window.location.replace('login.html'); return; }
+        if (!r.data || !r.data.session) { window.location.replace('login'); return; }
         user = r.data.session.user;
         render();
         muatKontak();
@@ -192,7 +192,7 @@
         if (window.MTO_AFILIASI) window.MTO_AFILIASI.init(sb, user);
       });
       sb.auth.onAuthStateChange(function (event) {
-        if (event === 'SIGNED_OUT') window.location.replace('login.html');
+        if (event === 'SIGNED_OUT') window.location.replace('login');
       });
     };
     s.onerror = function () { note('Tidak dapat memuat halaman. Periksa koneksi Anda.', true); };
