@@ -62,3 +62,5 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 48): tidak ada tabindex positif dan tidak ada autofocus. Hasil kosong.
 - 17 Nov 2026 (putaran 49): panjang judul dan deskripsi meta. Dicatat sebagai A18 (teks pemasaran, keputusan pemilik).
 - 17 Nov 2026 (putaran 50): tag br sangat sedikit (profil 1, index 2), tidak ada br berurutan. Hasil kosong.
+- [x] C8 Teks Arab 'القرآن نور' di label gambar tentang (index.html) diberi lang="ar" agar pembaca layar membacanya dengan benar. Hanya atribut
+- 17 Nov 2026 (putaran 51): cek teks Arab tanpa lang="ar". Satu ditemukan dan diperbaiki (C8).
