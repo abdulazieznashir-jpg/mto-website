@@ -56,3 +56,5 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 45): Open Graph hanya di index.html, tanpa og:image. Dicatat sebagai A17.
 - [x] C6 Input nomor WhatsApp di form pendaftaran (index.html) diberi autocomplete: nomor utama memakai tel, ulangi memakai off agar browser tidak mengisi nomor yang sama. Hanya atribut, tidak mengubah perilaku
 - 17 Nov 2026 (putaran 46): cek autocomplete pada input tel/email/password. Dua input WA di form pendaftaran belum punya atribut, sudah diperbaiki (C6). Sintaks skrip inline lolos.
+- [x] C7 Select jam sesi di index.html (jamSel) tidak punya nama aksesibel. Ditambahkan aria-label "Jam mulai sesi". Select lain di admin/profil sudah punya label atau teks sr-only
+- 17 Nov 2026 (putaran 47): cek select tanpa label. Empat dari lima select di admin/profil sudah dibungkus label; satu di index.html belum (diperbaiki sebagai C7).
