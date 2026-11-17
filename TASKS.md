@@ -93,3 +93,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 75): domain eksternal yang dirujuk. Domain utama mahkotatahfizh.com (12 kali) konsisten. Sumber lain: Google Fonts, Facebook, jsDelivr, schema.org. Hasil kosong. Catatan: penggunaan Google Fonts dan pixel Facebook sebaiknya tercermin di kebijakan privasi, perlu dicek pemilik (lihat A7).
 - 17 Nov 2026 (putaran 76): atribut lang="id" ada di setiap halaman, tidak ada hreflang. Situs berbahasa Indonesia tunggal, jadi hreflang tidak diperlukan. Hasil kosong.
 - 17 Nov 2026 (putaran 77): elemen teks kosong. Di admin hanya placeholder yang diisi JS. Di halaman publik hanya span dekoratif (titik indikator dan radio periode). Hasil kosong.
+- 17 Nov 2026 (putaran 78): target=_blank tanpa rel noopener. Tidak ada. Hasil kosong.
