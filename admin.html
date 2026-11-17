@@ -72,6 +72,27 @@
   .adm-dash-judul { margin: 0; font-size: var(--adm-xl, 26px); line-height: 1.2; }
   .adm-dash-sub { margin: 0; color: var(--adm-muted, #6E6E73); }
   .adm-dash-kartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .adm-bd-hero { display: flex; align-items: stretch; gap: 14px; background: #FFFBF4; border: 1px solid #F1E6D2; border-radius: 20px; padding: 16px; margin: 0 0 14px; }
+  .adm-bd-hero-kiri { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; padding-right: 14px; border-right: 1px solid #E4DED2; }
+  .adm-bd-hero-kanan { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .adm-bd-label { display: block; font-size: 13px; color: #4A4740; }
+  .adm-bd-besar { display: block; font-size: 40px; line-height: 1; font-weight: 800; color: #1D1D1F; }
+  .adm-bd-persen { display: block; font-size: 28px; line-height: 1; font-weight: 800; color: #1E7A3C; }
+  .adm-bd-bar { height: 8px; border-radius: 999px; background: #ECE7DE; overflow: hidden; }
+  .adm-bd-bar span { display: block; height: 100%; width: 0; background: #2FA33A; border-radius: 999px; }
+  .adm-bd-ikon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .adm-bd-ikon-emas { width: 48px; height: 48px; border-radius: 14px; background: #FBEBD0; color: #8A6A1F; }
+  .adm-bd-ikon-hijau { width: 36px; height: 36px; border-radius: 50%; background: #E3F4E8; color: #1E7A3C; }
+  .adm-bd-ikon-oranye { width: 36px; height: 36px; border-radius: 50%; background: #FDEBD8; color: #C2570C; }
+  .adm-bd-kartu { background: #FFFFFF; border: 1px solid #E4DED2; border-radius: 18px; padding: 4px 16px 8px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .adm-bd-judul { display: flex; align-items: center; gap: 10px; margin: 12px 0 6px; font-size: 17px; font-weight: 700; color: #1D1D1F; }
+  .adm-bd-judul svg { color: #8A6A1F; }
+  .adm-bd-baris { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #ECE7DE; color: inherit; text-decoration: none; }
+  .adm-bd-teks { flex: 1; min-width: 0; font-size: 15px; color: #1D1D1F; display: flex; flex-direction: column; }
+  .adm-bd-teks small { font-size: 13px; color: #4A4740; margin-top: 2px; }
+  .adm-bd-angka-hijau { font-size: 24px; font-weight: 800; color: #1E7A3C; }
+  .adm-bd-angka-oranye { font-size: 24px; font-weight: 800; color: #B45309; }
+  .adm-bd-panah { color: #6E6E73; font-size: 20px; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
   .adm-murid-tab-btn[aria-pressed="true"] { background: #b7893a; border-color: #b7893a; color: #fff; }
@@ -481,22 +502,48 @@
     <section class="adm-view" data-view="dashboard" hidden>
       <div class="adm-dash-wrap">
         <h1 class="adm-dash-judul">Beranda</h1>
-        <p class="adm-dash-sub">Ringkasan pendaftaran dan halaqoh</p>
-        <div class="adm-dash-kartu" id="dashKartu">
-          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#2f6fb0" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M19 8v6M16 11h6"/></svg></span><span class="adm-dash-angka" data-stat="pendaftar_baru">—</span><span class="adm-dash-label">Pendaftar Baru</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#b7791f" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><span class="adm-dash-angka" data-stat="belum_bayar">—</span><span class="adm-dash-label">Belum Bayar</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#2f8a4b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11l2 2 4-4"/></svg></span><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Peserta Aktif</span></div>
+        <p class="adm-dash-sub">Ringkasan peserta program tahfidz</p>
+        <div class="adm-bd-hero">
+          <div class="adm-bd-hero-kiri">
+            <span class="adm-bd-ikon adm-bd-ikon-emas" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18.5 14.8c1.6.9 2.6 2.8 3 5.2"/></svg></span>
+            <div><span class="adm-bd-label">Total Peserta</span><b class="adm-bd-besar" id="bdTotal">—</b></div>
+          </div>
+          <div class="adm-bd-hero-kanan">
+            <span class="adm-bd-label">Sudah masuk grup</span>
+            <b class="adm-bd-persen" id="bdPersen">—</b>
+            <div class="adm-bd-bar" role="progressbar" aria-label="Persentase sudah masuk grup" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="bdBar"></span></div>
+          </div>
         </div>
-        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-ikon" style="--ikon:#8a6d3b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></a>
-        <div class="adm-dash-tugas" aria-label="Tugas hari ini">
-          <h2 class="adm-dash-h2">Tugas Hari Ini</h2>
-          <ul class="adm-dash-daftar">
-            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="permintaan_keluar">—</span> permintaan keluar menunggu keputusan</a></li>
-            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="permintaan_ganti">—</span> permintaan ganti jadwal menunggu keputusan</a></li>
-            <li><a href="#permintaan" class="adm-dash-tautan"><span data-stat="usulan_jadwal">—</span> usulan jadwal menunggu keputusan</a></li>
-          </ul>
-          <p class="adm-dash-catatan" id="dashGagal" hidden>Ringkasan belum bisa dimuat. Muat ulang halaman.</p>
-        </div>
+        <section class="adm-bd-kartu" aria-labelledby="bdJudulGrup">
+          <h2 class="adm-bd-judul" id="bdJudulGrup"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18.5 14.8c1.6.9 2.6 2.8 3 5.2"/></svg> Masuk Grup</h2>
+          <a href="#murid" class="adm-bd-baris">
+            <span class="adm-bd-ikon adm-bd-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg></span>
+            <span class="adm-bd-teks">Sudah Masuk Grup</span>
+            <b class="adm-bd-angka-hijau" id="bdSudahGrup">—</b>
+            <span class="adm-bd-panah" aria-hidden="true">›</span>
+          </a>
+          <a href="#murid" class="adm-bd-baris">
+            <span class="adm-bd-ikon adm-bd-ikon-oranye" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></span>
+            <span class="adm-bd-teks">Belum Masuk Grup<small>Lihat murid &amp; masukkan ke grup</small></span>
+            <b class="adm-bd-angka-oranye" id="bdBelumGrup">—</b>
+            <span class="adm-bd-panah" aria-hidden="true">›</span>
+          </a>
+        </section>
+        <section class="adm-bd-kartu" aria-labelledby="bdJudulPengajar">
+          <h2 class="adm-bd-judul" id="bdJudulPengajar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg> Penempatan Pengajar</h2>
+          <a href="#pengajar" class="adm-bd-baris">
+            <span class="adm-bd-ikon adm-bd-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg></span>
+            <span class="adm-bd-teks">Sudah Ada Pengajar</span>
+            <b class="adm-bd-angka-hijau" id="bdSudahPengajar">—</b>
+            <span class="adm-bd-panah" aria-hidden="true">›</span>
+          </a>
+          <a href="#pengajar" class="adm-bd-baris">
+            <span class="adm-bd-ikon adm-bd-ikon-oranye" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></span>
+            <span class="adm-bd-teks">Belum Ada Pengajar<small>Lihat murid &amp; pilih pengajar</small></span>
+            <b class="adm-bd-angka-oranye" id="bdBelumPengajar">—</b>
+            <span class="adm-bd-panah" aria-hidden="true">›</span>
+          </a>
+        </section>
       </div>
     </section>
     <section class="adm-view" data-view="murid" hidden>
@@ -1033,6 +1080,7 @@
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
       setAngka('murid_diterima', MURID.length);
+      isiBeranda();
       if (!RINGKASAN_OK) isiNotifikasiLokal(true);
       if (PENGAJAR.length) tampilPengajar(PENGAJAR);
       halamanAktif = 1;
@@ -1225,6 +1273,25 @@
     }).catch(function () { tampilPengajar(null); });
   }
 
+  function isiBeranda() {
+    if (!Array.isArray(MURID) || MURID.length === 0) return;
+    var total = MURID.length;
+    var sudahGrup = MURID.filter(function (m) { return String(m.link_grup || '').trim() !== ''; }).length;
+    var sudahPengajar = MURID.filter(function (m) { return String(m.pengampu_nama || '').trim() !== ''; }).length;
+    var persen = Math.round((sudahGrup / total) * 100);
+    var isi = {
+      bdTotal: total, bdSudahGrup: sudahGrup, bdBelumGrup: total - sudahGrup,
+      bdSudahPengajar: sudahPengajar, bdBelumPengajar: total - sudahPengajar, bdPersen: persen + '%'
+    };
+    Object.keys(isi).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = String(isi[id]);
+    });
+    var bar = document.getElementById('bdBar');
+    if (bar) bar.style.width = persen + '%';
+    var wadah = document.querySelector('.adm-bd-bar');
+    if (wadah) wadah.setAttribute('aria-valuenow', String(persen));
+  }
   function setAngka(kunci, nilai) {
     document.querySelectorAll('[data-stat="' + kunci + '"]').forEach(function (el) { el.textContent = String(nilai); });
   }
