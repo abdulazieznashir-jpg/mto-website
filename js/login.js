@@ -79,7 +79,10 @@
     if (meta.jk) baris.jenis_kelamin = meta.jk;
     sb.from('peserta')
       .upsert(baris, { onConflict: 'email', ignoreDuplicates: true })
-      .then(function () { window.location.replace('profil.html'); });
+      .then(function () {
+        var owner = alamat === 'mahkota.to3@gmail.com';
+        window.location.replace(owner ? 'admin.html' : 'profil.html');
+      });
   }
 
   /* ---------- Lupa password ---------- */
