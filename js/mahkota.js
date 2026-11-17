@@ -345,7 +345,11 @@
       muatJadwalGelombang();
     }
     sb.rpc('pendaftaran_admin').then(function (r) {
-      if (!r.error) tampilAdmin(r.data || []);
+      if (!r.error) {
+        tampilAdmin(r.data || []);
+        var baru = document.getElementById('adminBaruBox');
+        if (baru) baru.hidden = false;
+      }
     });
     sb.rpc('profil_peserta_saya').then(function (r) {
       if (!r.error && r.data) tampilPaket(r.data);

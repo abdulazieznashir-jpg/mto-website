@@ -1,7 +1,7 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 10 dari 300 (rencana 300)
-Progres keseluruhan: perkiraan 58%
+Total langkah: 11 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 60%
 - Beranda: 85% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 65% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
@@ -12,6 +12,7 @@ Progres keseluruhan: perkiraan 58%
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
+- [x] Langkah 11: tampilan admin lama di profil.html disembunyikan. Pintu masuk utama sekarang kartu "Buka Admin Mahkota Tahfidz Online" yang mengarah ke admin.html, dan hanya muncul untuk admin.
 - [x] Langkah 10: kolom Program (dari kelas) menggantikan WA dan Gelombang di tabel Peserta. Kolom WA tetap ada di detail peserta.
 - [x] Langkah 9: tab Peserta diganti Semua / Belum Bayar / Sudah Bayar, dihitung dari admin_daftar_lunas. Tab Aktif dan Jeda dilepas dari tampilan. Logikanya masih ada di kode.
 - [x] Langkah 8: judul dan subjudul Peserta; gaya tab sebagai pil
@@ -31,6 +32,7 @@ Progres keseluruhan: perkiraan 58%
 - Panel notifikasi (lonceng)
 
 ## Keputusan yang saya ambil sendiri (bisa diubah)
+- Admin lama ada di profil.html (#adminBox), bukan di admin.html. Yang disembunyikan adalah #adminBox. Pintu masuk baru memakai pemeriksaan pendaftaran_admin yang sudah ada.
 - Kolom Jenis (Baru/Repeat) belum ada karena tidak ada sumber datanya. Tidak saya tebak.
 - Tab Aktif dan Jeda di Peserta saya ganti dengan Belum Bayar dan Sudah Bayar, sesuai referensi. Filter Jeda tidak lagi tampil, tapi datanya masih ada.
 - Halaqoh = halaman Pengajar (kartu referensi bertuliskan "Halaqoh (Pengajar)")
