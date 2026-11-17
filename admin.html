@@ -93,6 +93,40 @@
   .adm-bd-angka-hijau { font-size: 24px; font-weight: 800; color: #1E7A3C; }
   .adm-bd-angka-oranye { font-size: 24px; font-weight: 800; color: #B45309; }
   .adm-bd-panah { color: #6E6E73; font-size: 20px; }
+  .hq-periode { display: flex; background: #F3EFE7; border-radius: 999px; padding: 4px; margin: 12px 0 6px; }
+  .hq-periode-pil { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 9px 0; font-size: 14px; color: #1D1D1F; }
+  .hq-periode-aktif { background: #A9801F !important; color: #fff !important; font-weight: 700; }
+  .hq-periode-pil:disabled { cursor: default; opacity: 1; }
+  .hq-catatan { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #6E6E73; margin: 4px 2px 12px; }
+  .hq-ringkasan { display: grid; grid-template-columns: repeat(3, 1fr); background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px 8px; margin-bottom: 14px; }
+  .hq-ringkas-sel { text-align: center; display: flex; flex-direction: column; gap: 2px; padding: 0 6px; border-left: 1px solid #EEE6D8; }
+  .hq-ringkas-sel:first-child { border-left: 0; }
+  .hq-ringkas-angka { font-size: 22px; font-weight: 800; color: #A9801F; }
+  .hq-ringkas-sel span { font-size: 12px; color: #1D1D1F; }
+  .hq-ringkas-sel small { font-size: 11px; color: #6E6E73; }
+  .hq-status { display: flex; background: #F3EFE7; border-radius: 999px; padding: 4px; gap: 2px; }
+  .hq-status-pil { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 4px; font-size: 12px; color: #6E6E73; white-space: nowrap; }
+  .hq-status-aktif { background: #A9801F !important; color: #fff !important; font-weight: 700; }
+  .hq-status-pil:disabled { cursor: default; }
+  .hq-legenda { font-size: 12px; color: #6E6E73; margin: 8px 2px 12px; }
+  .hq-baris-cari { display: flex; gap: 10px; margin: 12px 0; }
+  .hq-urut, .hq-cari { flex: 1; min-width: 0; display: block; }
+  .hq-urut select, .hq-cari input { width: 100%; height: 44px; box-sizing: border-box; border-radius: 999px; border: 1px solid #EEE6D8; background: #FFFFFF; padding: 0 14px; font-size: 13px; color: #1D1D1F; }
+  .hq-kartu { display: flex; align-items: center; gap: 12px; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
+  .hq-inisial { width: 48px; height: 48px; border-radius: 50%; background: #FBEBD0; color: #A9801F; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hq-isi { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .hq-nama { font-size: 16px; font-weight: 700; color: #1D1D1F; }
+  .hq-meta { font-size: 13px; color: #4A4740; }
+  .hq-pill-kuning { align-self: flex-start; background: #FFF1C2; color: #8A6100; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+  .hq-baris { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+  .hq-baris-atas { display: flex; justify-content: space-between; gap: 8px; }
+  .hq-label { color: #4A4740; }
+  .hq-nilai { color: #6E6E73; white-space: nowrap; }
+  .hq-bar { height: 6px; border-radius: 999px; background: #ECE7DE; }
+  .hq-panah { color: #6E6E73; font-size: 22px; }
+  .hq-bawah { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 16px; }
+  .hq-bawah-tautan { display: block; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 16px; padding: 14px 16px; color: #1D1D1F; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .hq-bawah-nonaktif { color: #6E6E73; background: #FAF7F1; font-weight: 500; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
   .adm-murid-tab-btn[aria-pressed="true"] { background: #b7893a; border-color: #b7893a; color: #fff; }
@@ -637,13 +671,46 @@
     <section class="adm-view" data-view="pengajar" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Halaqoh</h1>
-        <p class="adm-dash-sub">Daftar pengajar dan jumlah pesertanya.</p>
-        <div class="adm-halaqoh-filter" role="group" aria-label="Filter pengajar">
-          <button type="button" class="adm-halaqoh-pil adm-halaqoh-pil-aktif adm-halaqoh-jk" data-jk="semua" aria-pressed="true">Semua <b id="pengajarJumlah">0</b></button>
+        <p class="adm-dash-sub">Pantau kapasitas, retensi, dan perubahan penting tiap pengajar.</p>
+        <div class="hq-periode" role="group" aria-label="Pilih periode">
+          <button type="button" class="hq-periode-pil hq-periode-aktif" disabled>Periode Ini</button>
+          <button type="button" class="hq-periode-pil" disabled>Periode Depan</button>
+        </div>
+        <p class="hq-catatan"><span id="hqDiperbarui">Diperbarui pukul —</span><span>Data periode belum tersedia.</span></p>
+        <section class="hq-ringkasan" aria-label="Ringkasan halaqoh">
+          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Retensi periode ini</span><small>Menunggu data</small></div>
+          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Sudah daftar ulang</span><small>Menunggu data</small></div>
+          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Kapasitas terisi</span><small>Menunggu data</small></div>
+        </section>
+        <div class="hq-status" role="group" aria-label="Filter kapasitas">
+          <button type="button" class="hq-status-pil hq-status-aktif" disabled>Semua <b id="pengajarJumlah">0</b></button>
+          <button type="button" class="hq-status-pil" disabled>Masih bisa tambah</button>
+          <button type="button" class="hq-status-pil" disabled>Hampir penuh</button>
+          <button type="button" class="hq-status-pil" disabled>Penuh</button>
+        </div>
+        <p class="hq-legenda">Masih bisa tambah: di bawah 70% · Hampir penuh: 70–89% · Penuh: 90% ke atas. Menunggu data kapasitas.</p>
+        <div class="adm-halaqoh-filter" role="group" aria-label="Filter jenis kelamin">
+          <button type="button" class="adm-halaqoh-pil adm-halaqoh-pil-aktif adm-halaqoh-jk" data-jk="semua" aria-pressed="true">Semua jenis</button>
           <button type="button" class="adm-halaqoh-pil adm-halaqoh-jk" data-jk="ikhwan" aria-pressed="false">Ikhwan</button>
           <button type="button" class="adm-halaqoh-pil adm-halaqoh-jk" data-jk="akhwat" aria-pressed="false">Akhwat</button>
         </div>
+        <div class="hq-baris-cari">
+          <label class="hq-urut"><span class="sr-only">Urutkan</span>
+            <select id="pengajarUrut">
+              <option value="nama">Urutkan: Nama A–Z</option>
+              <option value="terbanyak">Urutkan: Murid terbanyak</option>
+              <option value="sedikit">Urutkan: Murid sedikit</option>
+            </select>
+          </label>
+          <label class="hq-cari"><span class="sr-only">Cari ustadz/ustadzah</span>
+            <input type="search" id="pengajarCari" placeholder="Cari ustadz/ustadzah..." autocomplete="off">
+          </label>
+        </div>
         <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
+        <div class="hq-bawah">
+          <a href="#murid" class="hq-bawah-tautan">Lihat semua murid di Peserta</a>
+          <div class="hq-bawah-tautan hq-bawah-nonaktif" aria-disabled="true">Perlu ditinjau (menunggu data)</div>
+        </div>
         <div class="adm-pengajar-tabel-wrap" hidden>
           <table class="adm-murid-tabel">
             <thead>
@@ -1268,6 +1335,7 @@
     sb.rpc('admin_daftar_pengajar').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { tampilPengajar(null); return; }
       PENGAJAR = r.data;
+      catatDiperbarui();
       setAngka('pengajar_aktif', PENGAJAR.filter(function (g) { return g.aktif; }).length);
       tampilPengajar(PENGAJAR);
     }).catch(function () { tampilPengajar(null); });
@@ -1328,8 +1396,83 @@
     });
   }
 
+  var HALAQOH_CARI = '';
+  var HALAQOH_URUT = 'nama';
+  function catatDiperbarui() {
+    var el = document.getElementById('hqDiperbarui');
+    if (!el) return;
+    var t = new Date();
+    el.textContent = 'Diperbarui pukul ' + String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+  }
+  function setJumlahJenis(semua, ik, ak) {
+    var jumlah = document.getElementById('pengajarJumlah');
+    if (jumlah) jumlah.textContent = String(semua);
+    document.querySelectorAll('.adm-halaqoh-jk').forEach(function (b) {
+      var k = b.getAttribute('data-jk');
+      if (k === 'semua') b.textContent = 'Semua jenis (' + semua + ')';
+      if (k === 'ikhwan') b.textContent = 'Ikhwan (' + ik + ')';
+      if (k === 'akhwat') b.textContent = 'Akhwat (' + ak + ')';
+    });
+  }
+  function bindKontrolHalaqoh() {
+    var cari = document.getElementById('pengajarCari');
+    if (cari) cari.addEventListener('input', function () {
+      HALAQOH_CARI = cari.value.trim().toLowerCase();
+      tampilPengajar(PENGAJAR);
+    });
+    var urut = document.getElementById('pengajarUrut');
+    if (urut) urut.addEventListener('change', function () {
+      HALAQOH_URUT = urut.value;
+      tampilPengajar(PENGAJAR);
+    });
+  }
+  bindKontrolHalaqoh();
+  function barisHq(label, nilai) {
+    var r = document.createElement('div');
+    r.className = 'hq-baris';
+    var atas = document.createElement('div');
+    atas.className = 'hq-baris-atas';
+    var l = document.createElement('span'); l.className = 'hq-label'; l.textContent = label;
+    var v = document.createElement('span'); v.className = 'hq-nilai'; v.textContent = nilai;
+    atas.appendChild(l); atas.appendChild(v);
+    var track = document.createElement('span'); track.className = 'hq-bar'; track.setAttribute('aria-hidden', 'true');
+    r.appendChild(atas); r.appendChild(track);
+    return r;
+  }
+  function kartuHalaqoh(kartu, g) {
+    var jumlah = anakDari(g).length;
+    var jk = jkPengajar(g);
+    var label = jk === 'ikhwan' ? 'Ikhwan' : (jk === 'akhwat' ? 'Akhwat' : 'Jenis kelamin belum diisi');
+    var item = document.createElement('article');
+    item.className = 'hq-kartu';
+    item.setAttribute('role', 'button');
+    item.tabIndex = 0;
+    item.addEventListener('click', function () { bukaDetailPengajar(g); });
+    item.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') bukaDetailPengajar(g); });
+    var inisial = document.createElement('span');
+    inisial.className = 'hq-inisial';
+    inisial.setAttribute('aria-hidden', 'true');
+    inisial.textContent = String(g.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('');
+    var isi = document.createElement('div');
+    isi.className = 'hq-isi';
+    var nama = document.createElement('div'); nama.className = 'hq-nama'; nama.textContent = g.nama || '—';
+    var meta = document.createElement('div'); meta.className = 'hq-meta'; meta.textContent = label + ' · ' + jumlah + ' murid';
+    isi.appendChild(nama);
+    isi.appendChild(meta);
+    if (jumlah === 0) {
+      var pil = document.createElement('span'); pil.className = 'hq-pill-kuning'; pil.textContent = 'Belum ada murid';
+      isi.appendChild(pil);
+    }
+    isi.appendChild(barisHq('Kapasitas', 'Menunggu data'));
+    isi.appendChild(barisHq('Retensi periode ini', 'Menunggu data'));
+    var panah = document.createElement('span'); panah.className = 'hq-panah'; panah.setAttribute('aria-hidden', 'true'); panah.textContent = '›';
+    item.appendChild(inisial);
+    item.appendChild(isi);
+    item.appendChild(panah);
+    kartu.appendChild(item);
+  }
+
   function tampilPengajar(list) {
-    if (list) list = list.filter(function (g) { return HALAQOH_JK === 'semua' || jkPengajar(g) === HALAQOH_JK; });
     var body = document.getElementById('pengajarBody');
     var kartu = document.getElementById('pengajarKartu');
     if (!body) return;
@@ -1341,44 +1484,50 @@
       sel1.colSpan = 4; sel1.className = 'adm-murid-kosong';
       sel1.textContent = 'Daftar pengajar belum bisa dimuat.';
       gagal.appendChild(sel1); body.appendChild(gagal);
+      if (kartu) {
+        var pg = document.createElement('p'); pg.className = 'hq-catatan'; pg.textContent = 'Daftar pengajar belum bisa dimuat.';
+        kartu.appendChild(pg);
+      }
       return;
     }
-    if (list.length === 0) {
+    setJumlahJenis(
+      list.length,
+      list.filter(function (g) { return jkPengajar(g) === 'ikhwan'; }).length,
+      list.filter(function (g) { return jkPengajar(g) === 'akhwat'; }).length
+    );
+    var tampil = list
+      .filter(function (g) { return HALAQOH_JK === 'semua' || jkPengajar(g) === HALAQOH_JK; })
+      .filter(function (g) { return !HALAQOH_CARI || String(g.nama || '').toLowerCase().indexOf(HALAQOH_CARI) !== -1; });
+    tampil.sort(function (a, b) {
+      var na = anakDari(a).length, nb = anakDari(b).length;
+      if (HALAQOH_URUT === 'terbanyak' && na !== nb) return nb - na;
+      if (HALAQOH_URUT === 'sedikit' && na !== nb) return na - nb;
+      return String(a.nama || '').localeCompare(String(b.nama || ''), 'id');
+    });
+    if (list.length === 0 || tampil.length === 0) {
+      var teks = list.length === 0
+        ? 'Belum ada pengajar. Pengajar muncul setelah data pengajar tersedia.'
+        : 'Tidak ada ustadz/ustadzah yang cocok.';
       var kosong = document.createElement('tr');
       var td = document.createElement('td');
-      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = 'Belum ada pengajar. Pengajar muncul setelah data pengajar tersedia.';
+      td.colSpan = 4; td.className = 'adm-murid-kosong'; td.textContent = teks;
       kosong.appendChild(td); body.appendChild(kosong);
+      if (kartu) {
+        var p = document.createElement('p'); p.className = 'hq-catatan'; p.textContent = teks;
+        kartu.appendChild(p);
+      }
       return;
     }
-    var jumlahEl = document.getElementById('pengajarJumlah');
-    if (jumlahEl) jumlahEl.textContent = String(list.length);
-    list.forEach(function (g) {
-      var status = g.aktif ? 'Aktif' : 'Nonaktif';
+    tampil.forEach(function (g) {
       var tr = document.createElement('tr');
       tr.className = 'adm-murid-baris';
       tr.appendChild(sel('td', g.nama));
       tr.appendChild(sel('td', g.email));
       tr.appendChild(sel('td', anakDari(g).length));
-      tr.appendChild(sel('td', status));
+      tr.appendChild(sel('td', g.aktif ? 'Aktif' : 'Nonaktif'));
       tr.addEventListener('click', function () { bukaDetailPengajar(g); });
       body.appendChild(tr);
-
-      if (kartu) {
-        var item = document.createElement('article');
-        item.className = 'adm-murid-kartu-item adm-pengajar-kartu-item';
-        item.addEventListener('click', function () { bukaDetailPengajar(g); });
-        var inisial = document.createElement('span');
-        inisial.className = 'adm-halaqoh-inisial';
-        inisial.setAttribute('aria-hidden', 'true');
-        inisial.textContent = String(g.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('');
-        item.appendChild(inisial);
-        var nama = sel('div', g.nama);
-        nama.className = 'adm-murid-kartu-nama';
-        item.appendChild(nama);
-        item.appendChild(baris('Jumlah murid', anakDari(g).length));
-        item.appendChild(baris('Status', status));
-        kartu.appendChild(item);
-      }
+      if (kartu) kartuHalaqoh(kartu, g);
     });
   }
 
