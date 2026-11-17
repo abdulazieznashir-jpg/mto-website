@@ -41,3 +41,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 34): cek canonical, robots, dan description per halaman. Semua halaman publik punya description. Hanya login.html yang belum punya canonical, dicatat sebagai A13 karena butuh domain resmi.
 - 17 Nov 2026 (putaran 35): tautan dan tombol tanpa teks. Hanya satu di profil.html (pkEditWaktu), isinya diisi JS saat jadwal dimuat, jadi bukan masalah. Hasil kosong.
 - 17 Nov 2026 (putaran 36): semua img di HTML sudah punya atribut width (mencegah pergeseran tata letak). Hasil kosong.
+- 17 Nov 2026 (putaran 37): tidak ada tautan http:// yang tidak aman di HTML/JS/CSS. Satu-satunya http:// adalah namespace SVG di css/style.css, bukan tautan. Hasil kosong.
