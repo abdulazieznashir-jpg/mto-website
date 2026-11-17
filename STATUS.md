@@ -1,15 +1,16 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 18 dari 300 (rencana 300)
+Total langkah: 19 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 92% (kartu Belum Bayar sudah terisi dari daftar lunas; kartu Pendaftar Baru menunggu definisi)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 70% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
-- Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
+- Detail Halaqoh: 70% (statistik dan daftar peserta sudah, dengan inisial di tiap peserta. Tampilan referensi khusus detail belum ada di referensi. Pencocokan murid ke pengajar lewat nama)
 - Detail Peserta: 60% (inisial, status, label info sudah sesuai referensi. Kolom Jenis (Baru/Repeat) belum ada datanya)
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 19: daftar peserta di detail Halaqoh diberi inisial (avatar lingkaran krem), sama seperti di detail Peserta. Hanya tampilan; data dan fungsi tidak diubah. Sintaks skrip inline sudah dicek.
 - [x] Langkah 18: kartu Beranda "Belum Bayar" diisi dari admin_daftar_lunas (sumber yang sama dengan daftar Belum lunas di Peserta). Hanya frontend, tanpa ubah SQL. Angka Pendaftar Baru tetap "—". Sintaks skrip sudah dicek.
 - [x] Langkah 17: verifikasi visual lewat Playwright (salinan di luar repo, gerbang login dilewati, konten data kosong). Sidebar desktop (logo mahkota, Beranda aktif, Peserta, Halaqoh, Notifikasi di bawah) dan bottom bar HP (Beranda, Peserta, Halaqoh, Notifikasi) sudah sesuai referensi. Area konten belum tampak karena tanpa data.
 - [x] Langkah 16: Notifikasi ditambahkan di bagian paling bawah sidebar desktop (membuka panel lonceng yang sudah ada, sama seperti bottom bar HP). Menu lama tetap tersembunyi, tidak ada kode yang dihapus.

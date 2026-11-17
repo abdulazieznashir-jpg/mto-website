@@ -1220,11 +1220,20 @@
       anak.forEach(function (m) {
         var li = document.createElement('li');
         li.className = 'adm-halaqoh-peserta-baris';
+        var kiri = document.createElement('span');
+        kiri.style.cssText = 'display:flex;align-items:center;gap:10px;min-width:0;';
+        var avatar = document.createElement('span');
+        avatar.className = 'adm-halaqoh-inisial';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.style.cssText = 'width:34px;height:34px;font-size:13px;';
+        avatar.textContent = String(m.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('') || '?';
         var nm = document.createElement('span');
         nm.textContent = m.nama || '(tanpa nama)';
+        kiri.appendChild(avatar);
+        kiri.appendChild(nm);
         var ket = document.createElement('small');
         ket.textContent = (m.kelas ? m.kelas : '') + (m.durasi ? ' · ' + m.durasi + ' bulan' : '');
-        li.appendChild(nm);
+        li.appendChild(kiri);
         li.appendChild(ket);
         list.appendChild(li);
       });
