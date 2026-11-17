@@ -50,7 +50,6 @@ a:hover { opacity: 0.7; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
 .container { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
-.container-wide { max-width: 1440px; margin: 0 auto; padding: 0 22px; }
 
 /* TYPOGRAPHY */
 .eyebrow {
@@ -169,22 +168,6 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 }
 .mobile-menu-cta .btn-secondary { border-width: 1px; }
 
-/* PAGE HEADER (untuk halaman interior) */
-.page-header {
-  padding: calc(var(--nav-height) + 100px) 0 60px;
-  text-align: center;
-  background: linear-gradient(180deg, var(--bg-off-white) 0%, white 100%);
-}
-.page-header h1 { font-size: clamp(36px, 6vw, 64px); margin-bottom: 16px; }
-.page-header .lead { max-width: 640px; margin: 0 auto; }
-.breadcrumb {
-  display: flex; justify-content: center; gap: 8px;
-  font-size: 13px; color: var(--text-tertiary);
-  margin-bottom: 20px;
-}
-.breadcrumb a { color: var(--text-tertiary); }
-.breadcrumb a:hover { color: var(--primary); opacity: 1; }
-.breadcrumb .sep { opacity: 0.5; }
 
 /* HERO (home only) */
 .hero {
@@ -293,7 +276,6 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 .program-card-image svg { width: 64px; height: 64px; color: var(--primary); }
 .program-card h3 { font-size: 22px; margin-bottom: 8px; letter-spacing: -0.015em; }
 .program-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.5; margin-bottom: 20px; }
-.program-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
 .program-tag {
   padding: 4px 10px; background: var(--primary-lighter);
   color: var(--primary-dark); border-radius: var(--radius-full);
@@ -356,11 +338,6 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 .pricing-features li svg {
   width: 18px; height: 18px; color: var(--primary);
   flex-shrink: 0; margin-top: 2px;
-}
-.pricing-dummy-note {
-  padding: 8px 12px; background: #FFF8E1; color: #8B6E00;
-  border-radius: 8px; font-size: 11px; text-align: center;
-  margin-bottom: 20px; border: 1px dashed #E5CFB1;
 }
 
 /* TESTIMONIALS */
