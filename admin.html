@@ -484,7 +484,7 @@
         <div class="adm-murid-tabel-wrap">
           <table class="adm-murid-tabel">
             <thead>
-              <tr><th scope="col">Nama</th><th scope="col">WA</th><th scope="col">Gelombang</th><th scope="col">Durasi</th><th scope="col">Pengampu</th><th scope="col">Status</th></tr>
+              <tr><th scope="col">Nama</th><th scope="col">Program</th><th scope="col">Durasi</th><th scope="col">Pengampu</th><th scope="col">Status</th></tr>
             </thead>
             <tbody id="muridBody">
               <tr><td colspan="6" class="adm-murid-kosong">Memuat daftar murid…</td></tr>
@@ -1004,8 +1004,7 @@
       var status = labelStatusMurid(m);
       var tr = document.createElement('tr');
       tr.appendChild(sel('td', m.nama));
-      tr.appendChild(sel('td', m.wa));
-      tr.appendChild(sel('td', m.gelombang));
+      tr.appendChild(sel('td', m.kelas));
       tr.appendChild(sel('td', m.durasi));
       tr.appendChild(sel('td', m.pengampu_nama));
       var tdStatus = document.createElement('td');

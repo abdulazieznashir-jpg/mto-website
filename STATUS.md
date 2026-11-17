@@ -1,10 +1,10 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 9 dari 300 (rencana 300)
-Progres keseluruhan: perkiraan 55%
+Total langkah: 10 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 58%
 - Beranda: 85% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
-- Peserta: 50% (judul, subjudul, tab Belum Bayar dan Sudah Bayar dari data admin_daftar_lunas sudah. Kolom Jenis dan Program di tabel belum)
+- Peserta: 65% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh dan Detail Peserta: 0%
 - Navigasi dan menu: 100%
 
@@ -12,6 +12,7 @@ Progres keseluruhan: perkiraan 55%
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
+- [x] Langkah 10: kolom Program (dari kelas) menggantikan WA dan Gelombang di tabel Peserta. Kolom WA tetap ada di detail peserta.
 - [x] Langkah 9: tab Peserta diganti Semua / Belum Bayar / Sudah Bayar, dihitung dari admin_daftar_lunas. Tab Aktif dan Jeda dilepas dari tampilan. Logikanya masih ada di kode.
 - [x] Langkah 8: judul dan subjudul Peserta; gaya tab sebagai pil
 - [x] Langkah 7: halaman Halaqoh berbentuk kartu dengan judul, subjudul, filter, dan inisial
@@ -30,6 +31,7 @@ Progres keseluruhan: perkiraan 55%
 - Panel notifikasi (lonceng)
 
 ## Keputusan yang saya ambil sendiri (bisa diubah)
+- Kolom Jenis (Baru/Repeat) belum ada karena tidak ada sumber datanya. Tidak saya tebak.
 - Tab Aktif dan Jeda di Peserta saya ganti dengan Belum Bayar dan Sudah Bayar, sesuai referensi. Filter Jeda tidak lagi tampil, tapi datanya masih ada.
 - Halaqoh = halaman Pengajar (kartu referensi bertuliskan "Halaqoh (Pengajar)")
 - Notifikasi = panel lonceng yang sudah ada
