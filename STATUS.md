@@ -1,6 +1,6 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 21 dari 300 (rencana 300)
+Total langkah: 22 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 92% (kartu Belum Bayar sudah terisi dari daftar lunas; kartu Pendaftar Baru menunggu definisi)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 72%
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 22: run terjadwal (2026-11-17, pukul 12:16 UTC). Cek sintaks skrip inline admin.html (1 blok, lolos node --check). Tidak ada perubahan tampilan. origin/main sekarang di 84472d8 (Owner langsung diarahkan ke admin.html), jadi ada tambahan commit di main yang belum masuk redesign-admin; sinkronisasi tetap menunggu keputusan pemilik. Tidak ada merge, tidak ada push ke main.
 - [x] Langkah 21: run terjadwal (2026-11-17). Cek ulang sintaks skrip inline admin.html (lolos node --check). Tidak ada perubahan tampilan. Semua sisa pekerjaan yang tersisa bergantung pada keputusan pemilik (lihat "Menunggu keputusan pemilik"): merge atau rebase dengan main, sumber data Pendaftar Baru, Jenis Baru/Repeat, jadwal pengajar dari spreadsheet, dan nama merek. Run ini tidak menggabungkan apa pun dan tidak mengubah branch utama.
 - [x] Langkah 20: run terjadwal. Cek sintaks skrip inline admin.html (1 blok, lolos node --check) dan koneksi CDN Supabase. Tidak ada perubahan tampilan. Tidak ada langkah lain yang bisa dikerjakan tanpa keputusan pemilik; semua sisa item ada di "Menunggu keputusan pemilik".
 - [x] Langkah 19: daftar peserta di detail Halaqoh diberi inisial (avatar lingkaran krem), sama seperti di detail Peserta. Hanya tampilan; data dan fungsi tidak diubah. Sintaks skrip inline sudah dicek.
@@ -53,7 +54,7 @@ Progres keseluruhan: perkiraan 72%
 - Filter Ikhwan/Akhwat di Halaqoh belum ditambahkan karena belum ada data gender pengajar. Saya tidak menebak dari nama.
 
 ## Menunggu keputusan pemilik
-- Sinkronisasi dengan branch utama (origin/main sekarang juga punya commit baru 70208fc tentang Beranda Total Peserta, Masuk Grup, Penempatan Pengajar; run ini tidak menggabungkan apa pun): origin/main punya 10 commit yang belum ada di redesign-admin (Halaqoh: pencocokan murid lewat nama pengampu dan filter Ikhwan/Akhwat; Peserta: kolom cari, filter Gelombang, kartu ringkasan; Beranda: angka Peserta Aktif, Belum Bayar, Pengajar Aktif; Notifikasi; perbaikan email Owner dan redirect ke admin.html). redesign-admin juga punya 2 commit yang belum ada di main. Run ini tidak menggabungkan apa pun. Perlu keputusan: merge main ke redesign-admin, rebase, atau biarkan terpisah. Catatan: sebagian poin 'Menunggu' di bawah mungkin sudah terjawab di main.
+- Sinkronisasi dengan branch utama (per run 22, origin/main di 84472d8; sebelumnya 70208fc tentang Beranda Total Peserta, Masuk Grup, Penempatan Pengajar; run ini tidak menggabungkan apa pun): origin/main punya 10 commit yang belum ada di redesign-admin (Halaqoh: pencocokan murid lewat nama pengampu dan filter Ikhwan/Akhwat; Peserta: kolom cari, filter Gelombang, kartu ringkasan; Beranda: angka Peserta Aktif, Belum Bayar, Pengajar Aktif; Notifikasi; perbaikan email Owner dan redirect ke admin.html). redesign-admin juga punya 2 commit yang belum ada di main. Run ini tidak menggabungkan apa pun. Perlu keputusan: merge main ke redesign-admin, rebase, atau biarkan terpisah. Catatan: sebagian poin 'Menunggu' di bawah mungkin sudah terjawab di main.
 - Jadwal pengajar dari spreadsheet (Google Sheets): belum dimasukkan ke database. Tabel pengajar hanya punya 1 baris sekarang. Sheet punya sekitar 17 pengajar Akhwat dan belasan Ikhwan, tapi tanpa email. Email dipakai sebagai kunci tabel pengajar. Perlu: periode mana yang dipakai (P69 sampai P77, atau G1 dan G2 dasar), email tiap pengajar, dan izin menulis ke database.
 - Kartu "Pendaftar Baru" belum punya data. Perlu definisi: status apa yang dihitung sebagai pendaftar baru? Ringkasan database (admin_ringkasan_lengkap) juga belum punya angka ini, dan mengubahnya butuh perubahan SQL (di luar izin saat ini).
 - Kartu "Belum Bayar" sekarang dihitung di frontend dari admin_daftar_lunas. Kalau owner lebih suka angka dari ringkasan database, perlu perubahan SQL.
