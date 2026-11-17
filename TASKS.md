@@ -29,3 +29,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 24 Nov): pindai fungsi JS tidak terpakai di js/ lain selain mahkota.js, hasil kosong.
 - 17 Nov 2026 (putaran 26): cek lang, _blank tanpa noopener, dan ukuran gambar. Hasil kosong. hero.png sudah cadangan dari hero.webp di index.html.
 - 17 Nov 2026 (putaran 27): spasi ganda, nomor wa.me (konstanta WA berawalan 62), dan type input. Hasil kosong.
+- 17 Nov 2026 (putaran 28): label for, tombol ikon (profil punya teks), referensi aset CSS. Hasil kosong.
