@@ -100,3 +100,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 81): sintaks ulang semua js/*.js lolos. Hasil kosong.
 - 17 Nov 2026 (putaran 82): method dan action form. Tidak ada form dengan method atau action eksternal. Semua form ditangani JS. Hasil kosong.
 - 17 Nov 2026 (putaran 83): landmark. Dua header dan dua nav di profil.html, tapi blok admin (adminBox) disembunyikan secara default, jadi aman. Lima halaman publik tanpa <main>, dicatat sebagai A22.
+- 17 Nov 2026 (putaran 84): atribut loading dan decoding pada img. Hanya hero di index.html yang punya decoding async. Sudah cukup, tidak ada perubahan. Hasil kosong.
