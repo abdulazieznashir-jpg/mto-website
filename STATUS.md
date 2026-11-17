@@ -1,8 +1,8 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 13 dari 300 (rencana 300)
-Progres keseluruhan: perkiraan 66%
-- Beranda: 85% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
+Total langkah: 14 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 70%
+- Beranda: 90% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 65% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 66%
 - Navigasi dan menu: 100%
 
 ## Selesai
+- [x] Langkah 14: kartu Halaqoh (Pengajar) jadi kartu lebar dengan angka di kiri dan panah › di kanan (sebelumnya tersusun vertikal di tengah). Lencana Admin di top bar HP disembunyikan.
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
@@ -25,7 +26,7 @@ Progres keseluruhan: perkiraan 66%
 - [x] Langkah 4: kartu Beranda disusun ulang (3 kartu + kartu lebar Halaqoh). Subjudul ganda dihapus.
 
 ## Sedang dikerjakan
-- Verifikasi visual terhadap referensi (belum ada browser untuk render)
+- Verifikasi visual: sudah dirender lewat Playwright dari salinan pratinjau di luar repo (gerbang login dilewati, data tidak dimuat). Beranda desktop & HP dicek.
 
 ## Sudah berjalan (belum diubah, harus tetap utuh)
 - Pemuatan data dari Supabase (muatMurid, dashboard)
@@ -51,4 +52,5 @@ Progres keseluruhan: perkiraan 66%
 - Tugas Hari Ini masih dipertahankan di bawah kartu, karena belum ada keputusan untuk menghapusnya.
 - Angka Beranda: data asli dari database, atau contoh dulu?
 - Halaqoh dipetakan ke halaman Pengajar. Sudah benar?
-- Kemiripan final: perkiraan 40% (struktur menu sudah sesuai, kartu Beranda belum)
+- Kemiripan final: perkiraan 75% (struktur menu, sidebar, bottom bar, kartu Beranda, kartu Halaqoh sudah sesuai)
+- Nama merek: referensi menulis "Mahkota Tahfidz Online", tapi seluruh situs memakai "Tahfizh" (69 tempat). Belum diubah. Perlu keputusan: ikut referensi (ubah semua situs) atau tetap "Tahfizh".

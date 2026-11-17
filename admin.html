@@ -44,6 +44,7 @@
   .adm-topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .adm-topbar-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .adm-topbar-aksi { display: flex; align-items: center; gap: 8px; }
+  .adm-topbar .adm-side-peran { display: none; }
   .adm-ikon-btn {
     position: relative; width: 40px; height: 40px; border-radius: 999px; border: 0;
     background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font-size: 18px; cursor: pointer;
@@ -91,8 +92,11 @@
   .adm-halaqoh-inisial { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #f7efe0; color: #9a7226; font-weight: 700; flex-shrink: 0; }
   .adm-dash-stat-lebar { margin-top: 12px; text-decoration: none; color: inherit; }
   .adm-dash-ikon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: color-mix(in srgb, var(--ikon) 14%, transparent); color: var(--ikon); margin-bottom: 10px; }
-  .adm-dash-stat-lebar { display: flex; align-items: center; gap: 14px; }
+  .adm-dash-stat.adm-dash-stat-lebar { flex-direction: row; align-items: center; gap: 14px; }
   .adm-dash-stat-lebar .adm-dash-ikon { margin-bottom: 0; }
+  .adm-dash-stat-lebar .adm-dash-teks { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .adm-dash-stat-lebar .adm-dash-panah { color: var(--adm-muted, #8A8478); font-size: 20px; line-height: 1; flex-shrink: 0; }
+  .adm-dash-stat-lebar:hover { border-color: var(--adm-gold-soft, #E9D9B0); }
   .adm-dash-stat {
     background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
     border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0;
@@ -434,7 +438,7 @@
           <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#b7791f" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><span class="adm-dash-angka" data-stat="belum_bayar">—</span><span class="adm-dash-label">Belum Bayar</span></div>
           <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#2f8a4b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11l2 2 4-4"/></svg></span><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Peserta Aktif</span></div>
         </div>
-        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-ikon" style="--ikon:#8a6d3b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></a>
+        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-ikon" style="--ikon:#8a6d3b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="adm-dash-teks"><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></span><span class="adm-dash-panah" aria-hidden="true">›</span></a>
         <div class="adm-dash-tugas" aria-label="Tugas hari ini">
           <h2 class="adm-dash-h2">Tugas Hari Ini</h2>
           <ul class="adm-dash-daftar">
