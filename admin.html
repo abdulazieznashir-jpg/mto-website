@@ -969,6 +969,17 @@
         <p class="adm-dash-catatan" id="permintaanCatatan" hidden></p>
       </div>
     </section>
+    <section class="adm-view" data-view="transkrip" hidden>
+      <div class="adm-murid-wrap nt-wrap">
+        <h1 class="adm-dash-judul">Transkrip</h1>
+        <p class="adm-dash-sub">Kelengkapan transkrip chat per admin. Usulan dari transkrip tetap menunggu persetujuan Anda.</p>
+        <div class="nt-bar"><span id="trRingkas">Memuat…</span></div>
+        <h2 class="adm-dash-h2">Kelengkapan per admin</h2>
+        <div id="trAdmin"></div>
+        <h2 class="adm-dash-h2">Chat masuk hari ini</h2>
+        <p class="nt-kosong" id="trChatKosong">Belum ada screenshot yang diunggah. Menunggu data.</p>
+      </div>
+    </section>
     <section class="adm-view" data-view="notifikasi" hidden>
       <div class="adm-murid-wrap nt-wrap">
         <h1 class="adm-dash-judul">Notifikasi</h1>
@@ -1041,6 +1052,7 @@
   <a href="#dashboard" aria-current="page"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Beranda</a>
   <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>Peserta</a>
   <a href="#pengajar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg></span>Halaqoh</a>
+  <a href="#transkrip"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg></span>Transkrip</a>
   <a href="#notifikasi" id="navNotif"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>Notifikasi<span class="adm-lencana-nav" id="navNotifLencana" hidden>0</span></a>
   <a style="display:none" href="#jadwal"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v4M16 4v4"/></svg></span>Jadwal</a>
   <a style="display:none" href="#periode"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a>
@@ -2922,7 +2934,32 @@
   window.addEventListener('hashchange', function () { if (location.hash === '#notifikasi') muatNotifikasiAdmin(); });
   setInterval(function () { if (window.MTO_ADMIN) muatNotifikasiAdmin(); }, 60000);
 
-  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'notifikasi'];
+  var TR_ADMIN = [
+    { nama: 'Idris', peran: 'Admin After Sales', file: 'Ada, hampir kosong (1 KB)', tgl: '12 Nov 2026' },
+    { nama: 'Nuru', peran: 'Dealmaker', file: 'Ada', tgl: '16 Nov 2026' },
+    { nama: 'Nafa', peran: 'Dealmaker', file: 'Ada', tgl: '15 Nov 2026' },
+    { nama: 'Zikri', peran: 'Dealmaker', file: 'Ada (Dzikry)', tgl: '17 Nov 2026' },
+    { nama: 'Rahadi', peran: 'Dealmaker', file: 'Ada', tgl: '15 Nov 2026' }
+  ];
+  function tampilTranskrip() {
+    var wadah = document.getElementById('trAdmin');
+    var ringkas = document.getElementById('trRingkas');
+    if (!wadah) return;
+    wadah.innerHTML = '';
+    if (ringkas) ringkas.textContent = 'Kelengkapan keseluruhan: Menunggu data';
+    TR_ADMIN.forEach(function (a) {
+      var kartu = pkEl('div', 'nt-item');
+      var teks = pkEl('span', 'nt-teks');
+      teks.appendChild(pkEl('span', 'nt-judul', a.nama + ' · ' + a.peran));
+      teks.appendChild(pkEl('span', 'nt-isi', 'File Drive: ' + a.file + ' (diubah ' + a.tgl + ')'));
+      teks.appendChild(pkEl('span', 'nt-waktu', 'Kelengkapan: Menunggu data'));
+      kartu.appendChild(teks);
+      wadah.appendChild(kartu);
+    });
+  }
+  tampilTranskrip();
+
+  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
   function tampilRute() {
     var h = (window.location.hash || '').replace(/^#/, '');
     if (RUTE.indexOf(h) === -1) h = 'dashboard';
