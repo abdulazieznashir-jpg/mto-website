@@ -35,3 +35,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 29): src ganda, meta viewport, dan ukuran aset. Hasil kosong.
 - 17 Nov 2026 (putaran 30): h1 ganda ditemukan dan dicatat sebagai A10, tidak diubah. Tautan #anchor lintas halaman dan style inline berulang belum ada masalah nyata (display:none berulang setara dengan atribut hidden).
 - 17 Nov 2026 (putaran 31): lang pada semua 13 html sudah id. Tidak ada tautan mailto. Format nomor telepon konsisten (0857-2753-3000 sama dengan 085727533000). Temuan baru: A11 dan A12, keduanya perlu konfirmasi pemilik.
+- 17 Nov 2026 (putaran 32): title tiap halaman ada dan unik. Kata placeholder (contoh, xxx, lorem, todo) hanya di atribut placeholder atau teks contoh yang disengaja. Tidak ada console.log di js/. Hasil kosong.
