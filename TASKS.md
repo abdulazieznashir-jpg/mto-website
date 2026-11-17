@@ -21,6 +21,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A17 Tag Open Graph hanya ada di index.html (6 tag), tanpa og:image. Halaman lain tidak punya OG sama sekali. Saat tautan dibagikan di WhatsApp, pratinjau tanpa gambar. Perlu pilihan gambar pratinjau dan domain resmi (lihat A12). Tidak diubah
 - [A] A18 Panjang judul dan deskripsi meta: judul paket-belajar.html 62 karakter (lebih dari 60), deskripsi index.html 178 karakter (lebih dari 160). Beberapa deskripsi lain di bawah 120. Ini teks pemasaran, jadi perbaikannya keputusan konten pemilik. Tidak diubah
 - [A] A19 Urutan heading: testimoni.html tidak punya h1. Beberapa halaman melompat dari h2 ke h4, profil.html dari h1 ke h3. Mengganti level heading bisa mengubah tampilan karena gaya ditentukan per tag. Perlu persetujuan dan pengecekan visual. Tidak diubah
+- [A] A20 Teks tautan yang kurang deskriptif: "Chat di Sini" (index.html) dan "Klik di sini untuk daftar akun" (pembayaran.html). Pembaca layar hanya membacakan teks ini. Perubahan kata adalah keputusan konten pemilik. Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -76,3 +77,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 60): urutan heading. Dicatat sebagai A19 (perubahan level heading berdampak pada tampilan).
 - 17 Nov 2026 (putaran 61): tabel (9 tabel) semua punya sel th di dekatnya. Hasil kosong.
 - 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <- 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <% %>, [nama]) di HTML. Tidak ditemukan. Hasil kosong.
+- 17 Nov 2026 (putaran 63): teks tautan yang kurang deskriptif. Dicatat sebagai A20 (keputusan konten).
