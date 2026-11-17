@@ -237,6 +237,23 @@
   .bd-toast.bd-toast-tampil { opacity: 1; transform: translateY(0); }
   .bd-toast-ok { background: #1E7A3C; }
   .bd-toast-gagal { background: #B42318; }
+  /* Tampilan HP */
+  .bd-wrap { padding-left: 16px; padding-right: 16px; }
+  .bd-stat { margin: 12px 0; }
+  .bd-stat-sel { padding: 12px 10px; }
+  .bd-stat-label { min-height: 2.5em; font-size: 11px; }
+  .bd-stat-sel b { font-size: 26px; }
+  .bd-kartu { padding: 16px; }
+  .bd-peserta { display: grid; grid-template-columns: 40px 1fr; column-gap: 12px; row-gap: 12px; align-items: start; padding: 14px 0; }
+  .bd-inisial { width: 40px; height: 40px; font-size: 14px; }
+  .bd-info { min-width: 0; gap: 6px; }
+  .bd-nama { font-size: 15px; line-height: 1.3; }
+  .bd-nama-teks { word-break: break-word; }
+  .bd-waktu { font-size: 12px; gap: 6px; }
+  .bd-konfirmasi { grid-column: 1 / -1; width: 100%; height: 46px; min-height: 46px; background: #1E7A3C; border-color: #1E7A3C; color: #FFFFFF; font-size: 15px; border-radius: 14px; }
+  .bd-konfirmasi:disabled { opacity: .7; }
+  .bd-judul { font-size: 15px; }
+  .bd-toast { bottom: 96px; }
   .hq-urut .sr-only, .hq-cari .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
@@ -1782,17 +1799,23 @@
     clearTimeout(t._h);
     t._h = setTimeout(function () { t.classList.remove('bd-toast-tampil'); }, 2600);
   }
+  function namaRapi(s) {
+    return String(s || '').toLowerCase().replace(/(^|[\s(\-'])([a-z])/g, function (m, pre, c) { return pre + c.toUpperCase(); });
+  }
+  function tanggalSingkat(iso) {
+    return new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short' }).format(new Date(iso));
+  }
   function barisTunggu(p) {
     var art = pkEl('article', 'bd-peserta');
     var inisial = pkEl('span', 'bd-inisial', String(p.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join(''));
     inisial.setAttribute('aria-hidden', 'true');
     var info = pkEl('div', 'bd-info');
     var nama = pkEl('div', 'bd-nama');
-    nama.appendChild(pkEl('span', '', p.nama || '(tanpa nama)'));
+    nama.appendChild(pkEl('span', 'bd-nama-teks', namaRapi(p.nama) || '(tanpa nama)'));
     nama.appendChild(pkEl('span', 'pk-pill pk-pill-' + kelasKunci(p.kelas), kelasLabel(p.kelas)));
     var selisih = selisihHari(p.bayar_at);
     var waktu = pkEl('div', 'bd-waktu');
-    waktu.appendChild(pkEl('span', '', tanggalBayar(p.bayar_at) + ' · ' + jamBayar(p.bayar_at)));
+    waktu.appendChild(pkEl('span', '', tanggalSingkat(p.bayar_at) + ' · ' + jamBayar(p.bayar_at)));
     waktu.appendChild(pkEl('span', 'bd-pill ' + (selisih >= 2 ? 'bd-pill-oranye' : 'bd-pill-netral'), selisih <= 0 ? 'Hari ini' : selisih + ' hari lalu'));
     info.appendChild(nama);
     info.appendChild(waktu);
