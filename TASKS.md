@@ -31,3 +31,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 27): spasi ganda, nomor wa.me (konstanta WA berawalan 62), dan type input. Hasil kosong.
 - 17 Nov 2026 (putaran 28): label for, tombol ikon (profil punya teks), referensi aset CSS. Hasil kosong.
 - 17 Nov 2026 (putaran 29): src ganda, meta viewport, dan ukuran aset. Hasil kosong.
+- 17 Nov 2026 (putaran 30): h1 ganda ditemukan dan dicatat sebagai A10, tidak diubah. Tautan #anchor lintas halaman dan style inline berulang belum ada masalah nyata (display:none berulang setara dengan atribut hidden).
