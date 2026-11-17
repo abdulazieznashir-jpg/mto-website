@@ -75,6 +75,9 @@
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
   .adm-murid-tab-btn[aria-pressed="true"] { background: #b7893a; border-color: #b7893a; color: #fff; }
+  .adm-halaqoh-daftar { list-style: none; padding: 0; margin: 8px 0 0; }
+  .adm-halaqoh-peserta-baris { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #efeae0; }
+  .adm-halaqoh-peserta-baris small { color: #6b655b; }
   .adm-halaqoh-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 16px; }
   .adm-halaqoh-pil { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: #f4f1ec; color: #3d3a35; font-size: 14px; }
   .adm-halaqoh-pil b { background: rgba(0,0,0,.07); border-radius: 999px; padding: 0 7px; font-weight: 600; }
@@ -533,6 +536,8 @@
             <button type="button" class="adm-ikon-btn" id="pengajarDetailTutup" aria-label="Tutup detail pengajar">✕</button>
           </div>
           <dl class="adm-detail-daftar" id="pengajarDetailDaftar"></dl>
+          <h3 class="adm-dash-h2">Daftar Peserta</h3>
+          <ul class="adm-halaqoh-daftar" id="pengajarDetailPeserta"></ul>
         </aside>
       </div>
     </section>
@@ -1169,12 +1174,35 @@
     var daftar = document.getElementById('pengajarDetailDaftar');
     if (!panel || !daftar) return;
     if (nama) nama.textContent = g.nama || '—';
+    var anak = MURID.filter(function (m) { return m.pengampu_nama === g.nama; });
+    var nAktif = anak.filter(function (m) { return !m.jeda_sejak; }).length;
+    var nBelum = anak.filter(function (m) { return !!BELUM[m.id]; }).length;
     daftar.innerHTML = '';
-    [['Email', g.email], ['Jumlah murid', g.jumlah_murid], ['Status', g.aktif ? 'Aktif' : 'Nonaktif']]
+    [['Peserta', anak.length], ['Aktif', nAktif], ['Belum Bayar', nBelum]]
       .forEach(function (pair) {
         daftar.appendChild(sel('dt', pair[0]));
         daftar.appendChild(sel('dd', pair[1]));
       });
+    var list = document.getElementById('pengajarDetailPeserta');
+    if (list) {
+      list.innerHTML = '';
+      if (!anak.length) {
+        var kosong = document.createElement('li');
+        kosong.textContent = 'Belum ada peserta di halaqoh ini.';
+        list.appendChild(kosong);
+      }
+      anak.forEach(function (m) {
+        var li = document.createElement('li');
+        li.className = 'adm-halaqoh-peserta-baris';
+        var nm = document.createElement('span');
+        nm.textContent = m.nama || '(tanpa nama)';
+        var ket = document.createElement('small');
+        ket.textContent = (m.kelas ? m.kelas : '') + (m.durasi ? ' · ' + m.durasi + ' bulan' : '');
+        li.appendChild(nm);
+        li.appendChild(ket);
+        list.appendChild(li);
+      });
+    }
     panel.hidden = false;
   }
 
