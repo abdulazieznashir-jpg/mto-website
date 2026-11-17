@@ -127,6 +127,23 @@
   .hq-bawah { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 16px; }
   .hq-bawah-tautan { display: block; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 16px; padding: 14px 16px; color: #1D1D1F; text-decoration: none; font-size: 14px; font-weight: 600; }
   .hq-bawah-nonaktif { color: #6E6E73; background: #FAF7F1; font-weight: 500; }
+  .hq-status-pil { white-space: normal; line-height: 1.2; }
+  .hq-pill { align-self: flex-start; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+  .hq-pill-bisa { background: #E3F4E8; color: #1E7A3C; }
+  .hq-pill-hampir { background: #FDEBD8; color: #C2570C; }
+  .hq-pill-penuh { background: #FDE4E1; color: #B42318; }
+  .hq-pill-belum { background: #F1EEE8; color: #6E6E73; }
+  .hq-bar-isi { display: block; height: 100%; border-radius: 999px; background: #A9801F; }
+  .hq-bar-bisa { background: #2FA33A; }
+  .hq-bar-hampir { background: #F5A524; }
+  .hq-bar-penuh { background: #B42318; }
+  .hq-nilai-aksi { color: #A9801F; font-weight: 700; }
+  .hq-menunggu { font-size: 12px; color: #6E6E73; }
+  .hq-kapasitas-form { margin: 8px 0 12px; }
+  .hq-form { display: flex; gap: 8px; margin: 8px 0; }
+  .hq-form input { flex: 1; min-width: 0; height: 40px; border-radius: 12px; border: 1px solid #EEE6D8; padding: 0 12px; font-size: 14px; box-sizing: border-box; }
+  .hq-simpan { height: 40px; border: 0; border-radius: 12px; background: #A9801F; color: #fff; padding: 0 14px; font-weight: 600; }
+  .hq-simpan:disabled { opacity: .6; }
   .hq-urut .sr-only, .hq-cari .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
@@ -681,13 +698,13 @@
         <section class="hq-ringkasan" aria-label="Ringkasan halaqoh">
           <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Retensi periode ini</span><small>Menunggu data</small></div>
           <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Sudah daftar ulang</span><small>Menunggu data</small></div>
-          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka">—</b><span>Kapasitas terisi</span><small>Menunggu data</small></div>
+          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka" id="hqKapasitasAngka">—</b><span>Kapasitas terisi</span><small id="hqKapasitasKet">Isi kapasitas pengajar dulu</small></div>
         </section>
         <div class="hq-status" role="group" aria-label="Filter kapasitas">
-          <button type="button" class="hq-status-pil hq-status-aktif" disabled>Semua <b id="pengajarJumlah">0</b></button>
-          <button type="button" class="hq-status-pil" disabled>Masih bisa tambah</button>
-          <button type="button" class="hq-status-pil" disabled>Hampir penuh</button>
-          <button type="button" class="hq-status-pil" disabled>Penuh</button>
+          <button type="button" class="hq-status-pil hq-status-aktif" data-st="semua" aria-pressed="true">Semua</button>
+          <button type="button" class="hq-status-pil" data-st="bisa" aria-pressed="false">Masih bisa tambah</button>
+          <button type="button" class="hq-status-pil" data-st="hampir" aria-pressed="false">Hampir penuh</button>
+          <button type="button" class="hq-status-pil" data-st="penuh" aria-pressed="false">Penuh</button>
         </div>
         <p class="hq-legenda">Masih bisa tambah: di bawah 70% · Hampir penuh: 70–89% · Penuh: 90% ke atas. Menunggu data kapasitas.</p>
         <div class="adm-halaqoh-filter" role="group" aria-label="Filter jenis kelamin">
@@ -698,6 +715,7 @@
         <div class="hq-baris-cari">
           <label class="hq-urut"><span class="sr-only">Urutkan</span>
             <select id="pengajarUrut">
+              <option value="sisa">Urutkan: Kapasitas tersisa terbanyak</option>
               <option value="nama">Urutkan: Nama A–Z</option>
               <option value="terbanyak">Urutkan: Murid terbanyak</option>
               <option value="sedikit">Urutkan: Murid sedikit</option>
@@ -728,6 +746,7 @@
             <button type="button" class="adm-ikon-btn" id="pengajarDetailTutup" aria-label="Tutup detail pengajar">✕</button>
           </div>
           <dl class="adm-detail-daftar" id="pengajarDetailDaftar"></dl>
+          <div class="hq-kapasitas-form" id="pengajarKapasitas"></div>
           <h3 class="adm-dash-h2">Daftar Peserta</h3>
           <ul class="adm-halaqoh-daftar" id="pengajarDetailPeserta"></ul>
         </aside>
@@ -1333,13 +1352,26 @@
   /* Pengajar: isi tabel dan panel detail dari admin_daftar_pengajar */
   var PENGAJAR = [];
   function muatPengajar() {
-    sb.rpc('admin_daftar_pengajar').then(function (r) {
-      if (r.error || !Array.isArray(r.data)) { tampilPengajar(null); return; }
-      PENGAJAR = r.data;
+    Promise.all([sb.rpc('admin_daftar_pengajar'), sb.rpc('admin_kapasitas_halaqoh')]).then(function (hasil) {
+      var r = hasil[0];
+      var k = hasil[1];
+      if (r.error || !Array.isArray(r.data)) { tampilPengajar(null); isiRingkasanKapasitas(null); return; }
+      var peta = {};
+      if (!k.error && Array.isArray(k.data)) k.data.forEach(function (x) { peta[x.email] = x; });
+      PENGAJAR = r.data.map(function (g) {
+        var x = peta[g.email] || {};
+        return Object.assign({}, g, {
+          kapasitas_menit: x.kapasitas_menit === undefined ? null : x.kapasitas_menit,
+          terisi_menit: Number(x.terisi_menit || 0),
+          menunggu_jadwal: Number(x.murid_menunggu_jadwal || 0),
+          kapasitas_tersedia: !k.error && !!peta[g.email]
+        });
+      });
       catatDiperbarui();
       setAngka('pengajar_aktif', PENGAJAR.filter(function (g) { return g.aktif; }).length);
+      isiRingkasanKapasitas(PENGAJAR);
       tampilPengajar(PENGAJAR);
-    }).catch(function () { tampilPengajar(null); });
+    }).catch(function () { tampilPengajar(null); isiRingkasanKapasitas(null); });
   }
 
   function isiBeranda() {
@@ -1398,22 +1430,65 @@
   }
 
   var HALAQOH_CARI = '';
-  var HALAQOH_URUT = 'nama';
+  var HALAQOH_URUT = 'sisa';
+  var HALAQOH_STATUS = 'semua';
   function catatDiperbarui() {
     var el = document.getElementById('hqDiperbarui');
     if (!el) return;
     var t = new Date();
     el.textContent = 'Diperbarui pukul ' + String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
   }
+  function adaKapasitas(g) {
+    return !!g.kapasitas_tersedia && g.kapasitas_menit !== null && g.kapasitas_menit !== undefined;
+  }
+  function statusKapasitas(g) {
+    if (!adaKapasitas(g)) return 'belum';
+    var kap = Number(g.kapasitas_menit);
+    if (kap <= 0) return 'penuh';
+    var persen = (Number(g.terisi_menit || 0) / kap) * 100;
+    if (persen < 70) return 'bisa';
+    if (persen < 90) return 'hampir';
+    return 'penuh';
+  }
+  function persenTerisi(g) {
+    var kap = Number(g.kapasitas_menit);
+    if (kap <= 0) return 100;
+    return Math.min(100, Math.round((Number(g.terisi_menit || 0) / kap) * 100));
+  }
+  function sisaMenit(g) {
+    return adaKapasitas(g) ? Number(g.kapasitas_menit) - Number(g.terisi_menit || 0) : -1;
+  }
   function setJumlahJenis(semua, ik, ak) {
-    var jumlah = document.getElementById('pengajarJumlah');
-    if (jumlah) jumlah.textContent = String(semua);
     document.querySelectorAll('.adm-halaqoh-jk').forEach(function (b) {
       var k = b.getAttribute('data-jk');
       if (k === 'semua') b.textContent = 'Semua jenis (' + semua + ')';
       if (k === 'ikhwan') b.textContent = 'Ikhwan (' + ik + ')';
       if (k === 'akhwat') b.textContent = 'Akhwat (' + ak + ')';
     });
+  }
+  function setJumlahStatus(list) {
+    var hitung = { semua: list.length, bisa: 0, hampir: 0, penuh: 0 };
+    list.forEach(function (g) {
+      var st = statusKapasitas(g);
+      if (hitung[st] !== undefined) hitung[st]++;
+    });
+    var label = { semua: 'Semua', bisa: 'Masih bisa tambah', hampir: 'Hampir penuh', penuh: 'Penuh' };
+    document.querySelectorAll('.hq-status-pil').forEach(function (b) {
+      var k = b.getAttribute('data-st');
+      if (label[k]) b.textContent = label[k] + ' (' + hitung[k] + ')';
+    });
+  }
+  function isiRingkasanKapasitas(list) {
+    var angka = document.getElementById('hqKapasitasAngka');
+    var ket = document.getElementById('hqKapasitasKet');
+    if (!angka || !ket) return;
+    var diisi = (list || []).filter(adaKapasitas);
+    if (!list) { angka.textContent = '—'; ket.textContent = 'Data kapasitas belum bisa dimuat'; return; }
+    if (!diisi.length) { angka.textContent = '—'; ket.textContent = 'Isi kapasitas pengajar dulu'; return; }
+    var kap = diisi.reduce(function (s, g) { return s + Number(g.kapasitas_menit); }, 0);
+    var terisi = diisi.reduce(function (s, g) { return s + Number(g.terisi_menit || 0); }, 0);
+    angka.textContent = kap > 0 ? Math.round((terisi / kap) * 100) + '%' : '—';
+    ket.textContent = terisi + ' dari ' + kap + ' menit · ' + diisi.length + ' pengajar';
   }
   function bindKontrolHalaqoh() {
     var cari = document.getElementById('pengajarCari');
@@ -1426,17 +1501,35 @@
       HALAQOH_URUT = urut.value;
       tampilPengajar(PENGAJAR);
     });
+    document.querySelectorAll('.hq-status-pil').forEach(function (b) {
+      b.addEventListener('click', function () {
+        HALAQOH_STATUS = b.getAttribute('data-st') || 'semua';
+        document.querySelectorAll('.hq-status-pil').forEach(function (x) {
+          var aktif = x === b;
+          x.classList.toggle('hq-status-aktif', aktif);
+          x.setAttribute('aria-pressed', aktif ? 'true' : 'false');
+        });
+        tampilPengajar(PENGAJAR);
+      });
+    });
   }
   bindKontrolHalaqoh();
-  function barisHq(label, nilai) {
+  function barisHq(label, nilai, persen, kelasBar) {
     var r = document.createElement('div');
     r.className = 'hq-baris';
     var atas = document.createElement('div');
     atas.className = 'hq-baris-atas';
     var l = document.createElement('span'); l.className = 'hq-label'; l.textContent = label;
     var v = document.createElement('span'); v.className = 'hq-nilai'; v.textContent = nilai;
+    if (kelasBar === 'aksi') v.classList.add('hq-nilai-aksi');
     atas.appendChild(l); atas.appendChild(v);
     var track = document.createElement('span'); track.className = 'hq-bar'; track.setAttribute('aria-hidden', 'true');
+    if (typeof persen === 'number') {
+      var isi = document.createElement('span');
+      isi.className = 'hq-bar-isi' + (kelasBar && kelasBar !== 'aksi' ? ' hq-bar-' + kelasBar : '');
+      isi.style.width = persen + '%';
+      track.appendChild(isi);
+    }
     r.appendChild(atas); r.appendChild(track);
     return r;
   }
@@ -1444,6 +1537,7 @@
     var jumlah = anakDari(g).length;
     var jk = jkPengajar(g);
     var label = jk === 'ikhwan' ? 'Ikhwan' : (jk === 'akhwat' ? 'Akhwat' : 'Jenis kelamin belum diisi');
+    var st = statusKapasitas(g);
     var item = document.createElement('article');
     item.className = 'hq-kartu';
     item.setAttribute('role', 'button');
@@ -1460,11 +1554,25 @@
     var meta = document.createElement('div'); meta.className = 'hq-meta'; meta.textContent = label + ' · ' + jumlah + ' murid';
     isi.appendChild(nama);
     isi.appendChild(meta);
-    if (jumlah === 0) {
-      var pil = document.createElement('span'); pil.className = 'hq-pill-kuning'; pil.textContent = 'Belum ada murid';
-      isi.appendChild(pil);
+    var pill = document.createElement('span');
+    if (!g.kapasitas_tersedia) {
+      pill.className = 'hq-pill hq-pill-belum'; pill.textContent = 'Data kapasitas belum tersedia';
+    } else {
+      var teksPill = { bisa: 'Masih bisa tambah', hampir: 'Hampir penuh', penuh: 'Penuh', belum: 'Kapasitas belum diisi' }[st];
+      pill.className = 'hq-pill hq-pill-' + st; pill.textContent = teksPill;
     }
-    isi.appendChild(barisHq('Kapasitas', 'Menunggu data'));
+    isi.appendChild(pill);
+    var kapRow;
+    if (!g.kapasitas_tersedia) kapRow = barisHq('Kapasitas', 'Menunggu data');
+    else if (!adaKapasitas(g)) kapRow = barisHq('Kapasitas', 'Isi kapasitas', null, 'aksi');
+    else kapRow = barisHq('Kapasitas', Number(g.terisi_menit || 0) + ' dari ' + Number(g.kapasitas_menit) + ' menit', persenTerisi(g), st);
+    isi.appendChild(kapRow);
+    if (g.kapasitas_tersedia && g.menunggu_jadwal > 0) {
+      var tunggu = document.createElement('div');
+      tunggu.className = 'hq-menunggu';
+      tunggu.textContent = g.menunggu_jadwal + ' murid menunggu jadwal';
+      isi.appendChild(tunggu);
+    }
     isi.appendChild(barisHq('Retensi periode ini', 'Menunggu data'));
     var panah = document.createElement('span'); panah.className = 'hq-panah'; panah.setAttribute('aria-hidden', 'true'); panah.textContent = '›';
     item.appendChild(inisial);
@@ -1496,14 +1604,18 @@
       list.filter(function (g) { return jkPengajar(g) === 'ikhwan'; }).length,
       list.filter(function (g) { return jkPengajar(g) === 'akhwat'; }).length
     );
+    setJumlahStatus(list);
     var tampil = list
       .filter(function (g) { return HALAQOH_JK === 'semua' || jkPengajar(g) === HALAQOH_JK; })
+      .filter(function (g) { return HALAQOH_STATUS === 'semua' || statusKapasitas(g) === HALAQOH_STATUS; })
       .filter(function (g) { return !HALAQOH_CARI || String(g.nama || '').toLowerCase().indexOf(HALAQOH_CARI) !== -1; });
     tampil.sort(function (a, b) {
+      var namaA = String(a.nama || ''), namaB = String(b.nama || '');
       var na = anakDari(a).length, nb = anakDari(b).length;
+      if (HALAQOH_URUT === 'sisa' && sisaMenit(a) !== sisaMenit(b)) return sisaMenit(b) - sisaMenit(a);
       if (HALAQOH_URUT === 'terbanyak' && na !== nb) return nb - na;
       if (HALAQOH_URUT === 'sedikit' && na !== nb) return na - nb;
-      return String(a.nama || '').localeCompare(String(b.nama || ''), 'id');
+      return namaA.localeCompare(namaB, 'id');
     });
     if (list.length === 0 || tampil.length === 0) {
       var teks = list.length === 0
@@ -1530,6 +1642,49 @@
       body.appendChild(tr);
       if (kartu) kartuHalaqoh(kartu, g);
     });
+  }
+
+  function isiFormKapasitas(g) {
+    var wadah = document.getElementById('pengajarKapasitas');
+    if (!wadah) return;
+    wadah.innerHTML = '';
+    if (!g.kapasitas_tersedia) {
+      var info0 = document.createElement('p'); info0.className = 'hq-catatan'; info0.textContent = 'Data kapasitas belum tersedia.';
+      wadah.appendChild(info0);
+      return;
+    }
+    var judul = document.createElement('h3'); judul.className = 'adm-dash-h2'; judul.textContent = 'Kapasitas per minggu';
+    var info = document.createElement('p'); info.className = 'hq-catatan';
+    info.textContent = 'Terisi ' + Number(g.terisi_menit || 0) + ' menit' +
+      (g.menunggu_jadwal > 0 ? ' · ' + g.menunggu_jadwal + ' murid menunggu jadwal' : '');
+    var form = document.createElement('form');
+    form.className = 'hq-form';
+    var input = document.createElement('input');
+    input.type = 'number'; input.min = '0'; input.step = '10'; input.inputMode = 'numeric';
+    input.placeholder = 'Contoh: 120';
+    input.setAttribute('aria-label', 'Kapasitas menit per minggu');
+    if (adaKapasitas(g)) input.value = String(g.kapasitas_menit);
+    var tombol = document.createElement('button');
+    tombol.type = 'submit'; tombol.className = 'hq-simpan'; tombol.textContent = 'Simpan kapasitas';
+    var catatan = document.createElement('p'); catatan.className = 'hq-catatan';
+    form.appendChild(input); form.appendChild(tombol);
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var nilai = input.value === '' ? null : Math.round(Number(input.value));
+      if (nilai !== null && (isNaN(nilai) || nilai < 0)) { catatan.textContent = 'Isi dengan angka 0 atau lebih.'; return; }
+      tombol.disabled = true;
+      catatan.textContent = 'Menyimpan…';
+      sb.rpc('admin_set_kapasitas', { p_email: g.email, p_menit: nilai }).then(function (r) {
+        tombol.disabled = false;
+        if (r.error) { catatan.textContent = 'Kapasitas belum tersimpan. Coba lagi.'; return; }
+        catatan.textContent = 'Kapasitas tersimpan.';
+        muatPengajar();
+      }).catch(function () {
+        tombol.disabled = false;
+        catatan.textContent = 'Kapasitas belum tersimpan. Coba lagi.';
+      });
+    });
+    wadah.appendChild(judul); wadah.appendChild(info); wadah.appendChild(form); wadah.appendChild(catatan);
   }
 
   function bukaDetailPengajar(g) {
@@ -1567,6 +1722,7 @@
         list.appendChild(li);
       });
     }
+    isiFormKapasitas(g);
     panel.hidden = false;
   }
 
