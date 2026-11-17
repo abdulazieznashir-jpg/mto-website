@@ -69,6 +69,3 @@
 .adm-profil .adm-tabs { margin-bottom: 10px; }
 .adm-panel[hidden] { display: none; }
 .adm-profil .pd-aksi { display: flex; }
-
-.skip-link { position: absolute; left: -9999px; top: 8px; z-index: 1100; background: #8C6526; color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 600; }
-.skip-link:focus { left: 8px; }
