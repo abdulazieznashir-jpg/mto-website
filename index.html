@@ -1546,9 +1546,9 @@
       '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
       '<div class="cek-wa"><span>Nomor WhatsApp</span><div class="cek-wa-row">' +
         '<select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select>' +
-        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" placeholder="812xxxxxxxx" value="' + esc(S.wa || '') + '">' +
+        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" autocomplete="tel" placeholder="812xxxxxxxx" value="' + esc(S.wa || '') + '">' +
       '</div></div>' +
-      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" placeholder="Ketik ulang nomor yang sama" value="' + esc(S.wa2 || '') + '"></label>' +
+      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" autocomplete="off" placeholder="Ketik ulang nomor yang sama" value="' + esc(S.wa2 || '') + '"></label>' +
       '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>' +
       '<label class="cek-check"><input type="checkbox" name="cekConfirm"' + (S.confirm ? ' checked' : '') + '><span>Saya memastikan nomor WhatsApp di atas sudah benar dan aktif.</span></label>';
     updateDataBtn();
