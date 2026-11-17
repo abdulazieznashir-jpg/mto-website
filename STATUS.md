@@ -1,6 +1,6 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 26 dari 300 (rencana 300)
+Total langkah: 27 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 92% (kartu Belum Bayar sudah terisi dari daftar lunas; kartu Pendaftar Baru menunggu definisi)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 72%
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 27: run terjadwal (2026-11-17). Cek ulang status, tanpa perubahan kode. origin/main sekarang di 4fd21d6 (sebelumnya 84472d8): main sudah punya tab Transkrip di kiri Notifikasi (c790c7a) dan file TASKS.md/PLAN.md hasil audit (kontras, meta, tautan bersih, placeholder Pixel, ejaan Tahfizh vs Tahfidz). redesign-admin tetap 29 commit di depan dan 13 di belakang main; admin.html tetap konflik besar (main 1394 baris berbeda). Semua langkah yang tersisa masih menunggu keputusan pemilik (lihat 'Menunggu keputusan pemilik', poin PRIORITAS). Tidak ada merge, tidak ada push ke main.
 - [x] Langkah 26: run terjadwal (2026-11-17). Cek sintaks skrip inline admin.html (lolos node --check). Tidak ada perubahan tampilan. Perbandingan dengan origin/main: redesign-admin 29 commit di depan dan 12 di belakang. Main sudah memuat versi sendiri untuk Beranda, Peserta, dan Halaqoh, serta tab Notifikasi di bawah yang menggantikan lonceng atas (1ae93c5). Melanjutkan tampilan di redesign-admin sekarang berisiko menduplikasi atau berbenturan dengan main. Keputusan yang dibutuhkan: rebase redesign-admin ke main, atau cukup pakai main sebagai acuan. Tidak ada merge, tidak ada push ke main.
 - [x] Langkah 25: run terjadwal (2026-11-17). Cek konflik saja, tanpa mengubah kode dan tanpa merge (git merge-tree, hanya baca). origin/main sekarang di 1ae93c5 (dari d33553c): ada commit Notifikasi admin dengan trigger tabel notifikasi_admin (folder supabase/ ikut berubah di main, tidak disentuh di sini). Perbedaan: redesign-admin 21 commit di depan dan 11 di belakang main. Hasil: satu-satunya konflik adalah admin.html. Di redesign-admin, admin.html hanya berubah 32 baris sejak titik cabang aaa47bb; di main, admin.html berubah 1327 baris. Dibandingkan langsung, redesign-admin menambah 122 baris dan menghapus 1235 baris dari main. Angka ini memperkuat opsi (a) di bawah. Tidak ada perubahan tampilan.
 - [x] Langkah 24: run terjadwal (2026-11-17, pukul 14:16 UTC). Cek sintaks skrip inline admin.html (1 blok, lolos node --check). Tidak ada perubahan tampilan. origin/main sekarang di d33553c (dari d7b9aba): ada tambahan 4 commit soal Halaqoh dan Beranda versi HP serta Beranda 'Menunggu Masuk Grup'. Perbedaan: redesign-admin 18 commit di depan dan 10 di belakang main. Main sudah memuat versi sendiri untuk Beranda, Peserta, dan Halaqoh (lihat 'Menunggu keputusan pemilik'), jadi melanjutkan perubahan tampilan di redesign-admin sekarang berisiko menduplikasi atau berbenturan. Tidak ada merge, tidak ada push ke main.
