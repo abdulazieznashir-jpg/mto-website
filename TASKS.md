@@ -20,6 +20,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A16 Tautan media sosial di footer index.html (Instagram, Facebook, YouTube, TikTok) masih href="#". Ikon ada, tapi tidak mengarah ke akun mana pun. Perlu URL akun resmi dari pemilik. Tidak diubah
 - [A] A17 Tag Open Graph hanya ada di index.html (6 tag), tanpa og:image. Halaman lain tidak punya OG sama sekali. Saat tautan dibagikan di WhatsApp, pratinjau tanpa gambar. Perlu pilihan gambar pratinjau dan domain resmi (lihat A12). Tidak diubah
 - [A] A18 Panjang judul dan deskripsi meta: judul paket-belajar.html 62 karakter (lebih dari 60), deskripsi index.html 178 karakter (lebih dari 160). Beberapa deskripsi lain di bawah 120. Ini teks pemasaran, jadi perbaikannya keputusan konten pemilik. Tidak diubah
+- [A] A19 Urutan heading: testimoni.html tidak punya h1. Beberapa halaman melompat dari h2 ke h4, profil.html dari h1 ke h3. Mengganti level heading bisa mengubah tampilan karena gaya ditentukan per tag. Perlu persetujuan dan pengecekan visual. Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -72,3 +73,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 57): id ganda dan label for yang menunjuk ke id yang tidak ada. Keduanya tidak ditemukan. Hasil kosong.
 - 17 Nov 2026 (putaran 58): meta http-equiv, target khusus, dan onclick inline. Hanya satu onclick di profil.html (tombol Tutup, id gantiSheet ada). Hasil kosong.
 - 17 Nov 2026 (putaran 59): iframe tidak ada. Hanya satu gambar nyata di situs (hero di index.html, di atas lipatan, sudah punya fetchpriority=high), sisanya pixel pelacak. Tidak perlu loading=lazy. Hasil kosong.
+- 17 Nov 2026 (putaran 60): urutan heading. Dicatat sebagai A19 (perubahan level heading berdampak pada tampilan).
