@@ -45,3 +45,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 37): tidak ada tautan http:// yang tidak aman di HTML/JS/CSS. Satu-satunya http:// adalah namespace SVG di css/style.css, bukan tautan. Hasil kosong.
 - 17 Nov 2026 (putaran 38): tidak ada robots.txt dan sitemap.xml. Dicatat sebagai A14, tidak dibuat karena menyangkut domain dan berkas baru di produksi.
 - 17 Nov 2026 (putaran 39): pindai kata berulang berurutan di teks tampil. Semua hasil berasal dari judul dan label yang berdekatan setelah tag dibuang (misalnya 'Blog Blog &amp; Artikel'), bukan typo. Hasil kosong.
+- 17 Nov 2026 (putaran 40): cek sintaks node --check untuk semua js/*.js lolos, dan working tree bersih. Hasil kosong.
