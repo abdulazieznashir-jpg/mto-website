@@ -199,6 +199,44 @@
   .pk-sukses-ikon { width: 64px; height: 64px; border-radius: 50%; background: #E3F4E8; color: #1E7A3C; font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 8px auto 12px; }
   .pk-sukses-judul { display: block; text-align: center; font-size: 18px; color: #1D1D1F; }
   .pk-sukses-judul + p { text-align: center; }
+  .bd-wrap { padding-bottom: 28px; }
+  .bd-stat { display: grid; grid-template-columns: repeat(3, 1fr); background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; margin: 14px 0; overflow: hidden; }
+  .bd-stat-sel { padding: 12px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .bd-stat-sel + .bd-stat-sel { border-left: 1px solid #EEE6D8; }
+  .bd-stat-label { font-size: 11px; color: #6E6E73; line-height: 1.25; }
+  .bd-stat-sel b { font-size: 24px; font-weight: 800; color: #1D1D1F; line-height: 1; }
+  .bd-hijau { color: #1E7A3C !important; }
+  .bd-oranye { color: #C2570C !important; }
+  .bd-kartu { background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px; margin-bottom: 14px; }
+  .bd-judul { font-size: 16px; font-weight: 700; color: #1D1D1F; margin: 0 0 4px; }
+  .bd-judul span { color: #A9801F; }
+  .bd-catatan { font-size: 12px; color: #6E6E73; margin: 0 0 10px; }
+  .bd-peserta { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #F1EEE8; transition: opacity .25s, transform .25s; }
+  .bd-peserta.bd-keluar { opacity: 0; transform: translateX(16px); }
+  .bd-inisial { width: 44px; height: 44px; border-radius: 50%; background: #FBEBD0; color: #A9801F; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .bd-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .bd-nama { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; font-weight: 700; color: #1D1D1F; }
+  .bd-waktu { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #4A4740; }
+  .bd-pill { border-radius: 999px; padding: 2px 9px; font-size: 11px; font-weight: 600; }
+  .bd-pill-netral { background: #F1EEE8; color: #4A4740; }
+  .bd-pill-oranye { background: #FDEBDD; color: #C2570C; }
+  .bd-konfirmasi { flex-shrink: 0; min-height: 44px; border: 1px solid #A9801F; background: #FFFFFF; color: #8A6100; border-radius: 12px; padding: 0 12px; font-size: 13px; font-weight: 700; }
+  .bd-konfirmasi:disabled { opacity: .6; }
+  .bd-kosong { font-size: 13px; color: #6E6E73; text-align: center; padding: 16px 0; margin: 0; }
+  .bd-ringkas { font-size: 12px; color: #6E6E73; text-align: center; margin: 8px 0 0; }
+  .bd-baris { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid #F1EEE8; text-decoration: none; color: inherit; }
+  .bd-baris .bd-teks { flex: 1; font-size: 14px; color: #1D1D1F; display: flex; flex-direction: column; }
+  .bd-baris .bd-teks small { font-size: 12px; color: #6E6E73; }
+  .bd-baris b { font-size: 22px; font-weight: 800; }
+  .bd-panah { color: #6E6E73; font-size: 20px; }
+  .bd-pantau { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bd-pantau div { display: flex; flex-direction: column; gap: 6px; background: #F8F6F1; border-radius: 12px; padding: 10px 8px; }
+  .bd-pantau span { font-size: 12px; color: #1D1D1F; font-weight: 600; }
+  .bd-pantau small { font-size: 11px; color: #6E6E73; }
+  .bd-toast { position: fixed; left: 16px; right: 16px; bottom: 92px; max-width: 420px; margin: 0 auto; border-radius: 14px; padding: 12px 16px; font-size: 14px; font-weight: 600; color: #FFFFFF; box-shadow: 0 8px 24px rgba(0,0,0,.18); opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .25s, transform .25s; z-index: 80; }
+  .bd-toast.bd-toast-tampil { opacity: 1; transform: translateY(0); }
+  .bd-toast-ok { background: #1E7A3C; }
+  .bd-toast-gagal { background: #B42318; }
   .hq-urut .sr-only, .hq-cari .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
@@ -607,49 +645,36 @@
     </header>
     <div class="adm-kerangka" id="admKerangka">Memuat halaman admin…</div>
     <section class="adm-view" data-view="dashboard" hidden>
-      <div class="adm-dash-wrap">
+      <div class="adm-dash-wrap bd-wrap">
         <h1 class="adm-dash-judul">Beranda</h1>
-        <p class="adm-dash-sub">Ringkasan peserta program tahfidz</p>
-        <div class="adm-bd-hero">
-          <div class="adm-bd-hero-kiri">
-            <span class="adm-bd-ikon adm-bd-ikon-emas" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18.5 14.8c1.6.9 2.6 2.8 3 5.2"/></svg></span>
-            <div><span class="adm-bd-label">Total Peserta</span><b class="adm-bd-besar" id="bdTotal">—</b></div>
-          </div>
-          <div class="adm-bd-hero-kanan">
-            <span class="adm-bd-label">Sudah masuk grup</span>
-            <b class="adm-bd-persen" id="bdPersen">—</b>
-            <div class="adm-bd-bar" role="progressbar" aria-label="Persentase sudah masuk grup" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="bdBar"></span></div>
-          </div>
+        <p class="adm-dash-sub">Perlu tindakan hari ini</p>
+        <div class="bd-stat">
+          <div class="bd-stat-sel"><span class="bd-stat-label">Total Peserta</span><b id="bdTotal">—</b></div>
+          <div class="bd-stat-sel"><span class="bd-stat-label">Sudah Masuk Grup</span><b class="bd-hijau" id="bdSudahGrup">—</b></div>
+          <div class="bd-stat-sel"><span class="bd-stat-label">Menunggu Masuk Grup</span><b class="bd-oranye" id="bdMenunggu">—</b></div>
         </div>
-        <section class="adm-bd-kartu" aria-labelledby="bdJudulGrup">
-          <h2 class="adm-bd-judul" id="bdJudulGrup"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18.5 14.8c1.6.9 2.6 2.8 3 5.2"/></svg> Masuk Grup</h2>
-          <a href="#murid" class="adm-bd-baris">
-            <span class="adm-bd-ikon adm-bd-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg></span>
-            <span class="adm-bd-teks">Sudah Masuk Grup</span>
-            <b class="adm-bd-angka-hijau" id="bdSudahGrup">—</b>
-            <span class="adm-bd-panah" aria-hidden="true">›</span>
-          </a>
-          <a href="#murid" class="adm-bd-baris">
-            <span class="adm-bd-ikon adm-bd-ikon-oranye" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></span>
-            <span class="adm-bd-teks">Belum Masuk Grup<small>Lihat murid &amp; masukkan ke grup</small></span>
-            <b class="adm-bd-angka-oranye" id="bdBelumGrup">—</b>
-            <span class="adm-bd-panah" aria-hidden="true">›</span>
+        <section class="bd-kartu" aria-labelledby="bdJudulTunggu">
+          <h2 class="bd-judul" id="bdJudulTunggu">Peserta Menunggu Masuk Grup <span id="bdJudulJumlah"></span></h2>
+          <p class="bd-catatan">Sudah membayar dan belum dikonfirmasi masuk grup. Urut dari yang paling lama menunggu.</p>
+          <div id="bdDaftar"></div>
+          <p class="bd-kosong" id="bdKosong" hidden>Semua peserta baru sudah masuk grup.</p>
+          <p class="bd-ringkas" id="bdRingkas"></p>
+        </section>
+        <section class="bd-kartu" aria-labelledby="bdJudulPengajar">
+          <h2 class="bd-judul" id="bdJudulPengajar">Penempatan Pengajar</h2>
+          <a href="#murid" class="bd-baris">
+            <span class="bd-teks">Sudah masuk grup, belum punya pengajar<small>Atur di menu Peserta</small></span>
+            <b class="bd-oranye" id="bdBelumPengajar">—</b>
+            <span class="bd-panah" aria-hidden="true">›</span>
           </a>
         </section>
-        <section class="adm-bd-kartu" aria-labelledby="bdJudulPengajar">
-          <h2 class="adm-bd-judul" id="bdJudulPengajar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg> Penempatan Pengajar</h2>
-          <a href="#pengajar" class="adm-bd-baris">
-            <span class="adm-bd-ikon adm-bd-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg></span>
-            <span class="adm-bd-teks">Sudah Ada Pengajar</span>
-            <b class="adm-bd-angka-hijau" id="bdSudahPengajar">—</b>
-            <span class="adm-bd-panah" aria-hidden="true">›</span>
-          </a>
-          <a href="#pengajar" class="adm-bd-baris">
-            <span class="adm-bd-ikon adm-bd-ikon-oranye" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></span>
-            <span class="adm-bd-teks">Belum Ada Pengajar<small>Lihat murid &amp; pilih pengajar</small></span>
-            <b class="adm-bd-angka-oranye" id="bdBelumPengajar">—</b>
-            <span class="adm-bd-panah" aria-hidden="true">›</span>
-          </a>
+        <section class="bd-kartu" aria-labelledby="bdJudulPantau">
+          <h2 class="bd-judul" id="bdJudulPantau">Pantauan</h2>
+          <div class="bd-pantau">
+            <div><span>Retensi</span><small>Menunggu data</small></div>
+            <div><span>Tren</span><small>Menunggu data</small></div>
+            <div><span>Antrean Perlu Ditinjau AI</span><small>Menunggu data</small></div>
+          </div>
         </section>
       </div>
     </section>
@@ -1015,6 +1040,7 @@
     muatDashboard();
     muatMurid();
     muatPesertaBaru();
+    muatMenungguMasukGrup();
     muatPembayaran();
     muatGuru();
     muatBelumGuru();
@@ -1317,6 +1343,7 @@
     }).catch(function () { PESERTA_BARU = null; tampilPesertaBaru(); });
   }
   function tampilPesertaBaru() {
+    renderBeranda();
     var wadah = document.getElementById('pkKartu');
     if (!wadah) return;
     var waktu = document.getElementById('pkDiperbarui');
@@ -1727,25 +1754,111 @@
     }).catch(function () { tampilPengajar(null); isiRingkasanKapasitas(null); });
   }
 
-  function isiBeranda() {
-    if (!Array.isArray(MURID) || MURID.length === 0) return;
-    var total = MURID.length;
-    var sudahGrup = MURID.filter(function (m) { return String(m.link_grup || '').trim() !== ''; }).length;
-    var sudahPengajar = MURID.filter(function (m) { return String(m.pengampu_nama || '').trim() !== ''; }).length;
-    var persen = Math.round((sudahGrup / total) * 100);
-    var isi = {
-      bdTotal: total, bdSudahGrup: sudahGrup, bdBelumGrup: total - sudahGrup,
-      bdSudahPengajar: sudahPengajar, bdBelumPengajar: total - sudahPengajar, bdPersen: persen + '%'
-    };
-    Object.keys(isi).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.textContent = String(isi[id]);
-    });
-    var bar = document.getElementById('bdBar');
-    if (bar) bar.style.width = persen + '%';
-    var wadah = document.querySelector('.adm-bd-bar');
-    if (wadah) wadah.setAttribute('aria-valuenow', String(persen));
+  /* Beranda: peserta lunas yang belum dikonfirmasi masuk grup */
+  var MENUNGGU = null;
+  var BD_BATAS = 5;
+  function tanggalBayar(iso) {
+    return new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso));
   }
+  function jamBayar(iso) {
+    return new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }).format(new Date(iso));
+  }
+  function selisihHari(iso) {
+    var fmt = function (d) { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d); };
+    var hariIni = new Date(fmt(new Date()) + 'T00:00:00Z');
+    var hariBayar = new Date(fmt(new Date(iso)) + 'T00:00:00Z');
+    return Math.round((hariIni - hariBayar) / 86400000);
+  }
+  function bdToast(teks, ok) {
+    var t = document.getElementById('bdToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'bdToast';
+      t.setAttribute('role', 'status');
+      document.body.appendChild(t);
+    }
+    t.textContent = teks;
+    t.className = 'bd-toast bd-toast-tampil ' + (ok ? 'bd-toast-ok' : 'bd-toast-gagal');
+    clearTimeout(t._h);
+    t._h = setTimeout(function () { t.classList.remove('bd-toast-tampil'); }, 2600);
+  }
+  function barisTunggu(p) {
+    var art = pkEl('article', 'bd-peserta');
+    var inisial = pkEl('span', 'bd-inisial', String(p.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join(''));
+    inisial.setAttribute('aria-hidden', 'true');
+    var info = pkEl('div', 'bd-info');
+    var nama = pkEl('div', 'bd-nama');
+    nama.appendChild(pkEl('span', '', p.nama || '(tanpa nama)'));
+    nama.appendChild(pkEl('span', 'pk-pill pk-pill-' + kelasKunci(p.kelas), kelasLabel(p.kelas)));
+    var selisih = selisihHari(p.bayar_at);
+    var waktu = pkEl('div', 'bd-waktu');
+    waktu.appendChild(pkEl('span', '', tanggalBayar(p.bayar_at) + ' · ' + jamBayar(p.bayar_at)));
+    waktu.appendChild(pkEl('span', 'bd-pill ' + (selisih >= 2 ? 'bd-pill-oranye' : 'bd-pill-netral'), selisih <= 0 ? 'Hari ini' : selisih + ' hari lalu'));
+    info.appendChild(nama);
+    info.appendChild(waktu);
+    var btn = pkEl('button', 'bd-konfirmasi', 'Konfirmasi Masuk');
+    btn.type = 'button';
+    btn.addEventListener('click', function () { konfirmasiMasuk(p, art, btn); });
+    art.appendChild(inisial);
+    art.appendChild(info);
+    art.appendChild(btn);
+    return art;
+  }
+  function konfirmasiMasuk(p, art, btn) {
+    btn.disabled = true;
+    btn.textContent = 'Memproses…';
+    sb.rpc('admin_konfirmasi_masuk_grup', { p_id: p.id }).then(function (r) {
+      if (r.error) {
+        btn.disabled = false;
+        btn.textContent = 'Konfirmasi Masuk';
+        bdToast('Gagal memproses. Coba lagi.', false);
+        return;
+      }
+      art.classList.add('bd-keluar');
+      MENUNGGU = (MENUNGGU || []).filter(function (x) { return x.id !== p.id; });
+      setTimeout(renderBeranda, 250);
+      bdToast('Dipindahkan ke Peserta', true);
+      muatPesertaBaru();
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Konfirmasi Masuk';
+      bdToast('Gagal memproses. Coba lagi.', false);
+    });
+  }
+  function muatMenungguMasukGrup() {
+    sb.rpc('admin_daftar_menunggu_masuk_grup').then(function (r) {
+      MENUNGGU = (!r.error && Array.isArray(r.data)) ? r.data : null;
+      renderBeranda();
+    }).catch(function () { MENUNGGU = null; renderBeranda(); });
+  }
+  function renderBeranda() {
+    var daftar = document.getElementById('bdDaftar');
+    if (!daftar) return;
+    var total = Array.isArray(MURID) && MURID.length ? MURID.length : null;
+    var set = function (id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; };
+    set('bdTotal', total === null ? '—' : String(total));
+    set('bdBelumPengajar', Array.isArray(PESERTA_BARU) ? String(PESERTA_BARU.length) : '—');
+    daftar.innerHTML = '';
+    if (MENUNGGU === null) {
+      set('bdMenunggu', '—');
+      set('bdSudahGrup', '—');
+      set('bdJudulJumlah', '');
+      set('bdRingkas', '');
+      var kosong0 = document.getElementById('bdKosong');
+      if (kosong0) kosong0.hidden = true;
+      daftar.appendChild(pkEl('p', 'bd-kosong', 'Daftar belum bisa dimuat.'));
+      return;
+    }
+    var jumlah = MENUNGGU.length;
+    set('bdMenunggu', String(jumlah));
+    set('bdSudahGrup', total === null ? '—' : String(Math.max(total - jumlah, 0)));
+    set('bdJudulJumlah', '(' + jumlah + ')');
+    MENUNGGU.slice(0, BD_BATAS).forEach(function (p) { daftar.appendChild(barisTunggu(p)); });
+    var kosong = document.getElementById('bdKosong');
+    if (kosong) kosong.hidden = jumlah > 0;
+    set('bdRingkas', jumlah > BD_BATAS ? 'Menampilkan ' + BD_BATAS + ' dari ' + jumlah + ' peserta' : '');
+  }
+  function isiBeranda() { renderBeranda(); }
   function setAngka(kunci, nilai) {
     document.querySelectorAll('[data-stat="' + kunci + '"]').forEach(function (el) { el.textContent = String(nilai); });
   }
