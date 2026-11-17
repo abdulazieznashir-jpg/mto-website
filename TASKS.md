@@ -88,3 +88,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 70): select dengan opsi kosong dan atribut required. Opsi kosong hanya di filter admin dan index, tidak ada select required. Hasil kosong.
 - 17 Nov 2026 (putaran 71): jumlah tag html, head, dan </html> per halaman. Angka ganda hanya berasal dari string di dalam script, bukan markup. Hasil kosong.
 - 17 Nov 2026 (putaran 72): gaya inline dengan warna teks putih. Hanya satu di tombol WhatsApp melayang (index.html), yang punya latar gelap. Hasil kosong.
+- 17 Nov 2026 (putaran 73): berkas js/ dan css/ yang tidak dirujuk di mana pun. Tidak ada. Hasil kosong.
