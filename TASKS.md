@@ -74,3 +74,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 58): meta http-equiv, target khusus, dan onclick inline. Hanya satu onclick di profil.html (tombol Tutup, id gantiSheet ada). Hasil kosong.
 - 17 Nov 2026 (putaran 59): iframe tidak ada. Hanya satu gambar nyata di situs (hero di index.html, di atas lipatan, sudah punya fetchpriority=high), sisanya pixel pelacak. Tidak perlu loading=lazy. Hasil kosong.
 - 17 Nov 2026 (putaran 60): urutan heading. Dicatat sebagai A19 (perubahan level heading berdampak pada tampilan).
+- 17 Nov 2026 (putaran 61): tabel (9 tabel) semua punya sel th di dekatnya. Hasil kosong.
