@@ -291,6 +291,9 @@
     padding: 12px 16px; box-sizing: border-box;
   }
   .adm-notif-panel[hidden] { display: none !important; }
+  @media (max-width: 899px) {
+    .adm-notif-panel { position: fixed; top: 72px; left: 12px; right: 12px; width: auto; }
+  }
   .adm-notif-judul { margin: 0 0 8px; font-weight: 700; }
   .adm-notif-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .adm-notif-daftar a { color: var(--adm-gold-ink, #8A6A1F); text-decoration: none; font-weight: 600; }
@@ -1030,6 +1033,7 @@
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
       setAngka('murid_diterima', MURID.length);
+      if (!RINGKASAN_OK) isiNotifikasiLokal(true);
       if (PENGAJAR.length) tampilPengajar(PENGAJAR);
       halamanAktif = 1;
       isiGelombangMurid();
@@ -1872,13 +1876,37 @@
   }
   bindTopBar();
 
-  function gagalNotifikasi() {
+  var RINGKASAN_OK = false;
+  function isiNotifikasiLokal(dataDbGagal) {
     var daftar = document.getElementById('notifDaftar');
     if (!daftar) return;
     daftar.innerHTML = '';
-    var li = document.createElement('li');
-    li.textContent = 'Notifikasi belum bisa dimuat.';
-    daftar.appendChild(li);
+    var items = [];
+    var tanpaGelombang = MURID.filter(function (m) { return !m.gelombang; }).length;
+    if (tanpaGelombang > 0) items.push({ teks: 'Murid belum punya gelombang: ' + tanpaGelombang, href: '#murid' });
+    if (dataDbGagal) items.push({ teks: 'Data permintaan belum bisa dimuat dari database.', href: null });
+    if (!items.length) {
+      var kosong = document.createElement('li');
+      kosong.textContent = 'Tidak ada yang menunggu keputusan.';
+      daftar.appendChild(kosong);
+      return;
+    }
+    items.forEach(function (it) {
+      var li = document.createElement('li');
+      if (it.href) {
+        var a = document.createElement('a');
+        a.href = it.href;
+        a.textContent = it.teks;
+        li.appendChild(a);
+      } else {
+        li.textContent = it.teks;
+      }
+      daftar.appendChild(li);
+    });
+  }
+
+  function gagalNotifikasi() {
+    isiNotifikasiLokal(true);
   }
 
   function isiNotifikasi(data) {
@@ -1927,6 +1955,7 @@
         return;
       }
       var data = r.data;
+      RINGKASAN_OK = true;
       isiNotifikasi(data);
       var jumlahMenunggu = Number(data.permintaan_keluar || 0) + Number(data.permintaan_ganti || 0) + Number(data.usulan_jadwal || 0);
       document.querySelectorAll('[data-lencana="permintaan"]').forEach(function (el) {
