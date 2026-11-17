@@ -1,6 +1,6 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 20 dari 300 (rencana 300)
+Total langkah: 21 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 92% (kartu Belum Bayar sudah terisi dari daftar lunas; kartu Pendaftar Baru menunggu definisi)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 72%
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 21: run terjadwal (2026-11-17). Cek ulang sintaks skrip inline admin.html (lolos node --check). Tidak ada perubahan tampilan. Semua sisa pekerjaan yang tersisa bergantung pada keputusan pemilik (lihat "Menunggu keputusan pemilik"): merge atau rebase dengan main, sumber data Pendaftar Baru, Jenis Baru/Repeat, jadwal pengajar dari spreadsheet, dan nama merek. Run ini tidak menggabungkan apa pun dan tidak mengubah branch utama.
 - [x] Langkah 20: run terjadwal. Cek sintaks skrip inline admin.html (1 blok, lolos node --check) dan koneksi CDN Supabase. Tidak ada perubahan tampilan. Tidak ada langkah lain yang bisa dikerjakan tanpa keputusan pemilik; semua sisa item ada di "Menunggu keputusan pemilik".
 - [x] Langkah 19: daftar peserta di detail Halaqoh diberi inisial (avatar lingkaran krem), sama seperti di detail Peserta. Hanya tampilan; data dan fungsi tidak diubah. Sintaks skrip inline sudah dicek.
 - [x] Langkah 18: kartu Beranda "Belum Bayar" diisi dari admin_daftar_lunas (sumber yang sama dengan daftar Belum lunas di Peserta). Hanya frontend, tanpa ubah SQL. Angka Pendaftar Baru tetap "—". Sintaks skrip sudah dicek.
