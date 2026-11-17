@@ -114,3 +114,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 95): cek semua tautan wa.me di setiap halaman. Semua memakai nomor 6285727533000, konsisten dengan konstanta WA. Tidak ada tautan tel atau mailto. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 96): cek meta viewport di setiap halaman HTML. Semua halaman punya. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 97): cek skrip dan stylesheet eksternal tanpa integrity. Hanya skrip Supabase di admin.html yang sudah tercatat sebagai A21. Font Google dimuat dinamis, jadi SRI tidak berlaku. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 98): verifikasi setiap <a target="_blank"> punya rel noopener, dicek per tag lintas baris. Semua punya. Tidak ada perubahan.
