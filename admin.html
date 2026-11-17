@@ -2009,9 +2009,9 @@
     var ket = document.getElementById('hqKapasitasKet');
     if (!angka || !ket) return;
     var diisi = (list || []).filter(adaKapasitas);
-    var tunggu = function (teks, ket) { angka.textContent = 'Menunggu data'; angka.classList.add('hq-ringkas-tunggu'); ket.textContent = ket; };
-    if (!list) { tunggu('', 'Data kapasitas belum bisa dimuat'); return; }
-    if (!diisi.length) { tunggu('', 'Isi kapasitas dulu'); return; }
+    var tunggu = function (keterangan) { angka.textContent = 'Menunggu data'; angka.classList.add('hq-ringkas-tunggu'); ket.textContent = keterangan; };
+    if (!list) { tunggu('Data kapasitas belum bisa dimuat'); return; }
+    if (!diisi.length) { tunggu('Menunggu data dari transkrip'); return; }
     var kap = diisi.reduce(function (s, g) { return s + Number(g.kapasitas_menit); }, 0);
     var terisi = diisi.reduce(function (s, g) { return s + Number(g.terisi_menit || 0); }, 0);
     angka.textContent = kap > 0 ? Math.round((terisi / kap) * 100) + '%' : 'Menunggu data';
