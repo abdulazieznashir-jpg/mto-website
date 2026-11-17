@@ -86,6 +86,10 @@
   .adm-halaqoh-pil b { background: rgba(0,0,0,.07); border-radius: 999px; padding: 0 7px; font-weight: 600; }
   .adm-halaqoh-pil-aktif { background: #b7893a; color: #fff; }
   .adm-halaqoh-pil-aktif b { background: rgba(255,255,255,.25); }
+  .adm-halaqoh-jk { border: 0; cursor: pointer; font: inherit; }
+  .adm-jk-grup { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
+  .adm-jk-btn { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #ECE7DE; background: #FFFFFF; color: #1D1D1F; font: inherit; font-size: 14px; cursor: pointer; }
+  .adm-jk-btn[aria-pressed="true"] { background: #F6EEDC; color: #8A6A1F; border-color: #B8912F; font-weight: 600; }
   #pengajarKartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
   @media (min-width: 720px) { #pengajarKartu { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .adm-halaqoh-inisial { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #f7efe0; color: #9a7226; font-weight: 700; flex-shrink: 0; }
@@ -481,6 +485,11 @@
             <button type="button" class="adm-murid-tab-btn" data-tab="belum" aria-pressed="false">Belum Bayar <span id="tabBelum">0</span></button>
             <button type="button" class="adm-murid-tab-btn" data-tab="sudah" aria-pressed="false">Sudah Bayar <span id="tabSudah">0</span></button>
           </div>
+          <div class="adm-jk-grup" role="group" aria-label="Filter jenis kelamin murid">
+            <button type="button" class="adm-jk-btn" data-jk="semua" aria-pressed="true">Semua</button>
+            <button type="button" class="adm-jk-btn" data-jk="ikhwan" aria-pressed="false">Ikhwan</button>
+            <button type="button" class="adm-jk-btn" data-jk="akhwat" aria-pressed="false">Akhwat</button>
+          </div>
           <label class="adm-tempat-label adm-murid-gel">Gelombang
             <select id="muridGelombang"><option value="">Semua gelombang</option></select>
           </label>
@@ -524,7 +533,9 @@
         <h1 class="adm-dash-judul">Halaqoh</h1>
         <p class="adm-dash-sub">Daftar pengajar dan jumlah pesertanya.</p>
         <div class="adm-halaqoh-filter" role="group" aria-label="Filter pengajar">
-          <span class="adm-halaqoh-pil adm-halaqoh-pil-aktif">Semua Pengajar <b id="pengajarJumlah">0</b></span>
+          <button type="button" class="adm-halaqoh-pil adm-halaqoh-pil-aktif adm-halaqoh-jk" data-jk="semua" aria-pressed="true">Semua <b id="pengajarJumlah">0</b></button>
+          <button type="button" class="adm-halaqoh-pil adm-halaqoh-jk" data-jk="ikhwan" aria-pressed="false">Ikhwan</button>
+          <button type="button" class="adm-halaqoh-pil adm-halaqoh-jk" data-jk="akhwat" aria-pressed="false">Akhwat</button>
         </div>
         <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
         <div class="adm-pengajar-tabel-wrap" hidden>
@@ -962,6 +973,7 @@
     sb.rpc('admin_daftar_murid_baru').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
+      if (PENGAJAR.length) tampilPengajar(PENGAJAR);
       halamanAktif = 1;
       isiGelombangMurid();
       tampilMurid();
@@ -1126,7 +1138,41 @@
     }).catch(function () { tampilPengajar(null); });
   }
 
+  var HALAQOH_JK = 'semua';
+  function namaPolos(s) { return String(s || '').replace(/^\s*ustadzah?\s+/i, '').trim().toLowerCase(); }
+  function anakDari(g) {
+    var kunci = namaPolos(g.nama);
+    return MURID.filter(function (m) { return namaPolos(m.pengampu_nama) === kunci; });
+  }
+  function jkPengajar(g) {
+    var nama = String(g.nama || '');
+    if (/^ustadzah\s/i.test(nama)) return 'akhwat';
+    if (/^ustadz\s/i.test(nama)) return 'ikhwan';
+    var surel = String(g.email || '');
+    if (surel.indexOf('akh-') !== -1) return 'akhwat';
+    if (surel.indexOf('ikh-') !== -1) return 'ikhwan';
+    var anak = anakDari(g);
+    var lk = anak.filter(function (m) { return m.jenis_kelamin === 'laki-laki'; }).length;
+    var pr = anak.filter(function (m) { return m.jenis_kelamin === 'perempuan'; }).length;
+    if (lk || pr) return lk >= pr ? 'ikhwan' : 'akhwat';
+    return '';
+  }
+  function bindFilterHalaqoh() {
+    document.querySelectorAll('.adm-halaqoh-jk').forEach(function (b) {
+      b.addEventListener('click', function () {
+        HALAQOH_JK = b.getAttribute('data-jk') || 'semua';
+        document.querySelectorAll('.adm-halaqoh-jk').forEach(function (x) {
+          var aktif = x === b;
+          x.setAttribute('aria-pressed', aktif ? 'true' : 'false');
+          x.classList.toggle('adm-halaqoh-pil-aktif', aktif);
+        });
+        tampilPengajar(PENGAJAR);
+      });
+    });
+  }
+
   function tampilPengajar(list) {
+    if (list) list = list.filter(function (g) { return HALAQOH_JK === 'semua' || jkPengajar(g) === HALAQOH_JK; });
     var body = document.getElementById('pengajarBody');
     var kartu = document.getElementById('pengajarKartu');
     if (!body) return;
@@ -1155,7 +1201,7 @@
       tr.className = 'adm-murid-baris';
       tr.appendChild(sel('td', g.nama));
       tr.appendChild(sel('td', g.email));
-      tr.appendChild(sel('td', g.jumlah_murid));
+      tr.appendChild(sel('td', anakDari(g).length));
       tr.appendChild(sel('td', status));
       tr.addEventListener('click', function () { bukaDetailPengajar(g); });
       body.appendChild(tr);
@@ -1172,7 +1218,7 @@
         var nama = sel('div', g.nama);
         nama.className = 'adm-murid-kartu-nama';
         item.appendChild(nama);
-        item.appendChild(baris('Jumlah murid', g.jumlah_murid));
+        item.appendChild(baris('Jumlah murid', anakDari(g).length));
         item.appendChild(baris('Status', status));
         kartu.appendChild(item);
       }
@@ -1185,7 +1231,7 @@
     var daftar = document.getElementById('pengajarDetailDaftar');
     if (!panel || !daftar) return;
     if (nama) nama.textContent = g.nama || '—';
-    var anak = MURID.filter(function (m) { return m.pengampu_nama === g.nama; });
+    var anak = anakDari(g);
     var nAktif = anak.filter(function (m) { return !m.jeda_sejak; }).length;
     var nBelum = anak.filter(function (m) { return !!BELUM[m.id]; }).length;
     daftar.innerHTML = '';
@@ -1600,12 +1646,15 @@
 
   var MURID_TAB = 'semua';
   var MURID_GEL = '';
+  var MURID_JK = 'semua';
   function filterMurid() {
     var q = (document.getElementById('muridCari') || { value: '' }).value.trim().toLowerCase();
     return MURID.filter(function (m) {
       if (MURID_TAB === 'belum' && !BELUM[m.id]) return false;
       if (MURID_TAB === 'sudah' && !LUNAS[m.id]) return false;
       if (MURID_GEL && String(m.gelombang || '') !== MURID_GEL) return false;
+      if (MURID_JK === 'ikhwan' && m.jenis_kelamin !== 'laki-laki') return false;
+      if (MURID_JK === 'akhwat' && m.jenis_kelamin !== 'perempuan') return false;
       if (q && String(m.nama || '').toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
@@ -1648,6 +1697,16 @@
         tampilMurid();
       });
     });
+    document.querySelectorAll('.adm-jk-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        MURID_JK = b.getAttribute('data-jk') || 'semua';
+        document.querySelectorAll('.adm-jk-btn').forEach(function (x) {
+          x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+        });
+        halamanAktif = 1;
+        tampilMurid();
+      });
+    });
     var pilih = document.getElementById('muridGelombang');
     if (pilih) pilih.addEventListener('change', function () {
       MURID_GEL = pilih.value;
@@ -1656,6 +1715,7 @@
     });
   }
   bindFilterMurid();
+  bindFilterHalaqoh();
 
   /* Top bar: tombol cari membuka halaman murid dan fokus ke kolom cari; lonceng membuka daftar yang menunggu keputusan */
   function bindLainnya() {
