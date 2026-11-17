@@ -46,6 +46,8 @@ body {
 img, svg { max-width: 100%; display: block; }
 
 a { color: var(--primary-text); text-decoration: none; transition: opacity 0.2s; }
+.skip-link { position: absolute; left: -9999px; top: 8px; z-index: 1100; background: var(--primary-text); color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 600; }
+.skip-link:focus { left: 8px; }
 a:hover { opacity: 0.7; }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
