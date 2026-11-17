@@ -18,6 +18,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A14 Tidak ada robots.txt dan sitemap.xml di repo. Halaman privat sudah noindex, jadi tidak wajib, tetapi sitemap perlu domain resmi (lihat A12). Membuat berkas baru di situs produksi perlu persetujuan. Tidak dibuat
 - [A] A15 Tidak ada favicon di repo dan tidak ada tag icon di 13 halaman. Perlu aset logo dari pemilik (keputusan desain). Tidak dibuat
 - [A] A16 Tautan media sosial di footer index.html (Instagram, Facebook, YouTube, TikTok) masih href="#". Ikon ada, tapi tidak mengarah ke akun mana pun. Perlu URL akun resmi dari pemilik. Tidak diubah
+- [A] A17 Tag Open Graph hanya ada di index.html (6 tag), tanpa og:image. Halaman lain tidak punya OG sama sekali. Saat tautan dibagikan di WhatsApp, pratinjau tanpa gambar. Perlu pilihan gambar pratinjau dan domain resmi (lihat A12). Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -52,3 +53,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 42): charset dan viewport ada di semua halaman. Tidak ada favicon, dicatat sebagai A15 (butuh aset logo dari pemilik).
 - 17 Nov 2026 (putaran 43): semua form tanpa action sudah punya penangan submit di JS (termasuk form yang dibuat dinamis dan dataForm di index.html, yang ditangani lewat listener submit di container). Hasil kosong.
 - 17 Nov 2026 (putaran 44): href="#" dan javascript:. Ditemukan empat tautan sosial di footer beranda yang masih kosong, dicatat sebagai A16 (butuh URL akun dari pemilik).
+- 17 Nov 2026 (putaran 45): Open Graph hanya di index.html, tanpa og:image. Dicatat sebagai A17.
