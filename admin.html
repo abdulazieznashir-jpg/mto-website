@@ -921,6 +921,16 @@
             <input type="search" id="pengajarCari" placeholder="Cari ustadz/ustadzah..." autocomplete="off">
           </label>
         </div>
+        <aside class="adm-detail" id="pengajarDetail" aria-label="Detail pengajar" hidden>
+          <div class="adm-detail-head">
+            <h2 class="adm-detail-nama" id="pengajarDetailNama"></h2>
+            <button type="button" class="adm-ikon-btn" id="pengajarDetailTutup" aria-label="Tutup detail pengajar">✕</button>
+          </div>
+          <dl class="adm-detail-daftar" id="pengajarDetailDaftar"></dl>
+          <div class="hq-kapasitas-form" id="pengajarKapasitas"></div>
+          <h3 class="adm-dash-h2">Daftar Peserta</h3>
+          <ul class="adm-halaqoh-daftar" id="pengajarDetailPeserta"></ul>
+        </aside>
         <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
         <div class="hq-bawah">
           <a href="#murid" class="hq-bawah-tautan">Lihat semua murid di Peserta</a>
@@ -936,16 +946,6 @@
             </tbody>
           </table>
         </div>
-        <aside class="adm-detail" id="pengajarDetail" aria-label="Detail pengajar" hidden>
-          <div class="adm-detail-head">
-            <h2 class="adm-detail-nama" id="pengajarDetailNama"></h2>
-            <button type="button" class="adm-ikon-btn" id="pengajarDetailTutup" aria-label="Tutup detail pengajar">✕</button>
-          </div>
-          <dl class="adm-detail-daftar" id="pengajarDetailDaftar"></dl>
-          <div class="hq-kapasitas-form" id="pengajarKapasitas"></div>
-          <h3 class="adm-dash-h2">Daftar Peserta</h3>
-          <ul class="adm-halaqoh-daftar" id="pengajarDetailPeserta"></ul>
-        </aside>
       </div>
     </section>
     <section class="adm-view" data-view="jadwal" hidden>
@@ -2367,6 +2367,7 @@
     }
     isiFormKapasitas(g);
     panel.hidden = false;
+    if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   var tutupPengajar = document.getElementById('pengajarDetailTutup');
