@@ -1033,10 +1033,12 @@
         <section class="tr-kartu" aria-labelledby="trJudulUsulan">
           <div class="tr-kartu-head">
             <h2 id="trJudulUsulan">Hasil Bacaan (Usulan)</h2>
-            <span class="tr-pill tr-pill-emas">Contoh</span>
+            <span class="tr-pill tr-pill-emas" id="trPillUsulan">Contoh</span>
           </div>
           <p class="tr-catatan">Tampilan contoh. Usulan asli muncul setelah transkrip dibaca. Tombol aksi dinonaktifkan sampai alurnya disetujui.</p>
 
+          <div id="trUsulanDaftar"></div>
+          <div id="trUsulanContoh">
           <article class="tr-usulan">
             <div class="tr-usulan-orang">
               <span class="tr-avatar" aria-hidden="true">A</span>
@@ -1084,6 +1086,7 @@
               </div>
             </div>
           </article>
+          </div>
         </section>
 
         <h2 class="adm-dash-h2">Chat masuk hari ini</h2>
@@ -1199,6 +1202,7 @@
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || email !== OWNER) { kembali(); return; }
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER };
+    muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     muatDashboard();
     muatMurid();
@@ -3069,6 +3073,50 @@
   }
   tampilTranskrip();
 
+  var LABEL_JENIS = { daftar_ulang: "Daftar ulang", daftar_baru: "Daftar baru", mendaftarkan_orang_lain: "Mendaftarkan orang lain", kritik: "Kritik", saran: "Saran", permintaan_lain: "Permintaan lain" };
+  function buatKartuUsulan(u) {
+    var kartu = pkEl("article", "tr-usulan");
+    var orang = pkEl("div", "tr-usulan-orang");
+    orang.appendChild(pkEl("span", "tr-avatar", String(u.nama || "?").charAt(0).toUpperCase()));
+    var teks = pkEl("div", "");
+    teks.appendChild(pkEl("b", "", u.nama || "Tanpa nama"));
+    teks.appendChild(document.createElement("br"));
+    teks.appendChild(pkEl("span", "tr-tag tr-tag-emas", LABEL_JENIS[u.jenis] || u.jenis));
+    if (u.status_chat) teks.appendChild(pkEl("span", "tr-tag", u.status_chat));
+    orang.appendChild(teks);
+    kartu.appendChild(orang);
+    kartu.appendChild(pkEl("blockquote", "tr-kutipan", u.pertanyaan || ""));
+    var waktu = u.dibuat_at ? new Date(u.dibuat_at).toLocaleString("id-ID", { timeZone: "Asia/Jakarta", day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+    var sumber = pkEl("div", "tr-sumber", (waktu ? waktu + " WIB" : "") + (u.ref ? " · Dari: " + u.ref : ""));
+    kartu.appendChild(sumber);
+    var aksi = pkEl("div", "tr-aksi");
+    aksi.appendChild(pkEl("p", "", "Keputusan: menunggu persetujuan Anda"));
+    if (u.saran) aksi.appendChild(pkEl("p", "tr-sumber", u.saran));
+    var tombol = pkEl("div", "tr-aksi-tombol");
+    var b1 = pkEl("button", "utama", "Ya, lanjutkan"); b1.type = "button"; b1.disabled = true;
+    b1.appendChild(pkEl("em", "", "segera"));
+    var b2 = pkEl("button", "", "Belum"); b2.type = "button"; b2.disabled = true;
+    tombol.appendChild(b1); tombol.appendChild(b2);
+    aksi.appendChild(tombol);
+    kartu.appendChild(aksi);
+    return kartu;
+  }
+  function muatUsulanTranskrip() {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    var wadah = document.getElementById("trUsulanDaftar");
+    if (!sb || !wadah) return;
+    sb.rpc("admin_daftar_usulan_transkrip", { p_admin: null, p_limit: 100 }).then(function (r) {
+      if (r.error || !r.data) return;
+      var data = r.data;
+      if (!data.length) return;
+      wadah.innerHTML = "";
+      data.forEach(function (u) { wadah.appendChild(buatKartuUsulan(u)); });
+      var contoh = document.getElementById("trUsulanContoh");
+      if (contoh) contoh.hidden = true;
+      var pill = document.getElementById("trPillUsulan");
+      if (pill) pill.textContent = data.length + " menunggu keputusan";
+    });
+  }
   var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
   function tampilRute() {
     var h = (window.location.hash || '').replace(/^#/, '');
