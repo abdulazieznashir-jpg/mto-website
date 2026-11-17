@@ -109,3 +109,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 90): cek img tanpa alt dan link target=_blank tanpa rel. Tidak ada. Hasil kosong.
 - 18 Nov 2026 (putaran 91): cek input email/url tanpa autocomplete dan form tanpa action. Input email/url semua punya autocomplete. Form tanpa action adalah form yang ditangani JS (submit listener), sesuai pola. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 92): cek tabel punya sel header (th) di setiap halaman. Admin, deals, dan paket-belajar punya th untuk setiap tabel (hitungan kasar). Tidak ada perubahan.
+- 18 Nov 2026 (putaran 93): hitung h1 per halaman. Admin 11, login 4, profil 4, pembayaran 2, sisanya 1. Lebih dari satu h1 terlihat di halaman SPA yang bagian-bagiannya disembunyikan. Tidak diubah karena mengubah tag heading bisa mengubah tampilan. Dicatat sebagai [ ] C9 untuk ditinjau nanti.
