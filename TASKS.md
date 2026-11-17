@@ -14,6 +14,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A6 admin_daftar_murid dan admin_tambah_murid hanya mengizinkan mahkota.to3, bukan abdulaziez. Tidak dipakai frontend, tapi perlu disamakan
 - [A] A11 Nomor e-wallet di daftar rekening (index.html dan pembayaran.html, 085722366003) berbeda dari nomor WA utama 085727533000. Bisa benar (nomor e-wallet terpisah), tapi perlu konfirmasi pemilik karena menyangkut pembayaran. Tidak diubah
 - [A] A12 Data terstruktur (schema.org) di index.html memakai email admin@mahkotatahfizh.com, yang domainnya belum tentu aktif. Perlu konfirmasi alamat email resmi. Tidak diubah
+- [A] A13 login.html tidak punya tag canonical (halaman publik lain sudah punya). Menambahkannya perlu URL domain resmi, dan domain itu belum dikonfirmasi (lihat A12). Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -37,3 +38,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 31): lang pada semua 13 html sudah id. Tidak ada tautan mailto. Format nomor telepon konsisten (0857-2753-3000 sama dengan 085727533000). Temuan baru: A11 dan A12, keduanya perlu konfirmasi pemilik.
 - 17 Nov 2026 (putaran 32): title tiap halaman ada dan unik. Kata placeholder (contoh, xxx, lorem, todo) hanya di atribut placeholder atau teks contoh yang disengaja. Tidak ada console.log di js/. Hasil kosong.
 - 17 Nov 2026 (putaran 33): semua src dan href lokal di HTML menunjuk ke file yang ada (tiga yang tampak hilang adalah string JS dalam atribut, bukan berkas). Hasil kosong.
+- 17 Nov 2026 (putaran 34): cek canonical, robots, dan description per halaman. Semua halaman publik punya description. Hanya login.html yang belum punya canonical, dicatat sebagai A13 karena butuh domain resmi.
