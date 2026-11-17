@@ -1,15 +1,16 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 15 dari 300 (rencana 300)
+Total langkah: 16 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 90% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 70% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
 - Detail Peserta: 60% (inisial, status, label info sudah sesuai referensi. Kolom Jenis (Baru/Repeat) belum ada datanya)
-- Navigasi dan menu: 100%
+- Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 16: Notifikasi ditambahkan di bagian paling bawah sidebar desktop (membuka panel lonceng yang sudah ada, sama seperti bottom bar HP). Menu lama tetap tersembunyi, tidak ada kode yang dihapus.
 - [x] Langkah 15: tabel Peserta memakai lebar penuh saat detail tertutup (sebelumnya menyisakan kolom kosong 340px). Saat detail terbuka tetap dua kolom.
 - [x] Langkah 14: kartu Halaqoh (Pengajar) jadi kartu lebar dengan angka di kiri dan panah › di kanan (sebelumnya tersusun vertikal di tengah). Lencana Admin di top bar HP disembunyikan.
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
@@ -47,6 +48,7 @@ Progres keseluruhan: perkiraan 72%
 - Filter Ikhwan/Akhwat di Halaqoh belum ditambahkan karena belum ada data gender pengajar. Saya tidak menebak dari nama.
 
 ## Menunggu keputusan pemilik
+- Sinkronisasi dengan branch utama: origin/main punya 10 commit yang belum ada di redesign-admin (Halaqoh: pencocokan murid lewat nama pengampu dan filter Ikhwan/Akhwat; Peserta: kolom cari, filter Gelombang, kartu ringkasan; Beranda: angka Peserta Aktif, Belum Bayar, Pengajar Aktif; Notifikasi; perbaikan email Owner dan redirect ke admin.html). redesign-admin juga punya 2 commit yang belum ada di main. Run ini tidak menggabungkan apa pun. Perlu keputusan: merge main ke redesign-admin, rebase, atau biarkan terpisah. Catatan: sebagian poin 'Menunggu' di bawah mungkin sudah terjawab di main.
 - Jadwal pengajar dari spreadsheet (Google Sheets): belum dimasukkan ke database. Tabel pengajar hanya punya 1 baris sekarang. Sheet punya sekitar 17 pengajar Akhwat dan belasan Ikhwan, tapi tanpa email. Email dipakai sebagai kunci tabel pengajar. Perlu: periode mana yang dipakai (P69 sampai P77, atau G1 dan G2 dasar), email tiap pengajar, dan izin menulis ke database.
 - Kartu "Pendaftar Baru" dan "Belum Bayar" belum punya data. Ringkasan database belum punya angka ini. Perlu fungsi SQL baru (di luar izin saat ini) atau isi placeholder dulu?
 - Kartu Murid Jeda dan Belum Ada Gelombang dihapus dari Beranda karena tidak ada di referensi. Data tetap ada di halaman Peserta.

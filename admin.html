@@ -372,6 +372,13 @@
     }
     .adm-nav a:hover { background: var(--adm-bg, #FAF8F4); }
     .adm-nav a[aria-current="page"] { background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); font-weight: 600; }
+    .adm-nav-bawah { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--adm-line, #ECE8E1); }
+    .adm-nav-tombol {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; box-sizing: border-box;
+      border: 0; border-radius: var(--adm-r-sm, 10px); background: none; color: var(--adm-ink, #1D1D1F);
+      font: inherit; font-size: var(--adm-base, 15px); text-align: left; cursor: pointer;
+    }
+    .adm-nav-tombol:hover { background: var(--adm-bg, #FAF8F4); }
   .adm-nav-segera { display: flex; align-items: center; gap: 0; padding: 10px 12px; border-radius: var(--adm-r-md, 10px); color: var(--adm-muted, #6E6E73); cursor: default; }
   .adm-nav-segera em { font-style: normal; font-size: var(--adm-xs, 12px); margin-left: auto; }
     .adm-nav-ikon { width: 20px; text-align: center; color: var(--adm-muted, #6E6E73); }
@@ -407,6 +414,7 @@
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">◔</span>Progres<em>segera</em></span></li>
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">✉</span>Komunikasi<em>segera</em></span></li>
       <li style="display:none"><a href="#pengaturan"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></span>Pengaturan</a></li>
+      <li class="adm-nav-bawah"><button type="button" class="adm-nav-tombol" onclick="document.getElementById('topNotif').click()"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>Notifikasi</button></li>
     </ul>
   </aside>
 
