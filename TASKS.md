@@ -16,6 +16,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A12 Data terstruktur (schema.org) di index.html memakai email admin@mahkotatahfizh.com, yang domainnya belum tentu aktif. Perlu konfirmasi alamat email resmi. Tidak diubah
 - [A] A13 login.html tidak punya tag canonical (halaman publik lain sudah punya). Menambahkannya perlu URL domain resmi, dan domain itu belum dikonfirmasi (lihat A12). Tidak diubah
 - [A] A14 Tidak ada robots.txt dan sitemap.xml di repo. Halaman privat sudah noindex, jadi tidak wajib, tetapi sitemap perlu domain resmi (lihat A12). Membuat berkas baru di situs produksi perlu persetujuan. Tidak dibuat
+- [A] A15 Tidak ada favicon di repo dan tidak ada tag icon di 13 halaman. Perlu aset logo dari pemilik (keputusan desain). Tidak dibuat
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -47,3 +48,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 39): pindai kata berulang berurutan di teks tampil. Semua hasil berasal dari judul dan label yang berdekatan setelah tag dibuang (misalnya 'Blog Blog &amp; Artikel'), bukan typo. Hasil kosong.
 - 17 Nov 2026 (putaran 40): cek sintaks node --check untuk semua js/*.js lolos, dan working tree bersih. Hasil kosong.
 - 17 Nov 2026 (putaran 41): kelas yang dipakai di HTML/JS tapi tidak punya aturan CSS: adm-buka-baru, cek-timer, hero-image, pd-meet, pd-ringkas, sy-runtun, tentang-page, tgl-grup (dan beberapa nama dinamis). Sebagian besar berfungsi sebagai kait JS atau diberi gaya inline. Bukan dari penghapusan CSS kita, karena sudah ada sejak commit cf1498e. Tidak ada efek visual yang rusak yang terlihat dari kode. Tidak diubah. Hasil kosong.
+- 17 Nov 2026 (putaran 42): charset dan viewport ada di semua halaman. Tidak ada favicon, dicatat sebagai A15 (butuh aset logo dari pemilik).
