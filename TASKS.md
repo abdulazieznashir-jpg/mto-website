@@ -66,3 +66,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 51): cek teks Arab tanpa lang="ar". Satu ditemukan dan diperbaiki (C8).
 - 17 Nov 2026 (putaran 52): pindai ulang teks Arab di semua halaman, hanya satu yang sudah diperbaiki di putaran 51. Hasil kosong.
 - 17 Nov 2026 (putaran 53): tidak ada button atau tautan bersarang di dalam <a>. Hasil kosong.
+- 17 Nov 2026 (putaran 54): cek autocomplete kata sandi. Formulir formAuth di login.html dipakai untuk masuk dan daftar, jadi autocomplete="new-password" dibiarkan (mengubahnya ke current-password bisa merusak alur daftar). Tidak diubah. Hasil kosong.
