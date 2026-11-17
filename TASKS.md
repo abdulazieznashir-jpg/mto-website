@@ -157,3 +157,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 137): cek input tel punya inputmode. Semua input tel sudah punya inputmode. Jumlah input per halaman: index 6, login 3, profil 8, admin 1. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 138): cek file media lokal (img, source, video, audio, iframe) benar-benar ada. Semua ada. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 139): cek tautan hash (#...) menuju target yang ada. index.html#daftar punya id daftar. Tautan admin (dashboard, murid, pengajar, dst.) punya data-view yang sesuai dengan daftar RUTE. Tidak ada target yang hilang. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 140): cek sisa console.log dan console.debug di skrip inline maupun js/*.js. Tidak ada. Tidak ada perubahan.
