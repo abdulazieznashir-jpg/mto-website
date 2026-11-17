@@ -472,8 +472,8 @@
         <div class="adm-murid-filter">
           <div class="adm-murid-tab" role="group" aria-label="Filter status murid">
             <button type="button" class="adm-murid-tab-btn" data-tab="semua" aria-pressed="true">Semua <span id="tabSemua">0</span></button>
-            <button type="button" class="adm-murid-tab-btn" data-tab="aktif" aria-pressed="false">Aktif <span id="tabAktif">0</span></button>
-            <button type="button" class="adm-murid-tab-btn" data-tab="jeda" aria-pressed="false">Jeda <span id="tabJeda">0</span></button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="belum" aria-pressed="false">Belum Bayar <span id="tabBelum">0</span></button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="sudah" aria-pressed="false">Sudah Bayar <span id="tabSudah">0</span></button>
           </div>
           <label class="adm-tempat-label adm-murid-gel">Gelombang
             <select id="muridGelombang"><option value="">Semua gelombang</option></select>
@@ -718,6 +718,8 @@
     return el;
   }
   var MURID = [];
+  var BELUM = {};
+  var LUNAS = {};
   var HALAMAN_UKURAN = 20;
   var halamanAktif = 1;
 
@@ -734,7 +736,9 @@
       belum.textContent = '';
       sudah.textContent = '';
       var nBelum = 0, nSudah = 0;
+      BELUM = {}; LUNAS = {};
       r.data.forEach(function (d) {
+        if (d.lunas_at) LUNAS[d.id] = true; else BELUM[d.id] = true;
         var li = document.createElement('li');
         var nama = document.createElement('span');
         nama.textContent = d.nama || '(tanpa nama)';
@@ -769,6 +773,7 @@
       document.getElementById('bayarJumlahBelum').textContent = String(nBelum);
       document.getElementById('bayarJumlahSudah').textContent = String(nSudah);
       info.textContent = 'Sudah lunas berarti pembayaran sudah dikonfirmasi admin.';
+      if (MURID.length) { hitungTabMurid(); tampilMurid(); }
     }).catch(function () { info.textContent = 'Daftar pembayaran belum bisa dimuat.'; });
   }
 
@@ -1560,17 +1565,17 @@
   function filterMurid() {
     var q = (document.getElementById('muridCari') || { value: '' }).value.trim().toLowerCase();
     return MURID.filter(function (m) {
-      if (MURID_TAB === 'aktif' && m.jeda_sejak) return false;
-      if (MURID_TAB === 'jeda' && !m.jeda_sejak) return false;
+      if (MURID_TAB === 'belum' && !BELUM[m.id]) return false;
+      if (MURID_TAB === 'sudah' && !LUNAS[m.id]) return false;
       if (MURID_GEL && String(m.gelombang || '') !== MURID_GEL) return false;
       if (q && String(m.nama || '').toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
   }
   function hitungTabMurid() {
-    var a = 0, j = 0;
-    MURID.forEach(function (m) { if (m.jeda_sejak) j++; else a++; });
-    var ids = { tabSemua: MURID.length, tabAktif: a, tabJeda: j };
+    var nb = 0, ns = 0;
+    MURID.forEach(function (m) { if (BELUM[m.id]) nb++; if (LUNAS[m.id]) ns++; });
+    var ids = { tabSemua: MURID.length, tabBelum: nb, tabSudah: ns };
     Object.keys(ids).forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.textContent = String(ids[id]);
