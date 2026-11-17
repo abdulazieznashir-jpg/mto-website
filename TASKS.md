@@ -12,6 +12,8 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A7 Facebook Pixel di 9 halaman publik masih memakai ID placeholder `PIXEL_ID`. Pelacakan iklan belum aktif. Perlu ID pixel asli dari pemilik
 - [A] A8 Ejaan brand: situs memakai "Mahkota Tahfizh" (79 kali), PLAN.md dan percakapan memakai "Mahkota Tahfidz". Perlu keputusan pemilik sebelum diseragamkan
 - [A] A6 admin_daftar_murid dan admin_tambah_murid hanya mengizinkan mahkota.to3, bukan abdulaziez. Tidak dipakai frontend, tapi perlu disamakan
+- [A] A11 Nomor e-wallet di daftar rekening (index.html dan pembayaran.html, 085722366003) berbeda dari nomor WA utama 085727533000. Bisa benar (nomor e-wallet terpisah), tapi perlu konfirmasi pemilik karena menyangkut pembayaran. Tidak diubah
+- [A] A12 Data terstruktur (schema.org) di index.html memakai email admin@mahkotatahfizh.com, yang domainnya belum tentu aktif. Perlu konfirmasi alamat email resmi. Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -32,3 +34,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 28): label for, tombol ikon (profil punya teks), referensi aset CSS. Hasil kosong.
 - 17 Nov 2026 (putaran 29): src ganda, meta viewport, dan ukuran aset. Hasil kosong.
 - 17 Nov 2026 (putaran 30): h1 ganda ditemukan dan dicatat sebagai A10, tidak diubah. Tautan #anchor lintas halaman dan style inline berulang belum ada masalah nyata (display:none berulang setara dengan atribut hidden).
+- 17 Nov 2026 (putaran 31): lang pada semua 13 html sudah id. Tidak ada tautan mailto. Format nomor telepon konsisten (0857-2753-3000 sama dengan 085727533000). Temuan baru: A11 dan A12, keduanya perlu konfirmasi pemilik.
