@@ -1,15 +1,16 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 4 dari 300
+Total langkah: 5 dari 300
 
 ## Selesai
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
+- [x] Langkah 5: cek ID elemen. Semua 55 ID yang dipakai JavaScript masih ada, tidak ada fungsi yang putus.
 - [x] Langkah 4: kartu Beranda disusun ulang (3 kartu + kartu lebar Halaqoh). Subjudul ganda dihapus.
 
 ## Sedang dikerjakan
-- Verifikasi tampilan terhadap referensi (belum ada browser untuk render)
+- Verifikasi visual terhadap referensi (belum ada browser untuk render)
 
 ## Sudah berjalan (belum diubah, harus tetap utuh)
 - Pemuatan data dari Supabase (muatMurid, dashboard)
