@@ -84,3 +84,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 66): sumber skrip eksternal. Dicatat sebagai A21 (SRI belum ada, versi belum bisa diverifikasi).
 - 17 Nov 2026 (putaran 67): status repo bersih, dan meta noindex hanya ada di halaman privat. Hasil kosong.
 - 17 Nov 2026 (putaran 68): meta opsional (keywords, author, theme-color). Tidak ada yang rusak. Hasil kosong.
+- 17 Nov 2026 (putaran 69): tautan ke berkas unduhan (pdf, doc, zip, dll.). Tidak ada. Hasil kosong.
