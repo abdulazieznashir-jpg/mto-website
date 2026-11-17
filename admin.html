@@ -72,7 +72,10 @@
   .adm-dash-judul { margin: 0; font-size: var(--adm-xl, 26px); line-height: 1.2; }
   .adm-dash-sub { margin: 0; color: var(--adm-muted, #6E6E73); }
   .adm-dash-kartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .adm-dash-stat-lebar { display: block; margin-top: 12px; text-decoration: none; color: inherit; }
+  .adm-dash-stat-lebar { margin-top: 12px; text-decoration: none; color: inherit; }
+  .adm-dash-ikon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: color-mix(in srgb, var(--ikon) 14%, transparent); color: var(--ikon); margin-bottom: 10px; }
+  .adm-dash-stat-lebar { display: flex; align-items: center; gap: 14px; }
+  .adm-dash-stat-lebar .adm-dash-ikon { margin-bottom: 0; }
   .adm-dash-stat {
     background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE);
     border-radius: var(--adm-r-lg, 16px); padding: 16px; min-width: 0;
@@ -410,11 +413,11 @@
         <h1 class="adm-dash-judul">Beranda</h1>
         <p class="adm-dash-sub">Ringkasan pendaftaran dan halaqoh</p>
         <div class="adm-dash-kartu" id="dashKartu">
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="pendaftar_baru">—</span><span class="adm-dash-label">Pendaftar Baru</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="belum_bayar">—</span><span class="adm-dash-label">Belum Bayar</span></div>
-          <div class="adm-dash-stat"><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Peserta Aktif</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#2f6fb0" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M19 8v6M16 11h6"/></svg></span><span class="adm-dash-angka" data-stat="pendaftar_baru">—</span><span class="adm-dash-label">Pendaftar Baru</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#b7791f" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><span class="adm-dash-angka" data-stat="belum_bayar">—</span><span class="adm-dash-label">Belum Bayar</span></div>
+          <div class="adm-dash-stat"><span class="adm-dash-ikon" style="--ikon:#2f8a4b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M17 11l2 2 4-4"/></svg></span><span class="adm-dash-angka" data-stat="murid_diterima">—</span><span class="adm-dash-label">Peserta Aktif</span></div>
         </div>
-        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></a>
+        <a href="#pengajar" class="adm-dash-stat adm-dash-stat-lebar"><span class="adm-dash-ikon" style="--ikon:#8a6d3b" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="adm-dash-angka" data-stat="pengajar_aktif">—</span><span class="adm-dash-label">Halaqoh (Pengajar)</span></a>
         <div class="adm-dash-tugas" aria-label="Tugas hari ini">
           <h2 class="adm-dash-h2">Tugas Hari Ini</h2>
           <ul class="adm-dash-daftar">
