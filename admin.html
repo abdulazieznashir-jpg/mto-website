@@ -78,6 +78,9 @@
   .adm-halaqoh-daftar { list-style: none; padding: 0; margin: 8px 0 0; }
   .adm-halaqoh-peserta-baris { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #efeae0; }
   .adm-halaqoh-peserta-baris small { color: #6b655b; }
+  .adm-detail-judul { display: flex; flex-direction: column; gap: 4px; }
+  .adm-detail-pil { display: inline-block; align-self: flex-start; font-size: 12px; padding: 2px 10px; border-radius: 999px; background: #e8f5ec; color: #2f8a4b; }
+  .adm-detail .adm-halaqoh-inisial { margin-right: 12px; }
   .adm-halaqoh-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 16px; }
   .adm-halaqoh-pil { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: #f4f1ec; color: #3d3a35; font-size: 14px; }
   .adm-halaqoh-pil b { background: rgba(0,0,0,.07); border-radius: 999px; padding: 0 7px; font-weight: 600; }
@@ -503,7 +506,11 @@
         </div>
         <aside class="adm-detail" id="muridDetail" aria-label="Detail murid" hidden>
           <div class="adm-detail-head">
-            <h2 class="adm-detail-nama" id="detailNama"></h2>
+            <span class="adm-halaqoh-inisial" id="detailInisial" aria-hidden="true"></span>
+            <div class="adm-detail-judul">
+              <h2 class="adm-detail-nama" id="detailNama"></h2>
+              <span class="adm-detail-pil" id="detailPil"></span>
+            </div>
             <button type="button" class="adm-ikon-btn" id="detailTutup" aria-label="Kembali ke daftar murid">✕</button>
           </div>
           <dl class="adm-detail-daftar" id="detailDaftar"></dl>
@@ -1053,11 +1060,15 @@
     var daftar = document.getElementById('detailDaftar');
     if (!panel || !daftar) return;
     if (nama) nama.textContent = m.nama || '—';
-    daftar.innerHTML = '';
+    var inisialEl = document.getElementById('detailInisial');
+    if (inisialEl) inisialEl.textContent = String(m.nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('');
+    var pilEl = document.getElementById('detailPil');
     var status = m.jeda_sejak ? 'Jeda sejak ' + m.jeda_sejak : labelStatusMurid(m);
+    if (pilEl) pilEl.textContent = m.jeda_sejak ? 'Jeda' : labelStatusMurid(m);
+    daftar.innerHTML = '';
     var isi = [
-      ['WA', m.wa], ['Gelombang', m.gelombang], ['Periode', m.periode_label],
-      ['Durasi', m.durasi], ['Pengampu', m.pengampu_nama], ['Kelas', m.kelas],
+      ['No. WhatsApp', m.wa], ['Program', m.kelas], ['Durasi', m.durasi ? m.durasi + ' bulan' : ''],
+      ['Periode', m.periode_label], ['Pengajar', m.pengampu_nama], ['Gelombang', m.gelombang],
       ['Status', status], ['Tanggal halaqah', m.tanggal_halaqah], ['Link grup', m.link_grup],
       ['Sumber', m.sumber]
     ];

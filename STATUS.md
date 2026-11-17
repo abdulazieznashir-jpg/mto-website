@@ -1,18 +1,19 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 12 dari 300 (rencana 300)
-Progres keseluruhan: perkiraan 63%
+Total langkah: 13 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 66%
 - Beranda: 85% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 65% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
-- Detail Peserta: 0%
+- Detail Peserta: 60% (inisial, status, label info sudah sesuai referensi. Kolom Jenis (Baru/Repeat) belum ada datanya)
 - Navigasi dan menu: 100%
 
 ## Selesai
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
+- [x] Langkah 13: detail Peserta: inisial, pil status, label No. WhatsApp, Program, Durasi, Pengajar
 - [x] Langkah 12: detail Halaqoh menampilkan statistik (Peserta, Aktif, Belum Bayar) dan daftar peserta per pengajar
 - [x] Langkah 11: tampilan admin lama di profil.html disembunyikan. Pintu masuk utama sekarang kartu "Buka Admin Mahkota Tahfidz Online" yang mengarah ke admin.html, dan hanya muncul untuk admin.
 - [x] Langkah 10: kolom Program (dari kelas) menggantikan WA dan Gelombang di tabel Peserta. Kolom WA tetap ada di detail peserta.
