@@ -72,6 +72,9 @@
   .adm-dash-judul { margin: 0; font-size: var(--adm-xl, 26px); line-height: 1.2; }
   .adm-dash-sub { margin: 0; color: var(--adm-muted, #6E6E73); }
   .adm-dash-kartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
+  .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+  .adm-murid-tab-btn[aria-pressed="true"] { background: #b7893a; border-color: #b7893a; color: #fff; }
   .adm-halaqoh-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 16px; }
   .adm-halaqoh-pil { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: #f4f1ec; color: #3d3a35; font-size: 14px; }
   .adm-halaqoh-pil b { background: rgba(0,0,0,.07); border-radius: 999px; padding: 0 7px; font-weight: 600; }
@@ -440,6 +443,7 @@
     <section class="adm-view" data-view="murid" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Peserta</h1>
+        <p class="adm-dash-sub">Daftar seluruh pendaftar dan peserta program.</p>
         <section class="adm-bayar" aria-labelledby="guruJudul">
           <h2 class="adm-dash-h2" id="guruJudul">Guru dan muridnya</h2>
           <p class="adm-bayar-info" id="guruInfo">Memuat…</p>
