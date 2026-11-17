@@ -19,6 +19,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A15 Tidak ada favicon di repo dan tidak ada tag icon di 13 halaman. Perlu aset logo dari pemilik (keputusan desain). Tidak dibuat
 - [A] A16 Tautan media sosial di footer index.html (Instagram, Facebook, YouTube, TikTok) masih href="#". Ikon ada, tapi tidak mengarah ke akun mana pun. Perlu URL akun resmi dari pemilik. Tidak diubah
 - [A] A17 Tag Open Graph hanya ada di index.html (6 tag), tanpa og:image. Halaman lain tidak punya OG sama sekali. Saat tautan dibagikan di WhatsApp, pratinjau tanpa gambar. Perlu pilihan gambar pratinjau dan domain resmi (lihat A12). Tidak diubah
+- [A] A18 Panjang judul dan deskripsi meta: judul paket-belajar.html 62 karakter (lebih dari 60), deskripsi index.html 178 karakter (lebih dari 160). Beberapa deskripsi lain di bawah 120. Ini teks pemasaran, jadi perbaikannya keputusan konten pemilik. Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -59,3 +60,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [x] C7 Select jam sesi di index.html (jamSel) tidak punya nama aksesibel. Ditambahkan aria-label "Jam mulai sesi". Select lain di admin/profil sudah punya label atau teks sr-only
 - 17 Nov 2026 (putaran 47): cek select tanpa label. Empat dari lima select di admin/profil sudah dibungkus label; satu di index.html belum (diperbaiki sebagai C7).
 - 17 Nov 2026 (putaran 48): tidak ada tabindex positif dan tidak ada autofocus. Hasil kosong.
+- 17 Nov 2026 (putaran 49): panjang judul dan deskripsi meta. Dicatat sebagai A18 (teks pemasaran, keputusan pemilik).
