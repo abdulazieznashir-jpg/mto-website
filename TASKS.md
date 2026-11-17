@@ -79,3 +79,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <- 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <% %>, [nama]) di HTML. Tidak ditemukan. Hasil kosong.
 - 17 Nov 2026 (putaran 63): teks tautan yang kurang deskriptif. Dicatat sebagai A20 (keputusan konten).
 - 17 Nov 2026 (putaran 64): bentuk href tidak biasa. Link ke index.html dan index.html#anchor tetap berfungsi (index.html dikecualikan dari pengalihan .htaccess). Tautan absolut memakai mahkotatahfizh.com. Tidak ada yang rusak. Hasil kosong.
+- 17 Nov 2026 (putaran 65): spasi sebelum tanda baca atau tanda kurung di teks tampil. Dua hasil bukan typo (kutipan testimoni dengan dialek "ana", dan teks biasa). Hasil kosong.
