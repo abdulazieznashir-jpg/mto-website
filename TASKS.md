@@ -22,6 +22,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A18 Panjang judul dan deskripsi meta: judul paket-belajar.html 62 karakter (lebih dari 60), deskripsi index.html 178 karakter (lebih dari 160). Beberapa deskripsi lain di bawah 120. Ini teks pemasaran, jadi perbaikannya keputusan konten pemilik. Tidak diubah
 - [A] A19 Urutan heading: testimoni.html tidak punya h1. Beberapa halaman melompat dari h2 ke h4, profil.html dari h1 ke h3. Mengganti level heading bisa mengubah tampilan karena gaya ditentukan per tag. Perlu persetujuan dan pengecekan visual. Tidak diubah
 - [A] A20 Teks tautan yang kurang deskriptif: "Chat di Sini" (index.html) dan "Klik di sini untuk daftar akun" (pembayaran.html). Pembaca layar hanya membacakan teks ini. Perubahan kata adalah keputusan konten pemilik. Tidak diubah
+- [A] A21 Skrip Supabase dimuat dari cdn.jsdelivr.net (versi 2.118.0) tanpa atribut integrity (SRI). Tanpa SRI, file CDN yang berubah akan langsung dijalankan di halaman admin. Menambahkan hash perlu diambil dan diverifikasi dari sumber resmi. Versi ini juga belum bisa diverifikasi dari sini (npm tidak terhubung). Tidak diubah
 
 ## B. Dari PLAN.md (belum dikerjakan)
 - [ ] B1–B70 sesuai PLAN.md. Fase 1 (admin) sebagian besar belum; Fase 2–7 belum. Item yang butuh keputusan pemilik ditandai [A] di PLAN.md (harga, konten, perubahan alur daftar, insert data)
@@ -80,3 +81,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 63): teks tautan yang kurang deskriptif. Dicatat sebagai A20 (keputusan konten).
 - 17 Nov 2026 (putaran 64): bentuk href tidak biasa. Link ke index.html dan index.html#anchor tetap berfungsi (index.html dikecualikan dari pengalihan .htaccess). Tautan absolut memakai mahkotatahfizh.com. Tidak ada yang rusak. Hasil kosong.
 - 17 Nov 2026 (putaran 65): spasi sebelum tanda baca atau tanda kurung di teks tampil. Dua hasil bukan typo (kutipan testimoni dengan dialek "ana", dan teks biasa). Hasil kosong.
+- 17 Nov 2026 (putaran 66): sumber skrip eksternal. Dicatat sebagai A21 (SRI belum ada, versi belum bisa diverifikasi).
