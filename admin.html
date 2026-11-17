@@ -90,6 +90,28 @@
   .adm-jk-grup { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
   .adm-jk-btn { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #ECE7DE; background: #FFFFFF; color: #1D1D1F; font: inherit; font-size: 14px; cursor: pointer; }
   .adm-jk-btn[aria-pressed="true"] { background: #F6EEDC; color: #8A6A1F; border-color: #B8912F; font-weight: 600; }
+  .adm-peserta-stat-grup { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 16px; }
+  .adm-peserta-stat { border-radius: 14px; padding: 12px; background: #FBF7EF; border: 1px solid #ECE7DE; display: flex; flex-direction: column; gap: 2px; }
+  .adm-peserta-stat b { font-size: 22px; line-height: 1.1; }
+  .adm-peserta-stat span { font-size: 12px; color: #6E6E73; }
+  .adm-peserta-stat-hijau { background: #EEF8F0; border-color: #CFE8D6; }
+  .adm-peserta-stat-merah { background: #FDF0F0; border-color: #F1D2D2; }
+  .adm-peserta-urut { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 12px 0 8px; font-size: 14px; color: #6E6E73; }
+  .adm-peserta-urut select { border: 0; background: transparent; font: inherit; color: #1D1D1F; font-weight: 600; }
+  .adm-peserta-kartu { display: block; background: #fff; border: 1px solid #ECE7DE; border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+  .adm-peserta-kartu-atas { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .adm-peserta-kartu-atas > div { min-width: 0; }
+  .adm-peserta-nama { font-weight: 700; font-size: 16px; overflow-wrap: anywhere; }
+  .adm-peserta-gel { display: inline-block; margin-top: 6px; background: #F4F1EC; border-radius: 999px; padding: 3px 10px; font-size: 13px; }
+  .adm-peserta-pill { border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .adm-peserta-pill-aktif { background: #E3F4E8; color: #1E7A3C; }
+  .adm-peserta-pill-jeda { background: #FFF4D6; color: #8A6A1F; }
+  .adm-peserta-pill-abu { background: #EEEEEE; color: #555555; }
+  .adm-peserta-kartu-bawah { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #ECE7DE; }
+  .adm-peserta-kartu-bawah > div { flex: 1; min-width: 0; }
+  .adm-peserta-label { font-size: 12px; color: #6E6E73; }
+  .adm-peserta-nilai { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+  .adm-peserta-panah { color: #6E6E73; font-size: 20px; }
   #pengajarKartu { display: grid; grid-template-columns: 1fr; gap: 12px; }
   @media (min-width: 720px) { #pengajarKartu { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .adm-halaqoh-inisial { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #f7efe0; color: #9a7226; font-weight: 700; flex-shrink: 0; }
@@ -453,7 +475,12 @@
     <section class="adm-view" data-view="murid" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Peserta</h1>
-        <p class="adm-dash-sub" style="display:none">Daftar seluruh pendaftar dan peserta program.</p>
+        <p class="adm-dash-sub">Kelola seluruh data murid program tahfidz</p>
+        <div class="adm-peserta-stat-grup">
+          <div class="adm-peserta-stat"><b id="statTotal">0</b><span>Total Peserta</span></div>
+          <div class="adm-peserta-stat adm-peserta-stat-hijau"><b id="statSudah">0</b><span>Sudah Bayar</span></div>
+          <div class="adm-peserta-stat adm-peserta-stat-merah"><b id="statBelum">0</b><span>Belum Bayar</span></div>
+        </div>
         <section class="adm-bayar" aria-labelledby="guruJudul" style="display:none">
           <h2 class="adm-dash-h2" id="guruJudul">Guru dan muridnya</h2>
           <p class="adm-bayar-info" id="guruInfo">Memuat…</p>
@@ -481,9 +508,9 @@
         </div>
         <div class="adm-murid-filter">
           <div class="adm-murid-tab" role="group" aria-label="Filter status murid">
-            <button type="button" class="adm-murid-tab-btn" data-tab="semua" aria-pressed="true">Semua <span id="tabSemua">0</span></button>
-            <button type="button" class="adm-murid-tab-btn" data-tab="belum" aria-pressed="false">Belum Bayar <span id="tabBelum">0</span></button>
-            <button type="button" class="adm-murid-tab-btn" data-tab="sudah" aria-pressed="false">Sudah Bayar <span id="tabSudah">0</span></button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="semua" aria-pressed="true">Semua (<span id="tabSemua">0</span>)</button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="belum" aria-pressed="false">Belum Bayar (<span id="tabBelum">0</span>)</button>
+            <button type="button" class="adm-murid-tab-btn" data-tab="sudah" aria-pressed="false">Sudah Bayar (<span id="tabSudah">0</span>)</button>
           </div>
           <div class="adm-jk-grup" role="group" aria-label="Filter jenis kelamin murid">
             <button type="button" class="adm-jk-btn" data-jk="semua" aria-pressed="true">Semua</button>
@@ -493,6 +520,10 @@
           <label class="adm-tempat-label adm-murid-gel">Gelombang
             <select id="muridGelombang"><option value="">Semua gelombang</option></select>
           </label>
+        </div>
+        <div class="adm-peserta-urut">
+          <span id="muridJumlahTeks">Menampilkan 0 peserta</span>
+          <label>Urutkan: <select id="muridUrut"><option value="terbaru">Terbaru</option><option value="nama">Nama A–Z</option></select></label>
         </div>
         <div class="adm-murid-kartu" id="muridKartu" aria-label="Daftar murid"></div>
         <div class="adm-murid-dua">
@@ -1014,8 +1045,10 @@
     if (MURID.length === 0) { pesanMurid('Belum ada murid. Murid muncul setelah pendaftaran diterima.'); if (pager) pager.hidden = true; return; }
     if (filterMurid().length === 0) { pesanMurid('Tidak ada murid yang cocok dengan pencarian.'); if (pager) pager.hidden = true; return; }
 
-    var daftarTampil = filterMurid();
+    var daftarTampil = urutkanMurid(filterMurid());
     var total = daftarTampil.length;
+    var teksJumlah = document.getElementById('muridJumlahTeks');
+    if (teksJumlah) teksJumlah.textContent = 'Menampilkan ' + total + ' peserta';
     var halamanTotal = Math.ceil(total / HALAMAN_UKURAN);
     if (halamanAktif > halamanTotal) halamanAktif = halamanTotal;
     if (halamanAktif < 1) halamanAktif = 1;
@@ -1044,15 +1077,38 @@
 
       if (kartu) {
         var item = document.createElement('article');
+        item.className = 'adm-peserta-kartu';
         item.addEventListener('click', function () { bukaDetail(m); });
-        item.className = 'adm-murid-kartu-item';
+        var atas = document.createElement('div');
+        atas.className = 'adm-peserta-kartu-atas';
+        var kiri = document.createElement('div');
         var nama = sel('div', m.nama);
-        nama.className = 'adm-murid-kartu-nama';
-        item.appendChild(nama);
-        item.appendChild(baris('Gelombang', m.gelombang));
-        item.appendChild(baris('Durasi', m.durasi));
-        item.appendChild(baris('Pengampu', m.pengampu_nama));
-        item.appendChild(baris('Status', status));
+        nama.className = 'adm-peserta-nama';
+        kiri.appendChild(nama);
+        if (m.gelombang) {
+          var gel = sel('span', m.gelombang);
+          gel.className = 'adm-peserta-gel';
+          kiri.appendChild(gel);
+        }
+        atas.appendChild(kiri);
+        var pill = sel('span', status);
+        pill.className = 'adm-peserta-pill adm-peserta-pill-' + (status === 'Aktif' ? 'aktif' : status === 'Jeda' ? 'jeda' : 'abu');
+        atas.appendChild(pill);
+        item.appendChild(atas);
+        var bawah = document.createElement('div');
+        bawah.className = 'adm-peserta-kartu-bawah';
+        [['Durasi', m.durasi ? m.durasi + ' Bulan' : '—'], ['Pengampu', m.pengampu_nama || '—']].forEach(function (p) {
+          var kolom = document.createElement('div');
+          kolom.appendChild(sel('div', p[0])).className = 'adm-peserta-label';
+          var nilai = sel('div', p[1]);
+          nilai.className = 'adm-peserta-nilai';
+          kolom.appendChild(nilai);
+          bawah.appendChild(kolom);
+        });
+        var panah = sel('span', '›');
+        panah.className = 'adm-peserta-panah';
+        bawah.appendChild(panah);
+        item.appendChild(bawah);
         kartu.appendChild(item);
       }
     });
@@ -1652,6 +1708,13 @@
   var MURID_TAB = 'semua';
   var MURID_GEL = '';
   var MURID_JK = 'semua';
+  var MURID_URUT = 'terbaru';
+  function urutkanMurid(list) {
+    var salinan = list.slice();
+    if (MURID_URUT === 'nama') salinan.sort(function (a, b) { return String(a.nama || '').localeCompare(String(b.nama || ''), 'id'); });
+    else salinan.sort(function (a, b) { return Number(b.id) - Number(a.id); });
+    return salinan;
+  }
   function filterMurid() {
     var q = (document.getElementById('muridCari') || { value: '' }).value.trim().toLowerCase();
     return MURID.filter(function (m) {
@@ -1668,6 +1731,11 @@
     var nb = 0, ns = 0;
     MURID.forEach(function (m) { if (BELUM[m.id]) nb++; if (LUNAS[m.id]) ns++; });
     setAngka('belum_bayar', nb);
+    var statIds = { statTotal: MURID.length, statSudah: ns, statBelum: nb };
+    Object.keys(statIds).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = String(statIds[id]);
+    });
     var ids = { tabSemua: MURID.length, tabBelum: nb, tabSudah: ns };
     Object.keys(ids).forEach(function (id) {
       var el = document.getElementById(id);
@@ -1722,6 +1790,12 @@
   }
   bindFilterMurid();
   bindFilterHalaqoh();
+  var pilihUrut = document.getElementById('muridUrut');
+  if (pilihUrut) pilihUrut.addEventListener('change', function () {
+    MURID_URUT = pilihUrut.value;
+    halamanAktif = 1;
+    tampilMurid();
+  });
 
   /* Top bar: tombol cari membuka halaman murid dan fokus ke kolom cari; lonceng membuka daftar yang menunggu keputusan */
   function bindLainnya() {
