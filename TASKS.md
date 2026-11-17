@@ -105,3 +105,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 86): checkbox dan radio tanpa atribut name. Tidak ada. Hasil kosong.
 - 17 Nov 2026 (putaran 87): input teks tanpa label. Dua input di form pendaftaran (nama, kota) sudah dibungkus label. Hasil kosong.
 - 18 Nov 2026 (putaran 88): cek javascript: URL (nihil) dan handler inline. Satu onclick di profil.html baris 897 (menutup gantiSheet), berfungsi, tidak diubah. Tidak ada perubahan kode.
+- 18 Nov 2026 (putaran 89): cek id ganda di setiap halaman HTML. Tidak ada. Hasil kosong.
