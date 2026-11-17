@@ -120,3 +120,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 100): cek href="#". Hanya di index.html, empat ikon media sosial di footer (Instagram, Facebook, YouTube, TikTok). Ini sudah tercatat sebagai A16 dan butuh URL dari pemilik. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 101): cek tombol tanpa atribut type. Ada beberapa, tetapi tidak ada yang berada di dalam <form> di HTML statis, jadi perilaku default submit tidak berlaku. Dicatat sebagai pengerasan opsional, tidak diubah. Tombol di dalam form yang dirender JS belum diperiksa.
 - 18 Nov 2026 (putaran 102): cek atribut lang pada tag html di setiap halaman. Semua lang="id". Tidak ada perubahan.
+- 18 Nov 2026 (putaran 103): cek checkbox dan radio tanpa id atau aria-label. Radio di login dan profil dibungkus <label> sehingga punya nama aksesibel. Dua input di index.html berupa template JS, juga berada di dalam label. Tidak ada perubahan.
