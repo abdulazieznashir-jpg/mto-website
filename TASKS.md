@@ -97,3 +97,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 79): status repo dan jumlah commit lokal yang belum di-push. Working tree bersih. Commit lokal belum di-push sesuai aturan. Hasil kosong.
 - 17 Nov 2026 (putaran 80): input tanggal dan angka. Input tanggal di admin sudah dibungkus label, input tanggal di index.html memakai name dan nilai. Hasil kosong.
 - 17 Nov 2026 (putaran 81): sintaks ulang semua js/*.js lolos. Hasil kosong.
+- 17 Nov 2026 (putaran 82): method dan action form. Tidak ada form dengan method atau action eksternal. Semua form ditangani JS. Hasil kosong.
