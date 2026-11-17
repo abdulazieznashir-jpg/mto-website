@@ -23,3 +23,6 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [x] C3 Meta description: semua halaman publik sudah punya. admin, profil, dan pembayaran sudah noindex, jadi tidak perlu deskripsi
 - [x] C4 Kandidat CSS tidak terpakai (dicek dengan pencarian teks di semua HTML dan JS). Sudah dihapus: galeri (gallery-*, gp-1..gp-8), instructor-*, dan testimonial-* yang tidak dipakai. adm-bar, adm-chip, adm-field, adm-who (di css/admin.css, yang hanya dimuat profil.html) sudah dihapus. blog-image, blog-content, blog-category, blog-excerpt, blog-meta sudah dihapus. arabic, hero-arabic, cta-arabic, breadcrumb, page-header, container-wide, pricing-dummy-note, program-meta sudah dihapus. Kelas big sudah lenyap bersama galeri. Daftar kandidat CSS sekarang habis. Hapus satu kelompok per commit, setelah cek ulang di HTML dan JS.
 - [x] C5 Semua RPC di kode dicek terhadap database. Cocok, kecuali tandai_bukti yang tidak ada (lihat A3)
+
+## Catatan putaran
+- 17 Nov 2026 (dua rantai aktif): putaran kosong. Cek anchor, img alt, dan tautan kosong tidak menemukan masalah baru.
