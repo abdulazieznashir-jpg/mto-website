@@ -103,3 +103,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 84): atribut loading dan decoding pada img. Hanya hero di index.html yang punya decoding async. Sudah cukup, tidak ada perubahan. Hasil kosong.
 - 17 Nov 2026 (putaran 85): isi ul dan ol. Semua hanya berisi li (struktur daftar valid). Hasil kosong.
 - 17 Nov 2026 (putaran 86): checkbox dan radio tanpa atribut name. Tidak ada. Hasil kosong.
+- 17 Nov 2026 (putaran 87): input teks tanpa label. Dua input di form pendaftaran (nama, kota) sudah dibungkus label. Hasil kosong.
