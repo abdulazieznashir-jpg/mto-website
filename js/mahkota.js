@@ -344,11 +344,12 @@
       bukaJedaBtn();
       muatJadwalGelombang();
     }
+    var kartuAdminBaru = document.getElementById('adminBaruBox');
+    if (emailSaya === OWNER && kartuAdminBaru) kartuAdminBaru.hidden = false;
     sb.rpc('pendaftaran_admin').then(function (r) {
       if (!r.error) {
         tampilAdmin(r.data || []);
-        var baru = document.getElementById('adminBaruBox');
-        if (baru) baru.hidden = false;
+        if (kartuAdminBaru) kartuAdminBaru.hidden = false;
       }
     });
     sb.rpc('profil_peserta_saya').then(function (r) {
