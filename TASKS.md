@@ -136,3 +136,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 116): cek canonical per halaman. Halaman tanpa canonical: admin, pembayaran, profil (ketiganya noindex, jadi wajar), dan login (sudah tercatat sebagai A13). Tidak ada perubahan.
 - 18 Nov 2026 (putaran 117): cek kualitas alt gambar (terlalu pendek atau berulang). Tidak ada alt pendek. Sembilan alt kosong adalah piksel Facebook (wajar). Satu alt deskriptif di index.html. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 118): cek sumber input dari URL (location.search dan hash). Pemakaian di login.js (ref dibersihkan ke A-Z0-9 maks 12), profil-tabs.js (divalidasi lewat LAYAR), dan admin.html (divalidasi lewat RUTE) semuanya memakai daftar izin. Tidak ada document.write atau eval. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 119): jalankan node --check ulang pada semua js/*.js setelah rangkaian putaran. Semua lolos sintaks. Tidak ada perubahan kode.
