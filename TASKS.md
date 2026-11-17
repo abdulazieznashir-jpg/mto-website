@@ -129,3 +129,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 109): cek <a> dengan href kosong. Tidak ada. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 110): cek tombol submit dan nama aksesibelnya. Semua punya teks atau aria-label. Tombol 'Kirim' di profil.html baris 1020 punya teks. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 111): cek select punya label. Semua select sudah dibungkus <label> atau punya aria-label (sr-only untuk 'Urutkan'). Tidak ada yang kurang. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 112): cek meta charset ada di setiap halaman, muncul sebelum title, dan tepat satu elemen <html>. Semua lolos. Tidak ada perubahan.
