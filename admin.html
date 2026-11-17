@@ -973,6 +973,7 @@
     sb.rpc('admin_daftar_murid_baru').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { MURID = []; tampilMurid(); pesanMurid('Daftar murid belum bisa dimuat.'); return; }
       MURID = r.data;
+      setAngka('murid_diterima', MURID.length);
       if (PENGAJAR.length) tampilPengajar(PENGAJAR);
       halamanAktif = 1;
       isiGelombangMurid();
@@ -1134,10 +1135,14 @@
     sb.rpc('admin_daftar_pengajar').then(function (r) {
       if (r.error || !Array.isArray(r.data)) { tampilPengajar(null); return; }
       PENGAJAR = r.data;
+      setAngka('pengajar_aktif', PENGAJAR.filter(function (g) { return g.aktif; }).length);
       tampilPengajar(PENGAJAR);
     }).catch(function () { tampilPengajar(null); });
   }
 
+  function setAngka(kunci, nilai) {
+    document.querySelectorAll('[data-stat="' + kunci + '"]').forEach(function (el) { el.textContent = String(nilai); });
+  }
   var HALAQOH_JK = 'semua';
   function namaPolos(s) { return String(s || '').replace(/^\s*ustadzah?\s+/i, '').trim().toLowerCase(); }
   function anakDari(g) {
@@ -1662,6 +1667,7 @@
   function hitungTabMurid() {
     var nb = 0, ns = 0;
     MURID.forEach(function (m) { if (BELUM[m.id]) nb++; if (LUNAS[m.id]) ns++; });
+    setAngka('belum_bayar', nb);
     var ids = { tabSemua: MURID.length, tabBelum: nb, tabSudah: ns };
     Object.keys(ids).forEach(function (id) {
       var el = document.getElementById(id);
