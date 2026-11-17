@@ -126,3 +126,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 106): cek input date dan number tanpa min/max. Dua input tanggal gelombang di admin.html wajar. Input tgl di index.html adalah Tanggal lahir (baris 1545) tanpa batas max, jadi tanggal masa depan bisa diterima, dan tidak ada validasi kewajaran di dataValid (baris 1259). Mengubah ini memengaruhi alur pendaftaran, jadi diusulkan sebagai [A] A25: batasi max ke hari ini via JS.
 - 18 Nov 2026 (putaran 107): cek semua referensi aset lokal (css, js, gambar, svg, ico, xml, txt) di HTML. Semua file ada di repo. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 108): cek img tanpa width/height dan img lazy-load. Semua img yang nyata sudah punya ukuran atau memakai picture dengan lebar tetap. Satu-satunya img tanpa ukuran adalah piksel Facebook (display:none). Tidak ada perubahan.
+- 18 Nov 2026 (putaran 109): cek <a> dengan href kosong. Tidak ada. Tidak ada perubahan.
