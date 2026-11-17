@@ -797,6 +797,8 @@
       if (!nSudah) { var k2 = document.createElement('li'); k2.textContent = 'Belum ada yang lunas. Konfirmasi lunas dari daftar Belum lunas.'; sudah.appendChild(k2); }
       document.getElementById('bayarJumlahBelum').textContent = String(nBelum);
       document.getElementById('bayarJumlahSudah').textContent = String(nSudah);
+      /* Kartu Beranda "Belum Bayar" memakai sumber yang sama dengan daftar Belum lunas di Peserta. */
+      document.querySelectorAll('[data-stat="belum_bayar"]').forEach(function (el) { el.textContent = String(nBelum); });
       info.textContent = 'Sudah lunas berarti pembayaran sudah dikonfirmasi admin.';
       if (MURID.length) { hitungTabMurid(); tampilMurid(); }
     }).catch(function () { info.textContent = 'Daftar pembayaran belum bisa dimuat.'; });

@@ -1,8 +1,8 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 17 dari 300 (rencana 300)
+Total langkah: 18 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
-- Beranda: 90% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
+- Beranda: 92% (kartu Belum Bayar sudah terisi dari daftar lunas; kartu Pendaftar Baru menunggu definisi)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
 - Peserta: 70% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 72%
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 18: kartu Beranda "Belum Bayar" diisi dari admin_daftar_lunas (sumber yang sama dengan daftar Belum lunas di Peserta). Hanya frontend, tanpa ubah SQL. Angka Pendaftar Baru tetap "—". Sintaks skrip sudah dicek.
 - [x] Langkah 17: verifikasi visual lewat Playwright (salinan di luar repo, gerbang login dilewati, konten data kosong). Sidebar desktop (logo mahkota, Beranda aktif, Peserta, Halaqoh, Notifikasi di bawah) dan bottom bar HP (Beranda, Peserta, Halaqoh, Notifikasi) sudah sesuai referensi. Area konten belum tampak karena tanpa data.
 - [x] Langkah 16: Notifikasi ditambahkan di bagian paling bawah sidebar desktop (membuka panel lonceng yang sudah ada, sama seperti bottom bar HP). Menu lama tetap tersembunyi, tidak ada kode yang dihapus.
 - [x] Langkah 15: tabel Peserta memakai lebar penuh saat detail tertutup (sebelumnya menyisakan kolom kosong 340px). Saat detail terbuka tetap dua kolom.
@@ -49,9 +50,10 @@ Progres keseluruhan: perkiraan 72%
 - Filter Ikhwan/Akhwat di Halaqoh belum ditambahkan karena belum ada data gender pengajar. Saya tidak menebak dari nama.
 
 ## Menunggu keputusan pemilik
-- Sinkronisasi dengan branch utama: origin/main punya 10 commit yang belum ada di redesign-admin (Halaqoh: pencocokan murid lewat nama pengampu dan filter Ikhwan/Akhwat; Peserta: kolom cari, filter Gelombang, kartu ringkasan; Beranda: angka Peserta Aktif, Belum Bayar, Pengajar Aktif; Notifikasi; perbaikan email Owner dan redirect ke admin.html). redesign-admin juga punya 2 commit yang belum ada di main. Run ini tidak menggabungkan apa pun. Perlu keputusan: merge main ke redesign-admin, rebase, atau biarkan terpisah. Catatan: sebagian poin 'Menunggu' di bawah mungkin sudah terjawab di main.
+- Sinkronisasi dengan branch utama (origin/main sekarang juga punya commit baru 70208fc tentang Beranda Total Peserta, Masuk Grup, Penempatan Pengajar; run ini tidak menggabungkan apa pun): origin/main punya 10 commit yang belum ada di redesign-admin (Halaqoh: pencocokan murid lewat nama pengampu dan filter Ikhwan/Akhwat; Peserta: kolom cari, filter Gelombang, kartu ringkasan; Beranda: angka Peserta Aktif, Belum Bayar, Pengajar Aktif; Notifikasi; perbaikan email Owner dan redirect ke admin.html). redesign-admin juga punya 2 commit yang belum ada di main. Run ini tidak menggabungkan apa pun. Perlu keputusan: merge main ke redesign-admin, rebase, atau biarkan terpisah. Catatan: sebagian poin 'Menunggu' di bawah mungkin sudah terjawab di main.
 - Jadwal pengajar dari spreadsheet (Google Sheets): belum dimasukkan ke database. Tabel pengajar hanya punya 1 baris sekarang. Sheet punya sekitar 17 pengajar Akhwat dan belasan Ikhwan, tapi tanpa email. Email dipakai sebagai kunci tabel pengajar. Perlu: periode mana yang dipakai (P69 sampai P77, atau G1 dan G2 dasar), email tiap pengajar, dan izin menulis ke database.
-- Kartu "Pendaftar Baru" dan "Belum Bayar" belum punya data. Ringkasan database belum punya angka ini. Perlu fungsi SQL baru (di luar izin saat ini) atau isi placeholder dulu?
+- Kartu "Pendaftar Baru" belum punya data. Perlu definisi: status apa yang dihitung sebagai pendaftar baru? Ringkasan database (admin_ringkasan_lengkap) juga belum punya angka ini, dan mengubahnya butuh perubahan SQL (di luar izin saat ini).
+- Kartu "Belum Bayar" sekarang dihitung di frontend dari admin_daftar_lunas. Kalau owner lebih suka angka dari ringkasan database, perlu perubahan SQL.
 - Kartu Murid Jeda dan Belum Ada Gelombang dihapus dari Beranda karena tidak ada di referensi. Data tetap ada di halaman Peserta.
 - Tugas Hari Ini masih dipertahankan di bawah kartu, karena belum ada keputusan untuk menghapusnya.
 - Angka Beranda: data asli dari database, atau contoh dulu?
