@@ -99,6 +99,22 @@
   .hq-periode-pil:disabled { cursor: default; opacity: 1; }
   .hq-periode-segera { opacity: .5; }
   .hq-periode-segera small { font-size: 11px; }
+  .adm-bottomnav a { position: relative; }
+  .adm-lencana-nav { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #B42318; color: #FFFFFF; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; box-sizing: border-box; }
+  .adm-lencana-nav[hidden] { display: none; }
+  .nt-wrap { padding-left: 16px; padding-right: 16px; }
+  .nt-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 12px 0; font-size: 13px; color: #6E6E73; }
+  .nt-semua { min-height: 40px; border: 1px solid #A9801F; background: #FFFFFF; color: #8A6100; border-radius: 999px; padding: 0 14px; font-size: 13px; font-weight: 600; }
+  .nt-semua:disabled { opacity: .4; }
+  .nt-item { display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 16px; padding: 14px; margin-bottom: 10px; font: inherit; color: inherit; cursor: pointer; }
+  .nt-item.nt-belum { background: #FFFBF2; border-color: #E8D3A6; }
+  .nt-titik { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; background: transparent; }
+  .nt-belum .nt-titik { background: #A9801F; }
+  .nt-teks { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .nt-judul { font-size: 15px; font-weight: 700; color: #1D1D1F; }
+  .nt-isi { font-size: 13px; color: #4A4740; word-break: break-word; }
+  .nt-waktu { font-size: 12px; color: #6E6E73; margin-top: 4px; }
+  .nt-kosong { text-align: center; color: #6E6E73; font-size: 13px; padding: 24px 0; }
   .hq-catatan { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #6E6E73; margin: 4px 2px 0; }
   .hq-ringkasan { display: grid; grid-template-columns: repeat(3, 1fr); background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px 8px; margin-bottom: 12px; }
   .hq-ringkas-sel { text-align: center; display: flex; flex-direction: column; gap: 2px; padding: 0 6px; border-left: 1px solid #EEE6D8; }
@@ -656,13 +672,6 @@
       </div>
       <div class="adm-topbar-aksi">
         <button type="button" class="adm-ikon-btn" id="topCari" aria-label="Cari murid" aria-controls="muridCari">⌕</button>
-        <div class="adm-notif-wrap">
-          <button type="button" class="adm-ikon-btn adm-ikon-btn-titik" id="topNotif" aria-label="Notifikasi" aria-expanded="false" aria-controls="notifPanel">🔔︎</button>
-          <div class="adm-notif-panel" id="notifPanel" hidden>
-            <p class="adm-notif-judul">Menunggu keputusan</p>
-            <ul class="adm-notif-daftar" id="notifDaftar"><li>Tidak ada yang menunggu keputusan.</li></ul>
-          </div>
-        </div>
         <span class="adm-avatar" aria-hidden="true">A</span>
       </div>
     </header>
@@ -960,6 +969,15 @@
         <p class="adm-dash-catatan" id="permintaanCatatan" hidden></p>
       </div>
     </section>
+    <section class="adm-view" data-view="notifikasi" hidden>
+      <div class="adm-murid-wrap nt-wrap">
+        <h1 class="adm-dash-judul">Notifikasi</h1>
+        <p class="adm-dash-sub">Kabar terbaru yang perlu Anda tindaklanjuti.</p>
+        <div class="nt-bar"><span id="ntRingkas">Memuat…</span><button type="button" class="nt-semua" id="ntSemua" disabled>Tandai semua dibaca</button></div>
+        <div id="ntDaftar"></div>
+        <p class="nt-kosong" id="ntKosong" hidden>Belum ada notifikasi.</p>
+      </div>
+    </section>
     <section class="adm-view" data-view="pengaturan" hidden>
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Pengaturan</h1>
@@ -1023,7 +1041,7 @@
   <a href="#dashboard" aria-current="page"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Beranda</a>
   <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>Peserta</a>
   <a href="#pengajar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg></span>Halaqoh</a>
-  <button type="button" class="adm-bottomnav-lainnya" onclick="document.getElementById('topNotif').click()"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>Notifikasi</button>
+  <a href="#notifikasi" id="navNotif"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>Notifikasi<span class="adm-lencana-nav" id="navNotifLencana" hidden>0</span></a>
   <a style="display:none" href="#jadwal"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v4M16 4v4"/></svg></span>Jadwal</a>
   <a style="display:none" href="#periode"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a>
   <button style="display:none" type="button" class="adm-bottomnav-lainnya" id="btnLainnya" aria-expanded="false" aria-controls="lainnyaLembar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></span>Lainnya</button>
@@ -1064,6 +1082,7 @@
     muatMurid();
     muatPesertaBaru();
     muatMenungguMasukGrup();
+    muatNotifikasiAdmin();
     muatPembayaran();
     muatGuru();
     muatBelumGuru();
@@ -2728,22 +2747,6 @@
       tampilMurid();
     });
 
-    var notif = document.getElementById('topNotif');
-    var panel = document.getElementById('notifPanel');
-    if (notif && panel) {
-      notif.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var buka = panel.hidden;
-        panel.hidden = !buka;
-        notif.setAttribute('aria-expanded', buka ? 'true' : 'false');
-      });
-      document.addEventListener('click', function (e) {
-        if (!panel.contains(e.target) && e.target !== notif) {
-          panel.hidden = true;
-          notif.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
   }
   bindTopBar();
 
@@ -2850,7 +2853,76 @@
   });
 
   /* Router hash: #dashboard, #murid, ... Hash tidak dikenal kembali ke #dashboard. */
-  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan'];
+  /* Notifikasi admin */
+  var NOTIF_ADMIN = null;
+  function waktuNotif(iso) {
+    return new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(iso));
+  }
+  function tujuanNotif(jenis) {
+    return (jenis === 'pendaftar_baru' || jenis === 'pembayaran_masuk') ? '#dashboard' : null;
+  }
+  function tampilNotifikasiAdmin() {
+    var daftar = document.getElementById('ntDaftar');
+    var ringkas = document.getElementById('ntRingkas');
+    var semua = document.getElementById('ntSemua');
+    var kosong = document.getElementById('ntKosong');
+    var lencana = document.getElementById('navNotifLencana');
+    if (!daftar) return;
+    daftar.innerHTML = '';
+    if (NOTIF_ADMIN === null) {
+      if (ringkas) ringkas.textContent = 'Notifikasi belum bisa dimuat';
+      if (semua) semua.disabled = true;
+      if (kosong) kosong.hidden = true;
+      if (lencana) lencana.hidden = true;
+      return;
+    }
+    var belum = NOTIF_ADMIN.filter(function (n) { return !n.dibaca_at; }).length;
+    if (ringkas) ringkas.textContent = belum > 0 ? belum + ' belum dibaca' : 'Semua sudah dibaca';
+    if (semua) semua.disabled = belum === 0;
+    if (lencana) { lencana.textContent = String(belum); lencana.hidden = belum === 0; }
+    if (kosong) kosong.hidden = NOTIF_ADMIN.length > 0;
+    NOTIF_ADMIN.forEach(function (n) {
+      var item = pkEl('button', 'nt-item' + (n.dibaca_at ? '' : ' nt-belum'));
+      item.type = 'button';
+      item.appendChild(pkEl('span', 'nt-titik'));
+      var teks = pkEl('span', 'nt-teks');
+      teks.appendChild(pkEl('span', 'nt-judul', n.judul || 'Notifikasi'));
+      if (n.isi) teks.appendChild(pkEl('span', 'nt-isi', n.isi));
+      teks.appendChild(pkEl('span', 'nt-waktu', waktuNotif(n.dibuat_at)));
+      item.appendChild(teks);
+      item.addEventListener('click', function () { bukaNotif(n); });
+      daftar.appendChild(item);
+    });
+  }
+  function muatNotifikasiAdmin() {
+    sb.rpc('admin_daftar_notifikasi', { p_limit: 100 }).then(function (r) {
+      NOTIF_ADMIN = (!r.error && Array.isArray(r.data)) ? r.data : null;
+      tampilNotifikasiAdmin();
+    }).catch(function () { NOTIF_ADMIN = null; tampilNotifikasiAdmin(); });
+  }
+  function bukaNotif(n) {
+    var tujuan = tujuanNotif(n.jenis);
+    if (n.dibaca_at) { if (tujuan) location.hash = tujuan.replace('#', ''); return; }
+    sb.rpc('admin_tandai_notifikasi_dibaca', { p_id: n.id }).then(function (r) {
+      if (!r.error) n.dibaca_at = new Date().toISOString();
+      tampilNotifikasiAdmin();
+      if (tujuan) location.hash = tujuan.replace('#', '');
+    }).catch(function () { tampilNotifikasiAdmin(); });
+  }
+  function tandaiSemuaNotif() {
+    sb.rpc('admin_tandai_notifikasi_dibaca', { p_id: null }).then(function (r) {
+      if (r.error) return;
+      var sekarang = new Date().toISOString();
+      (NOTIF_ADMIN || []).forEach(function (n) { if (!n.dibaca_at) n.dibaca_at = sekarang; });
+      tampilNotifikasiAdmin();
+    });
+  }
+  var ntSemuaTombol = document.getElementById('ntSemua');
+  if (ntSemuaTombol) ntSemuaTombol.addEventListener('click', tandaiSemuaNotif);
+  window.addEventListener('hashchange', function () { if (location.hash === '#notifikasi') muatNotifikasiAdmin(); });
+  setInterval(function () { if (window.MTO_ADMIN) muatNotifikasiAdmin(); }, 60000);
+
+  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'notifikasi'];
   function tampilRute() {
     var h = (window.location.hash || '').replace(/^#/, '');
     if (RUTE.indexOf(h) === -1) h = 'dashboard';
