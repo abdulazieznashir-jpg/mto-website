@@ -107,3 +107,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 88): cek javascript: URL (nihil) dan handler inline. Satu onclick di profil.html baris 897 (menutup gantiSheet), berfungsi, tidak diubah. Tidak ada perubahan kode.
 - 18 Nov 2026 (putaran 89): cek id ganda di setiap halaman HTML. Tidak ada. Hasil kosong.
 - 18 Nov 2026 (putaran 90): cek img tanpa alt dan link target=_blank tanpa rel. Tidak ada. Hasil kosong.
+- 18 Nov 2026 (putaran 91): cek input email/url tanpa autocomplete dan form tanpa action. Input email/url semua punya autocomplete. Form tanpa action adalah form yang ditangani JS (submit listener), sesuai pola. Tidak ada perubahan.
