@@ -71,3 +71,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 56): tautan wa.me dan tel:. Semua 31 tautan wa.me memakai 6285727533000 (nomor utama), tidak ada tautan tel:. Konsisten dengan js/login.js. Hasil kosong.
 - 17 Nov 2026 (putaran 57): id ganda dan label for yang menunjuk ke id yang tidak ada. Keduanya tidak ditemukan. Hasil kosong.
 - 17 Nov 2026 (putaran 58): meta http-equiv, target khusus, dan onclick inline. Hanya satu onclick di profil.html (tombol Tutup, id gantiSheet ada). Hasil kosong.
+- 17 Nov 2026 (putaran 59): iframe tidak ada. Hanya satu gambar nyata di situs (hero di index.html, di atas lipatan, sudah punya fetchpriority=high), sisanya pixel pelacak. Tidak perlu loading=lazy. Hasil kosong.
