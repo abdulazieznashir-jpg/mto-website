@@ -27,3 +27,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 ## Catatan putaran
 - 17 Nov 2026 (dua rantai aktif): putaran kosong. Cek anchor, img alt, dan tautan kosong tidak menemukan masalah baru.
 - 17 Nov 2026 (putaran 24 Nov): pindai fungsi JS tidak terpakai di js/ lain selain mahkota.js, hasil kosong.
+- 17 Nov 2026 (putaran 26): cek lang, _blank tanpa noopener, dan ukuran gambar. Hasil kosong. hero.png sudah cadangan dari hero.webp di index.html.
