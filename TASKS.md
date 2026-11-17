@@ -161,3 +161,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 18 Nov 2026 (putaran 141): cek spasi berlebih atau di ujung pada title dan meta description. Tidak ada. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 142): cek meta refresh dan http-equiv. Tidak ada. Tidak ada perubahan.
 - 18 Nov 2026 (putaran 143): cek tepat satu <body> dan satu </body> per halaman. Semua lolos. Tidak ada perubahan.
+- 18 Nov 2026 (putaran 144): cek skrip yang dimuat dua kali pada satu halaman. Tidak ada. Upaya inventaris kelas CSS yang tidak terpakai terlalu bising untuk dinilai dengan aman, jadi tidak dilanjutkan. Tidak ada perubahan.
