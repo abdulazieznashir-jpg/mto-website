@@ -39,3 +39,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 32): title tiap halaman ada dan unik. Kata placeholder (contoh, xxx, lorem, todo) hanya di atribut placeholder atau teks contoh yang disengaja. Tidak ada console.log di js/. Hasil kosong.
 - 17 Nov 2026 (putaran 33): semua src dan href lokal di HTML menunjuk ke file yang ada (tiga yang tampak hilang adalah string JS dalam atribut, bukan berkas). Hasil kosong.
 - 17 Nov 2026 (putaran 34): cek canonical, robots, dan description per halaman. Semua halaman publik punya description. Hanya login.html yang belum punya canonical, dicatat sebagai A13 karena butuh domain resmi.
+- 17 Nov 2026 (putaran 35): tautan dan tombol tanpa teks. Hanya satu di profil.html (pkEditWaktu), isinya diisi JS saat jadwal dimuat, jadi bukan masalah. Hasil kosong.
