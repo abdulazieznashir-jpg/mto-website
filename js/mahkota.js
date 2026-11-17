@@ -166,9 +166,6 @@
 
   /* ---------- Pengajar: jadwal kosong, sesi, dan notifikasi ---------- */
   var HARI_NAMA = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
-  function tglJamWib(iso) {
-    return new Date(iso).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) + ' WIB';
-  }
   var PERIODE = [
     { nama: 'Pagi', dari: '04:00', sampai: '10:50' },
     { nama: 'Siang', dari: '11:00', sampai: '14:50' },
@@ -1046,8 +1043,6 @@
   // Jam dinding Jakarta sebagai Date lokal; semua perbandingan memakai pola yang sama
   function jakartaSekarang() { return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })); }
   function hariSesiJm(hari) { return hari === 'weekend' ? [6, 0] : [1, 2, 3, 4, 5]; }
-  function jamDetik(d) { return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds(); }
-  function hitungJam(detik) { var j = Math.floor(detik / 3600), m = Math.floor((detik % 3600) / 60), s = detik % 60; return [j, m, s].map(function (x) { return (x < 10 ? '0' : '') + x; }).join(' : '); }
   var njTimer = null;
   // Sisa waktu: jam dalam total, menit, dan detik (contoh: 18j 49m 14d)
   function formatSisa(ms) {
