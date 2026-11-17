@@ -403,33 +403,6 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 }
 .instructor-bio { font-size: 13px; color: var(--text-secondary); margin-top: 12px; line-height: 1.5; }
 
-/* GALLERY */
-.gallery-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-}
-@media (max-width: 800px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-.gallery-item {
-  aspect-ratio: 1; border-radius: var(--radius);
-  overflow: hidden; position: relative;
-  cursor: pointer; transition: transform 0.3s;
-}
-.gallery-item:hover { transform: scale(0.98); }
-.gallery-item.big { grid-column: span 2; grid-row: span 2; }
-@media (max-width: 800px) { .gallery-item.big { grid-column: span 2; grid-row: auto; } }
-.gallery-placeholder {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-family: 'Amiri', serif;
-  font-size: 24px; opacity: 0.8;
-}
-.gp-1 { background: linear-gradient(135deg, #BE966A, #8B6E4E); }
-.gp-2 { background: linear-gradient(135deg, #D4B896, #BE966A); }
-.gp-3 { background: linear-gradient(135deg, #8B6E4E, #6B5238); }
-.gp-4 { background: linear-gradient(135deg, #F5EDE3, #D4B896); color: var(--primary-darker); }
-.gp-5 { background: linear-gradient(135deg, #E5CFB1, #BE966A); }
-.gp-6 { background: linear-gradient(135deg, #6B5238, #4A3820); }
-.gp-7 { background: linear-gradient(135deg, #FAF5EE, #E5CFB1); color: var(--primary-darker); }
-.gp-8 { background: linear-gradient(135deg, #BE966A, #D4B896); }
 
 /* TESTIMONIALS */
 .testimonials-grid {
