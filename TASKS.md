@@ -75,3 +75,4 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - 17 Nov 2026 (putaran 59): iframe tidak ada. Hanya satu gambar nyata di situs (hero di index.html, di atas lipatan, sudah punya fetchpriority=high), sisanya pixel pelacak. Tidak perlu loading=lazy. Hasil kosong.
 - 17 Nov 2026 (putaran 60): urutan heading. Dicatat sebagai A19 (perubahan level heading berdampak pada tampilan).
 - 17 Nov 2026 (putaran 61): tabel (9 tabel) semua punya sel th di dekatnya. Hasil kosong.
+- 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <- 17 Nov 2026 (putaran 62): sisa template (lorem, ipsum, {{ }}, <% %>, [nama]) di HTML. Tidak ditemukan. Hasil kosong.
