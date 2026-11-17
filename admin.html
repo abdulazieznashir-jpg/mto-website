@@ -159,7 +159,8 @@
   .adm-murid-kartu-baris span:last-child { color: var(--adm-ink, #1D1D1F); text-align: right; min-width: 0; overflow-wrap: anywhere; }
   .adm-murid-dua { min-width: 0; }
   @media (min-width: 900px) {
-    .adm-murid-dua { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 16px; align-items: start; }
+    .adm-murid-dua { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+    .adm-murid-dua:has(> .adm-detail:not([hidden])) { grid-template-columns: minmax(0, 1fr) minmax(0, 340px); }
     .adm-murid-dua > .adm-detail { position: sticky; top: 16px; }
     .adm-murid-dua > .adm-detail[hidden] { display: none !important; }
   }

@@ -1,15 +1,16 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 14 dari 300 (rencana 300)
-Progres keseluruhan: perkiraan 70%
+Total langkah: 15 dari 300 (rencana 300)
+Progres keseluruhan: perkiraan 72%
 - Beranda: 90% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
-- Peserta: 65% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
+- Peserta: 70% (judul, tab Belum/Sudah Bayar, kolom Program dari kelas. Kolom Jenis Baru/Repeat belum: tidak ada datanya di database)
 - Detail Halaqoh: 60% (statistik dan daftar peserta sudah. Avatar dan tampilan referensi belum. Pencocokan murid ke pengajar lewat nama)
 - Detail Peserta: 60% (inisial, status, label info sudah sesuai referensi. Kolom Jenis (Baru/Repeat) belum ada datanya)
 - Navigasi dan menu: 100%
 
 ## Selesai
+- [x] Langkah 15: tabel Peserta memakai lebar penuh saat detail tertutup (sebelumnya menyisakan kolom kosong 340px). Saat detail terbuka tetap dua kolom.
 - [x] Langkah 14: kartu Halaqoh (Pengajar) jadi kartu lebar dengan angka di kiri dan panah › di kanan (sebelumnya tersusun vertikal di tengah). Lencana Admin di top bar HP disembunyikan.
 - [x] Langkah 1: menu lama disembunyikan dari sidebar dan bottom bar (halaman tetap ada)
 - [x] Langkah 2: label Beranda dan Peserta, judul Beranda
