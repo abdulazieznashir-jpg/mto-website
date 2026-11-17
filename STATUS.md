@@ -1,6 +1,6 @@
 # STATUS redesign admin (branch redesign-admin)
 
-Total langkah: 16 dari 300 (rencana 300)
+Total langkah: 17 dari 300 (rencana 300)
 Progres keseluruhan: perkiraan 72%
 - Beranda: 90% (kartu Pendaftar Baru dan Belum Bayar menunggu sumber data)
 - Halaqoh: 60% (kartu, judul, filter, inisial sudah; filter Ikhwan/Akhwat belum karena data gender belum ada)
@@ -10,6 +10,7 @@ Progres keseluruhan: perkiraan 72%
 - Navigasi dan menu: 100% (desktop: Notifikasi ditambahkan di bagian paling bawah sidebar)
 
 ## Selesai
+- [x] Langkah 17: verifikasi visual lewat Playwright (salinan di luar repo, gerbang login dilewati, konten data kosong). Sidebar desktop (logo mahkota, Beranda aktif, Peserta, Halaqoh, Notifikasi di bawah) dan bottom bar HP (Beranda, Peserta, Halaqoh, Notifikasi) sudah sesuai referensi. Area konten belum tampak karena tanpa data.
 - [x] Langkah 16: Notifikasi ditambahkan di bagian paling bawah sidebar desktop (membuka panel lonceng yang sudah ada, sama seperti bottom bar HP). Menu lama tetap tersembunyi, tidak ada kode yang dihapus.
 - [x] Langkah 15: tabel Peserta memakai lebar penuh saat detail tertutup (sebelumnya menyisakan kolom kosong 340px). Saat detail terbuka tetap dua kolom.
 - [x] Langkah 14: kartu Halaqoh (Pengajar) jadi kartu lebar dengan angka di kiri dan panah › di kanan (sebelumnya tersusun vertikal di tengah). Lencana Admin di top bar HP disembunyikan.
@@ -28,7 +29,7 @@ Progres keseluruhan: perkiraan 72%
 - [x] Langkah 4: kartu Beranda disusun ulang (3 kartu + kartu lebar Halaqoh). Subjudul ganda dihapus.
 
 ## Sedang dikerjakan
-- Verifikasi visual: sudah dirender lewat Playwright dari salinan pratinjau di luar repo (gerbang login dilewati, data tidak dimuat). Beranda desktop & HP dicek.
+- Verifikasi isi Beranda dengan data asli belum bisa dilakukan tanpa login owner. Perlu dicek manual di browser.
 
 ## Sudah berjalan (belum diubah, harus tetap utuh)
 - Pemuatan data dari Supabase (muatMurid, dashboard)
