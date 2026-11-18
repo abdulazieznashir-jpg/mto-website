@@ -280,6 +280,8 @@
   .dg-tag-kuning { background: #FFF4C2; color: #7A5A00; border-radius: 999px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
   .dg-perlu { background: #FBF3E4; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
   .dg-perlu-baris { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 4px 0; }
+  a.dg-tag-kuning { text-decoration: none; }
+  .dg-tag-mati { opacity: 0.6; }
 
   .pk-sukses-ikon { width: 64px; height: 64px; border-radius: 50%; background: #E3F4E8; color: #1E7A3C; font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 8px auto 12px; }
   .pk-sukses-judul { display: block; text-align: center; font-size: 18px; color: #1D1D1F; }
@@ -2474,6 +2476,18 @@
     kosong(kursor, 1320);
     wadah.appendChild(kisi);
   }
+  function linkWaDaftarUlang(m, sisa) {
+    var nomor = String(m.wa || '').replace(/\D/g, '');
+    if (nomor.indexOf('0') === 0) nomor = '62' + nomor.slice(1);
+    if (!nomor) return pkEl('span', 'dg-tag-kuning dg-tag-mati', 'Nomor WA belum ada');
+    var kabar = sisa === null || sisa === undefined ? '' : (Number(sisa) <= 0 ? ' sudah habis' : ' akan berakhir dalam ' + sisa + ' hari');
+    var pesan = 'Assalamu\'alaikum ' + (m.nama || '') + ', alhamdulillah, paket belajar Al-Qur\'an di MTO' + kabar + '. Apakah ingin melanjutkan (daftar ulang)? Jazakumullahu khairan.';
+    var a = pkEl('a', 'dg-tag-kuning', 'Ajak daftar ulang');
+    a.href = 'https://wa.me/' + nomor + '?text=' + encodeURIComponent(pesan);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    return a;
+  }
   function renderDetailGuru(wadah, d, daftar) {
     wadah.innerHTML = '';
     daftar.innerHTML = '';
@@ -2504,6 +2518,7 @@
         var baris = pkEl('div', 'dg-perlu-baris');
         baris.appendChild(pkEl('span', 'dg-murid-nama', m.nama || '—'));
         baris.appendChild(pkEl('small', '', 'Tidak aktif ' + dgHariSejak(m.jeda_sejak) + ' hari'));
+        baris.appendChild(linkWaDaftarUlang(m, m.sisa_hari === undefined ? null : m.sisa_hari));
         kotak.appendChild(baris);
       });
       secPeserta.appendChild(kotak);
@@ -2520,7 +2535,7 @@
       var sisa = m.sisa_hari === null || m.sisa_hari === undefined ? 'Sisa paket: menunggu data' : (Number(m.sisa_hari) < 0 ? 'Paket habis' : 'Sisa ' + m.sisa_hari + ' hari');
       var bawah = pkEl('div', 'dg-murid-bawah');
       bawah.appendChild(pkEl('small', 'dg-meta', sisa));
-      if (m.sisa_hari !== null && m.sisa_hari !== undefined && Number(m.sisa_hari) <= 30) bawah.appendChild(pkEl('span', 'dg-tag-kuning', 'Ajak daftar ulang'));
+      if (m.sisa_hari !== null && m.sisa_hari !== undefined && Number(m.sisa_hari) <= 30) bawah.appendChild(linkWaDaftarUlang(m, m.sisa_hari));
       kartu.appendChild(bawah);
       secPeserta.appendChild(kartu);
     });
