@@ -2043,6 +2043,8 @@
     return MURID.filter(function (m) { return namaPolos(m.pengampu_nama) === kunci; });
   }
   function jkPengajar(g) {
+    if (g.jenis_kelamin === 'L') return 'ikhwan';
+    if (g.jenis_kelamin === 'P') return 'akhwat';
     var nama = String(g.nama || '');
     if (/^ustadzah\s/i.test(nama)) return 'akhwat';
     if (/^ustadz\s/i.test(nama)) return 'ikhwan';
