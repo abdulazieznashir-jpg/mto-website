@@ -1772,7 +1772,14 @@
       isi.appendChild(pkEl('p', 'pk-catatan', (p.nama || '') + ' telah ditempatkan ke ' + PK_PENGAJAR + '.'));
       var lihat = pkEl('button', 'pk-tombol-utama', 'Lihat di Halaqoh');
       lihat.type = 'button';
-      lihat.addEventListener('click', function () { tutupPanelPeserta(); location.hash = '#pengajar'; });
+      lihat.addEventListener('click', function () {
+        var namaGuru = PK_PENGAJAR;
+        tutupPanelPeserta();
+        location.hash = '#pengajar';
+        if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
+        var guru = (PENGAJAR || []).filter(function (x) { return x.nama === namaGuru; })[0];
+        if (guru) bukaDetailPengajar(guru);
+      });
       var kembali2 = pkEl('button', 'pk-tombol-kedua', 'Kembali ke Peserta');
       kembali2.type = 'button';
       kembali2.addEventListener('click', tutupPanelPeserta);
