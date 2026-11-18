@@ -294,31 +294,6 @@
   .dg-kartu-angka b { font-size: 22px; }
   .dg-kartu-angka small { color: #6E6E73; font-size: 12px; }
   .dg-sub { font-size: 11px; }
-  .dg-legenda { display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 12px; color: #6E6E73; margin: 4px 0 6px; }
-  .dg-legenda-item { display: inline-flex; align-items: center; gap: 6px; }
-  .dg-swatch { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
-  .dg-dua-kolom { display: grid; grid-template-columns: 1fr; gap: 0 24px; }
-  @media (min-width: 900px) { .dg-dua-kolom { grid-template-columns: 1fr 1fr; } }
-  .dg-jam-baris { display: grid; grid-template-columns: 52px 1fr 96px; gap: 8px; padding: 6px 0; border-top: 1px solid #F0EADF; align-items: start; }
-  .dg-jam-label { font-size: 13px; font-weight: 600; color: #3A3A3C; padding-top: 1px; }
-  .dg-tumpuk { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .dg-blok { border-radius: 6px; padding: 0 8px; font-size: 12px; line-height: 1.2; display: flex; align-items: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-sizing: border-box; }
-  .dg-blok-silver { background: #D9D5CD; color: #2F2F33; }
-  .dg-blok-gold { background: #FFF0C2; color: #7A5A00; }
-  .dg-blok-platinum { background: #E9E0FF; color: #4B2E83; }
-  .dg-blok-kosong { border: 1px dashed #E5DCCB; border-radius: 4px; background: #FBF8F3; box-sizing: border-box; }
-  .dg-status { font-size: 12px; color: #6E6E73; text-align: right; line-height: 1.3; padding-top: 1px; }
-  .dg-lipat { border-top: 1px solid #F0EADF; }
-  .dg-lipat-tombol { width: 100%; text-align: left; border: none; background: none; padding: 8px 0; font-size: 13px; color: #3A3A3C; cursor: pointer; }
-  .dg-lipat-isi[hidden] { display: none; }
-  .dg-kartu-angka b.dg-sisa { font-size: 13px; line-height: 1.5; font-weight: 400; color: #3A3A3C; }
-  .dg-sisa-angka { font-size: 16px; font-weight: 700; color: #1d1d1f; }
-  .dg-kap-baris { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 14px; padding: 12px 14px; margin-top: 12px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
-  .dg-kap-teks { display: block; }
-  .dg-kap-judul { display: block; font-weight: 600; font-size: 15px; }
-  .dg-kap-sub { display: block; font-size: 12px; color: #6E6E73; margin-top: 2px; }
-  .dg-kap-panah { font-size: 22px; color: #8C6526; transition: transform 0.2s; }
-  .dg-kap-baris.dg-kap-buka .dg-kap-panah { transform: rotate(90deg); }
   #pengajarKapasitas { margin-top: 18px; border-top: 1px solid #EEE6D8; padding-top: 12px; }
   .dg-tag-mati { opacity: 0.6; }
 
@@ -2491,127 +2466,19 @@
   function dgJam(t) { return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); }
   function dgMenit(s) { var p = String(s || '').split(':'); return Number(p[0]) * 60 + Number(p[1] || 0); }
   function dgHariSejak(s) { return Math.floor((Date.now() - new Date(s).getTime()) / 86400000); }
-  var DG_BARIS = 24;
-  function dgTitle(nama) {
-    return String(nama || '—').toLowerCase().split(' ').map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
-  }
-  function dgLegenda(wadah) {
-    var l = pkEl('div', 'dg-legenda');
-    [['Silver', '10 menit', 'silver'], ['Gold', '20 menit', 'gold'], ['Platinum', '30 menit', 'platinum']].forEach(function (x) {
-      var it = pkEl('span', 'dg-legenda-item');
-      it.appendChild(pkEl('span', 'dg-swatch dg-blok-' + x[2], ''));
-      it.appendChild(document.createTextNode(x[0] + ' (' + x[1] + ')'));
-      l.appendChild(it);
-    });
-    wadah.appendChild(l);
-  }
-  function dgSisaMuat(blok) {
-    var milik = blok.filter(function (b) { return b.blok === 'weekday' && b.jam; }).map(function (b) {
-      var a = dgMenit(b.jam);
-      return { mulai: a, selesai: a + (Number(b.menit) || 10) };
-    });
-    var silver = 0, gold = 0, platinum = 0;
-    for (var h = 0; h < 7; h++) {
-      var run = 0;
-      for (var k = 0; k <= 6; k++) {
-        var kosong = false;
-        if (k < 6) {
-          var sl = 900 + h * 60 + k * 10;
-          kosong = !milik.some(function (o) { return sl >= o.mulai && sl < o.selesai; });
-        }
-        if (kosong) { run++; continue; }
-        silver += run;
-        gold += Math.floor(run / 2);
-        platinum += Math.floor(run / 3);
-        run = 0;
-      }
-    }
-    return { silver: silver, gold: gold, platinum: platinum };
-  }
-  function dgJamKosong(u) { return u.every(function (x) { return x === null; }); }
-  function dgStatusJam(u) {
-    if (u.every(function (x) { return x !== null; })) return 'Penuh';
-    var maks = 0, run = 0;
-    u.forEach(function (x) { if (x === null) { run++; if (run > maks) maks = run; } else run = 0; });
-    var daftar = [];
-    if (maks >= 1) daftar.push('Silver');
-    if (maks >= 2) daftar.push('Gold');
-    if (maks >= 3) daftar.push('Platinum');
-    return 'Bisa diisi: ' + daftar.join(', ');
-  }
-  function dgBarisJam(t, u) {
-    var baris = pkEl('div', 'dg-jam-baris');
-    baris.appendChild(pkEl('div', 'dg-jam-label', dgJam(t)));
-    var tumpuk = pkEl('div', 'dg-tumpuk');
-    var k = 0;
-    while (k < 6) {
-      var o = u[k], n = 1;
-      while (k + n < 6 && u[k + n] === o) n++;
-      var el;
-      if (o) {
-        el = pkEl('div', 'dg-blok dg-blok-' + o.kelasKode, dgTitle(o.nama) + ' · ' + o.kelas);
-        el.style.height = (n * DG_BARIS - 2) + 'px';
-      } else {
-        el = pkEl('div', 'dg-blok-kosong', '');
-        el.style.height = (n * 6 - 2) + 'px';
-      }
-      tumpuk.appendChild(el);
-      k += n;
-    }
-    baris.appendChild(tumpuk);
-    baris.appendChild(pkEl('div', 'dg-status', dgStatusJam(u)));
-    return baris;
-  }
-  function dgLipatKosong(tMulai, daftarJam) {
-    var wrap = pkEl('div', 'dg-lipat');
-    var label = dgJam(tMulai) + ' – ' + dgJam(tMulai + daftarJam.length * 60) + ' · kosong, bisa diisi semua kelas';
-    var tombol = pkEl('button', 'dg-lipat-tombol', label + ' ▾');
-    tombol.type = 'button';
-    var isi = pkEl('div', 'dg-lipat-isi');
-    isi.hidden = true;
-    daftarJam.forEach(function (u, idx) { isi.appendChild(dgBarisJam(tMulai + idx * 60, u)); });
-    tombol.addEventListener('click', function () {
-      isi.hidden = !isi.hidden;
-      tombol.textContent = label + (isi.hidden ? ' ▾' : ' ▴');
-    });
-    wrap.appendChild(tombol);
-    wrap.appendChild(isi);
-    return wrap;
-  }
   function dgJadwalBlok(wadah, blok, judul, kode) {
     wadah.appendChild(pkEl('h4', 'dg-judul', judul));
-    var milik = blok.filter(function (b) { return b.blok === kode && b.jam; }).map(function (b) {
-      var a = dgMenit(b.jam), m = Number(b.menit) || 10;
-      var kelas = m === 30 ? 'Platinum' : (m === 20 ? 'Gold' : 'Silver');
-      return { mulai: a, selesai: a + m, nama: b.nama || '—', kelas: kelas, kelasKode: kelas.toLowerCase() };
-    });
-    // 42 satuan 10 menit, 15:00 sampai 22:00
-    var satuan = [];
-    for (var s = 900; s < 1320; s += 10) {
-      var hit = null;
-      for (var k = 0; k < milik.length; k++) {
-        if (s >= milik[k].mulai && s < milik[k].selesai) { hit = milik[k]; break; }
-      }
-      satuan.push(hit);
+    var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
+      .map(function (b) { var a = dgMenit(b.jam); return { mulai: a, selesai: a + Number(b.menit || 0), nama: b.nama || '—' }; });
+    var kisi = pkEl('div', 'dg-kisi');
+    for (var t = 900; t < 1320; t += 60) {
+      var ada = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
+      var baris = pkEl('div', 'dg-baris ' + (ada.length ? 'dg-terisi' : 'dg-kosong'));
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
+      baris.appendChild(pkEl('span', 'dg-isi-sel', ada.length ? ada.map(function (o) { return o.nama; }).join(', ') : 'Bisa diisi'));
+      kisi.appendChild(baris);
     }
-    var jamList = [];
-    for (var h = 0; h < 7; h++) jamList.push(satuan.slice(h * 6, h * 6 + 6));
-    var papan = pkEl('div', 'dg-papan');
-    var i = 0;
-    while (i < 7) {
-      if (dgJamKosong(jamList[i])) {
-        var j = i;
-        while (j < 7 && dgJamKosong(jamList[j])) j++;
-        if (j - i >= 2) {
-          papan.appendChild(dgLipatKosong(900 + i * 60, jamList.slice(i, j)));
-          i = j;
-          continue;
-        }
-      }
-      papan.appendChild(dgBarisJam(900 + i * 60, jamList[i]));
-      i++;
-    }
-    wadah.appendChild(papan);
+    wadah.appendChild(kisi);
   }
   function linkWaDaftarUlang(m, sisa) {
     var nomor = String(m.wa || '').replace(/\D/g, '');
@@ -2653,15 +2520,9 @@
     kartuMurid.appendChild(pkEl('small', '', 'Murid'));
     kartuMurid.appendChild(pkEl('b', '', String(murid.length)));
     var kartuJam = pkEl('div', 'dg-kartu-angka');
-    kartuJam.appendChild(pkEl('small', '', 'Sisa muat (Sen–Jum)'));
-    var sisaMuat = dgSisaMuat(blok);
-    var sisaEl = pkEl('b', 'dg-sisa');
-    [['Silver', sisaMuat.silver], ['Gold', sisaMuat.gold], ['Platinum', sisaMuat.platinum]].forEach(function (x, i) {
-      if (i) sisaEl.appendChild(document.createTextNode(' · '));
-      sisaEl.appendChild(document.createTextNode(x[0] + ' '));
-      sisaEl.appendChild(pkEl('span', 'dg-sisa-angka', String(x[1])));
-    });
-    kartuJam.appendChild(sisaEl);
+    kartuJam.appendChild(pkEl('small', '', 'Jam kosong'));
+    kartuJam.appendChild(pkEl('b', '', String(d.slot_sen_jum || 0)));
+    kartuJam.appendChild(pkEl('small', 'dg-sub', '(pilihan jam mulai)'));
     angka.appendChild(kartuMurid);
     angka.appendChild(kartuJam);
     wadah.appendChild(angka);
@@ -2674,15 +2535,8 @@
     tabs.appendChild(bJadwal);
     tabs.appendChild(bPeserta);
     var secJadwal = pkEl('div', 'dg-bagian');
-    dgLegenda(secJadwal);
-    var dua = pkEl('div', 'dg-dua-kolom');
-    var kolomSen = pkEl('div', '');
-    var kolomSab = pkEl('div', '');
-    dgJadwalBlok(kolomSen, blok, 'Sen – Jum (15:00 – 22:00)', 'weekday');
-    dgJadwalBlok(kolomSab, blok, 'Sab – Min (15:00 – 22:00)', 'weekend');
-    dua.appendChild(kolomSen);
-    dua.appendChild(kolomSab);
-    secJadwal.appendChild(dua);
+    dgJadwalBlok(secJadwal, blok, 'Sen – Jum (15:00 – 22:00)', 'weekday');
+    dgJadwalBlok(secJadwal, blok, 'Sab – Min (15:00 – 22:00)', 'weekend');
     var secPeserta = pkEl('div', 'dg-bagian');
     secPeserta.hidden = true;
     if (perlu.length) {
@@ -2725,26 +2579,6 @@
     wadah.appendChild(secJadwal);
     wadah.appendChild(secPeserta);
   }
-  function dgBungkusKapasitas(kap) {
-    var baris = document.getElementById('dgKapBaris');
-    if (!baris) {
-      baris = pkEl('button', 'dg-kap-baris');
-      baris.id = 'dgKapBaris';
-      baris.type = 'button';
-      var teks = pkEl('span', 'dg-kap-teks');
-      teks.appendChild(pkEl('span', 'dg-kap-judul', 'Pengaturan Kapasitas'));
-      teks.appendChild(pkEl('span', 'dg-kap-sub', 'Total per jam: 6 satuan (10 menit per satuan)'));
-      baris.appendChild(teks);
-      baris.appendChild(pkEl('span', 'dg-kap-panah', '›'));
-      kap.parentNode.insertBefore(baris, kap);
-      baris.addEventListener('click', function () {
-        kap.hidden = !kap.hidden;
-        baris.classList.toggle('dg-kap-buka', !kap.hidden);
-      });
-    }
-    kap.hidden = true;
-    baris.classList.remove('dg-kap-buka');
-  }
   function bukaDetailPengajar(g) {
     var panel = document.getElementById('pengajarDetail');
     var nama = document.getElementById('pengajarDetailNama');
@@ -2761,7 +2595,7 @@
     var wadah = document.getElementById('pengajarDetailIsi');
     if (!wadah) { wadah = document.createElement('div'); wadah.id = 'pengajarDetailIsi'; panel.appendChild(wadah); }
     var kap = document.getElementById('pengajarKapasitas');
-    if (kap) { panel.appendChild(kap); dgBungkusKapasitas(kap); }
+    if (kap) panel.appendChild(kap);
     wadah.innerHTML = '';
     wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat jadwal…'));
     sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
