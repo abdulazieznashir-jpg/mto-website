@@ -284,6 +284,14 @@
   .dg-tag-kuning { background: #FFF4C2; color: #7A5A00; border-radius: 999px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
   .dg-perlu { background: #FBF3E4; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
   .dg-perlu-baris { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 4px 0; }
+  .dg-lepas { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1px solid #F1C4C0; background: #FFF5F4; color: #B3261E; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; }
+  .dg-lepas[hidden] { display: none !important; }
+  .dg-lepas-konfirm { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+  .dg-lepas-tombol { display: flex; gap: 8px; }
+  .dg-lepas-ya, .dg-lepas-batal { min-height: 34px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; border: 1px solid #E0D8C8; background: #FFFFFF; }
+  .dg-lepas-ya { background: #B3261E; border-color: #B3261E; color: #FFFFFF; }
+  .dg-lepas-ya:disabled, .dg-lepas-batal:disabled { opacity: .6; cursor: default; }
+  .dg-lepas-gagal { color: #B3261E; }
   a.dg-tag-kuning { text-decoration: none; }
   .dg-tab-btn { color: #8C6526; }
   .dg-tab-btn.dg-aktif { color: #FFFFFF; }
@@ -2526,7 +2534,7 @@
   function inisialGuru(nama) {
     return String(nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('');
   }
-  function renderDetailGuru(wadah, d, daftar) {
+  function renderDetailGuru(wadah, d, daftar, emailGuru) {
     wadah.innerHTML = '';
     daftar.hidden = true;
     var murid = d.murid || [];
@@ -2587,6 +2595,47 @@
       var atas = pkEl('div', 'dg-murid-atas');
       atas.appendChild(pkEl('span', 'dg-murid-nama', m.nama || '—'));
       atas.appendChild(pkEl('span', 'dg-kelas', kelasLabel(m.kelas)));
+      var lepas = pkEl('button', 'dg-lepas', '×');
+      lepas.type = 'button';
+      lepas.setAttribute('aria-label', 'Lepas ' + (m.nama || 'murid') + ' dari pengajar');
+      lepas.addEventListener('click', function () {
+        lepas.hidden = true;
+        var konfirm = pkEl('div', 'dg-lepas-konfirm');
+        konfirm.appendChild(pkEl('small', 'dg-meta', 'Lepas murid ini dari pengajar? Murid akan kembali ke daftar peserta yang belum punya pengajar.'));
+        var baris = pkEl('div', 'dg-lepas-tombol');
+        var tombolYa = pkEl('button', 'dg-lepas-ya', 'Ya, lepas');
+        var tombolBatal = pkEl('button', 'dg-lepas-batal', 'Batal');
+        tombolYa.type = 'button';
+        tombolBatal.type = 'button';
+        tombolBatal.addEventListener('click', function () { konfirm.remove(); lepas.hidden = false; });
+        tombolYa.addEventListener('click', function () {
+          tombolYa.disabled = true;
+          tombolBatal.disabled = true;
+          tombolYa.textContent = 'Menyimpan…';
+          sb.rpc('admin_lepas_pengajar', { p_pendaftaran: m.id }).then(function (r) {
+            if (r.error) {
+              tombolYa.disabled = false;
+              tombolBatal.disabled = false;
+              tombolYa.textContent = 'Ya, lepas';
+              konfirm.appendChild(pkEl('small', 'dg-lepas-gagal', 'Gagal melepas murid. Coba lagi.'));
+              return;
+            }
+            muatPengajar();
+            muatPesertaBaru();
+            bukaDetailPengajar({ email: emailGuru, nama: d.nama });
+          }).catch(function () {
+            tombolYa.disabled = false;
+            tombolBatal.disabled = false;
+            tombolYa.textContent = 'Ya, lepas';
+            konfirm.appendChild(pkEl('small', 'dg-lepas-gagal', 'Gagal melepas murid. Coba lagi.'));
+          });
+        });
+        baris.appendChild(tombolYa);
+        baris.appendChild(tombolBatal);
+        konfirm.appendChild(baris);
+        kartu.appendChild(konfirm);
+      });
+      atas.appendChild(lepas);
       kartu.appendChild(atas);
       var jadwal = m.blok ? (m.blok === 'weekday' ? 'Sen–Jum' : 'Sab–Min') + (m.jam ? ' · ' + String(m.jam) : '') : 'Jadwal belum diisi';
       kartu.appendChild(pkEl('small', 'dg-meta', jadwal));
@@ -2630,7 +2679,7 @@
     sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
       wadah.innerHTML = '';
       if (r.error || !r.data) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Detail guru belum bisa dimuat.')); return; }
-      renderDetailGuru(wadah, r.data, daftar);
+      renderDetailGuru(wadah, r.data, daftar, g.email);
     }).catch(function () { wadah.innerHTML = ''; wadah.appendChild(pkEl('p', 'hq-catatan', 'Detail guru belum bisa dimuat.')); });
   }
   var tutupPengajar = document.getElementById('pengajarDetailTutup');
