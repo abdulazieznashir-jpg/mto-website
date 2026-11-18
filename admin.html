@@ -284,6 +284,10 @@
   .dg-tag-kuning { background: #FFF4C2; color: #7A5A00; border-radius: 999px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
   .dg-perlu { background: #FBF3E4; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
   .dg-perlu-baris { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 4px 0; }
+  .dg-murid-kanan { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .dg-kelas-silver { background: #D9DDE3; color: #3A3F47; }
+  .dg-kelas-gold { background: #FFD84D; color: #000000; }
+  .dg-kelas-platinum { background: #000000; color: #C0C4CC; }
   .dg-lepas { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1px solid #F1C4C0; background: #FFF5F4; color: #B3261E; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; }
   .dg-lepas[hidden] { display: none !important; }
   .dg-lepas-konfirm { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
@@ -2596,7 +2600,8 @@
       var kartu = pkEl('div', 'dg-murid');
       var atas = pkEl('div', 'dg-murid-atas');
       atas.appendChild(pkEl('span', 'dg-murid-nama', m.nama || '—'));
-      atas.appendChild(pkEl('span', 'dg-kelas', kelasLabel(m.kelas)));
+      var kananAtas = pkEl('div', 'dg-murid-kanan');
+      kananAtas.appendChild(pkEl('span', 'dg-kelas dg-kelas-' + kelasKunci(m.kelas), kelasLabel(m.kelas)));
       var lepas = pkEl('button', 'dg-lepas', '×');
       lepas.type = 'button';
       lepas.setAttribute('aria-label', 'Lepas ' + (m.nama || 'murid') + ' dari pengajar');
@@ -2637,7 +2642,8 @@
         konfirm.appendChild(baris);
         kartu.appendChild(konfirm);
       });
-      atas.appendChild(lepas);
+      kananAtas.appendChild(lepas);
+      atas.appendChild(kananAtas);
       kartu.appendChild(atas);
       var jadwal = m.blok ? (m.blok === 'weekday' ? 'Sen–Jum' : 'Sab–Min') + (m.jam ? ' · ' + String(m.jam) : '') : 'Jadwal belum diisi';
       kartu.appendChild(pkEl('small', 'dg-meta', jadwal));
