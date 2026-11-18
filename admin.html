@@ -1504,11 +1504,52 @@
     if (teks !== undefined) el.textContent = teks;
     return el;
   }
+  var SARAN = {};
   function muatPesertaBaru() {
+    SARAN = {};
     sb.rpc('admin_daftar_peserta_grup').then(function (r) {
       PESERTA_BARU = (!r.error && Array.isArray(r.data)) ? r.data : null;
       tampilPesertaBaru();
+      muatSemuaSaran();
     }).catch(function () { PESERTA_BARU = null; tampilPesertaBaru(); });
+  }
+  function muatSemuaSaran() {
+    if (!Array.isArray(PESERTA_BARU)) return;
+    var janji = PESERTA_BARU.map(function (p) {
+      return Promise.all([
+        sb.rpc('ustadz_cocok', { p_pendaftaran: p.id }),
+        sb.rpc('ustadz_terdekat', { p_pendaftaran: p.id })
+      ]).then(function (h) {
+        SARAN[p.id] = {
+          cocok: (!h[0].error && Array.isArray(h[0].data)) ? h[0].data : [],
+          terdekat: (!h[1].error && Array.isArray(h[1].data)) ? h[1].data : []
+        };
+      }).catch(function () { SARAN[p.id] = { cocok: [], terdekat: [], gagal: true }; });
+    });
+    Promise.all(janji).then(function () { tampilPesertaBaru(); });
+  }
+  function isiSaran(wadah, p) {
+    wadah.innerHTML = '';
+    var s = SARAN[p.id];
+    var judul = '';
+    var detail = '';
+    if (!s) {
+      judul = 'Mencari saran…';
+    } else if (s.gagal) {
+      judul = 'Saran belum bisa dimuat';
+      detail = 'Pilih pengajar secara manual bila perlu.';
+    } else if (s.cocok.length) {
+      judul = 'Saran: ' + s.cocok.slice(0, 5).map(function (g) { return g.nama; }).join(', ');
+      detail = s.cocok.length + ' pengajar kosong penuh di waktu ini.';
+    } else if (s.terdekat.length) {
+      judul = 'Belum ada pengajar kosong penuh di waktu ini';
+      detail = 'Terdekat: ' + s.terdekat.slice(0, 3).map(function (g) { return g.nama + ' (' + String(g.jam).slice(0, 5) + ')'; }).join(', ');
+    } else {
+      judul = 'Tidak ada pengajar yang cocok';
+      detail = 'Periksa jadwal pengajar dengan jenis kelamin yang sesuai.';
+    }
+    wadah.appendChild(pkEl('b', '', judul));
+    if (detail) wadah.appendChild(pkEl('small', '', detail));
   }
   function tampilPesertaBaru() {
     renderBeranda();
@@ -1579,8 +1620,7 @@
     var wt = waktuPeserta(p);
     var waktu = pkEl('div', wt ? 'pk-waktu' : 'pk-waktu pk-waktu-kosong', wt ? 'Waktu: ' + wt : 'Waktu belum diisi');
     var saran = pkEl('div', 'pk-saran');
-    saran.appendChild(pkEl('b', '', 'Saran belum tersedia'));
-    saran.appendChild(pkEl('small', '', 'Data jadwal pengajar belum diisi.'));
+    isiSaran(saran, p);
     isi.appendChild(atas); isi.appendChild(meta); isi.appendChild(waktu); isi.appendChild(saran);
     item.appendChild(inisial);
     item.appendChild(isi);
@@ -1619,8 +1659,7 @@
       });
       isi.appendChild(info);
       var saranBesar = pkEl('div', 'pk-saran pk-saran-besar');
-      saranBesar.appendChild(pkEl('b', '', 'Saran belum tersedia'));
-      saranBesar.appendChild(pkEl('small', '', 'Data jadwal pengajar belum diisi. Pilih pengajar secara manual bila perlu.'));
+      isiSaran(saranBesar, p);
       isi.appendChild(saranBesar);
       var pilih = pkEl('button', 'pk-tombol-utama', 'Pilih Pengajar Manual');
       pilih.type = 'button';
@@ -1631,9 +1670,17 @@
       kembali.type = 'button';
       kembali.addEventListener('click', function () { pkTahap('detail'); });
       isi.appendChild(kembali);
-      isi.appendChild(pkEl('p', 'pk-catatan', 'Pilih pengajar. Urutan dimulai dari sisa kapasitas terbanyak.'));
+      isi.appendChild(pkEl('p', 'pk-catatan', 'Hanya pengajar dengan jenis kelamin yang sesuai. Yang cocok di waktu ini tampil lebih dulu.'));
       var daftar = pkEl('div', 'pk-pilihan');
-      var urutan = (PENGAJAR || []).slice().sort(function (a, b) { return sisaMenit(b) - sisaMenit(a); });
+      var kodeJkMurid = jkPeserta(p) === 'ikhwan' ? 'L' : (jkPeserta(p) === 'akhwat' ? 'P' : '');
+      var terlihat = (PENGAJAR || []).filter(function (g) { return kodeJkMurid && g.jenis_kelamin === kodeJkMurid; });
+      var emailCocok = ((SARAN[p.id] && SARAN[p.id].cocok) || []).map(function (g) { return g.email; });
+      var urutan = terlihat.slice().sort(function (a, b) {
+        var da = emailCocok.indexOf(a.email) === -1 ? 1 : 0;
+        var db = emailCocok.indexOf(b.email) === -1 ? 1 : 0;
+        if (da !== db) return da - db;
+        return sisaMenit(b) - sisaMenit(a);
+      });
       if (!urutan.length) daftar.appendChild(pkEl('p', 'pk-catatan', 'Belum ada data pengajar.'));
       urutan.forEach(function (g) {
         var lab = pkEl('label', 'pk-opsi');
