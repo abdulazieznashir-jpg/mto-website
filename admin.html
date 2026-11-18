@@ -2480,8 +2480,13 @@
   function dgJam(t) { return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); }
   function dgMenit(s) { var p = String(s || '').split(':'); return Number(p[0]) * 60 + Number(p[1] || 0); }
   function dgHariSejak(s) { return Math.floor((Date.now() - new Date(s).getTime()) / 86400000); }
+  function dgSisaMenit(blok, kode) {
+    var terpakai = blok.filter(function (b) { return b.blok === kode && b.jam; })
+      .reduce(function (jumlah, b) { return jumlah + (Number(b.menit) || 10); }, 0);
+    return 420 - terpakai;
+  }
   function dgJadwalBlok(wadah, blok, judul, kode) {
-    wadah.appendChild(pkEl('h4', 'dg-judul', judul));
+    wadah.appendChild(pkEl('h4', 'dg-judul', judul + ' · sisa ' + dgSisaMenit(blok, kode) + ' menit'));
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
       .map(function (b) {
         var a = dgMenit(b.jam), m = Number(b.menit) || 10;
@@ -2546,9 +2551,8 @@
     kartuMurid.appendChild(pkEl('small', '', 'Murid'));
     kartuMurid.appendChild(pkEl('b', '', String(murid.length)));
     var kartuJam = pkEl('div', 'dg-kartu-angka');
-    kartuJam.appendChild(pkEl('small', '', 'Jam kosong'));
-    kartuJam.appendChild(pkEl('b', '', String(d.slot_sen_jum || 0)));
-    kartuJam.appendChild(pkEl('small', 'dg-sub', '(pilihan jam mulai)'));
+    kartuJam.appendChild(pkEl('small', '', 'Sisa menit (Sen–Jum)'));
+    kartuJam.appendChild(pkEl('b', '', String(dgSisaMenit(blok, 'weekday'))));
     angka.appendChild(kartuMurid);
     angka.appendChild(kartuJam);
     wadah.appendChild(angka);
@@ -2613,7 +2617,6 @@
     if (nama) nama.textContent = g.nama || '—';
     var lama = document.getElementById('pengajarDetailPeserta');
     if (lama) { lama.hidden = true; if (lama.previousElementSibling) lama.previousElementSibling.hidden = true; }
-    isiFormKapasitas(g);
     panel.hidden = false;
     if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" });
     var head = panel.querySelector('.adm-detail-head');
@@ -2621,7 +2624,7 @@
     var wadah = document.getElementById('pengajarDetailIsi');
     if (!wadah) { wadah = document.createElement('div'); wadah.id = 'pengajarDetailIsi'; panel.appendChild(wadah); }
     var kap = document.getElementById('pengajarKapasitas');
-    if (kap) panel.appendChild(kap);
+    if (kap) { kap.hidden = true; panel.appendChild(kap); }
     wadah.innerHTML = '';
     wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat jadwal…'));
     sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
