@@ -2394,9 +2394,8 @@
     if (nama) nama.textContent = g.nama || '—';
     var anak = anakDari(g);
     var nAktif = anak.filter(function (m) { return !m.jeda_sejak; }).length;
-    var nBelum = anak.filter(function (m) { return !!BELUM[m.id]; }).length;
     daftar.innerHTML = '';
-    [['Peserta', anak.length], ['Aktif', nAktif], ['Belum Bayar', nBelum]]
+    [['Peserta', anak.length], ['Aktif', nAktif], ['Belum daftar ulang', 'Menunggu data']]
       .forEach(function (pair) {
         daftar.appendChild(sel('dt', pair[0]));
         daftar.appendChild(sel('dd', pair[1]));
