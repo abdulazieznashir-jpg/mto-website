@@ -2492,9 +2492,6 @@
       .reduce(function (jumlah, b) { return jumlah + (Number(b.menit) || 10); }, 0);
     return 420 - terpakai;
   }
-  function dgRentangMenit(menit) {
-    return String(Math.floor(menit / 60)).padStart(2, '0') + '.' + String(menit % 60).padStart(2, '0');
-  }
   function dgJadwalBlok(wadah, blok, judul, kode) {
     wadah.appendChild(pkEl('h4', 'dg-judul', judul + ' · sisa ' + dgSisaMenit(blok, kode) + ' menit'));
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
@@ -2504,20 +2501,21 @@
       });
     var kisi = pkEl('div', 'dg-kisi');
     for (var t = 900; t < 1320; t += 60) {
-      var ada = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
-      // sisa satuan 10 menit yang belum terpakai di jam ini
+      // murid ditampilkan di jam tempat sesinya mulai saja, supaya tidak terkesan memblok jam berikutnya
+      var ada = milik.filter(function (o) { return o.mulai >= t && o.mulai < t + 60; });
+      var lewat = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
+      // sisa satuan 10 menit yang belum terpakai di jam ini (dihitung dari durasi sesi sebenarnya)
       var sisa = 0;
       for (var u = t; u < t + 60; u += 10) {
-        var terpakai = ada.some(function (o) { return u >= o.mulai && u < o.selesai; });
+        var terpakai = lewat.some(function (o) { return u >= o.mulai && u < o.selesai; });
         if (!terpakai) sisa++;
       }
       var status = sisa <= 1 ? 'Penuh' : (sisa <= 3 ? 'Hampir penuh' : 'Bisa diisi');
-      var penuhJam = sisa <= 3;
-      var baris = pkEl('div', 'dg-baris ' + (ada.length && penuhJam ? 'dg-terisi' : 'dg-kosong'));
+      var baris = pkEl('div', 'dg-baris ' + (ada.length ? 'dg-terisi' : 'dg-kosong'));
       baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
       var kanan = pkEl('span', 'dg-kanan');
-      if (ada.length) kanan.appendChild(pkEl('span', 'dg-nama-jam', ada.map(function (o) { return o.nama + ' · ' + o.kelas + ' (' + dgRentangMenit(o.mulai) + '–' + dgRentangMenit(o.selesai) + ')'; }).join(', ')));
-      if (!ada.length || penuhJam) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
+      if (ada.length) kanan.appendChild(pkEl('span', 'dg-nama-jam', ada.map(function (o) { return o.nama + ' · ' + o.kelas; }).join(', ')));
+      if (!ada.length || sisa <= 3) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
       baris.appendChild(kanan);
       kisi.appendChild(baris);
     }
