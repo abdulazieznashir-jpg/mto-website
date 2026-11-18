@@ -1767,7 +1767,11 @@
         });
         var teks = pkEl('span', 'pk-opsi-teks');
         teks.appendChild(pkEl('b', '', g.nama || '—'));
-        if (!tersedia) teks.appendChild(pkEl('small', 'pk-tidak-tersedia', 'Jam permintaan murid sudah terisi'));
+        if (!tersedia) {
+          var menitSesiP = p.kelas === 'platinum' ? 30 : (p.kelas === 'gold' ? 20 : 10);
+          var lewat = p.jam_diminta && dgMenit(String(p.jam_diminta)) + menitSesiP > 1320;
+          teks.appendChild(pkEl('small', 'pk-tidak-tersedia', lewat ? 'Jam permintaan melewati pukul 22:00' : 'Jam permintaan murid sudah terisi'));
+        }
         teks.appendChild(pkEl('small', '', adaKapasitas(g) ? 'Sisa ' + sisaMenit(g) + ' menit' : 'Kapasitas belum diisi'));
         lab.appendChild(radio);
         lab.appendChild(teks);
