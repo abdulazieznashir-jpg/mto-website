@@ -281,6 +281,20 @@
   .dg-perlu { background: #FBF3E4; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
   .dg-perlu-baris { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 4px 0; }
   a.dg-tag-kuning { text-decoration: none; }
+  .dg-tab-btn { color: #8C6526; }
+  .dg-tab-btn.dg-aktif { color: #FFFFFF; }
+  .dg-atas-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .dg-kembali { border: none; background: none; color: #8C6526; font-size: 15px; cursor: pointer; padding: 6px 0; }
+  .dg-kepala { display: flex; align-items: center; gap: 12px; margin: 6px 0 14px; }
+  .dg-avatar { width: 52px; height: 52px; border-radius: 50%; background: #F5EBD9; color: #8C6526; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
+  .dg-nama { margin: 0; font-size: 20px; }
+  .dg-chip { display: inline-block; margin-top: 4px; background: #F1EEE8; border-radius: 999px; padding: 2px 10px; font-size: 12px; color: #6E6E73; }
+  .dg-angka { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .dg-kartu-angka { background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+  .dg-kartu-angka b { font-size: 22px; }
+  .dg-kartu-angka small { color: #6E6E73; font-size: 12px; }
+  .dg-sub { font-size: 11px; }
+  #pengajarKapasitas { margin-top: 18px; border-top: 1px solid #EEE6D8; padding-top: 12px; }
   .dg-tag-mati { opacity: 0.6; }
 
   .pk-sukses-ikon { width: 64px; height: 64px; border-radius: 50%; background: #E3F4E8; color: #1E7A3C; font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 8px auto 12px; }
@@ -2454,26 +2468,15 @@
   function dgJadwalBlok(wadah, blok, judul, kode) {
     wadah.appendChild(pkEl('h4', 'dg-judul', judul));
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
-      .map(function (b) { var a = dgMenit(b.jam); return { mulai: a, selesai: a + Number(b.menit || 0), nama: b.nama || '—', kelas: b.kelas }; })
-      .sort(function (x, y) { return x.mulai - y.mulai; });
-    var kursor = 900;
+      .map(function (b) { var a = dgMenit(b.jam); return { mulai: a, selesai: a + Number(b.menit || 0), nama: b.nama || '—' }; });
     var kisi = pkEl('div', 'dg-kisi');
-    function kosong(a, b) {
-      if (b <= a) return;
-      var baris = pkEl('div', 'dg-baris dg-kosong');
-      baris.appendChild(pkEl('span', 'dg-jam', dgJam(a) + ' – ' + dgJam(b)));
-      baris.appendChild(pkEl('span', 'dg-isi-sel', 'Bisa diisi'));
+    for (var t = 900; t < 1320; t += 60) {
+      var ada = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
+      var baris = pkEl('div', 'dg-baris ' + (ada.length ? 'dg-terisi' : 'dg-kosong'));
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
+      baris.appendChild(pkEl('span', 'dg-isi-sel', ada.length ? ada.map(function (o) { return o.nama; }).join(', ') : 'Bisa diisi'));
       kisi.appendChild(baris);
     }
-    milik.forEach(function (o) {
-      kosong(kursor, o.mulai);
-      var baris = pkEl('div', 'dg-baris dg-terisi');
-      baris.appendChild(pkEl('span', 'dg-jam', dgJam(o.mulai) + ' – ' + dgJam(o.selesai)));
-      baris.appendChild(pkEl('span', 'dg-isi-sel', o.nama));
-      kisi.appendChild(baris);
-      kursor = Math.max(kursor, o.selesai);
-    });
-    kosong(kursor, 1320);
     wadah.appendChild(kisi);
   }
   function linkWaDaftarUlang(m, sisa) {
@@ -2488,16 +2491,40 @@
     a.rel = 'noopener';
     return a;
   }
+  function inisialGuru(nama) {
+    return String(nama || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(function (k) { return k.charAt(0).toUpperCase(); }).join('');
+  }
   function renderDetailGuru(wadah, d, daftar) {
     wadah.innerHTML = '';
-    daftar.innerHTML = '';
+    daftar.hidden = true;
     var murid = d.murid || [];
     var blok = d.blok || [];
-    [['Murid', murid.length], ['Slot kosong Sen–Jum', d.slot_sen_jum || 0]].forEach(function (pair) {
-      daftar.appendChild(pkEl('dt', '', pair[0]));
-      daftar.appendChild(pkEl('dd', '', String(pair[1])));
-    });
     var perlu = murid.filter(function (m) { return m.jeda && m.jeda_sejak && dgHariSejak(m.jeda_sejak) > 30; });
+    var atasBar = pkEl('div', 'dg-atas-bar');
+    var kembali = pkEl('button', 'dg-kembali', '‹ Kembali');
+    kembali.type = 'button';
+    kembali.addEventListener('click', function () { var pn = document.getElementById('pengajarDetail'); if (pn) pn.hidden = true; });
+    atasBar.appendChild(kembali);
+    wadah.appendChild(atasBar);
+    var kepala = pkEl('div', 'dg-kepala');
+    kepala.appendChild(pkEl('div', 'dg-avatar', inisialGuru(d.nama)));
+    var teksKepala = pkEl('div', '');
+    teksKepala.appendChild(pkEl('h3', 'dg-nama', d.nama || '—'));
+    var labelJk = d.jenis_kelamin === 'L' ? 'Ikhwan' : (d.jenis_kelamin === 'P' ? 'Akhwat' : '');
+    if (labelJk) teksKepala.appendChild(pkEl('span', 'dg-chip', labelJk));
+    kepala.appendChild(teksKepala);
+    wadah.appendChild(kepala);
+    var angka = pkEl('div', 'dg-angka');
+    var kartuMurid = pkEl('div', 'dg-kartu-angka');
+    kartuMurid.appendChild(pkEl('small', '', 'Murid'));
+    kartuMurid.appendChild(pkEl('b', '', String(murid.length)));
+    var kartuJam = pkEl('div', 'dg-kartu-angka');
+    kartuJam.appendChild(pkEl('small', '', 'Jam kosong'));
+    kartuJam.appendChild(pkEl('b', '', String(d.slot_sen_jum || 0)));
+    kartuJam.appendChild(pkEl('small', 'dg-sub', '(pilihan jam mulai)'));
+    angka.appendChild(kartuMurid);
+    angka.appendChild(kartuJam);
+    wadah.appendChild(angka);
     var tabs = pkEl('div', 'dg-tab');
     var bJadwal = pkEl('button', 'dg-tab-btn dg-aktif', 'Jadwal');
     var bPeserta = pkEl('button', 'dg-tab-btn', 'Peserta');
@@ -2562,8 +2589,12 @@
     isiFormKapasitas(g);
     panel.hidden = false;
     if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    var head = panel.querySelector('.adm-detail-head');
+    if (head) head.hidden = true;
     var wadah = document.getElementById('pengajarDetailIsi');
     if (!wadah) { wadah = document.createElement('div'); wadah.id = 'pengajarDetailIsi'; panel.appendChild(wadah); }
+    var kap = document.getElementById('pengajarKapasitas');
+    if (kap) panel.appendChild(kap);
     wadah.innerHTML = '';
     wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat jadwal…'));
     sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
