@@ -262,6 +262,25 @@
   .pk-jam-galat { color: #B3261E; }
   .pk-chip-jam { border: 1px solid #D9CBB0; background: #FFFFFF; border-radius: 999px; padding: 8px 12px; font-size: 14px; cursor: pointer; }
   .pk-chip-jam:hover { background: #F5EBD9; }
+  .dg-tab { display: flex; gap: 8px; margin: 12px 0; }
+  .dg-tab-btn { flex: 1; position: relative; border: 1px solid #E5DCCB; background: #FFFFFF; border-radius: 999px; padding: 10px; font-size: 14px; cursor: pointer; }
+  .dg-tab-btn.dg-aktif { background: #8C6526; border-color: #8C6526; color: #FFFFFF; }
+  .dg-badge { display: inline-block; margin-left: 6px; background: #D93025; color: #FFFFFF; border-radius: 999px; padding: 0 7px; font-size: 12px; }
+  .dg-judul { margin: 14px 0 6px; font-size: 14px; }
+  .dg-kisi { display: flex; flex-direction: column; gap: 6px; }
+  .dg-baris { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; font-size: 13px; }
+  .dg-kosong { background: #E6F4EA; color: #2E7D32; }
+  .dg-terisi { background: #F5EBD9; color: #5C4316; }
+  .dg-murid { border: 1px solid #EEE6D8; border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: #FFFFFF; }
+  .dg-murid-atas { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .dg-murid-nama { font-weight: 600; }
+  .dg-kelas { font-size: 12px; background: #F1EEE8; border-radius: 999px; padding: 2px 8px; }
+  .dg-meta { display: block; color: #6E6E73; font-size: 12px; margin-top: 2px; }
+  .dg-murid-bawah { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .dg-tag-kuning { background: #FFF4C2; color: #7A5A00; border-radius: 999px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
+  .dg-perlu { background: #FBF3E4; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
+  .dg-perlu-baris { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 4px 0; }
+
   .pk-sukses-ikon { width: 64px; height: 64px; border-radius: 50%; background: #E3F4E8; color: #1E7A3C; font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 8px auto 12px; }
   .pk-sukses-judul { display: block; text-align: center; font-size: 18px; color: #1D1D1F; }
   .pk-sukses-judul + p { text-align: center; }
@@ -2427,45 +2446,117 @@
     wadah.appendChild(judul); wadah.appendChild(info); wadah.appendChild(form); wadah.appendChild(catatan);
   }
 
+  function dgJam(t) { return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); }
+  function dgMenit(s) { var p = String(s || '').split(':'); return Number(p[0]) * 60 + Number(p[1] || 0); }
+  function dgHariSejak(s) { return Math.floor((Date.now() - new Date(s).getTime()) / 86400000); }
+  function dgJadwalBlok(wadah, blok, judul, kode) {
+    wadah.appendChild(pkEl('h4', 'dg-judul', judul));
+    var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
+      .map(function (b) { var a = dgMenit(b.jam); return { mulai: a, selesai: a + Number(b.menit || 0), nama: b.nama || '—', kelas: b.kelas }; })
+      .sort(function (x, y) { return x.mulai - y.mulai; });
+    var kursor = 900;
+    var kisi = pkEl('div', 'dg-kisi');
+    function kosong(a, b) {
+      if (b <= a) return;
+      var baris = pkEl('div', 'dg-baris dg-kosong');
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(a) + ' – ' + dgJam(b)));
+      baris.appendChild(pkEl('span', 'dg-isi-sel', 'Bisa diisi'));
+      kisi.appendChild(baris);
+    }
+    milik.forEach(function (o) {
+      kosong(kursor, o.mulai);
+      var baris = pkEl('div', 'dg-baris dg-terisi');
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(o.mulai) + ' – ' + dgJam(o.selesai)));
+      baris.appendChild(pkEl('span', 'dg-isi-sel', o.nama));
+      kisi.appendChild(baris);
+      kursor = Math.max(kursor, o.selesai);
+    });
+    kosong(kursor, 1320);
+    wadah.appendChild(kisi);
+  }
+  function renderDetailGuru(wadah, d, daftar) {
+    wadah.innerHTML = '';
+    daftar.innerHTML = '';
+    var murid = d.murid || [];
+    var blok = d.blok || [];
+    [['Murid', murid.length], ['Slot kosong Sen–Jum', d.slot_sen_jum || 0]].forEach(function (pair) {
+      daftar.appendChild(pkEl('dt', '', pair[0]));
+      daftar.appendChild(pkEl('dd', '', String(pair[1])));
+    });
+    var perlu = murid.filter(function (m) { return m.jeda && m.jeda_sejak && dgHariSejak(m.jeda_sejak) > 30; });
+    var tabs = pkEl('div', 'dg-tab');
+    var bJadwal = pkEl('button', 'dg-tab-btn dg-aktif', 'Jadwal');
+    var bPeserta = pkEl('button', 'dg-tab-btn', 'Peserta');
+    bJadwal.type = 'button';
+    bPeserta.type = 'button';
+    if (perlu.length) bPeserta.appendChild(pkEl('span', 'dg-badge', String(perlu.length)));
+    tabs.appendChild(bJadwal);
+    tabs.appendChild(bPeserta);
+    var secJadwal = pkEl('div', 'dg-bagian');
+    dgJadwalBlok(secJadwal, blok, 'Sen – Jum (15:00 – 22:00)', 'weekday');
+    dgJadwalBlok(secJadwal, blok, 'Sab – Min (15:00 – 22:00)', 'weekend');
+    var secPeserta = pkEl('div', 'dg-bagian');
+    secPeserta.hidden = true;
+    if (perlu.length) {
+      var kotak = pkEl('div', 'dg-perlu');
+      kotak.appendChild(pkEl('h4', 'dg-judul', 'Perlu tindak lanjut (' + perlu.length + ')'));
+      perlu.forEach(function (m) {
+        var baris = pkEl('div', 'dg-perlu-baris');
+        baris.appendChild(pkEl('span', 'dg-murid-nama', m.nama || '—'));
+        baris.appendChild(pkEl('small', '', 'Tidak aktif ' + dgHariSejak(m.jeda_sejak) + ' hari'));
+        kotak.appendChild(baris);
+      });
+      secPeserta.appendChild(kotak);
+    }
+    if (!murid.length) secPeserta.appendChild(pkEl('p', 'hq-catatan', 'Belum ada murid di halaqoh ini.'));
+    murid.forEach(function (m) {
+      var kartu = pkEl('div', 'dg-murid');
+      var atas = pkEl('div', 'dg-murid-atas');
+      atas.appendChild(pkEl('span', 'dg-murid-nama', m.nama || '—'));
+      atas.appendChild(pkEl('span', 'dg-kelas', kelasLabel(m.kelas)));
+      kartu.appendChild(atas);
+      var jadwal = m.blok ? (m.blok === 'weekday' ? 'Sen–Jum' : 'Sab–Min') + (m.jam ? ' · ' + String(m.jam) : '') : 'Jadwal belum diisi';
+      kartu.appendChild(pkEl('small', 'dg-meta', jadwal));
+      var sisa = m.sisa_hari === null || m.sisa_hari === undefined ? 'Sisa paket: menunggu data' : (Number(m.sisa_hari) < 0 ? 'Paket habis' : 'Sisa ' + m.sisa_hari + ' hari');
+      var bawah = pkEl('div', 'dg-murid-bawah');
+      bawah.appendChild(pkEl('small', 'dg-meta', sisa));
+      if (m.sisa_hari !== null && m.sisa_hari !== undefined && Number(m.sisa_hari) <= 30) bawah.appendChild(pkEl('span', 'dg-tag-kuning', 'Ajak daftar ulang'));
+      kartu.appendChild(bawah);
+      secPeserta.appendChild(kartu);
+    });
+    bJadwal.addEventListener('click', function () {
+      bJadwal.classList.add('dg-aktif'); bPeserta.classList.remove('dg-aktif');
+      secJadwal.hidden = false; secPeserta.hidden = true;
+    });
+    bPeserta.addEventListener('click', function () {
+      bPeserta.classList.add('dg-aktif'); bJadwal.classList.remove('dg-aktif');
+      secPeserta.hidden = false; secJadwal.hidden = true;
+    });
+    wadah.appendChild(tabs);
+    wadah.appendChild(secJadwal);
+    wadah.appendChild(secPeserta);
+  }
   function bukaDetailPengajar(g) {
     var panel = document.getElementById('pengajarDetail');
     var nama = document.getElementById('pengajarDetailNama');
     var daftar = document.getElementById('pengajarDetailDaftar');
     if (!panel || !daftar) return;
     if (nama) nama.textContent = g.nama || '—';
-    var anak = anakDari(g);
-    var nAktif = anak.filter(function (m) { return !m.jeda_sejak; }).length;
-    daftar.innerHTML = '';
-    [['Peserta', anak.length], ['Aktif', nAktif], ['Belum daftar ulang', 'Menunggu data']]
-      .forEach(function (pair) {
-        daftar.appendChild(sel('dt', pair[0]));
-        daftar.appendChild(sel('dd', pair[1]));
-      });
-    var list = document.getElementById('pengajarDetailPeserta');
-    if (list) {
-      list.innerHTML = '';
-      if (!anak.length) {
-        var kosong = document.createElement('li');
-        kosong.textContent = 'Belum ada peserta di halaqoh ini.';
-        list.appendChild(kosong);
-      }
-      anak.forEach(function (m) {
-        var li = document.createElement('li');
-        li.className = 'adm-halaqoh-peserta-baris';
-        var nm = document.createElement('span');
-        nm.textContent = m.nama || '(tanpa nama)';
-        var ket = document.createElement('small');
-        ket.textContent = (m.kelas ? m.kelas : '') + (m.durasi ? ' · ' + m.durasi + ' bulan' : '');
-        li.appendChild(nm);
-        li.appendChild(ket);
-        list.appendChild(li);
-      });
-    }
+    var lama = document.getElementById('pengajarDetailPeserta');
+    if (lama) { lama.hidden = true; if (lama.previousElementSibling) lama.previousElementSibling.hidden = true; }
     isiFormKapasitas(g);
     panel.hidden = false;
     if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    var wadah = document.getElementById('pengajarDetailIsi');
+    if (!wadah) { wadah = document.createElement('div'); wadah.id = 'pengajarDetailIsi'; panel.appendChild(wadah); }
+    wadah.innerHTML = '';
+    wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat jadwal…'));
+    sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
+      wadah.innerHTML = '';
+      if (r.error || !r.data) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Detail guru belum bisa dimuat.')); return; }
+      renderDetailGuru(wadah, r.data, daftar);
+    }).catch(function () { wadah.innerHTML = ''; wadah.appendChild(pkEl('p', 'hq-catatan', 'Detail guru belum bisa dimuat.')); });
   }
-
   var tutupPengajar = document.getElementById('pengajarDetailTutup');
   if (tutupPengajar) tutupPengajar.addEventListener('click', function () {
     var panel = document.getElementById('pengajarDetail');
