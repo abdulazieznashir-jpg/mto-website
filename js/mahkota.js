@@ -341,13 +341,8 @@
       bukaJedaBtn();
       muatJadwalGelombang();
     }
-    var kartuAdminBaru = document.getElementById('adminBaruBox');
-    if (emailSaya === OWNER && kartuAdminBaru) kartuAdminBaru.hidden = false;
     sb.rpc('pendaftaran_admin').then(function (r) {
-      if (!r.error) {
-        tampilAdmin(r.data || []);
-        if (kartuAdminBaru) kartuAdminBaru.hidden = false;
-      }
+      if (!r.error) tampilAdmin(r.data || []);
     });
     sb.rpc('profil_peserta_saya').then(function (r) {
       if (!r.error && r.data) tampilPaket(r.data);
