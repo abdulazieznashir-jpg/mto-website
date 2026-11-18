@@ -915,9 +915,9 @@
         <div class="hq-baris-cari">
           <label class="hq-urut"><span class="sr-only">Urutkan</span>
             <select id="pengajarUrut">
+              <option value="terbanyak" selected>Urut: murid terbanyak</option>
               <option value="sisa">Urut: sisa kapasitas terbanyak</option>
               <option value="nama">Urut: nama A–Z</option>
-              <option value="terbanyak">Urut: murid terbanyak</option>
               <option value="sedikit">Urut: murid sedikit</option>
             </select>
           </label>
@@ -2126,7 +2126,7 @@
   }
 
   var HALAQOH_CARI = '';
-  var HALAQOH_URUT = 'sisa';
+  var HALAQOH_URUT = 'terbanyak';
   var HALAQOH_STATUS = 'semua';
   function catatDiperbarui() {
     var el = document.getElementById('hqDiperbarui');
