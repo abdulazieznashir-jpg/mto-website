@@ -311,6 +311,7 @@
   .dg-lipat { border-top: 1px solid #F0EADF; }
   .dg-lipat-tombol { width: 100%; text-align: left; border: none; background: none; padding: 8px 0; font-size: 13px; color: #3A3A3C; cursor: pointer; }
   .dg-lipat-isi[hidden] { display: none; }
+  .dg-kartu-angka b.dg-sisa { font-size: 14px; line-height: 1.4; font-weight: 600; }
   #pengajarKapasitas { margin-top: 18px; border-top: 1px solid #EEE6D8; padding-top: 12px; }
   .dg-tag-mati { opacity: 0.6; }
 
@@ -2497,6 +2498,29 @@
     });
     wadah.appendChild(l);
   }
+  function dgSisaMuat(blok) {
+    var milik = blok.filter(function (b) { return b.blok === 'weekday' && b.jam; }).map(function (b) {
+      var a = dgMenit(b.jam);
+      return { mulai: a, selesai: a + (Number(b.menit) || 10) };
+    });
+    var silver = 0, gold = 0, platinum = 0;
+    for (var h = 0; h < 7; h++) {
+      var run = 0;
+      for (var k = 0; k <= 6; k++) {
+        var kosong = false;
+        if (k < 6) {
+          var sl = 900 + h * 60 + k * 10;
+          kosong = !milik.some(function (o) { return sl >= o.mulai && sl < o.selesai; });
+        }
+        if (kosong) { run++; continue; }
+        silver += run;
+        gold += Math.floor(run / 2);
+        platinum += Math.floor(run / 3);
+        run = 0;
+      }
+    }
+    return { silver: silver, gold: gold, platinum: platinum };
+  }
   function dgJamKosong(u) { return u.every(function (x) { return x === null; }); }
   function dgStatusJam(u) {
     if (u.every(function (x) { return x !== null; })) return 'Penuh';
@@ -2622,9 +2646,9 @@
     kartuMurid.appendChild(pkEl('small', '', 'Murid'));
     kartuMurid.appendChild(pkEl('b', '', String(murid.length)));
     var kartuJam = pkEl('div', 'dg-kartu-angka');
-    kartuJam.appendChild(pkEl('small', '', 'Jam kosong'));
-    kartuJam.appendChild(pkEl('b', '', String(d.slot_sen_jum || 0)));
-    kartuJam.appendChild(pkEl('small', 'dg-sub', '(pilihan jam mulai)'));
+    kartuJam.appendChild(pkEl('small', '', 'Sisa muat (Sen–Jum)'));
+    var sisaMuat = dgSisaMuat(blok);
+    kartuJam.appendChild(pkEl('b', 'dg-sisa', 'Silver ' + sisaMuat.silver + ' · Gold ' + sisaMuat.gold + ' · Platinum ' + sisaMuat.platinum));
     angka.appendChild(kartuMurid);
     angka.appendChild(kartuJam);
     wadah.appendChild(angka);
