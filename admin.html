@@ -303,10 +303,10 @@
   .dg-jam-label { font-size: 13px; font-weight: 600; color: #3A3A3C; padding-top: 1px; }
   .dg-tumpuk { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .dg-blok { border-radius: 6px; padding: 0 8px; font-size: 12px; line-height: 1.2; display: flex; align-items: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-sizing: border-box; }
-  .dg-blok-silver { background: #E9E7E2; color: #3F3F46; }
+  .dg-blok-silver { background: #D9D5CD; color: #2F2F33; }
   .dg-blok-gold { background: #FFF0C2; color: #7A5A00; }
   .dg-blok-platinum { background: #E9E0FF; color: #4B2E83; }
-  .dg-blok-kosong { border: 1px dashed #E5DCCB; border-radius: 6px; background: #FBF8F3; color: #A39A8A; font-size: 11px; display: flex; align-items: center; padding: 0 8px; box-sizing: border-box; }
+  .dg-blok-kosong { border: 1px dashed #E5DCCB; border-radius: 4px; background: #FBF8F3; box-sizing: border-box; }
   .dg-status { font-size: 12px; color: #6E6E73; text-align: right; line-height: 1.3; padding-top: 1px; }
   .dg-lipat { border-top: 1px solid #F0EADF; }
   .dg-lipat-tombol { width: 100%; text-align: left; border: none; background: none; padding: 8px 0; font-size: 13px; color: #3A3A3C; cursor: pointer; }
@@ -2519,10 +2519,11 @@
       var el;
       if (o) {
         el = pkEl('div', 'dg-blok dg-blok-' + o.kelasKode, dgTitle(o.nama) + ' · ' + o.kelas);
+        el.style.height = (n * DG_BARIS - 2) + 'px';
       } else {
-        el = pkEl('div', 'dg-blok-kosong', 'Bisa diisi');
+        el = pkEl('div', 'dg-blok-kosong', '');
+        el.style.height = (n * 6 - 2) + 'px';
       }
-      el.style.height = (n * DG_BARIS - 2) + 'px';
       tumpuk.appendChild(el);
       k += n;
     }
