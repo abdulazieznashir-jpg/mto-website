@@ -2505,7 +2505,7 @@
       baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
       var kanan = pkEl('span', 'dg-kanan');
       if (ada.length) kanan.appendChild(pkEl('span', 'dg-nama-jam', ada.map(function (o) { return o.nama + ' · ' + o.kelas; }).join(', ')));
-      kanan.appendChild(pkEl('span', 'dg-status-jam', status));
+      if (!ada.length || sisa <= 3) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
       baris.appendChild(kanan);
       kisi.appendChild(baris);
     }
