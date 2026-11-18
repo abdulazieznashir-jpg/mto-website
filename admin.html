@@ -1710,7 +1710,16 @@
       isi.appendChild(saranBesar);
       var pilih = pkEl('button', 'pk-tombol-utama', 'Pilih Pengajar Manual');
       pilih.type = 'button';
-      pilih.addEventListener('click', function () { pkTahap('pilih'); });
+      pilih.addEventListener('click', function () {
+        pilih.disabled = true;
+        sb.rpc('ustadz_cocok', { p_pendaftaran: p.id }).then(function (r) {
+          pilih.disabled = false;
+          if (!r.error && Array.isArray(r.data)) {
+            SARAN[p.id] = Object.assign({}, SARAN[p.id] || { terdekat: [] }, { cocok: r.data });
+          }
+          pkTahap('pilih');
+        }).catch(function () { pilih.disabled = false; pkTahap('pilih'); });
+      });
       isi.appendChild(pilih);
     } else if (tahap === 'pilih') {
       var kembali = pkEl('button', 'pk-kembali', '‹ Kembali');
