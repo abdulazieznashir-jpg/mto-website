@@ -823,9 +823,9 @@
           </div>
           <div class="pk-kelas" role="group" aria-label="Filter kelas">
             <button type="button" class="pk-kelas-pil pk-aktif" data-kelas="semua">Semua</button>
-            <button type="button" class="pk-kelas-pil" data-kelas="silver">Silver</button>
-            <button type="button" class="pk-kelas-pil" data-kelas="gold">Gold</button>
-            <button type="button" class="pk-kelas-pil" data-kelas="platinum">Platinum</button>
+            <button type="button" class="pk-kelas-pil" data-kelas="silver">SILVER</button>
+            <button type="button" class="pk-kelas-pil" data-kelas="gold">GOLD</button>
+            <button type="button" class="pk-kelas-pil" data-kelas="platinum">PLATINUM</button>
           </div>
           <div class="pk-chips" role="group" aria-label="Filter jenis kelamin">
             <button type="button" class="pk-chip pk-chip-aktif" data-jk="semua">Semua</button>
@@ -1538,7 +1538,7 @@
   var URUT_KELAS = { silver: 1, gold: 2, platinum: 3 };
   function kelasKunci(k) { return String(k || '').toLowerCase(); }
   function kelasLabel(k) {
-    var m = { silver: 'Silver', gold: 'Gold', platinum: 'Platinum' };
+    var m = { silver: 'SILVER', gold: 'GOLD', platinum: 'PLATINUM' };
     return m[kelasKunci(k)] || (k ? String(k) : '—');
   }
   function jkPeserta(p) {
@@ -1633,7 +1633,7 @@
       if (hk[kelasKunci(p.kelas)] !== undefined) hk[kelasKunci(p.kelas)]++;
       if (hj[jkPeserta(p)] !== undefined) hj[jkPeserta(p)]++;
     });
-    var labelKelas = { semua: 'Semua', silver: 'Silver', gold: 'Gold', platinum: 'Platinum' };
+    var labelKelas = { semua: 'Semua', silver: 'SILVER', gold: 'GOLD', platinum: 'PLATINUM' };
     var labelJk = { semua: 'Semua', ikhwan: 'Ikhwan', akhwat: 'Akhwat' };
     document.querySelectorAll('.pk-kelas-pil').forEach(function (b) {
       var k = b.getAttribute('data-kelas');
@@ -2497,7 +2497,7 @@
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
       .map(function (b) {
         var a = dgMenit(b.jam), m = Number(b.menit) || 10;
-        return { mulai: a, selesai: a + m, nama: b.nama || '—', kelas: m === 30 ? 'Platinum' : (m === 20 ? 'Gold' : 'Silver') };
+        return { mulai: a, selesai: a + m, nama: b.nama || '—', kelas: m === 30 ? 'PLATINUM' : (m === 20 ? 'GOLD' : 'SILVER') };
       });
     var kisi = pkEl('div', 'dg-kisi');
     for (var t = 900; t < 1320; t += 60) {
@@ -2515,7 +2515,7 @@
       baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
       var kanan = pkEl('span', 'dg-kanan');
       if (ada.length) kanan.appendChild(pkEl('span', 'dg-nama-jam', ada.map(function (o) { return o.nama + ' · ' + o.kelas; }).join(', ')));
-      if (!ada.length || sisa <= 3) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
+      if (!ada.length) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
       baris.appendChild(kanan);
       kisi.appendChild(baris);
     }
