@@ -256,7 +256,8 @@
   .pk-baris-pilih .pk-opsi { flex: 1; min-width: 0; }
   .pk-tombol-baris { width: auto; margin: 0; padding: 10px 18px; flex-shrink: 0; }
   .pk-tombol-baris[hidden] { display: none; }
-  .pk-jam-wadah { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
+  .pk-tidak-tersedia { display: block; color: #B3261E; font-size: 12px; }
+    .pk-jam-wadah { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
   .pk-jam-wadah[hidden] { display: none; }
   .pk-jam-info { width: 100%; color: #6E6E73; font-size: 13px; }
   .pk-jam-galat { color: #B3261E; }
@@ -1738,7 +1739,9 @@
         var baris = pkEl('div', 'pk-baris-pilih');
         var tombolPilih = pkEl('button', 'pk-tombol-utama pk-tombol-baris', 'Pilih');
         tombolPilih.type = 'button';
-        tombolPilih.hidden = PK_PENGAJAR !== (g.nama || '');
+        var tersedia = emailCocok.indexOf(g.email) !== -1;
+        tombolPilih.hidden = !tersedia || PK_PENGAJAR !== (g.nama || '');
+        radio.disabled = !tersedia;
         var wadahJam = pkEl('div', 'pk-jam-wadah');
         wadahJam.hidden = true;
         tombolPilih.addEventListener('click', function () {
@@ -1755,6 +1758,7 @@
         });
         var teks = pkEl('span', 'pk-opsi-teks');
         teks.appendChild(pkEl('b', '', g.nama || '—'));
+        if (!tersedia) teks.appendChild(pkEl('small', 'pk-tidak-tersedia', 'Jam permintaan murid sudah terisi'));
         teks.appendChild(pkEl('small', '', adaKapasitas(g) ? 'Sisa ' + sisaMenit(g) + ' menit' : 'Kapasitas belum diisi'));
         lab.appendChild(radio);
         lab.appendChild(teks);
