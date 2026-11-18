@@ -1743,7 +1743,11 @@
         wadahJam.hidden = true;
         tombolPilih.addEventListener('click', function () {
           PK_PENGAJAR = g.nama || '';
-          muatJamKosong(PK_AKTIF, g, wadahJam);
+          var jamMinta = String((PK_AKTIF && PK_AKTIF.jam_diminta) || '').slice(0, 5);
+          wadahJam.hidden = false;
+          wadahJam.innerHTML = '';
+          if (!jamMinta) { wadahJam.appendChild(pkEl('small', 'pk-jam-info pk-jam-galat', 'Murid ini belum punya jam permintaan.')); return; }
+          tempatkanJadwal(PK_AKTIF, g, jamMinta, wadahJam);
         });
         radio.addEventListener('change', function () {
           PK_PENGAJAR = g.nama || '';
@@ -1776,28 +1780,10 @@
       isi.appendChild(kembali2);
     }
   }
-  function muatJamKosong(p, g, wadah) {
-    wadah.innerHTML = '';
-    wadah.hidden = false;
-    wadah.appendChild(pkEl('small', 'pk-jam-info', 'Memuat jam kosong…'));
-    sb.rpc('admin_jam_kosong', { p_pendaftaran: p.id, p_pengajar_email: g.email }).then(function (r) {
-      wadah.innerHTML = '';
-      if (r.error || !Array.isArray(r.data)) { wadah.appendChild(pkEl('small', 'pk-jam-info', 'Jam kosong belum bisa dimuat.')); return; }
-      if (!r.data.length) { wadah.appendChild(pkEl('small', 'pk-jam-info', 'Tidak ada jam kosong untuk jadwal murid ini.')); return; }
-      wadah.appendChild(pkEl('small', 'pk-jam-info', 'Pilih jam (' + (p.hari_diminta === 'weekend' ? 'Sab–Min' : 'Sen–Jum') + '):'));
-      r.data.forEach(function (x) {
-        var jam = String(x.jam).slice(0, 5);
-        var chip = pkEl('button', 'pk-chip-jam', jam);
-        chip.type = 'button';
-        chip.addEventListener('click', function () { tempatkanJadwal(p, g, jam, wadah); });
-        wadah.appendChild(chip);
-      });
-    }).catch(function () { wadah.innerHTML = ''; wadah.appendChild(pkEl('small', 'pk-jam-info', 'Jam kosong belum bisa dimuat.')); });
-  }
   function tempatkanJadwal(p, g, jam, wadah) {
     sb.rpc('admin_tempatkan_jadwal', { p_pendaftaran: p.id, p_pengajar_email: g.email, p_jam: jam }).then(function (r) {
       if (r.error) {
-        var pesan = (r.error.message || '').indexOf('terpakai') !== -1 ? 'Jam ini sudah terpakai. Pilih jam lain.' : 'Penempatan belum tersimpan. Coba lagi.';
+        var pesan = (r.error.message || '').indexOf('terpakai') !== -1 ? 'Jam permintaan murid sudah terpakai di pengajar ini.' : 'Penempatan belum tersimpan. Coba lagi.';
         wadah.appendChild(pkEl('small', 'pk-jam-info pk-jam-galat', pesan));
         return;
       }
