@@ -272,6 +272,10 @@
   .dg-baris { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; font-size: 13px; }
   .dg-kosong { background: #E6F4EA; color: #2E7D32; }
   .dg-terisi { background: #F5EBD9; color: #5C4316; }
+  .dg-hampir { background: #FFF4C2; color: #7A5A00; }
+  .dg-penuh { background: #ECE7DF; color: #5C5C5C; }
+  .dg-baris .dg-isi-sel { flex: 1; text-align: left; padding: 0 8px; }
+  .dg-status-jam { font-size: 12px; white-space: nowrap; }
   .dg-murid { border: 1px solid #EEE6D8; border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: #FFFFFF; }
   .dg-murid-atas { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .dg-murid-nama { font-weight: 600; }
@@ -2479,13 +2483,25 @@
   function dgJadwalBlok(wadah, blok, judul, kode) {
     wadah.appendChild(pkEl('h4', 'dg-judul', judul));
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
-      .map(function (b) { var a = dgMenit(b.jam); return { mulai: a, selesai: a + Number(b.menit || 0), nama: b.nama || '—' }; });
+      .map(function (b) {
+        var a = dgMenit(b.jam), m = Number(b.menit) || 10;
+        return { mulai: a, selesai: a + m, nama: b.nama || '—', kelas: m === 30 ? 'Platinum' : (m === 20 ? 'Gold' : 'Silver') };
+      });
     var kisi = pkEl('div', 'dg-kisi');
     for (var t = 900; t < 1320; t += 60) {
       var ada = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
-      var baris = pkEl('div', 'dg-baris ' + (ada.length ? 'dg-terisi' : 'dg-kosong'));
+      // sisa satuan 10 menit yang belum terpakai di jam ini
+      var sisa = 0;
+      for (var u = t; u < t + 60; u += 10) {
+        var terpakai = ada.some(function (o) { return u >= o.mulai && u < o.selesai; });
+        if (!terpakai) sisa++;
+      }
+      var status = sisa <= 1 ? 'Penuh' : (sisa <= 3 ? 'Hampir penuh' : 'Bisa diisi');
+      var kelasBaris = sisa <= 1 ? 'dg-penuh' : (sisa <= 3 ? 'dg-hampir' : 'dg-kosong');
+      var baris = pkEl('div', 'dg-baris ' + kelasBaris);
       baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
-      baris.appendChild(pkEl('span', 'dg-isi-sel', ada.length ? ada.map(function (o) { return o.nama; }).join(', ') : 'Bisa diisi'));
+      baris.appendChild(pkEl('span', 'dg-isi-sel', ada.length ? ada.map(function (o) { return o.nama + ' · ' + o.kelas; }).join(', ') : ''));
+      baris.appendChild(pkEl('span', 'dg-status-jam', status));
       kisi.appendChild(baris);
     }
     wadah.appendChild(kisi);
