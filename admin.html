@@ -311,7 +311,14 @@
   .dg-lipat { border-top: 1px solid #F0EADF; }
   .dg-lipat-tombol { width: 100%; text-align: left; border: none; background: none; padding: 8px 0; font-size: 13px; color: #3A3A3C; cursor: pointer; }
   .dg-lipat-isi[hidden] { display: none; }
-  .dg-kartu-angka b.dg-sisa { font-size: 14px; line-height: 1.4; font-weight: 600; }
+  .dg-kartu-angka b.dg-sisa { font-size: 13px; line-height: 1.5; font-weight: 400; color: #3A3A3C; }
+  .dg-sisa-angka { font-size: 16px; font-weight: 700; color: #1d1d1f; }
+  .dg-kap-baris { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 14px; padding: 12px 14px; margin-top: 12px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+  .dg-kap-teks { display: block; }
+  .dg-kap-judul { display: block; font-weight: 600; font-size: 15px; }
+  .dg-kap-sub { display: block; font-size: 12px; color: #6E6E73; margin-top: 2px; }
+  .dg-kap-panah { font-size: 22px; color: #8C6526; transition: transform 0.2s; }
+  .dg-kap-baris.dg-kap-buka .dg-kap-panah { transform: rotate(90deg); }
   #pengajarKapasitas { margin-top: 18px; border-top: 1px solid #EEE6D8; padding-top: 12px; }
   .dg-tag-mati { opacity: 0.6; }
 
@@ -2648,7 +2655,13 @@
     var kartuJam = pkEl('div', 'dg-kartu-angka');
     kartuJam.appendChild(pkEl('small', '', 'Sisa muat (Sen–Jum)'));
     var sisaMuat = dgSisaMuat(blok);
-    kartuJam.appendChild(pkEl('b', 'dg-sisa', 'Silver ' + sisaMuat.silver + ' · Gold ' + sisaMuat.gold + ' · Platinum ' + sisaMuat.platinum));
+    var sisaEl = pkEl('b', 'dg-sisa');
+    [['Silver', sisaMuat.silver], ['Gold', sisaMuat.gold], ['Platinum', sisaMuat.platinum]].forEach(function (x, i) {
+      if (i) sisaEl.appendChild(document.createTextNode(' · '));
+      sisaEl.appendChild(document.createTextNode(x[0] + ' '));
+      sisaEl.appendChild(pkEl('span', 'dg-sisa-angka', String(x[1])));
+    });
+    kartuJam.appendChild(sisaEl);
     angka.appendChild(kartuMurid);
     angka.appendChild(kartuJam);
     wadah.appendChild(angka);
@@ -2712,6 +2725,26 @@
     wadah.appendChild(secJadwal);
     wadah.appendChild(secPeserta);
   }
+  function dgBungkusKapasitas(kap) {
+    var baris = document.getElementById('dgKapBaris');
+    if (!baris) {
+      baris = pkEl('button', 'dg-kap-baris');
+      baris.id = 'dgKapBaris';
+      baris.type = 'button';
+      var teks = pkEl('span', 'dg-kap-teks');
+      teks.appendChild(pkEl('span', 'dg-kap-judul', 'Pengaturan Kapasitas'));
+      teks.appendChild(pkEl('span', 'dg-kap-sub', 'Total per jam: 6 satuan (10 menit per satuan)'));
+      baris.appendChild(teks);
+      baris.appendChild(pkEl('span', 'dg-kap-panah', '›'));
+      kap.parentNode.insertBefore(baris, kap);
+      baris.addEventListener('click', function () {
+        kap.hidden = !kap.hidden;
+        baris.classList.toggle('dg-kap-buka', !kap.hidden);
+      });
+    }
+    kap.hidden = true;
+    baris.classList.remove('dg-kap-buka');
+  }
   function bukaDetailPengajar(g) {
     var panel = document.getElementById('pengajarDetail');
     var nama = document.getElementById('pengajarDetailNama');
@@ -2728,7 +2761,7 @@
     var wadah = document.getElementById('pengajarDetailIsi');
     if (!wadah) { wadah = document.createElement('div'); wadah.id = 'pengajarDetailIsi'; panel.appendChild(wadah); }
     var kap = document.getElementById('pengajarKapasitas');
-    if (kap) panel.appendChild(kap);
+    if (kap) { panel.appendChild(kap); dgBungkusKapasitas(kap); }
     wadah.innerHTML = '';
     wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat jadwal…'));
     sb.rpc('admin_detail_guru', { p_email: g.email }).then(function (r) {
