@@ -105,6 +105,7 @@
   /* Switch Account: hanya tampil untuk Owner. Pilihan tampilan disimpan di sessionStorage (kenyamanan saja, hak akses tetap di server). */
   .adm-switch { position: relative; }
   .adm-switch[hidden] { display: none !important; }
+  .adm-bottomnav [hidden], .adm-side li[hidden] { display: none !important; }
   .adm-switch-btn {
     height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--adm-line, #ECE7DE);
     background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;
@@ -1281,6 +1282,7 @@
 </div>
 
 <nav class="adm-bottomnav" aria-label="Navigasi admin HP">
+  <a href="#dealmaker" id="navDmHp" hidden><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Deal Maker</a>
   <a href="#dashboard" aria-current="page"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Beranda</a>
   <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>Peserta</a>
   <a href="#pengajar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg></span>Halaqoh</a>
@@ -1324,11 +1326,16 @@
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (email === DEALMAKER ? 'dealmaker' : 'aftersales') };
+    pasangSwitch();
+    terapkanPeranUI();
+    if (window.MTO_ADMIN.peran !== 'aftersales') muatDealMaker();
+    if (window.MTO_ADMIN.peran === 'dealmaker') {
+      /* Deal Maker hanya melihat dashboard Deal Maker: loader lain tidak dipanggil */
+      if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
+      return;
+    }
     muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
-    pasangSwitch();
-    pasangPeran();
-    muatDealMaker();
     muatDashboard();
     muatMurid();
     muatPesertaBaru();
@@ -3046,7 +3053,7 @@
         };
       });
     }).catch(function () {});
-    sb.rpc('admin_ringkasan_lengkap').then(function (r) {
+    sb.rpc(ringkasanRpc()).then(function (r) {
       if (!ringkas || r.error || !r.data) return;
       ringkas.textContent = 'Usulan jadwal menunggu keputusan: ' + r.data.usulan_jadwal + '. Daftar usulan belum ditampilkan di halaman ini.';
     }).catch(function () {});
@@ -3331,7 +3338,7 @@
 
   /* Dashboard: isi angka dari admin_ringkasan_lengkap. Jika gagal, angka tetap "—". */
   function muatDashboard() {
-    sb.rpc('admin_ringkasan_lengkap').then(function (r) {
+    sb.rpc(ringkasanRpc()).then(function (r) {
       if (r.error || !r.data) {
         var g = document.getElementById('dashGagal');
         if (g) g.hidden = false;
@@ -3506,7 +3513,7 @@
     var h = (window.location.hash || '').replace(/^#/, '');
     var aktif = peranAktif();
     if (aktif === 'dealmaker') h = 'dealmaker';
-    else if (RUTE.indexOf(h) === -1) h = 'dashboard';
+    else if (RUTE.indexOf(h) === -1 || (h === 'dealmaker' && aktif !== 'owner')) h = 'dashboard';
     if (aktif === 'dealmaker' && window.location.hash !== '#dealmaker') window.location.replace('#dealmaker');
     var views = document.querySelectorAll('.adm-view');
     for (var i = 0; i < views.length; i++) {
@@ -3534,6 +3541,7 @@
       if (t === 'dealmaker' && h !== '#dealmaker') window.location.hash = '#dealmaker';
       else if (t !== 'dealmaker' && h === '#dealmaker') window.location.hash = '#dashboard';
     }
+    terapkanPeranUI();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
   }
   function pasangSwitch() {
@@ -3565,11 +3573,26 @@
     var p = window.MTO_ADMIN && window.MTO_ADMIN.peran;
     if (p !== 'owner') return p || '';
     var t = document.body.getAttribute('data-tampilan');
-    return t === 'dealmaker' ? 'dealmaker' : 'owner';
+    return t === 'dealmaker' || t === 'aftersales' ? t : 'owner';
   }
-  function pasangPeran() {
+  /* Ringkasan dashboard: Owner memakai admin_ringkasan_lengkap (lebih lengkap); after-sales memakai admin_ringkasan */
+  function ringkasanRpc() {
+    return window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner' ? 'admin_ringkasan_lengkap' : 'admin_ringkasan';
+  }
+  /* Menu sesuai peran yang sedang berlaku. Deal Maker hanya melihat menu Deal Maker dan tombol profil. */
+  function terapkanPeranUI() {
+    var aktif = peranAktif();
     var li = document.getElementById('navDm');
-    if (li && window.MTO_ADMIN && window.MTO_ADMIN.peran !== 'aftersales') li.hidden = false;
+    if (li) li.hidden = aktif === 'aftersales' || (window.MTO_ADMIN && window.MTO_ADMIN.peran === 'aftersales');
+    if (!window.MTO_ADMIN || window.MTO_ADMIN.peran !== 'dealmaker') return;
+    var sisi = document.querySelectorAll('.adm-side li');
+    for (var i = 0; i < sisi.length; i++) { if (sisi[i] !== li) sisi[i].hidden = true; }
+    var bawah = document.querySelectorAll('.adm-bottomnav > a, .adm-bottomnav > button');
+    for (var j = 0; j < bawah.length; j++) { if (bawah[j].id !== 'navDmHp') bawah[j].hidden = true; }
+    var dmHp = document.getElementById('navDmHp');
+    if (dmHp) dmHp.hidden = false;
+    var cari = document.getElementById('topCari');
+    if (cari) cari.hidden = true;
   }
   /* Dashboard Deal Maker: statistik dan daftar lead dari fungsi database admin_statistik_dm dan admin_daftar_lead_dm */
   function muatDealMaker() {
