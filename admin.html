@@ -125,6 +125,8 @@
   .dm-panel button { min-height: 44px; border-radius: 10px; border: 0; background: var(--adm-gold, #B8912F); color: #FFFFFF; font: inherit; font-weight: 700; cursor: pointer; }
   .dm-panel button:disabled { opacity: .6; cursor: default; }
   .dm-pesan { margin: 0; font-size: 13px; color: var(--adm-muted, #6E6E73); }
+  .dm-pilih-dm { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--adm-muted, #6E6E73); }
+  .dm-pilih-dm select { font: inherit; min-height: 44px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--adm-line, #ECE7DE); background: #FFFFFF; color: var(--adm-ink, #1D1D1F); width: 100%; box-sizing: border-box; }
   /* Switch Account: hanya tampil untuk Owner. Pilihan tampilan disimpan di sessionStorage (kenyamanan saja, hak akses tetap di server). */
   .adm-switch { position: relative; }
   .adm-switch[hidden] { display: none !important; }
@@ -3738,6 +3740,30 @@
       });
     });
     baris.appendChild(teks); baris.appendChild(wrapTahap); baris.appendChild(tombol); baris.appendChild(panel);
+    if (window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner') {
+      /* Owner menetapkan Deal Maker untuk lead ini lewat admin_set_dealmaker */
+      var wrapDm = document.createElement('div'); wrapDm.className = 'dm-pilih-dm';
+      var labelDm = document.createElement('span'); labelDm.textContent = 'Deal Maker';
+      var pilihDm = document.createElement('select'); pilihDm.setAttribute('aria-label', 'Deal Maker untuk lead ini');
+      [['', 'Belum ditetapkan'], ['azieznashir@gmail.com', 'Deal Maker (azieznashir)']].forEach(function (o) {
+        var opt = document.createElement('option'); opt.value = o[0]; opt.textContent = o[1]; pilihDm.appendChild(opt);
+      });
+      var awal = (l.dealmaker_email || '').toLowerCase();
+      pilihDm.value = awal;
+      var pesanDm = document.createElement('p'); pesanDm.className = 'dm-pesan'; pesanDm.setAttribute('role', 'status');
+      pilihDm.addEventListener('change', function () {
+        var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+        if (!sb) return;
+        pilihDm.disabled = true; pesanDm.textContent = 'Menyimpan…';
+        sb.rpc('admin_set_dealmaker', { p_pendaftaran_id: l.id, p_email: pilihDm.value || null }).then(function (r) {
+          pilihDm.disabled = false;
+          if (r.error) { pilihDm.value = awal; pesanDm.textContent = 'Gagal menyimpan. Coba lagi.'; return; }
+          muatFollowUp();
+        });
+      });
+      wrapDm.appendChild(labelDm); wrapDm.appendChild(pilihDm); wrapDm.appendChild(pesanDm);
+      baris.appendChild(wrapDm);
+    }
     return baris;
   }
   function muatFollowUp() {
