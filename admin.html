@@ -117,6 +117,23 @@
   .dm-tahap-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
   .dm-tahap { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--adm-bg, #FAF8F4); color: var(--adm-muted, #6E6E73); border: 1px solid var(--adm-line, #ECE7DE); }
   .dm-tahap-ok { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
+  .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .dm-head .adm-dash-judul { margin-bottom: 2px; }
+  .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
+  .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .dm-kisi .bd-kartu { margin-bottom: 0; min-width: 0; }
+  .dm-kartu-omset { background: #FDF8EC; border-color: #EBDCAE; }
+  .dm-kartu-link { display: block; text-decoration: none; color: inherit; }
+  .dm-angka { margin: 6px 0 0; font-size: 30px; font-weight: 800; line-height: 1.1; color: var(--adm-ink, #1D1D1F); }
+  .dm-perlu-baris { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 12px 0; border-top: 1px solid #EEE6D8; }
+  .dm-perlu-baris:first-child { border-top: 0; }
+  .dm-perlu-teks { display: flex; flex-direction: column; min-width: 0; }
+  .dm-perlu-teks b { font-size: 15px; overflow-wrap: anywhere; }
+  .dm-perlu-teks span { font-size: 12px; color: var(--adm-muted, #6E6E73); }
+  .dm-perlu-baris .dm-tahap { grid-column: 1 / -1; justify-self: start; }
+  .dm-catat-link { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 10px; border: 1px solid #C9A227; color: #1D1D1F; text-decoration: none; white-space: nowrap; }
+  .dm-lihat-semua { display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 600; color: #1E3A5F; text-decoration: none; }
+  @media (max-width: 380px) { .dm-angka { font-size: 26px; } .dm-chip { font-size: 12px; } }
   .dm-catat { align-self: flex-start; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font: inherit; font-weight: 600; cursor: pointer; }
   .dm-panel { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--adm-bg, #FAF8F4); }
   .dm-panel[hidden] { display: none !important; }
@@ -881,22 +898,40 @@
     </section>
     <section class="adm-view" data-view="dealmaker" hidden>
       <div class="bd-wrap">
-        <h1 class="adm-dash-judul">Beranda</h1>
-        <p class="adm-dash-sub">Omset dan target Deal Maker</p>
-        <section class="bd-kartu" aria-labelledby="dmJudulOmset">
-          <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
-          <p class="dm-omset" id="dmOmsetBulan">—</p>
-          <div class="dm-bar-wrap">
-            <div class="dm-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
+        <div class="dm-head">
+          <div>
+            <h1 class="adm-dash-judul">Deal Maker</h1>
+            <p class="adm-dash-sub" id="dmNama">—</p>
           </div>
-          <p class="bd-catatan" id="dmTargetTeks">Target minimal Rp 17.000.000</p>
-        </section>
-        <section class="bd-kartu" aria-labelledby="dmJudulPemasukan">
-          <h2 class="bd-judul" id="dmJudulPemasukan">Pemasukan</h2>
-          <div class="bd-stat">
-            <div class="bd-stat-sel"><span class="bd-stat-label">Omset total</span><b id="dmOmsetTotal">—</b></div>
-            <div class="bd-stat-sel"><span class="bd-stat-label">Lead saya</span><b id="dmLeadSaya">—</b></div>
-          </div>
+          <span class="dm-chip" id="dmPeriode">—</span>
+        </div>
+        <div class="dm-kisi">
+          <section class="bd-kartu dm-kartu-omset" aria-labelledby="dmJudulOmset">
+            <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
+            <p class="dm-omset" id="dmOmsetBulan">—</p>
+            <div class="dm-bar-wrap">
+              <div class="dm-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
+            </div>
+            <p class="bd-catatan" id="dmTargetTeks">Target Rp 17.000.000</p>
+          </section>
+          <a class="bd-kartu dm-kartu-link" href="#followup">
+            <h2 class="bd-judul">Lead baru (24 jam)</h2>
+            <p class="dm-angka" id="dmLeadBaru">—</p>
+          </a>
+          <section class="bd-kartu">
+            <h2 class="bd-judul">Belum bayar</h2>
+            <p class="dm-angka" id="dmBelumBayar">—</p>
+          </section>
+          <section class="bd-kartu">
+            <h2 class="bd-judul">Total lead saya</h2>
+            <p class="dm-angka" id="dmTotalLead">—</p>
+          </section>
+        </div>
+        <section class="bd-kartu" aria-labelledby="dmJudulPerlu">
+          <h2 class="bd-judul" id="dmJudulPerlu">Perlu tindakan hari ini</h2>
+          <div id="dmPerlu"></div>
+          <p class="bd-kosong" id="dmPerluKosong" hidden>Belum ada lead yang perlu tindakan.</p>
+          <a class="dm-lihat-semua" href="#followup">Lihat semua lead</a>
         </section>
         <p class="bd-kosong" id="dmGalat" hidden>Data belum bisa dimuat. Muat ulang halaman.</p>
       </div>
@@ -3677,7 +3712,8 @@
     if (!sb) return;
     function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; }
     function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-    sb.rpc('dm_ringkasan').then(function (r) {
+    isi('dmPeriode', new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }));
+    sb.rpc('dm_beranda').then(function (r) {
       var g = document.getElementById('dmGalat');
       if (r.error || !r.data) { if (g) g.hidden = false; isi('dmOmsetBulan', '—'); return; }
       if (g) g.hidden = true;
@@ -3685,13 +3721,49 @@
       var target = Number(d.target || 17000000);
       var bulan = Number(d.omset_bulan_ini || 0);
       var persen = Math.min(100, Math.round(bulan / target * 100));
+      isi('dmNama', d.nama || '—');
       isi('dmOmsetBulan', rupiah(bulan));
-      isi('dmOmsetTotal', rupiah(d.omset_total));
-      isi('dmLeadSaya', String(d.lead_saya || 0));
       isi('dmTargetTeks', 'Target minimal ' + rupiah(target) + ' · tercapai ' + persen + '%');
+      isi('dmLeadBaru', String(d.lead_baru_24j || 0));
+      isi('dmBelumBayar', String(d.belum_bayar || 0));
+      isi('dmTotalLead', String(d.total_lead || 0));
       var bar = document.getElementById('dmBar');
       if (bar) { bar.style.width = persen + '%'; bar.setAttribute('aria-valuenow', String(persen)); }
+      buatPerluTindakan(d.perlu_tindakan || []);
     }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
+  }
+
+  /* Daftar "Perlu tindakan hari ini": tiga lead prioritas, dibuat dengan textContent */
+  function buatPerluTindakan(daftar) {
+    var wadah = document.getElementById('dmPerlu');
+    var kosong = document.getElementById('dmPerluKosong');
+    if (!wadah) return;
+    wadah.textContent = '';
+    if (kosong) kosong.hidden = daftar.length > 0;
+    daftar.forEach(function (l) {
+      var baris = document.createElement('div');
+      baris.className = 'dm-perlu-baris';
+      var teks = document.createElement('div');
+      teks.className = 'dm-perlu-teks';
+      var nama = document.createElement('b');
+      nama.textContent = l.nama || '—';
+      var kelas = document.createElement('span');
+      kelas.textContent = l.kelas || '';
+      teks.appendChild(nama);
+      teks.appendChild(kelas);
+      var badge = document.createElement('span');
+      var sudah = (l.tahap_sudah || []).length;
+      badge.className = 'dm-tahap ' + (sudah ? 'dm-tahap-ok' : '');
+      badge.textContent = sudah ? 'Sudah FU ' + sudah : 'Belum di-follow-up';
+      var tombol = document.createElement('a');
+      tombol.className = 'dm-catat-link';
+      tombol.href = '#followup';
+      tombol.textContent = 'Catat follow up';
+      baris.appendChild(teks);
+      baris.appendChild(badge);
+      baris.appendChild(tombol);
+      wadah.appendChild(baris);
+    });
   }
   /* Follow Up: daftar lead dengan filter dan jumlah per tahap, dari dm_daftar_lead */
   var FU_FILTER = 'belum';
