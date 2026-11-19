@@ -92,6 +92,16 @@
     width: 40px; height: 40px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
     background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); font-weight: 700;
   }
+  /* Dashboard Deal Maker: daftar lead dan statistik pembayaran */
+  .dm-lead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--adm-line, #ECE7DE); }
+  .dm-lead:first-of-type { border-top: 0; }
+  .dm-lead-teks { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .dm-lead-nama { font-weight: 700; overflow-wrap: anywhere; }
+  .dm-lead-meta { font-size: 13px; color: var(--adm-muted, #6E6E73); overflow-wrap: anywhere; }
+  .dm-status { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+  .dm-st-belum { background: #FBEBD0; color: #8A6A1F; }
+  .dm-st-sudah { background: #E4F3E8; color: #1E7A3C; }
+  .dm-st-lewat { background: #F3E1E1; color: #9A2B2B; }
   /* Switch Account: hanya tampil untuk Owner. Pilihan tampilan disimpan di sessionStorage (kenyamanan saja, hak akses tetap di server). */
   .adm-switch { position: relative; }
   .adm-switch[hidden] { display: none !important; }
@@ -778,6 +788,7 @@
       <li style="display:none"><a href="#jadwal"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 4v4M16 4v4"/></svg></span>Jadwal</a></li>
       <li style="display:none"><a href="#pertemuan"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/></svg></span>Pertemuan</a></li>
       <li style="display:none"><a href="#periode"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a></li>
+      <li id="navDm" hidden><a href="#dealmaker"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Deal Maker</a></li>
       <li style="display:none"><a href="#permintaan"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></span>Permintaan<span class="adm-nav-lencana" data-lencana="permintaan" hidden></span></a></li>
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">▣</span>Paket &amp; Pembayaran<em>segera</em></span></li>
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">◔</span>Progres<em>segera</em></span></li>
@@ -838,6 +849,24 @@
             <div><span>Tren</span><small>Menunggu data</small></div>
             <div><span>Antrean Perlu Ditinjau AI</span><small>Menunggu data</small></div>
           </div>
+        </section>
+      </div>
+    </section>
+    <section class="adm-view" data-view="dealmaker" hidden>
+      <div class="bd-wrap">
+        <h1 class="adm-dash-judul">Deal Maker</h1>
+        <p class="adm-dash-sub">Lead dari pendaftaran yang masuk</p>
+        <div class="bd-stat">
+          <div class="bd-stat-sel"><span class="bd-stat-label">Jumlah Lead</span><b id="dmTotal">—</b></div>
+          <div class="bd-stat-sel"><span class="bd-stat-label">Sudah Bayar</span><b class="bd-hijau" id="dmSudah">—</b></div>
+          <div class="bd-stat-sel"><span class="bd-stat-label">Belum Bayar</span><b class="bd-oranye" id="dmBelum">—</b></div>
+        </div>
+        <section class="bd-kartu" aria-labelledby="dmJudulLead">
+          <h2 class="bd-judul" id="dmJudulLead">Lead masuk</h2>
+          <p class="bd-catatan">Pendaftar terbaru di atas.</p>
+          <div id="dmDaftar"></div>
+          <p class="bd-kosong" id="dmKosong" hidden>Belum ada lead.</p>
+          <p class="bd-kosong" id="dmGalat" hidden>Data lead belum bisa dimuat. Muat ulang halaman.</p>
         </section>
       </div>
     </section>
@@ -1281,7 +1310,8 @@
   var SUPABASE_ANON_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
   var OWNER = 'abdulaziez.nashir@gmail.com';
   var AFTERSALES = 'mahkota.to3@gmail.com';
-  var DIIZINKAN = [OWNER, AFTERSALES];
+  var DEALMAKER = 'azieznashir@gmail.com';
+  var DIIZINKAN = [OWNER, AFTERSALES, DEALMAKER];
   var PROFIL = 'profil.html';
 
   function kembali() { window.location.replace(PROFIL); }
@@ -1293,10 +1323,12 @@
     var sesi = r && r.data && r.data.session;
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
-    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : 'aftersales' };
+    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (email === DEALMAKER ? 'dealmaker' : 'aftersales') };
     muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     pasangSwitch();
+    pasangPeran();
+    muatDealMaker();
     muatDashboard();
     muatMurid();
     muatPesertaBaru();
@@ -3469,10 +3501,13 @@
       if (pill) pill.textContent = data.length + " menunggu keputusan";
     });
   }
-  var RUTE = ['dashboard', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
+  var RUTE = ['dashboard', 'dealmaker', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
   function tampilRute() {
     var h = (window.location.hash || '').replace(/^#/, '');
-    if (RUTE.indexOf(h) === -1) h = 'dashboard';
+    var aktif = peranAktif();
+    if (aktif === 'dealmaker') h = 'dealmaker';
+    else if (RUTE.indexOf(h) === -1) h = 'dashboard';
+    if (aktif === 'dealmaker' && window.location.hash !== '#dealmaker') window.location.replace('#dealmaker');
     var views = document.querySelectorAll('.adm-view');
     for (var i = 0; i < views.length; i++) {
       views[i].hidden = views[i].getAttribute('data-view') !== h;
@@ -3494,6 +3529,12 @@
     for (var i = 0; i < item.length; i++) {
       item[i].setAttribute('aria-checked', String(item[i].getAttribute('data-tampilan') === t));
     }
+    if (window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner') {
+      var h = window.location.hash;
+      if (t === 'dealmaker' && h !== '#dealmaker') window.location.hash = '#dealmaker';
+      else if (t !== 'dealmaker' && h === '#dealmaker') window.location.hash = '#dashboard';
+    }
+    if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
   }
   function pasangSwitch() {
     var wadah = document.getElementById('admSwitch');
@@ -3518,6 +3559,59 @@
       menu.hidden = true;
       tombol.setAttribute('aria-expanded', 'false');
     });
+  }
+  /* Peran yang sedang berlaku: Owner yang memilih Deal Maker di Switch Account memakai tampilan Deal Maker */
+  function peranAktif() {
+    var p = window.MTO_ADMIN && window.MTO_ADMIN.peran;
+    if (p !== 'owner') return p || '';
+    var t = document.body.getAttribute('data-tampilan');
+    return t === 'dealmaker' ? 'dealmaker' : 'owner';
+  }
+  function pasangPeran() {
+    var li = document.getElementById('navDm');
+    if (li && window.MTO_ADMIN && window.MTO_ADMIN.peran !== 'aftersales') li.hidden = false;
+  }
+  /* Dashboard Deal Maker: statistik dan daftar lead dari fungsi database admin_statistik_dm dan admin_daftar_lead_dm */
+  function muatDealMaker() {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    if (!sb) return;
+    function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; }
+    function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+    function tanggal(t) {
+      var d = new Date(t);
+      return isNaN(d.getTime()) ? '' : d.toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+    sb.rpc('admin_statistik_dm').then(function (r) {
+      if (r.error || !r.data) { isi('dmTotal', '—'); isi('dmSudah', '—'); isi('dmBelum', '—'); return; }
+      isi('dmTotal', String(r.data.total_lead || 0));
+      isi('dmSudah', String(r.data.sudah_bayar || 0));
+      isi('dmBelum', String(r.data.belum_bayar || 0));
+    });
+    sb.rpc('admin_daftar_lead_dm').then(function (r) {
+      var wadah = document.getElementById('dmDaftar');
+      var kosong = document.getElementById('dmKosong');
+      var galat = document.getElementById('dmGalat');
+      if (!wadah) return;
+      if (r.error || !r.data) { if (galat) galat.hidden = false; return; }
+      wadah.innerHTML = '';
+      if (!r.data.length) { if (kosong) kosong.hidden = false; return; }
+      var sekarang = Date.now();
+      r.data.forEach(function (l) {
+        var kiri = document.createElement('div'); kiri.className = 'dm-lead-teks';
+        var nama = document.createElement('span'); nama.className = 'dm-lead-nama'; nama.textContent = l.nama || '(tanpa nama)';
+        var meta = document.createElement('span'); meta.className = 'dm-lead-meta';
+        meta.textContent = [l.wa, l.kelas, rupiah(l.total), tanggal(l.dibuat_at)].filter(Boolean).join(' · ');
+        kiri.appendChild(nama); kiri.appendChild(meta);
+        var st = document.createElement('span'); st.className = 'dm-status';
+        var sudah = l.status === 'menunggu_verifikasi' || l.status === 'diterima';
+        if (sudah) { st.classList.add('dm-st-sudah'); st.textContent = 'Sudah bayar'; }
+        else if (l.batas_bayar && new Date(l.batas_bayar).getTime() < sekarang) { st.classList.add('dm-st-lewat'); st.textContent = 'Lewat batas bayar'; }
+        else { st.classList.add('dm-st-belum'); st.textContent = 'Belum bayar'; }
+        var baris = document.createElement('div'); baris.className = 'dm-lead';
+        baris.appendChild(kiri); baris.appendChild(st);
+        wadah.appendChild(baris);
+      });
+    }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
   }
   window.addEventListener('hashchange', function () { if (window.MTO_ADMIN) tampilRute(); });
   window.MTO_TAMPIL_RUTE = tampilRute;
