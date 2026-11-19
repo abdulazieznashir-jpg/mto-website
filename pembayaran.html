@@ -44,6 +44,12 @@
   .pm-pesan { font-size: 14px; line-height: 1.5; margin: 12px 0 0; min-height: 1em; }
   .pm-akun p { font-size: 14px; color: #86868B; margin: 0 0 12px; }
   .pm-akun .pm-btn { margin-top: 2px; }
+  .pm-nominal { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .pm-nominal .pm-jumlah { font-size: 34px; font-weight: 700; color: #8B6E4E; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
+  .pm-nominal small { display: block; font-size: 13px; color: #86868B; line-height: 1.5; }
+  .pm-coret { text-decoration: line-through; }
+  .pm-promo { color: #8B6E4E; font-weight: 600; }
+  .pm-copy-emas { border: 0; border-radius: 999px; padding: 8px 14px; background: #BE966A; color: #fff; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; flex: none; }
 </style>
 </head>
 <body>
@@ -67,6 +73,16 @@
     <section class="pm-kartu">
       <h2>Langkah Anda</h2>
       <ol class="pm-langkah" id="langkah"></ol>
+    </section>
+
+    <section class="pm-kartu pm-nominal" id="nominalBox">
+      <div>
+        <h2>Transfer tepat sebesar</h2>
+        <div class="pm-jumlah" id="nominal"></div>
+        <small id="hargaNormal"></small>
+        <small>Pastikan nominal sama persis agar pembayaran dapat dikonfirmasi.</small>
+      </div>
+      <button type="button" class="pm-copy-emas" id="btnSalinNominal">Salin</button>
     </section>
 
     <section class="pm-kartu pm-timer" id="timerBox">
@@ -107,6 +123,8 @@
   var URL_SB = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
   var KEY_SB = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
   var BUCKET = 'bukti-transfer';
+  // Harga sama dengan KELAS di index.html. Dipakai hanya untuk menampilkan harga normal.
+  var HARGA = { silver: { asli: 350000, list: 199000 }, gold: { asli: 580000, list: 349000 }, platinum: { asli: 875000, list: 499000 } };
   var REKENING = [
     ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
     ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
@@ -172,8 +190,18 @@
     }).join('');
   }
 
+  function renderNominal(d) {
+    $('nominal').textContent = rupiah(d.total);
+    var h = HARGA[String(d.kelas || '').toLowerCase()];
+    var normal = !!h && Number(d.total) === h.list;
+    $('hargaNormal').innerHTML = normal
+      ? 'Harga normal <span class="pm-coret">' + rupiah(h.asli) + '</span> · <span class="pm-promo">Promo awal ' + Math.round((h.asli - h.list) / h.asli * 100) + '%</span>'
+      : '';
+  }
+
   function tampil(d) {
     data = d;
+    renderNominal(d);
     $('isi').hidden = false;
     $('namaSub').textContent = d.nama + (d.kelas ? ' · Kelas ' + d.kelas : '');
     $('tglBatas').innerHTML = '<strong>' + tgl(d.batas_bayar) + '</strong>';
@@ -235,6 +263,15 @@
       });
     });
     $('btnBukti').addEventListener('click', kirimBukti);
+    $('btnSalinNominal').addEventListener('click', function () {
+      var b = this;
+      var angka = data && data.total != null ? String(data.total) : '';
+      if (!angka || !navigator.clipboard) { pesan('Salin tidak tersedia. Tulis nominal ' + rupiah(data && data.total) + '.'); return; }
+      navigator.clipboard.writeText(angka).then(function () {
+        b.textContent = 'Tersalin';
+        setTimeout(function () { b.textContent = 'Salin'; }, 1500);
+      }, function () { pesan('Salin gagal. Tulis nominal ' + rupiah(data && data.total) + '.'); });
+    });
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
     s.onload = function () {
