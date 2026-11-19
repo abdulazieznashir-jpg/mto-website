@@ -37,6 +37,16 @@
   .pm-rek:first-of-type { border-top: 0; }
   .pm-rek small { display: block; color: #86868B; font-size: 13px; }
   .pm-rek b { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .pm-hint { font-size: 14px; color: #86868B; margin: 0 0 4px; }
+  .pm-rek-item { border-top: 1px solid #F0F0F2; }
+  .pm-rek-item:first-child { border-top: 0; }
+  .pm-rek-head { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 14px 0; background: none; border: 0; font: 600 15px Inter, system-ui, sans-serif; color: #1D1D1F; text-align: left; cursor: pointer; }
+  .pm-chev { color: #86868B; font-size: 18px; line-height: 1; transition: transform .15s ease; }
+  .pm-rek-item.terbuka .pm-chev { transform: rotate(90deg); }
+  .pm-rek-body { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 0 14px; }
+  .pm-rek-body[hidden] { display: none; }
+  .pm-nomor { display: block; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .pm-rek-body small { display: block; font-size: 13px; color: #86868B; }
   .pm-copy { border: 0; border-radius: 999px; padding: 7px 14px; background: #F5F5F7; color: #1D1D1F; font: 500 13px Inter, system-ui, sans-serif; cursor: pointer; }
   .pm-btn { display: block; width: 100%; box-sizing: border-box; padding: 14px; border: 0; border-radius: 14px; background: #1D1D1F; color: #fff; font: 600 15px Inter, system-ui, sans-serif; text-align: center; text-decoration: none; cursor: pointer; }
   .pm-btn.ghost { background: #F5F5F7; color: #1D1D1F; }
@@ -93,7 +103,8 @@
     </section>
 
     <section class="pm-kartu" id="rekBox">
-      <h2>Transfer ke salah satu rekening</h2>
+      <h2>Pilih rekening tujuan</h2>
+      <p class="pm-hint">Pilih salah satu bank untuk melihat nomor rekening.</p>
       <div id="rekening"></div>
     </section>
 
@@ -123,8 +134,9 @@
   var HARGA = { silver: { asli: 350000, list: 199000 }, gold: { asli: 580000, list: 349000 }, platinum: { asli: 875000, list: 499000 } };
   var REKENING = [
     ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
-    ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
+    ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508']
   ];
+  var ATAS_NAMA = 'Abdul Aziez';
   var LABEL = {
     menunggu_bayar: 'Menunggu pembayaran',
     menunggu_verifikasi: 'Bukti diterima, menunggu konfirmasi',
@@ -246,11 +258,29 @@
 
   function init() {
     if (!simpan || !simpan.id || !simpan.email) { $('kosong').hidden = false; return; }
-    $('rekening').innerHTML = REKENING.map(function (x) {
-      return '<div class="pm-rek"><div><b>' + esc(x[0]) + '</b><small>' + x[1] + '</small></div>' +
-        '<button type="button" class="pm-copy" data-copy="' + x[1] + '">Salin</button></div>';
+    $('rekening').innerHTML = REKENING.map(function (x, i) {
+      return '<div class="pm-rek-item" data-i="' + i + '">' +
+        '<button type="button" class="pm-rek-head" aria-expanded="false">' + esc(x[0]) + '<span class="pm-chev" aria-hidden="true">›</span></button>' +
+        '<div class="pm-rek-body" hidden><div><b class="pm-nomor">' + x[1] + '</b><small>a.n. ' + esc(ATAS_NAMA) + '</small></div>' +
+        '<button type="button" class="pm-copy" data-copy="' + x[1] + '">Salin</button></div></div>';
     }).join('');
     $('rekening').addEventListener('click', function (e) {
+      var head = e.target.closest('.pm-rek-head');
+      if (head) {
+        var item = head.parentNode;
+        var sudahTerbuka = item.classList.contains('terbuka');
+        document.querySelectorAll('#rekening .pm-rek-item').forEach(function (it) {
+          it.classList.remove('terbuka');
+          it.querySelector('.pm-rek-head').setAttribute('aria-expanded', 'false');
+          it.querySelector('.pm-rek-body').hidden = true;
+        });
+        if (!sudahTerbuka) {
+          item.classList.add('terbuka');
+          head.setAttribute('aria-expanded', 'true');
+          item.querySelector('.pm-rek-body').hidden = false;
+        }
+        return;
+      }
       var b = e.target.closest('[data-copy]');
       if (!b || !navigator.clipboard) return;
       navigator.clipboard.writeText(b.dataset.copy).then(function () {
