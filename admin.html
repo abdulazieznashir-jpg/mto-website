@@ -92,6 +92,26 @@
     width: 40px; height: 40px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
     background: var(--adm-gold-soft, #F6EEDC); color: var(--adm-gold-ink, #8A6A1F); font-weight: 700;
   }
+  /* Switch Account: hanya tampil untuk Owner. Pilihan tampilan disimpan di sessionStorage (kenyamanan saja, hak akses tetap di server). */
+  .adm-switch { position: relative; }
+  .adm-switch[hidden] { display: none !important; }
+  .adm-switch-btn {
+    height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--adm-line, #ECE7DE);
+    background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;
+  }
+  .adm-switch-menu {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 200px;
+    display: flex; flex-direction: column; padding: 6px; box-sizing: border-box;
+    background: var(--adm-surface, #FFFFFF); border: 1px solid var(--adm-line, #ECE7DE); border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  .adm-switch-menu[hidden] { display: none !important; }
+  .adm-switch-menu button {
+    text-align: left; padding: 10px 12px; border: 0; border-radius: 8px; background: transparent;
+    color: var(--adm-ink, #1D1D1F); font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .adm-switch-menu button:hover, .adm-switch-menu button:focus-visible { background: var(--adm-bg, #FAF8F4); }
+  .adm-switch-menu button[aria-checked="true"] { font-weight: 700; color: var(--adm-gold-ink, #8A6A1F); }
   @media (min-width: 900px) {
     .adm-topbar { padding-block: var(--adm-s-4, 16px); padding-left: 32px; padding-right: 32px; }
     .adm-topbar-brand { display: none; }
@@ -776,6 +796,14 @@
       <div class="adm-topbar-aksi">
         <button type="button" class="adm-ikon-btn" id="topCari" aria-label="Cari murid" aria-controls="muridCari">⌕</button>
         <span class="adm-avatar" aria-hidden="true">A</span>
+        <div class="adm-switch" id="admSwitch" hidden>
+          <button type="button" class="adm-switch-btn" id="admSwitchBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="admSwitchMenu">Switch Account</button>
+          <div class="adm-switch-menu" id="admSwitchMenu" role="menu" hidden>
+            <button type="button" role="menuitemradio" aria-checked="true" data-tampilan="owner">Owner</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="aftersales">After-sales</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker">Deal Maker</button>
+          </div>
+        </div>
       </div>
     </header>
     <div class="adm-kerangka" id="admKerangka">Memuat halaman admin…</div>
@@ -1268,6 +1296,7 @@
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : 'aftersales' };
     muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
+    pasangSwitch();
     muatDashboard();
     muatMurid();
     muatPesertaBaru();
@@ -3456,6 +3485,39 @@
     }
     var kerangka = document.getElementById('admKerangka');
     if (kerangka) kerangka.hidden = true;
+  }
+  /* Switch Account: khusus Owner. Hanya mengubah tampilan di browser; pembatasan data tetap di database. */
+  var TAMPILAN = ['owner', 'aftersales', 'dealmaker'];
+  function terapkanTampilan(t) {
+    document.body.setAttribute('data-tampilan', t);
+    var item = document.querySelectorAll('#admSwitchMenu [data-tampilan]');
+    for (var i = 0; i < item.length; i++) {
+      item[i].setAttribute('aria-checked', String(item[i].getAttribute('data-tampilan') === t));
+    }
+  }
+  function pasangSwitch() {
+    var wadah = document.getElementById('admSwitch');
+    var tombol = document.getElementById('admSwitchBtn');
+    var menu = document.getElementById('admSwitchMenu');
+    if (!wadah || !tombol || !menu || !window.MTO_ADMIN || window.MTO_ADMIN.peran !== 'owner') return;
+    wadah.hidden = false;
+    var simpan = '';
+    try { simpan = sessionStorage.getItem('mto_tampilan') || ''; } catch (e) { simpan = ''; }
+    terapkanTampilan(TAMPILAN.indexOf(simpan) !== -1 ? simpan : 'owner');
+    tombol.addEventListener('click', function () {
+      var buka = menu.hidden;
+      menu.hidden = !buka;
+      tombol.setAttribute('aria-expanded', String(buka));
+    });
+    menu.addEventListener('click', function (e) {
+      var pilih = e.target.closest ? e.target.closest('[data-tampilan]') : null;
+      if (!pilih) return;
+      var t = pilih.getAttribute('data-tampilan');
+      try { sessionStorage.setItem('mto_tampilan', t); } catch (err) { /* tidak apa-apa jika storage diblokir */ }
+      terapkanTampilan(t);
+      menu.hidden = true;
+      tombol.setAttribute('aria-expanded', 'false');
+    });
   }
   window.addEventListener('hashchange', function () { if (window.MTO_ADMIN) tampilRute(); });
   window.MTO_TAMPIL_RUTE = tampilRute;
