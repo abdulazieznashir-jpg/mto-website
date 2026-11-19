@@ -8,3 +8,12 @@ RewriteRule ^([^/.]+)$ $1.html [L]
 # Alihkan permanen alamat lama .html ke alamat tanpa .html
 RewriteCond %{THE_REQUEST} \s/(?!index\.html)([^.?\s]+)\.html[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L]
+
+# Cache: browser wajib memeriksa ulang HTML, CSS, dan JS ke server setiap kali halaman dibuka.
+# Jika berkas tidak berubah server membalas 304 (cepat dan hemat data); jika berubah browser langsung mengambil yang baru.
+# Ini mencegah HP menampilkan tampilan lama setelah situs diperbarui.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
