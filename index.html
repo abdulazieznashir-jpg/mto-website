@@ -1951,26 +1951,5 @@
   document.head.appendChild(s);
 })();
 </script>
-<div id="pendingBar" hidden style="position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:#1D1D1F;color:#fff;font:500 14px/1.4 Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.18)"><span id="pendingTeks"></span><a href="pembayaran" style="color:#fff;font-weight:600;text-decoration:none;white-space:nowrap">Lanjutkan</a></div>
-<script>
-(function () {
-  var simpan = null;
-  try { simpan = JSON.parse(localStorage.getItem('mtoDaftar') || 'null'); } catch (e) {}
-  if (!simpan || !simpan.id || !simpan.email) return;
-  var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
-  s.onload = function () {
-    var sb = window.supabase.createClient('https://bvltmjurkgnzmwtgdaic.supabase.co', 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g');
-    sb.rpc('status_pendaftaran', { p_id: simpan.id, p_email: simpan.email }).then(function (r) {
-      if (r.error || !r.data) return;
-      if (r.data.status !== 'menunggu_bayar' && r.data.status !== 'menunggu_verifikasi') return;
-      var teks = r.data.status === 'menunggu_bayar' ? 'Pembayaran belum selesai.' : 'Bukti transfer sedang diverifikasi.';
-      document.getElementById('pendingTeks').textContent = teks;
-      document.getElementById('pendingBar').hidden = false;
-    });
-  };
-  document.head.appendChild(s);
-})();
-</script>
 </body>
 </html>
