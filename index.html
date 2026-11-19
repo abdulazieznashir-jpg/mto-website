@@ -1260,7 +1260,8 @@
   function waTampil(raw) { return '+' + dialOf(S.kodeNeg || 'ID') + String(raw || ''); }
   function waBersih(teks, iso) {
     var t = String(teks || '').trim(), d = t.replace(/\D/g, ''), dial = dialOf(iso || 'ID');
-    if (t.charAt(0) === '+' && d.indexOf(dial) === 0) d = d.slice(dial.length);
+    // Kode negara di awal dibuang, dengan atau tanpa '+'. Nomor lokal tidak diawali kode negara (mis. ID mulai 8).
+    if (d.indexOf(dial) === 0) d = d.slice(dial.length);
     return d.replace(/^0+/, '');
   }
   function waValid() { return normWa(S.wa).length >= 8; }
