@@ -37,6 +37,11 @@
   .pm-rek:first-of-type { border-top: 0; }
   .pm-rek small { display: block; color: #86868B; font-size: 13px; }
   .pm-rek b { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .pm-dl { margin: 0; }
+  .pm-dl > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; padding: 9px 0; border-top: 1px solid #F0F0F2; }
+  .pm-dl > div:first-child { border-top: 0; padding-top: 0; }
+  .pm-dl dt { font-size: 14px; color: #86868B; }
+  .pm-dl dd { margin: 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
   .pm-hint { font-size: 14px; color: #86868B; margin: 0 0 4px; }
   .pm-rek-item { border-top: 1px solid #F0F0F2; }
   .pm-rek-item:first-child { border-top: 0; }
@@ -85,6 +90,11 @@
       <ol class="pm-langkah" id="langkah"></ol>
     </section>
 
+    <section class="pm-kartu" id="ringkasanBox">
+      <h2>Ringkasan pendaftaran</h2>
+      <dl class="pm-dl" id="ringkasan"></dl>
+    </section>
+
     <section class="pm-kartu pm-nominal" id="nominalBox">
       <div>
         <h2>Transfer tepat sebesar</h2>
@@ -106,12 +116,6 @@
       <h2>Pilih rekening tujuan</h2>
       <p class="pm-hint">Pilih salah satu bank untuk melihat nomor rekening.</p>
       <div id="rekening"></div>
-    </section>
-
-    <section class="pm-kartu">
-      <h2>Ringkasan pendaftaran</h2>
-      <p class="pm-data" id="ringkasan"></p>
-      <div class="pm-total"><span>Total pembayaran</span><strong id="total"></strong></div>
     </section>
 
     <section class="pm-kartu">
@@ -198,6 +202,23 @@
     }).join('');
   }
 
+  // Program dan periode tidak punya kolom sendiri, jadi dibaca dari teks ringkasan yang dibuat saat pendaftaran.
+  function barisRingkasan(teks, label) {
+    var m = new RegExp('^' + label + ':\\s*(.*)$', 'm').exec(teks || '');
+    return m && m[1].trim() ? m[1].trim() : '-';
+  }
+  function renderRingkasan(d) {
+    var baris = [
+      ['Nama', d.nama || '-'],
+      ['Program', barisRingkasan(d.ringkasan, 'Program')],
+      ['Periode', barisRingkasan(d.ringkasan, 'Periode')],
+      ['Peserta', String(d.peserta || 1)]
+    ];
+    $('ringkasan').innerHTML = baris.map(function (b) {
+      return '<div><dt>' + esc(b[0]) + '</dt><dd>' + esc(b[1]) + '</dd></div>';
+    }).join('');
+  }
+
   function renderNominal(d) {
     $('nominal').textContent = rupiah(d.total);
     var h = HARGA[String(d.kelas || '').toLowerCase()];
@@ -213,8 +234,7 @@
     $('isi').hidden = false;
     $('namaSub').textContent = d.nama + (d.kelas ? ' · Kelas ' + d.kelas : '');
     $('tglBatas').innerHTML = '<strong>' + tgl(d.batas_bayar) + '</strong>';
-    $('ringkasan').textContent = d.ringkasan || '-';
-    $('total').textContent = rupiah(d.total);
+    renderRingkasan(d);
     $('timerBox').hidden = d.status !== 'menunggu_bayar';
     $('rekBox').hidden = d.status !== 'menunggu_bayar';
     $('btnBukti').textContent = d.status === 'menunggu_verifikasi' ? 'Ganti bukti transfer' : 'Kirim bukti transfer';
