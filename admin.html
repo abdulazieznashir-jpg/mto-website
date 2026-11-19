@@ -946,6 +946,8 @@
           <button type="button" data-fu="fu2" aria-pressed="false">FU 2 <b id="fu2">0</b></button>
           <button type="button" data-fu="fu3" aria-pressed="false">FU 3 <b id="fu3">0</b></button>
           <button type="button" data-fu="fu4" aria-pressed="false">FU 4 <b id="fu4">0</b></button>
+          <button type="button" data-fu="closing" aria-pressed="false">Closing <b id="fuClosing">0</b></button>
+          <button type="button" data-fu="belum_closing" aria-pressed="false">Belum closing <b id="fuBelumClosing">0</b></button>
           <button type="button" data-fu="semua" aria-pressed="false">Semua <b id="fuSemua">0</b></button>
         </div>
         <div class="dm-daftar" id="fuDaftar"></div>
@@ -3848,7 +3850,7 @@
       if (r.error || !r.data) { if (g) g.hidden = false; return; }
       if (g) g.hidden = true;
       var h = r.data.hitung || {};
-      var peta = [['belum', 'fuBelum'], ['fu1', 'fu1'], ['fu2', 'fu2'], ['fu3', 'fu3'], ['fu4', 'fu4'], ['semua', 'fuSemua']];
+      var peta = [['belum', 'fuBelum'], ['fu1', 'fu1'], ['fu2', 'fu2'], ['fu3', 'fu3'], ['fu4', 'fu4'], ['closing', 'fuClosing'], ['belum_closing', 'fuBelumClosing'], ['semua', 'fuSemua']];
       peta.forEach(function (p) { var el = document.getElementById(p[1]); if (el) el.textContent = String(h[p[0]] || 0); });
       wadah.innerHTML = '';
       var daftar = r.data.daftar || [];
