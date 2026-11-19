@@ -1268,6 +1268,19 @@
   // Dua kolom dianggap sama bila angka setelah kode negara dan angka 0 di depan sama.
   // Contoh yang dianggap sama: 08xxx, 0 8xxx, +628xxx, 628xxx, 8xxx.
   function kunciWa(teks) { return waBersih(teks, S.kodeNeg || 'ID'); }
+  // Menjelaskan letak perbedaan dua kolom, dihitung dari angka setelah awalan.
+  function jelasBedaWa() {
+    var a = kunciWa(S.wa), b = kunciWa(S.wa2), n = Math.min(a.length, b.length);
+    for (var i = 0; i < n; i++) {
+      if (a.charAt(i) !== b.charAt(i)) {
+        return 'Nomor belum sama. Digit ke-' + (i + 1) + ' berbeda: kolom pertama "' + a.charAt(i) + '", kolom kedua "' + b.charAt(i) + '". Periksa angka ini.';
+      }
+    }
+    if (a.length !== b.length) {
+      return 'Nomor belum sama. Jumlah digit berbeda: kolom pertama ' + a.length + ' digit, kolom kedua ' + b.length + ' digit.';
+    }
+    return 'Nomor belum sama. Periksa kembali kedua kolom.';
+  }
   function waCocok() { return waValid() && kunciWa(S.wa) !== '' && kunciWa(S.wa) === kunciWa(S.wa2); }
   function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
   function dataValid() { return !!(S.nama && S.jk && S.tgl && waCocok() && emailValid() && S.confirm); }
@@ -1577,7 +1590,7 @@
     if (!box) return;
     if (!waValid()) { box.innerHTML = ''; return; }
     if (!waCocok()) {
-      box.innerHTML = S.wa2 ? '<p class="cek-err">Nomor WhatsApp belum sama. Periksa kembali kedua kolom.</p>' : '';
+      box.innerHTML = S.wa2 ? '<p class="cek-err">' + esc(jelasBedaWa()) + '</p>' : '';
       return;
     }
     box.innerHTML = '<div class="cek-verify">' +
