@@ -35,15 +35,15 @@
   .pm-langkah a { font-size: 14px; color: #0071E3; font-weight: 500; text-decoration: none; }
   .pm-rek { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F0F0F2; }
   .pm-rek:first-of-type { border-top: 0; }
-  .pm-rek small { display: block; color: #86868B; font-size: 12px; }
+  .pm-rek small { display: block; color: #86868B; font-size: 13px; }
   .pm-rek b { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .pm-copy { border: 0; border-radius: 999px; padding: 7px 14px; background: #F5F5F7; color: #1D1D1F; font: 500 13px Inter, system-ui, sans-serif; cursor: pointer; }
   .pm-btn { display: block; width: 100%; box-sizing: border-box; padding: 14px; border: 0; border-radius: 14px; background: #1D1D1F; color: #fff; font: 600 15px Inter, system-ui, sans-serif; text-align: center; text-decoration: none; cursor: pointer; }
   .pm-btn.ghost { background: #F5F5F7; color: #1D1D1F; }
   .pm-file { display: block; width: 100%; box-sizing: border-box; margin: 0 0 12px; font-size: 14px; }
   .pm-pesan { font-size: 14px; line-height: 1.5; margin: 12px 0 0; min-height: 1em; }
-  .pm-akun p { font-size: 14px; color: #86868B; margin: 0 0 12px; }
-  .pm-akun .pm-btn { margin-top: 2px; }
+  .pm-akun-link { text-align: center; margin: 4px 0 0; }
+  .pm-akun-link a { font-size: 14px; color: #86868B; text-decoration: underline; text-underline-offset: 3px; }
   .pm-nominal { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .pm-nominal .pm-jumlah { font-size: 34px; font-weight: 700; color: #8B6E4E; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
   .pm-nominal small { display: block; font-size: 13px; color: #86868B; line-height: 1.5; }
@@ -110,11 +110,7 @@
       <p class="pm-pesan" id="pesan" role="status"></p>
     </section>
 
-    <section class="pm-kartu pm-akun" id="akunBox" hidden>
-      <h2>Lihat progres lebih jelas</h2>
-      <p>Daftar akun untuk melihat progres pendaftaran dan progres belajar Anda kapan saja.</p>
-      <a class="pm-btn" href="login">Daftar akun sekarang</a>
-    </section>
+    <p class="pm-akun-link" id="akunBox" hidden><a href="login">Sudah punya akun? Masuk untuk melihat progres belajar Anda.</a></p>
   </div>
 </main>
 
