@@ -102,6 +102,29 @@
   .dm-st-belum { background: #FBEBD0; color: #8A6A1F; }
   .dm-st-sudah { background: #E4F3E8; color: #1E7A3C; }
   .dm-st-lewat { background: #F3E1E1; color: #9A2B2B; }
+  /* Beranda dan Follow Up Deal Maker */
+  .dm-omset { margin: 4px 0 12px; font-size: 32px; line-height: 1.1; font-weight: 800; color: var(--adm-ink, #1D1D1F); overflow-wrap: anywhere; }
+  .dm-bar-wrap { margin-bottom: 8px; }
+  .dm-bar { height: 10px; border-radius: 999px; background: var(--adm-line, #ECE7DE); overflow: hidden; }
+  .dm-bar span { display: block; height: 100%; width: 0; background: #2FA33A; border-radius: 999px; transition: width .3s; }
+  .dm-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dm-filter button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-surface, #FFFFFF); color: var(--adm-ink, #1D1D1F); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .dm-filter button[aria-pressed="true"] { background: var(--adm-gold-soft, #F6EEDC); border-color: var(--adm-gold, #B8912F); color: var(--adm-gold-ink, #8A6A1F); }
+  .dm-filter button b { margin-left: 4px; }
+  .dm-daftar { display: flex; flex-direction: column; }
+  .dm-fu { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-top: 1px solid var(--adm-line, #ECE7DE); }
+  .dm-fu:first-child { border-top: 0; }
+  .dm-tahap-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
+  .dm-tahap { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--adm-bg, #FAF8F4); color: var(--adm-muted, #6E6E73); border: 1px solid var(--adm-line, #ECE7DE); }
+  .dm-tahap-ok { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
+  .dm-catat { align-self: flex-start; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font: inherit; font-weight: 600; cursor: pointer; }
+  .dm-panel { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--adm-bg, #FAF8F4); }
+  .dm-panel[hidden] { display: none !important; }
+  .dm-panel select, .dm-panel textarea { font: inherit; padding: 10px; border-radius: 8px; border: 1px solid var(--adm-line, #ECE7DE); min-width: 0; width: 100%; box-sizing: border-box; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); }
+  .dm-panel textarea { min-height: 72px; resize: vertical; }
+  .dm-panel button { min-height: 44px; border-radius: 10px; border: 0; background: var(--adm-gold, #B8912F); color: #FFFFFF; font: inherit; font-weight: 700; cursor: pointer; }
+  .dm-panel button:disabled { opacity: .6; cursor: default; }
+  .dm-pesan { margin: 0; font-size: 13px; color: var(--adm-muted, #6E6E73); }
   /* Switch Account: hanya tampil untuk Owner. Pilihan tampilan disimpan di sessionStorage (kenyamanan saja, hak akses tetap di server). */
   .adm-switch { position: relative; }
   .adm-switch[hidden] { display: none !important; }
@@ -790,6 +813,7 @@
       <li style="display:none"><a href="#pertemuan"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/></svg></span>Pertemuan</a></li>
       <li style="display:none"><a href="#periode"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a></li>
       <li id="navDm" hidden><a href="#dealmaker"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Deal Maker</a></li>
+      <li id="navFu" hidden><a href="#followup"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>Follow Up</a></li>
       <li style="display:none"><a href="#permintaan"><span class="adm-nav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></span>Permintaan<span class="adm-nav-lencana" data-lencana="permintaan" hidden></span></a></li>
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">▣</span>Paket &amp; Pembayaran<em>segera</em></span></li>
       <li style="display:none"><span class="adm-nav-segera" aria-disabled="true"><span class="adm-nav-ikon" aria-hidden="true">◔</span>Progres<em>segera</em></span></li>
@@ -855,23 +879,44 @@
     </section>
     <section class="adm-view" data-view="dealmaker" hidden>
       <div class="bd-wrap">
-        <h1 class="adm-dash-judul">Deal Maker</h1>
-        <p class="adm-dash-sub">Lead dari pendaftaran yang masuk</p>
-        <div class="bd-stat">
-          <div class="bd-stat-sel"><span class="bd-stat-label">Jumlah Lead</span><b id="dmTotal">—</b></div>
-          <div class="bd-stat-sel"><span class="bd-stat-label">Sudah Bayar</span><b class="bd-hijau" id="dmSudah">—</b></div>
-          <div class="bd-stat-sel"><span class="bd-stat-label">Belum Bayar</span><b class="bd-oranye" id="dmBelum">—</b></div>
-        </div>
-        <section class="bd-kartu" aria-labelledby="dmJudulLead">
-          <h2 class="bd-judul" id="dmJudulLead">Lead masuk</h2>
-          <p class="bd-catatan">Pendaftar terbaru di atas.</p>
-          <div id="dmDaftar"></div>
-          <p class="bd-kosong" id="dmKosong" hidden>Belum ada lead.</p>
-          <p class="bd-kosong" id="dmGalat" hidden>Data lead belum bisa dimuat. Muat ulang halaman.</p>
+        <h1 class="adm-dash-judul">Beranda</h1>
+        <p class="adm-dash-sub">Omset dan target Deal Maker</p>
+        <section class="bd-kartu" aria-labelledby="dmJudulOmset">
+          <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
+          <p class="dm-omset" id="dmOmsetBulan">—</p>
+          <div class="dm-bar-wrap">
+            <div class="dm-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
+          </div>
+          <p class="bd-catatan" id="dmTargetTeks">Target minimal Rp 17.000.000</p>
         </section>
+        <section class="bd-kartu" aria-labelledby="dmJudulPemasukan">
+          <h2 class="bd-judul" id="dmJudulPemasukan">Pemasukan</h2>
+          <div class="bd-stat">
+            <div class="bd-stat-sel"><span class="bd-stat-label">Omset total</span><b id="dmOmsetTotal">—</b></div>
+            <div class="bd-stat-sel"><span class="bd-stat-label">Lead saya</span><b id="dmLeadSaya">—</b></div>
+          </div>
+        </section>
+        <p class="bd-kosong" id="dmGalat" hidden>Data belum bisa dimuat. Muat ulang halaman.</p>
       </div>
     </section>
-    <section class="adm-view" data-view="murid" hidden>
+    <section class="adm-view" data-view="followup" hidden>
+      <div class="bd-wrap">
+        <h1 class="adm-dash-judul">Follow Up</h1>
+        <p class="adm-dash-sub">Lead yang perlu dihubungi, per tahap follow up</p>
+        <div class="dm-filter" role="group" aria-label="Filter follow up">
+          <button type="button" data-fu="belum" aria-pressed="true">Belum FU <b id="fuBelum">0</b></button>
+          <button type="button" data-fu="fu1" aria-pressed="false">Sudah FU 1 <b id="fu1">0</b></button>
+          <button type="button" data-fu="fu2" aria-pressed="false">FU 2 <b id="fu2">0</b></button>
+          <button type="button" data-fu="fu3" aria-pressed="false">FU 3 <b id="fu3">0</b></button>
+          <button type="button" data-fu="fu4" aria-pressed="false">FU 4 <b id="fu4">0</b></button>
+          <button type="button" data-fu="semua" aria-pressed="false">Semua <b id="fuSemua">0</b></button>
+        </div>
+        <div class="dm-daftar" id="fuDaftar"></div>
+        <p class="bd-kosong" id="fuKosong" hidden>Tidak ada lead di filter ini.</p>
+        <p class="bd-kosong" id="fuGalat" hidden>Data follow up belum bisa dimuat. Muat ulang halaman.</p>
+      </div>
+    </section>
+    <section class="adm-view" data-view="murid" hidden>    <section class="adm-view" data-view="murid" hidden>
       <div class="adm-murid-wrap">
         <div class="pk-wrap" id="pesertaBaru">
           <h1 class="adm-dash-judul">Peserta</h1>
@@ -1283,6 +1328,7 @@
 
 <nav class="adm-bottomnav" aria-label="Navigasi admin HP">
   <a href="#dealmaker" id="navDmHp" hidden><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Deal Maker</a>
+  <a href="#followup" id="navFuHp" hidden><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>Follow Up</a>
   <a href="#dashboard" aria-current="page"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Beranda</a>
   <a href="#murid"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>Peserta</a>
   <a href="#pengajar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg></span>Halaqoh</a>
@@ -1327,6 +1373,7 @@
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (email === DEALMAKER ? 'dealmaker' : 'aftersales') };
     pasangSwitch();
+    pasangFollowUp();
     terapkanPeranUI();
     if (window.MTO_ADMIN.peran !== 'aftersales') muatDealMaker();
     if (window.MTO_ADMIN.peran === 'dealmaker') {
@@ -3508,13 +3555,17 @@
       if (pill) pill.textContent = data.length + " menunggu keputusan";
     });
   }
-  var RUTE = ['dashboard', 'dealmaker', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
+  var RUTE = ['dashboard', 'dealmaker', 'followup', 'murid', 'pengajar', 'jadwal', 'pertemuan', 'periode', 'permintaan', 'pengaturan', 'transkrip', 'notifikasi'];
+  var DM_RUTE = ['dealmaker', 'followup', 'transkrip', 'notifikasi'];
   function tampilRute() {
     var h = (window.location.hash || '').replace(/^#/, '');
     var aktif = peranAktif();
-    if (aktif === 'dealmaker') h = 'dealmaker';
-    else if (RUTE.indexOf(h) === -1 || (h === 'dealmaker' && aktif !== 'owner')) h = 'dashboard';
-    if (aktif === 'dealmaker' && window.location.hash !== '#dealmaker') window.location.replace('#dealmaker');
+    if (aktif === 'dealmaker') {
+      if (DM_RUTE.indexOf(h) === -1) h = 'dealmaker';
+      if (window.location.hash !== '#' + h) window.location.replace('#' + h);
+    } else if (RUTE.indexOf(h) === -1 || ((h === 'dealmaker' || h === 'followup') && aktif === 'aftersales')) {
+      h = 'dashboard';
+    }
     var views = document.querySelectorAll('.adm-view');
     for (var i = 0; i < views.length; i++) {
       views[i].hidden = views[i].getAttribute('data-view') !== h;
@@ -3527,7 +3578,10 @@
     }
     var kerangka = document.getElementById('admKerangka');
     if (kerangka) kerangka.hidden = true;
+    if (h === 'dealmaker') muatDealMaker();
+    if (h === 'followup') muatFollowUp();
   }
+  /* Switch Account: khusus Owner. Hanya mengubah tampilan di browser; pembatasan data tetap di database. */
   /* Switch Account: khusus Owner. Hanya mengubah tampilan di browser; pembatasan data tetap di database. */
   var TAMPILAN = ['owner', 'aftersales', 'dealmaker'];
   function terapkanTampilan(t) {
@@ -3575,66 +3629,145 @@
     var t = document.body.getAttribute('data-tampilan');
     return t === 'dealmaker' || t === 'aftersales' ? t : 'owner';
   }
-  /* Ringkasan dashboard: Owner memakai admin_ringkasan_lengkap (lebih lengkap); after-sales memakai admin_ringkasan */
+  /* Ringkasan dashboard: Owner memakai admin_ringkasan_lengkap; after-sales memakai admin_ringkasan */
   function ringkasanRpc() {
     return window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner' ? 'admin_ringkasan_lengkap' : 'admin_ringkasan';
   }
-  /* Menu sesuai peran yang sedang berlaku. Deal Maker hanya melihat menu Deal Maker dan tombol profil. */
+  var DM_NAV = ['#dealmaker', '#followup', '#transkrip', '#notifikasi'];
+  /* Menu sesuai peran. Deal Maker hanya melihat Beranda, Follow Up, Transkrip, dan Notifikasi. */
   function terapkanPeranUI() {
     var aktif = peranAktif();
-    var li = document.getElementById('navDm');
-    if (li) li.hidden = aktif === 'aftersales' || (window.MTO_ADMIN && window.MTO_ADMIN.peran === 'aftersales');
-    if (!window.MTO_ADMIN || window.MTO_ADMIN.peran !== 'dealmaker') return;
+    var peran = window.MTO_ADMIN && window.MTO_ADMIN.peran;
+    var sembunyiAfterSales = aktif === 'aftersales' || peran === 'aftersales';
+    var liDm = document.getElementById('navDm');
+    if (liDm) liDm.hidden = sembunyiAfterSales;
+    var liFu = document.getElementById('navFu');
+    if (liFu) liFu.hidden = sembunyiAfterSales;
+    var fuHp = document.getElementById('navFuHp');
+    if (fuHp) fuHp.hidden = sembunyiAfterSales;
+    if (peran !== 'dealmaker') return;
     var sisi = document.querySelectorAll('.adm-side li');
-    for (var i = 0; i < sisi.length; i++) { if (sisi[i] !== li) sisi[i].hidden = true; }
+    for (var i = 0; i < sisi.length; i++) {
+      var a = sisi[i].querySelector('a');
+      sisi[i].hidden = !(a && DM_NAV.indexOf(a.getAttribute('href')) !== -1);
+    }
     var bawah = document.querySelectorAll('.adm-bottomnav > a, .adm-bottomnav > button');
-    for (var j = 0; j < bawah.length; j++) { if (bawah[j].id !== 'navDmHp') bawah[j].hidden = true; }
+    for (var j = 0; j < bawah.length; j++) {
+      bawah[j].hidden = DM_NAV.indexOf(bawah[j].getAttribute('href')) === -1;
+    }
     var dmHp = document.getElementById('navDmHp');
-    if (dmHp) dmHp.hidden = false;
+    if (dmHp) { dmHp.hidden = false; dmHp.lastChild.textContent = 'Beranda'; }
+    if (fuHp) fuHp.hidden = false;
+    if (liDm) { liDm.hidden = false; var aDm = liDm.querySelector('a'); if (aDm) aDm.lastChild.textContent = 'Beranda'; }
+    if (liFu) liFu.hidden = false;
+    /* Urutan sidebar Deal Maker: Beranda, Follow Up, lalu Transkrip dan Notifikasi */
+    var liTr = document.querySelector('.adm-side a[href="#transkrip"]');
+    if (liTr && liDm && liFu && liTr.parentNode.parentNode) {
+      liTr.parentNode.parentNode.insertBefore(liDm, liTr.parentNode);
+      liTr.parentNode.parentNode.insertBefore(liFu, liTr.parentNode);
+    }
     var cari = document.getElementById('topCari');
     if (cari) cari.hidden = true;
   }
-  /* Dashboard Deal Maker: statistik dan daftar lead dari fungsi database admin_statistik_dm dan admin_daftar_lead_dm */
+  /* Beranda Deal Maker: omset bulan ini, omset total, lead saya, dan progres target minimal */
   function muatDealMaker() {
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
     if (!sb) return;
     function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; }
     function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-    function tanggal(t) {
-      var d = new Date(t);
-      return isNaN(d.getTime()) ? '' : d.toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    }
-    sb.rpc('admin_statistik_dm').then(function (r) {
-      if (r.error || !r.data) { isi('dmTotal', '—'); isi('dmSudah', '—'); isi('dmBelum', '—'); return; }
-      isi('dmTotal', String(r.data.total_lead || 0));
-      isi('dmSudah', String(r.data.sudah_bayar || 0));
-      isi('dmBelum', String(r.data.belum_bayar || 0));
-    });
-    sb.rpc('admin_daftar_lead_dm').then(function (r) {
-      var wadah = document.getElementById('dmDaftar');
-      var kosong = document.getElementById('dmKosong');
-      var galat = document.getElementById('dmGalat');
-      if (!wadah) return;
-      if (r.error || !r.data) { if (galat) galat.hidden = false; return; }
-      wadah.innerHTML = '';
-      if (!r.data.length) { if (kosong) kosong.hidden = false; return; }
-      var sekarang = Date.now();
-      r.data.forEach(function (l) {
-        var kiri = document.createElement('div'); kiri.className = 'dm-lead-teks';
-        var nama = document.createElement('span'); nama.className = 'dm-lead-nama'; nama.textContent = l.nama || '(tanpa nama)';
-        var meta = document.createElement('span'); meta.className = 'dm-lead-meta';
-        meta.textContent = [l.wa, l.kelas, rupiah(l.total), tanggal(l.dibuat_at)].filter(Boolean).join(' · ');
-        kiri.appendChild(nama); kiri.appendChild(meta);
-        var st = document.createElement('span'); st.className = 'dm-status';
-        var sudah = l.status === 'menunggu_verifikasi' || l.status === 'diterima';
-        if (sudah) { st.classList.add('dm-st-sudah'); st.textContent = 'Sudah bayar'; }
-        else if (l.batas_bayar && new Date(l.batas_bayar).getTime() < sekarang) { st.classList.add('dm-st-lewat'); st.textContent = 'Lewat batas bayar'; }
-        else { st.classList.add('dm-st-belum'); st.textContent = 'Belum bayar'; }
-        var baris = document.createElement('div'); baris.className = 'dm-lead';
-        baris.appendChild(kiri); baris.appendChild(st);
-        wadah.appendChild(baris);
-      });
+    sb.rpc('dm_ringkasan').then(function (r) {
+      var g = document.getElementById('dmGalat');
+      if (r.error || !r.data) { if (g) g.hidden = false; isi('dmOmsetBulan', '—'); return; }
+      if (g) g.hidden = true;
+      var d = r.data;
+      var target = Number(d.target || 17000000);
+      var bulan = Number(d.omset_bulan_ini || 0);
+      var persen = Math.min(100, Math.round(bulan / target * 100));
+      isi('dmOmsetBulan', rupiah(bulan));
+      isi('dmOmsetTotal', rupiah(d.omset_total));
+      isi('dmLeadSaya', String(d.lead_saya || 0));
+      isi('dmTargetTeks', 'Target minimal ' + rupiah(target) + ' · tercapai ' + persen + '%');
+      var bar = document.getElementById('dmBar');
+      if (bar) { bar.style.width = persen + '%'; bar.setAttribute('aria-valuenow', String(persen)); }
     }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
+  }
+  /* Follow Up: daftar lead dengan filter dan jumlah per tahap, dari dm_daftar_lead */
+  var FU_FILTER = 'belum';
+  function tanggalFU(t) {
+    var d = new Date(t);
+    return isNaN(d.getTime()) ? '' : d.toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  function buatBarisFU(l) {
+    var baris = document.createElement('div'); baris.className = 'dm-fu';
+    var teks = document.createElement('div'); teks.className = 'dm-lead-teks';
+    var nama = document.createElement('span'); nama.className = 'dm-lead-nama'; nama.textContent = l.nama || '(tanpa nama)';
+    var meta = document.createElement('span'); meta.className = 'dm-lead-meta';
+    meta.textContent = [l.wa, l.kelas, tanggalFU(l.dibuat_at)].filter(Boolean).join(' · ');
+    teks.appendChild(nama); teks.appendChild(meta);
+    var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
+    var sudah = l.tahap_sudah || [];
+    for (var t = 1; t <= 4; t++) {
+      var b = document.createElement('span'); b.className = 'dm-tahap' + (sudah.indexOf(t) !== -1 ? ' dm-tahap-ok' : '');
+      b.textContent = 'FU' + t;
+      wrapTahap.appendChild(b);
+    }
+    var tombol = document.createElement('button'); tombol.type = 'button'; tombol.className = 'dm-catat';
+    tombol.textContent = 'Catat follow up'; tombol.setAttribute('aria-expanded', 'false');
+    var panel = document.createElement('div'); panel.className = 'dm-panel'; panel.hidden = true;
+    var pilih = document.createElement('select'); pilih.setAttribute('aria-label', 'Tahap follow up');
+    for (var k = 1; k <= 4; k++) {
+      var o = document.createElement('option'); o.value = String(k); o.textContent = 'Follow up ke-' + k; pilih.appendChild(o);
+    }
+    var area = document.createElement('textarea'); area.maxLength = 500; area.placeholder = 'Catatan (opsional)';
+    area.setAttribute('aria-label', 'Catatan follow up');
+    var simpan = document.createElement('button'); simpan.type = 'button'; simpan.textContent = 'Simpan';
+    var pesan = document.createElement('p'); pesan.className = 'dm-pesan'; pesan.setAttribute('role', 'status');
+    panel.appendChild(pilih); panel.appendChild(area); panel.appendChild(simpan); panel.appendChild(pesan);
+    tombol.addEventListener('click', function () {
+      var buka = panel.hidden;
+      panel.hidden = !buka;
+      tombol.setAttribute('aria-expanded', String(buka));
+    });
+    simpan.addEventListener('click', function () {
+      var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+      if (!sb) return;
+      simpan.disabled = true; pesan.textContent = 'Menyimpan…';
+      sb.rpc('dm_catat_follow_up', { p_pendaftaran_id: l.id, p_tahap: Number(pilih.value), p_catatan: area.value }).then(function (r) {
+        if (r.error) { simpan.disabled = false; pesan.textContent = 'Gagal menyimpan. Coba lagi.'; return; }
+        muatFollowUp();
+      });
+    });
+    baris.appendChild(teks); baris.appendChild(wrapTahap); baris.appendChild(tombol); baris.appendChild(panel);
+    return baris;
+  }
+  function muatFollowUp() {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    var wadah = document.getElementById('fuDaftar');
+    if (!sb || !wadah) return;
+    sb.rpc('dm_daftar_lead', { p_filter: FU_FILTER }).then(function (r) {
+      var g = document.getElementById('fuGalat');
+      var kosong = document.getElementById('fuKosong');
+      if (r.error || !r.data) { if (g) g.hidden = false; return; }
+      if (g) g.hidden = true;
+      var h = r.data.hitung || {};
+      var peta = [['belum', 'fuBelum'], ['fu1', 'fu1'], ['fu2', 'fu2'], ['fu3', 'fu3'], ['fu4', 'fu4'], ['semua', 'fuSemua']];
+      peta.forEach(function (p) { var el = document.getElementById(p[1]); if (el) el.textContent = String(h[p[0]] || 0); });
+      wadah.innerHTML = '';
+      var daftar = r.data.daftar || [];
+      if (kosong) kosong.hidden = daftar.length > 0;
+      daftar.forEach(function (l) { wadah.appendChild(buatBarisFU(l)); });
+    }).catch(function () { var g = document.getElementById('fuGalat'); if (g) g.hidden = false; });
+  }
+  function pasangFollowUp() {
+    var tombol = document.querySelectorAll('[data-fu]');
+    for (var i = 0; i < tombol.length; i++) {
+      tombol[i].addEventListener('click', function (e) {
+        var pilih = e.currentTarget;
+        FU_FILTER = pilih.getAttribute('data-fu');
+        for (var j = 0; j < tombol.length; j++) tombol[j].setAttribute('aria-pressed', String(tombol[j] === pilih));
+        muatFollowUp();
+      });
+    }
   }
   window.addEventListener('hashchange', function () { if (window.MTO_ADMIN) tampilRute(); });
   window.MTO_TAMPIL_RUTE = tampilRute;
