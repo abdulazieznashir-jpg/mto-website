@@ -1251,7 +1251,9 @@
 (function () {
   var SUPABASE_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
   var SUPABASE_ANON_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
-  var OWNER = 'mahkota.to3@gmail.com';
+  var OWNER = 'abdulaziez.nashir@gmail.com';
+  var AFTERSALES = 'mahkota.to3@gmail.com';
+  var DIIZINKAN = [OWNER, AFTERSALES];
   var PROFIL = 'profil.html';
 
   function kembali() { window.location.replace(PROFIL); }
@@ -1262,8 +1264,8 @@
   sb.auth.getSession().then(function (r) {
     var sesi = r && r.data && r.data.session;
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
-    if (!sesi || email !== OWNER) { kembali(); return; }
-    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER };
+    if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
+    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : 'aftersales' };
     muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     muatDashboard();
