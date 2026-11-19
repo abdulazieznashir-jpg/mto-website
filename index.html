@@ -1256,6 +1256,13 @@
   function isAnak() { return S.untuk === 'anak'; }
   function normWa(v) { return String(v || '').replace(/\D/g, '').replace(/^0+/, ''); }
   function waFull() { return dialOf(S.kodeNeg || 'ID') + normWa(S.wa); }
+  // Tampilan kolom WA: awalan +kode negara selalu otomatis; yang disimpan hanya digit lokal.
+  function waTampil(raw) { return '+' + dialOf(S.kodeNeg || 'ID') + String(raw || ''); }
+  function waBersih(teks, iso) {
+    var t = String(teks || '').trim(), d = t.replace(/\D/g, ''), dial = dialOf(iso || 'ID');
+    if (t.charAt(0) === '+' && d.indexOf(dial) === 0) d = d.slice(dial.length);
+    return d.replace(/^0+/, '');
+  }
   function waValid() { return normWa(S.wa).length >= 8; }
   function waCocok() { return waValid() && normWa(S.wa) === normWa(S.wa2); }
   function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
@@ -1360,7 +1367,7 @@
     var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
       'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
     s += 'Tanggal lahir: ' + (S.tgl || '-') + '\n';
-    s += 'Kota/Negara: ' + S.kota + '\nNomor WhatsApp: +' + waFull() + '\nEmail: ' + S.email + '\n\n' +
+    s += 'Nomor WhatsApp: +' + waFull() + '\nEmail: ' + S.email + '\n\n' +
       ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
     return s;
   }
@@ -1546,12 +1553,11 @@
       '<div><span>Jenis kelamin</span><div class="cek-radio">' +
         radio('cekJk', 'laki-laki', 'Laki-laki', S.jk) + radio('cekJk', 'perempuan', 'Perempuan', S.jk) + '</div></div>' +
       '<label>Tanggal lahir<input type="date" name="tgl" class="cek-input" value="' + esc(S.tgl || '') + '"></label>' +
-      '<label>Kota / negara<input type="text" name="kota" class="cek-input" value="' + esc(S.kota || '') + '"></label>' +
       '<div class="cek-wa"><span>Nomor WhatsApp</span><div class="cek-wa-row">' +
         '<select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select>' +
-        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" autocomplete="tel" placeholder="812xxxxxxxx" value="' + esc(S.wa || '') + '">' +
+        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" autocomplete="tel" placeholder="812xxxxxxxx" value="' + esc(waTampil(S.wa)) + '">' +
       '</div></div>' +
-      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" autocomplete="off" placeholder="Ketik ulang nomor yang sama" value="' + esc(S.wa2 || '') + '"></label>' +
+      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" autocomplete="off" placeholder="Ketik ulang nomor yang sama" value="' + esc(waTampil(S.wa2)) + '"></label>' +
       '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>' +
       '<label class="cek-check"><input type="checkbox" name="cekConfirm"' + (S.confirm ? ' checked' : '') + '><span>Saya memastikan nomor WhatsApp di atas sudah benar dan aktif.</span></label>';
     updateDataBtn();
@@ -1593,7 +1599,7 @@
     if (S.pid) return cb(null);
     sbSiap(function (sb) {
       sb.rpc('daftar_pendaftaran', { p: {
-        email: S.email, nama: S.nama, jk: S.jk, tgl: S.tgl || null, kota: S.kota,
+        email: S.email, nama: S.nama, jk: S.jk, tgl: S.tgl || null, kota: null,
         wa: waFull(), kelas: S.kelas, durasi: S.durasi, peserta: S.peserta,
         total: totalBayar(), ringkasan: ringkas(), hari: S.hari, jam: S.jam
       } }).then(function (r) {
@@ -1732,9 +1738,8 @@
     if (t.name === 'kode') { S.kodeIn = t.value; syncKodeUi(); }
     if (t.name === 'nama') S.nama = t.value.trim();
     if (t.name === 'tgl') S.tgl = t.value;
-    if (t.name === 'kota') S.kota = t.value.trim();
-    if (t.name === 'wa') S.wa = t.value.trim();
-    if (t.name === 'wa2') S.wa2 = t.value.trim();
+    if (t.name === 'wa') { S.wa = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa)) t.value = waTampil(S.wa); }
+    if (t.name === 'wa2') { S.wa2 = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa2)) t.value = waTampil(S.wa2); }
     if (t.name === 'email') S.email = t.value.trim();
     if (t.name) { updateDataBtn(); updateVerify(); }
   });
@@ -1742,7 +1747,12 @@
     var t = e.target;
     if (t.name === 'cekJk') S.jk = t.value;
     if (t.name === 'cekConfirm') S.confirm = t.checked;
-    if (t.name === 'kodeNeg') S.kodeNeg = t.value;
+    if (t.name === 'kodeNeg') {
+      S.kodeNeg = t.value;
+      var kw = cek.querySelector('[name=wa]'), kw2 = cek.querySelector('[name=wa2]');
+      if (kw) kw.value = waTampil(S.wa);
+      if (kw2) kw2.value = waTampil(S.wa2);
+    }
     updateDataBtn();
     updateVerify();
   });
