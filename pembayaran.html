@@ -226,10 +226,10 @@
         ket: d.status === 'menunggu_bayar' ? 'Transfer sebelum batas waktu, lalu kirim bukti.' : (d.status === 'kedaluwarsa' ? 'Waktu pembayaran sudah habis.' : 'Bukti transfer sudah kami terima.') },
       { ok: konfirmasiOk, kini: d.status === 'menunggu_verifikasi', judul: 'Konfirmasi bukti transfer',
         ket: konfirmasiOk ? 'Pembayaran sudah dikonfirmasi.' : 'Menunggu konfirmasi dari admin.' },
-      { ok: jadwalOk, kini: konfirmasiOk && !jadwalOk, judul: 'Mulai halaqah',
-        ket: jadwalOk ? 'Mulai ' + tgl(d.tanggal_halaqah, true) + '.' : 'Tanggal mulai akan diinformasikan setelah pembayaran dikonfirmasi.' },
-      { ok: grupOk, kini: jadwalOk && !grupOk, judul: 'Grup halaqah',
-        ket: grupOk ? '<a href="' + esc(d.link_grup) + '" target="_blank" rel="noopener">Masuk grup halaqah</a>' : 'Link grup dibagikan setelah jadwal ditetapkan.' }
+      { ok: grupOk, kini: konfirmasiOk && !grupOk, judul: 'Masuk grup halaqah',
+        ket: grupOk ? '<a href="' + esc(d.link_grup) + '" target="_blank" rel="noopener">Buka grup halaqah</a>' : 'Link grup dibagikan setelah pembayaran dikonfirmasi.' },
+      { ok: jadwalOk, kini: grupOk && !jadwalOk, judul: 'Mulai belajar',
+        ket: jadwalOk ? 'Mulai ' + tgl(d.tanggal_halaqah, true) + '.' : 'Tanggal mulai akan diinformasikan setelah masuk grup.' }
     ];
     $('langkah').innerHTML = langkah.map(function (x, i) {
       var kelas = x.ok ? 'selesai' : (x.kini ? 'kini' : '');
