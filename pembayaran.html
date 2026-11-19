@@ -68,9 +68,14 @@
   .pm-wa-batas { display: inline-block; margin-top: 10px; border: 1.5px solid #25D366; color: #128C3E; border-radius: 999px; padding: 9px 14px; font: 600 14px Inter, system-ui, sans-serif; text-decoration: none; }
   .pm-sticky { position: sticky; bottom: 0; margin: 0 -16px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: #F5F5F7; box-shadow: 0 -8px 16px rgba(0, 0, 0, .06); }
   .pm-sticky .pm-btn { background: #8B6E4E; }
+  .pm-sticky .pm-btn.sekunder { background: #F5F5F7; color: #1D1D1F; }
+  .pm-banner { background: #F1F8F3; border-color: #CFE8D6; }
+  .pm-banner b { display: block; font-size: 15px; font-weight: 600; color: #1F5130; }
+  .pm-banner p { margin: 4px 0 0; font-size: 14px; color: #3F5B47; line-height: 1.5; }
   .pm-sticky .pm-btn:disabled { background: #D1D1D6; color: #86868B; cursor: not-allowed; }
   .pm-hint-tombol { font-size: 13px; color: #86868B; text-align: center; margin: 0 0 8px; }
   .pm-pesan.galat { color: #C62828; background: #FFF5F5; border: 1px solid #F0C4C4; border-radius: 12px; padding: 10px 12px; margin: 0 0 8px; }
+  .pm-nominal[hidden] { display: none; }
   .pm-nominal { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .pm-nominal .pm-jumlah { font-size: 34px; font-weight: 700; color: #8B6E4E; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
   .pm-nominal small { display: block; font-size: 13px; color: #86868B; line-height: 1.5; }
@@ -96,6 +101,11 @@
   <div id="isi" hidden>
     <h1>Progres pendaftaran</h1>
     <p class="pm-sub" id="namaSub"></p>
+
+    <section class="pm-kartu pm-banner" id="bannerBox" hidden>
+      <b id="bannerJudul"></b>
+      <p id="bannerIsi"></p>
+    </section>
 
     <section class="pm-kartu">
       <h2>Langkah Anda</h2>
@@ -239,6 +249,7 @@
       ['Periode', barisRingkasan(d.ringkasan, 'Periode')],
       ['Peserta', String(d.peserta || 1)]
     ];
+    if (d.status !== 'menunggu_bayar') baris.push(['Total', rupiah(d.total)]);
     $('ringkasan').innerHTML = baris.map(function (b) {
       return '<div><dt>' + esc(b[0]) + '</dt><dd>' + esc(b[1]) + '</dd></div>';
     }).join('');
@@ -260,6 +271,14 @@
     $('namaSub').textContent = d.nama + (d.kelas ? ' · Kelas ' + d.kelas : '');
     $('tglBatas').innerHTML = '<strong>' + tgl(d.batas_bayar) + '</strong>';
     renderRingkasan(d);
+    var sudahBayar = d.status === 'menunggu_verifikasi' || d.status === 'diterima';
+    $('bannerBox').hidden = !sudahBayar;
+    $('bannerJudul').textContent = d.status === 'diterima' ? 'Pembayaran sudah dikonfirmasi.' : 'Bukti transfer diterima.';
+    $('bannerIsi').textContent = d.status === 'diterima'
+      ? 'Terima kasih, pembayaran Anda sudah lengkap.'
+      : 'Mohon menunggu konfirmasi admin.' + (d.bukti_nama ? ' File: ' + d.bukti_nama : '');
+    $('nominalBox').hidden = d.status !== 'menunggu_bayar';
+    $('btnBukti').classList.toggle('sekunder', d.status === 'menunggu_verifikasi');
     $('timerBox').hidden = d.status !== 'menunggu_bayar';
     $('rekBox').hidden = d.status !== 'menunggu_bayar';
     $('btnBukti').textContent = d.status === 'menunggu_verifikasi' ? 'Ganti bukti transfer' : 'Sudah transfer? Kirim bukti';
@@ -292,7 +311,7 @@
       sb.rpc('kirim_bukti', { p_id: simpan.id, p_email: simpan.email, p_path: path, p_nama: file.name }).then(function (r) {
         if (!r.error) {
           $('fileBukti').value = '';
-          pesan('Bukti transfer sudah terkirim. Admin dan owner sudah diberi tahu. Mohon menunggu konfirmasi.');
+          pesan('');
           return muat();
         }
         muat(function (d) {
