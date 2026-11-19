@@ -59,6 +59,18 @@
   .pm-pesan { font-size: 14px; line-height: 1.5; margin: 12px 0 0; min-height: 1em; }
   .pm-akun-link { text-align: center; margin: 4px 0 0; }
   .pm-akun-link a { font-size: 14px; color: #86868B; text-decoration: underline; text-underline-offset: 3px; }
+  .pm-kecil { font-size: 13px; color: #86868B; line-height: 1.5; margin: 10px 0 12px; }
+  .pm-cadangan { display: flex; flex-direction: column; gap: 12px; background: #FBF6EE; border-radius: 14px; padding: 12px; }
+  .pm-cadangan > div { flex: 1; min-width: 0; }
+  .pm-cadangan b { display: block; font-size: 14px; font-weight: 600; }
+  .pm-cadangan small { display: block; font-size: 13px; color: #6E6E73; line-height: 1.45; margin-top: 2px; }
+  .pm-wa { display: block; border: 1.5px solid #25D366; color: #128C3E; border-radius: 999px; padding: 10px 12px; font: 600 14px Inter, system-ui, sans-serif; text-decoration: none; text-align: center; }
+  .pm-wa-batas { display: inline-block; margin-top: 10px; border: 1.5px solid #25D366; color: #128C3E; border-radius: 999px; padding: 9px 14px; font: 600 14px Inter, system-ui, sans-serif; text-decoration: none; }
+  .pm-sticky { position: sticky; bottom: 0; margin: 0 -16px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: #F5F5F7; box-shadow: 0 -8px 16px rgba(0, 0, 0, .06); }
+  .pm-sticky .pm-btn { background: #8B6E4E; }
+  .pm-sticky .pm-btn:disabled { background: #D1D1D6; color: #86868B; cursor: not-allowed; }
+  .pm-hint-tombol { font-size: 13px; color: #86868B; text-align: center; margin: 0 0 8px; }
+  .pm-pesan.galat { color: #C62828; background: #FFF5F5; border: 1px solid #F0C4C4; border-radius: 12px; padding: 10px 12px; margin: 0 0 8px; }
   .pm-nominal { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .pm-nominal .pm-jumlah { font-size: 34px; font-weight: 700; color: #8B6E4E; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
   .pm-nominal small { display: block; font-size: 13px; color: #86868B; line-height: 1.5; }
@@ -109,7 +121,8 @@
       <h2>Batas pembayaran</h2>
       <p id="tglBatas"></p>
       <div class="pm-jam" id="jam">--:--:--</div>
-      <p>Sisa waktu. Jika waktu habis, pendaftaran perlu dibukakan kembali oleh admin.</p>
+      <p>Sisa waktu. Jika waktu habis, hubungi admin untuk dibukakan kembali.</p>
+      <a class="pm-wa-batas" href="https://wa.me/6285727533000?text=Assalamu%27alaikum%2C%20saya%20ingin%20menanyakan%20pendaftaran%20MTO." target="_blank" rel="noopener">Hubungi admin lewat WhatsApp</a>
     </section>
 
     <section class="pm-kartu" id="rekBox">
@@ -121,11 +134,20 @@
     <section class="pm-kartu">
       <h2>Bukti transfer</h2>
       <label class="pm-file"><input type="file" id="fileBukti" aria-label="Pilih file bukti transfer" accept="image/jpeg,image/png,image/webp,application/pdf"></label>
-      <button type="button" class="pm-btn" id="btnBukti">Kirim bukti transfer</button>
-      <p class="pm-pesan" id="pesan" role="status"></p>
+      <p class="pm-kecil">Ukuran file maksimal 5 MB. Coba ambil ulang tangkapan layar, atau kirim lewat WhatsApp.</p>
+      <div class="pm-cadangan">
+        <div><b>Kendala mengunggah bukti?</b><small>Kirim foto atau tangkapan layar bukti transfer lewat WhatsApp admin. Sertakan nama dan email yang Anda daftarkan.</small></div>
+        <a class="pm-wa" href="https://wa.me/6285727533000?text=Assalamu%27alaikum%2C%20saya%20mengirim%20bukti%20transfer%20pendaftaran%20MTO." target="_blank" rel="noopener">Kirim lewat WhatsApp</a>
+      </div>
     </section>
 
     <p class="pm-akun-link" id="akunBox" hidden><a href="login">Sudah punya akun? Masuk untuk melihat progres belajar Anda.</a></p>
+
+    <div class="pm-sticky" id="stickyBox">
+      <p class="pm-pesan" id="pesan" role="status"></p>
+      <p class="pm-hint-tombol" id="hintBukti">Pilih file bukti transfer untuk mengaktifkan tombol ini.</p>
+      <button type="button" class="pm-btn" id="btnBukti" disabled>Sudah transfer? Kirim bukti</button>
+    </div>
   </div>
 </main>
 
@@ -163,7 +185,10 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  function pesan(t) { $('pesan').textContent = t || ''; }
+  function pesan(t, galat) {
+    $('pesan').textContent = t || '';
+    $('pesan').className = 'pm-pesan' + (galat && t ? ' galat' : '');
+  }
 
   function jalankanTimer() {
     clearInterval(timer);
@@ -237,7 +262,11 @@
     renderRingkasan(d);
     $('timerBox').hidden = d.status !== 'menunggu_bayar';
     $('rekBox').hidden = d.status !== 'menunggu_bayar';
-    $('btnBukti').textContent = d.status === 'menunggu_verifikasi' ? 'Ganti bukti transfer' : 'Kirim bukti transfer';
+    $('btnBukti').textContent = d.status === 'menunggu_verifikasi' ? 'Ganti bukti transfer' : 'Sudah transfer? Kirim bukti';
+    var adaFile = $('fileBukti').files.length > 0;
+    $('btnBukti').disabled = !adaFile;
+    $('hintBukti').hidden = adaFile;
+    $('stickyBox').hidden = !(d.status === 'menunggu_bayar' || d.status === 'menunggu_verifikasi');
     renderLangkah(d);
     jalankanTimer();
   }
@@ -254,12 +283,12 @@
 
   function kirimBukti() {
     var file = $('fileBukti').files[0];
-    if (!file) { pesan('Pilih file bukti transfer terlebih dahulu.'); return; }
-    if (file.size > 5 * 1024 * 1024) { pesan('Ukuran file maksimal 5 MB.'); return; }
+    if (!file) { pesan('Pilih file bukti transfer terlebih dahulu.', true); return; }
+    if (file.size > 5 * 1024 * 1024) { pesan('Ukuran file maksimal 5 MB. Coba ambil ulang tangkapan layar, atau kirim lewat WhatsApp.', true); return; }
     var path = simpan.id + '/' + Date.now() + '-' + namaBersih(file.name);
     pesan('Mengirim bukti transfer…');
     sb.storage.from(BUCKET).upload(path, file, { upsert: false }).then(function (u) {
-      if (u.error) { pesan('Bukti belum terkirim. Coba lagi atau pilih file lain.'); return; }
+      if (u.error) { pesan('Bukti belum terkirim. Coba lagi, pilih file lain, atau kirim lewat WhatsApp.', true); return; }
       sb.rpc('kirim_bukti', { p_id: simpan.id, p_email: simpan.email, p_path: path, p_nama: file.name }).then(function (r) {
         if (!r.error) {
           $('fileBukti').value = '';
@@ -269,8 +298,8 @@
         muat(function (d) {
           if (!d) return;
           if (d.status === 'diterima') pesan('Pembayaran Anda sudah dikonfirmasi.');
-          else if (d.status === 'kedaluwarsa') pesan('Waktu pembayaran sudah habis. Hubungi admin untuk dibukakan kembali.');
-          else pesan(r.error.message || 'Bukti belum terkirim. Coba lagi.');
+          else if (d.status === 'kedaluwarsa') pesan('Waktu pembayaran sudah habis. Hubungi admin untuk dibukakan kembali.', true);
+          else pesan(r.error.message || 'Bukti belum terkirim. Coba lagi.', true);
         });
       });
     });
@@ -309,6 +338,12 @@
       });
     });
     $('btnBukti').addEventListener('click', kirimBukti);
+    $('fileBukti').addEventListener('change', function () {
+      var ada = this.files.length > 0;
+      $('btnBukti').disabled = !ada;
+      $('hintBukti').hidden = ada;
+      pesan('');
+    });
     $('btnSalinNominal').addEventListener('click', function () {
       var b = this;
       var angka = data && data.total != null ? String(data.total) : '';
