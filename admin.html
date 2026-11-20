@@ -1241,7 +1241,7 @@
         </div>
         <section class="hq-murid-bagian" id="hqMuridAktifBagian" aria-labelledby="hqMuridAktifJudul" hidden>
           <h2 class="adm-dash-h2" id="hqMuridAktifJudul">Semua murid aktif</h2>
-          <p class="hq-catatan" id="hqMuridAktifInfo"></p>
+          <p class="hq-catatan" id="hqMuridAktifInfo">Pilih periode untuk melihat murid aktif.</p>
           <div class="hq-murid-daftar" id="hqMuridAktifDaftar"></div>
         </section>
         <section class="hq-siapkan" id="hqSiapkan" hidden>
@@ -2746,6 +2746,8 @@
     } else if (typeof PENGAJAR !== 'undefined' && PENGAJAR) {
       isiRingkasanKapasitas(PENGAJAR);
     }
+    var bagianMurid = document.getElementById('hqMuridAktifBagian');
+    if (bagianMurid && !bagianMurid.hidden) bukaMuridAktif(true);
   }
   function hqBukaLembar(buka) {
     var l = document.getElementById('hqLembar');
@@ -2808,6 +2810,14 @@
   function rapikanNama(s) {
     return String(s || '').replace(/\s+/g, ' ').trim().toLowerCase().replace(/(^|[\s'\-])(\p{L})/gu, function (m, a, b) { return a + b.toUpperCase(); });
   }
+  function teksSisa(hari) {
+    if (hari === null || hari === undefined) return '—';
+    if (hari < 0) return 'sudah habis';
+    if (hari < 30) return hari + ' hari';
+    var bulan = Math.floor(hari / 30), sisa = hari % 30;
+    return bulan + ' bulan' + (sisa ? ' ' + sisa + ' hari' : '');
+  }
+  var KELAS_NAMA = { silver: 'Silver', gold: 'Gold', platinum: 'Platinum' };
   function bukaMuridAktif(buka) {
     var bagian = document.getElementById('hqMuridAktifBagian');
     var tombol = document.getElementById('hqMuridAktifBuka');
@@ -2818,33 +2828,30 @@
     if (!buka) return;
     var wadah = document.getElementById('hqMuridAktifDaftar');
     var info = document.getElementById('hqMuridAktifInfo');
+    var periode = HQ_PILIH;
+    var x = parseInt(String(periode || '').replace(/\D/g, ''), 10);
     wadah.textContent = '';
+    if (!x) { info.textContent = 'Pilih periode terlebih dahulu.'; return; }
     wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat daftar…'));
-    sb.rpc('admin_daftar_guru_murid').then(function (r) {
+    sb.rpc('admin_murid_periode', { p_periode: periode }).then(function (r) {
       wadah.textContent = '';
       if (r.error || !Array.isArray(r.data)) { info.textContent = 'Daftar murid aktif belum bisa dimuat.'; return; }
-      // Data berisi satu baris per hari; kelompokkan menjadi satu kartu per murid.
-      var peta = {}, urut = [];
-      r.data.forEach(function (d) {
-        if (!d.pengajar_email || d.pengajar_aktif === false || !d.peserta_email) return;
-        var k = d.peserta_email.toLowerCase();
-        if (!peta[k]) {
-          peta[k] = { nama: rapikanNama(d.peserta_nama || d.peserta_email), guru: d.pengajar_nama || '', jam: d.jam, menit: d.menit, hari: [] };
-          urut.push(k);
-        }
-        peta[k].hari.push(d.hari);
-      });
-      var daftar = urut.map(function (k) { return peta[k]; }).sort(function (a, b) {
-        return (a.guru + '|' + a.nama).localeCompare(b.guru + '|' + b.nama, 'id');
-      });
-      info.textContent = daftar.length + ' murid aktif: sudah masuk grup halaqoh dan sudah punya guru.';
-      if (!daftar.length) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Belum ada murid aktif.')); return; }
-      daftar.forEach(function (m) {
-        var baris = document.createElement('div');
-        baris.className = 'hq-murid-baris';
-        baris.appendChild(pkEl('span', 'hq-murid-nama', m.nama));
-        baris.appendChild(pkEl('span', 'hq-murid-ket', m.guru + ' · ' + rentangHari(m.hari) + ' · ' + jamRentang(m.jam, m.menit)));
-        wadah.appendChild(baris);
+      var baris = r.data;
+      var jumlah = function (k) { return baris.filter(function (d) { return d.kelas === k; }).length; };
+      var bertahan3 = baris.filter(function (d) { return d.akhir_n >= x + 3; }).length;
+      var bertahan6 = baris.filter(function (d) { return d.akhir_n >= x + 6; }).length;
+      info.textContent = periode + ': ' + baris.length + ' murid aktif (Platinum ' + jumlah('platinum') +
+        ', Gold ' + jumlah('gold') + ', Silver ' + jumlah('silver') + '). Masih aktif sampai P' + (x + 3) + ': ' +
+        bertahan3 + ' · sampai P' + (x + 6) + ': ' + bertahan6 + '.';
+      if (!baris.length) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Belum ada murid aktif di periode ini.')); return; }
+      baris.forEach(function (d) {
+        var kartu = document.createElement('div');
+        kartu.className = 'hq-murid-baris';
+        kartu.appendChild(pkEl('span', 'hq-murid-nama', rapikanNama(d.nama)));
+        kartu.appendChild(pkEl('span', 'hq-murid-ket', (d.guru || '—') + ' · ' + (KELAS_NAMA[d.kelas] || d.kelas) + ' · ' + d.durasi + ' bulan (' + d.periode_awal + '–' + d.periode_akhir + ')'));
+        var jadwal = d.hari && d.hari.length ? rentangHari(d.hari) + ' · ' + jamRentang(d.jam, d.menit) : 'Belum ada jadwal';
+        kartu.appendChild(pkEl('span', 'hq-murid-ket', jadwal + ' · sisa ' + teksSisa(d.sisa_hari)));
+        wadah.appendChild(kartu);
       });
     }).catch(function () { wadah.textContent = ''; info.textContent = 'Daftar murid aktif belum bisa dimuat.'; });
   }
