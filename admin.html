@@ -226,6 +226,40 @@
   .adm-bd-angka-hijau { font-size: 24px; font-weight: 800; color: #1E7A3C; }
   .adm-bd-angka-oranye { font-size: 24px; font-weight: 800; color: #B45309; }
   .adm-bd-panah { color: #6E6E73; font-size: 20px; }
+  .hq-periode-chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; margin: 8px 0 0; scrollbar-width: none; }
+  .hq-periode-chips::-webkit-scrollbar { display: none; }
+  .hq-chip { flex: 0 0 auto; min-width: 74px; border: 1px solid #EEE6D8; background: #FFFFFF; border-radius: 16px; padding: 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font: inherit; color: #1D1D1F; }
+  .hq-chip b { font-size: 18px; }
+  .hq-chip small { font-size: 11px; border-radius: 999px; padding: 2px 8px; background: #ECEBEA; color: #4A4740; }
+  .hq-chip-datang small { background: #E3EEFB; color: #1F5FA8; }
+  .hq-chip-jalan small { background: #E4F4E8; color: #1E7A3C; }
+  .hq-chip-pilih.hq-chip-jalan { background: #A9801F; border-color: #A9801F; color: #FFFFFF; }
+  .hq-chip-pilih.hq-chip-jalan small { background: rgba(255,255,255,.22); color: #FFFFFF; }
+  .hq-chip-pilih.hq-chip-datang { background: #1F6FD0; border-color: #1F6FD0; color: #FFFFFF; }
+  .hq-chip-pilih.hq-chip-datang small { background: rgba(255,255,255,.22); color: #FFFFFF; }
+  .hq-chip-pilih.hq-chip-selesai { background: #6E6E73; border-color: #6E6E73; color: #FFFFFF; }
+  .hq-chip-pilih.hq-chip-selesai small { background: rgba(255,255,255,.22); color: #FFFFFF; }
+  .hq-tautan { border: 0; background: transparent; color: #8A6100; font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 0; }
+  .hq-siapkan { display: flex; gap: 12px; background: #EAF2FD; border: 1px solid #CFE0F7; border-radius: 18px; padding: 14px; margin: 12px 0; }
+  .hq-siapkan[hidden] { display: none !important; }
+  .hq-siapkan-ikon { font-size: 26px; }
+  .hq-siapkan-teks { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+  .hq-siapkan-teks span { font-size: 13px; color: #4A4740; }
+  .hq-siapkan-tombol { margin-top: 6px; border: 0; border-radius: 999px; background: #A9801F; color: #FFFFFF; font: inherit; font-weight: 700; padding: 12px 16px; cursor: pointer; }
+  .hq-ringkas-judul { font-weight: 700; font-size: 13px !important; }
+  .hq-lembar { position: fixed; inset: 0; z-index: 70; background: rgba(29, 29, 31, .35); display: flex; align-items: center; justify-content: center; padding: 24px 12px; box-sizing: border-box; }
+  .hq-lembar[hidden] { display: none !important; }
+  .hq-lembar-kartu { background: #FFFFFF; width: min(480px, 100%); max-height: calc(100vh - 48px); overflow: auto; border-radius: 22px; padding: 18px; box-sizing: border-box; }
+  .hq-lembar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .hq-lembar-head b { font-size: 20px; }
+  .hq-lembar-daftar { display: flex; flex-direction: column; gap: 8px; }
+  .hq-lembar-baris { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid #EEE6D8; border-radius: 14px; padding: 12px 14px; background: #FFFFFF; cursor: pointer; font: inherit; text-align: left; color: #1D1D1F; }
+  .hq-lembar-baris b { font-size: 17px; min-width: 48px; }
+  .hq-lembar-baris small { border-radius: 999px; padding: 2px 10px; font-size: 12px; background: #ECEBEA; color: #4A4740; }
+  .hq-lembar-baris.hq-chip-datang small { background: #E3EEFB; color: #1F5FA8; }
+  .hq-lembar-baris.hq-chip-jalan small { background: #E4F4E8; color: #1E7A3C; }
+  .hq-lembar-baris.hq-lembar-pilih { background: #FFF7E6; border-color: #A9801F; }
+  .hq-lembar-tgl { flex: 1; font-size: 12px; color: #6E6E73; }
   .hq-periode { display: flex; background: #F3EFE7; border-radius: 999px; padding: 4px; margin: 8px 0 4px; }
   .hq-periode-pil { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 9px 0; font-size: 14px; color: #1D1D1F; }
   .hq-periode-aktif { background: #A9801F !important; color: #fff !important; font-weight: 700; }
@@ -1159,16 +1193,22 @@
       <div class="adm-murid-wrap">
         <h1 class="adm-dash-judul">Halaqoh</h1>
         <p class="adm-dash-sub">Pantau kapasitas, retensi, dan perubahan penting tiap pengajar.</p>
-        <div class="hq-periode" role="group" aria-label="Pilih periode">
-          <button type="button" class="hq-periode-pil hq-periode-aktif" disabled>Periode Ini</button>
-          <button type="button" class="hq-periode-pil hq-periode-segera" disabled>Periode Depan <small>segera</small></button>
-        </div>
-        <p class="hq-catatan"><span id="hqDiperbarui">Diperbarui pukul —</span><span>Data periode belum tersedia.</span></p>
-        <section class="hq-ringkasan" aria-label="Ringkasan halaqoh">
-          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b><span>Retensi periode ini</span></div>
-          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b><span>Sudah daftar ulang</span></div>
-          <div class="hq-ringkas-sel"><b class="hq-ringkas-angka hq-ringkas-tunggu" id="hqKapasitasAngka">Menunggu data</b><span>Kapasitas terisi</span><small id="hqKapasitasKet">Isi kapasitas dulu</small></div>
+        <div class="hq-periode-chips" id="hqPeriodeChips" role="group" aria-label="Pilih periode"></div>
+        <p class="hq-catatan"><span>Ditampilkan untuk periode <b id="hqPeriodeTampil">—</b> · <button type="button" class="hq-tautan" id="hqPeriodeSemua">Semua periode</button></span><span id="hqDiperbarui">Diperbarui pukul —</span></p>
+        <section class="hq-siapkan" id="hqSiapkan" hidden>
+          <div class="hq-siapkan-ikon" aria-hidden="true">📅</div>
+          <div class="hq-siapkan-teks">
+            <b>Siapkan kapasitas pengajar</b>
+            <span id="hqSiapkanKet">Atur kapasitas guru untuk periode ini.</span>
+            <button type="button" class="hq-siapkan-tombol" id="hqSiapkanTombol">Isi Kapasitas ›</button>
+          </div>
         </section>
+        <section class="hq-ringkasan" aria-label="Ringkasan halaqoh">
+          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Retensi</span><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b></div>
+          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Daftar ulang</span><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b></div>
+          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Kapasitas</span><b class="hq-ringkas-angka hq-ringkas-tunggu" id="hqKapasitasAngka">Menunggu data</b><small id="hqKapasitasKet">Isi kapasitas dulu</small></div>
+        </section>
+        <div id="hqIsiPengajar">
         <div class="hq-status" role="group" aria-label="Filter kapasitas">
           <button type="button" class="hq-status-pil hq-status-aktif" data-st="semua" aria-pressed="true">Semua</button>
           <button type="button" class="hq-status-pil" data-st="bisa" aria-pressed="false">Bisa</button>
@@ -1207,6 +1247,7 @@
         <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
         <div class="hq-bawah">
           <a href="#murid" class="hq-bawah-tautan">Lihat semua murid di Peserta</a>
+        </div>
         </div>
         <div class="adm-pengajar-tabel-wrap" hidden>
           <table aria-label="Daftar halaqoh" class="adm-murid-tabel">
@@ -1445,6 +1486,12 @@
   <a style="display:none" href="#periode"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Periode</a>
   <button style="display:none" type="button" class="adm-bottomnav-lainnya" id="btnLainnya" aria-expanded="false" aria-controls="lainnyaLembar"><span class="adm-bottomnav-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></span>Lainnya</button>
 </nav>
+<div class="hq-lembar" id="hqLembar" role="dialog" aria-modal="true" aria-label="Pilih periode" hidden>
+  <div class="hq-lembar-kartu">
+    <div class="hq-lembar-head"><b>Pilih Periode</b><button type="button" class="pk-tutup" id="hqLembarTutup" aria-label="Tutup">✕</button></div>
+    <div class="hq-lembar-daftar" id="hqLembarDaftar"></div>
+  </div>
+</div>
 <div class="adm-lembar" id="lainnyaLembar" role="dialog" aria-modal="true" aria-label="Menu lainnya" hidden>
   <div class="adm-lembar-latar" data-tutup-lembar></div>
   <div class="adm-lembar-isi">
@@ -2558,6 +2605,8 @@
     var angka = document.getElementById('hqKapasitasAngka');
     var ket = document.getElementById('hqKapasitasKet');
     if (!angka || !ket) return;
+    var pp = (typeof HQ_PERIODE !== 'undefined' ? HQ_PERIODE : []).filter(function (x) { return x.periode === HQ_PILIH; })[0];
+    if (pp && pp.status !== 'jalan') return;
     var diisi = (list || []).filter(adaKapasitas);
     var tunggu = function (keterangan) { angka.textContent = 'Menunggu data'; angka.classList.add('hq-ringkas-tunggu'); ket.textContent = keterangan; };
     if (!list) { tunggu('Data kapasitas belum bisa dimuat'); return; }
@@ -2592,6 +2641,111 @@
     });
   }
   bindKontrolHalaqoh();
+
+  /* Periode Halaqoh: chip periode (selesai / berjalan / akan datang) dari admin_jadwal_gelombang */
+  var HQ_PERIODE = [];
+  var HQ_PILIH = null;
+  function hqHariIni() {
+    var t = new Date();
+    return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
+  }
+  function hqStatusPeriode(p, hari) {
+    if (hari < p.mulai) return 'datang';
+    if (hari > p.berakhir) return 'selesai';
+    return 'jalan';
+  }
+  var HQ_LABEL = { datang: 'Akan datang', jalan: 'Berjalan', selesai: 'Selesai' };
+  function hqKelasStatus(st) { return st === 'datang' ? 'hq-chip-datang' : (st === 'jalan' ? 'hq-chip-jalan' : 'hq-chip-selesai'); }
+  function hqTampilkanPeriode() {
+    var p = HQ_PERIODE.filter(function (x) { return x.periode === HQ_PILIH; })[0];
+    var chips = document.getElementById('hqPeriodeChips');
+    var tampil = document.getElementById('hqPeriodeTampil');
+    if (!p || !chips) return;
+    if (tampil) tampil.textContent = p.periode;
+    var idxJalan = HQ_PERIODE.findIndex(function (x) { return x.status === 'jalan'; });
+    var idxPilih = HQ_PERIODE.indexOf(p);
+    var awal = Math.max(0, Math.min(idxPilih, idxJalan < 0 ? idxPilih : idxJalan) - 1);
+    var tampilChip = HQ_PERIODE.slice(awal, awal + 6);
+    chips.innerHTML = '';
+    tampilChip.forEach(function (x) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'hq-chip ' + hqKelasStatus(x.status) + (x.periode === HQ_PILIH ? ' hq-chip-pilih' : '');
+      b.setAttribute('aria-pressed', x.periode === HQ_PILIH ? 'true' : 'false');
+      b.appendChild(sel('b', x.periode));
+      b.appendChild(sel('small', HQ_LABEL[x.status]));
+      b.addEventListener('click', function () { HQ_PILIH = x.periode; hqTampilkanPeriode(); });
+      chips.appendChild(b);
+    });
+    var jalan = p.status === 'jalan';
+    var isi = document.getElementById('hqIsiPengajar');
+    if (isi) isi.hidden = !jalan;
+    var siap = document.getElementById('hqSiapkan');
+    if (siap) siap.hidden = p.status !== 'datang';
+    var ket = document.getElementById('hqSiapkanKet');
+    if (ket) ket.textContent = 'Atur kapasitas guru untuk periode ' + p.periode + '.';
+    var tb = document.getElementById('hqSiapkanTombol');
+    if (tb) tb.textContent = 'Isi Kapasitas ' + p.periode + ' ›';
+    var angka = document.getElementById('hqKapasitasAngka');
+    var ketK = document.getElementById('hqKapasitasKet');
+    if (!jalan) {
+      document.querySelectorAll('.hq-ringkasan .hq-ringkas-angka').forEach(function (a) { a.textContent = 'Menunggu data'; a.classList.add('hq-ringkas-tunggu'); });
+      if (ketK) ketK.textContent = p.status === 'datang' ? 'Kapasitas belum diisi' : 'Periode telah selesai';
+    } else if (typeof PENGAJAR !== 'undefined' && PENGAJAR) {
+      isiRingkasanKapasitas(PENGAJAR);
+    }
+  }
+  function hqBukaLembar(buka) {
+    var l = document.getElementById('hqLembar');
+    if (!l) return;
+    if (buka) {
+      var daftar = document.getElementById('hqLembarDaftar');
+      daftar.innerHTML = '';
+      HQ_PERIODE.slice().reverse().forEach(function (x) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'hq-lembar-baris ' + hqKelasStatus(x.status) + (x.periode === HQ_PILIH ? ' hq-lembar-pilih' : '');
+        b.appendChild(sel('b', x.periode));
+        b.appendChild(sel('span', tglPeriode(x.mulai) + ' – ' + tglPeriode(x.berakhir))).className = 'hq-lembar-tgl';
+        b.appendChild(sel('small', x.status === 'jalan' ? 'Sedang berjalan' : HQ_LABEL[x.status]));
+        b.addEventListener('click', function () { HQ_PILIH = x.periode; hqTampilkanPeriode(); hqBukaLembar(false); });
+        daftar.appendChild(b);
+      });
+    }
+    l.hidden = !buka;
+  }
+  function muatPeriodeHalaqoh() {
+    sb.rpc('admin_jadwal_gelombang').then(function (r) {
+      if (r.error || !Array.isArray(r.data) || !r.data.length) return;
+      var peta = {};
+      r.data.forEach(function (g) {
+        var m = String(g.mulai).slice(0, 10), e = String(g.berakhir).slice(0, 10);
+        var o = peta[g.periode] || (peta[g.periode] = { periode: g.periode, mulai: m, berakhir: e });
+        if (m < o.mulai) o.mulai = m;
+        if (e > o.berakhir) o.berakhir = e;
+      });
+      var hari = hqHariIni();
+      HQ_PERIODE = Object.keys(peta).map(function (k) { return peta[k]; })
+        .sort(function (a, b) { return a.mulai < b.mulai ? -1 : 1; })
+        .map(function (p) { p.status = hqStatusPeriode(p, hari); return p; });
+      var jalan = HQ_PERIODE.filter(function (x) { return x.status === 'jalan'; })[0];
+      var depan = HQ_PERIODE.filter(function (x) { return x.status === 'datang'; })[0];
+      HQ_PILIH = HQ_PILIH || (jalan || depan || HQ_PERIODE[HQ_PERIODE.length - 1]).periode;
+      hqTampilkanPeriode();
+    }).catch(function () {});
+  }
+  var hqSemua = document.getElementById('hqPeriodeSemua');
+  if (hqSemua) hqSemua.addEventListener('click', function () { hqBukaLembar(true); });
+  var hqTutupLembar = document.getElementById('hqLembarTutup');
+  if (hqTutupLembar) hqTutupLembar.addEventListener('click', function () { hqBukaLembar(false); });
+  var hqLembarEl = document.getElementById('hqLembar');
+  if (hqLembarEl) hqLembarEl.addEventListener('click', function (e) { if (e.target === hqLembarEl) hqBukaLembar(false); });
+  var hqSiapTombol = document.getElementById('hqSiapkanTombol');
+  if (hqSiapTombol) hqSiapTombol.addEventListener('click', function () {
+    var kap = document.getElementById('hqIsiPengajar');
+    if (kap) { kap.hidden = false; kap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+  muatPeriodeHalaqoh();
   function barisHq(label, nilai, persen, kelasBar) {
     var r = document.createElement('div');
     r.className = 'hq-baris';
