@@ -3789,6 +3789,12 @@
     }
     var tombol = document.createElement('button'); tombol.type = 'button'; tombol.className = 'dm-catat';
     tombol.textContent = 'Catat follow up'; tombol.setAttribute('aria-expanded', 'false');
+    /* Lead dari sheet belum punya catatan follow up di aplikasi: pencatatan masih di sheet */
+    if (l.sumber === 'sheet') {
+      tombol.disabled = true;
+      tombol.textContent = 'Dicatat di sheet';
+      tombol.title = 'Lead ini dari sheet Leads MTO. Pencatatan follow up masih dilakukan di sheet.';
+    }
     var panel = document.createElement('div'); panel.className = 'dm-panel'; panel.hidden = true;
     var pilih = document.createElement('select'); pilih.setAttribute('aria-label', 'Tahap follow up');
     for (var k = 1; k <= 4; k++) {
@@ -3824,6 +3830,7 @@
       });
       var awal = (l.dealmaker_email || '').toLowerCase();
       pilihDm.value = awal;
+      if (l.sumber === 'sheet') pilihDm.disabled = true;
       var pesanDm = document.createElement('p'); pesanDm.className = 'dm-pesan'; pesanDm.setAttribute('role', 'status');
       pilihDm.addEventListener('change', function () {
         var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
