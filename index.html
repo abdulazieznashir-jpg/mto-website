@@ -1619,6 +1619,10 @@
       openFlow({ mode: 'daftar', program: el.dataset.program, jenis: el.dataset.jenis, tier: el.dataset.tier });
     });
   });
+  // Dibuka dari profil peserta (index.html?daftar=1): langsung tampil alur pendaftaran yang sama.
+  try {
+    if (new URLSearchParams(location.search).get('daftar') === '1') openFlow({ mode: 'daftar' });
+  } catch (err) { /* abaikan */ }
   document.getElementById('cekOpen').addEventListener('click', function () { openFlow({ mode: 'cek' }); });
   document.getElementById('cekClose').addEventListener('click', close);
   backBtn.addEventListener('click', back);
