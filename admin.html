@@ -1426,6 +1426,32 @@
 
   if (!window.supabase) { kembali(); return; }
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  /* Percepat: permintaan baca yang sama (nama dan argumen sama) yang sedang berjalan dipakai bersama, tidak dikirim dua kali */
+  (function () {
+    var BACA = ['admin_daftar_pengajar', 'admin_kapasitas_halaqoh', 'admin_jadwal_gelombang', 'admin_daftar_guru_murid',
+      'admin_ringkasan', 'admin_ringkasan_lengkap', 'admin_daftar_lunas', 'admin_daftar_belum_guru', 'admin_daftar_murid_baru'];
+    var asliRpc0 = sb.rpc.bind(sb);
+    /* Pencatat waktu: lihat window.MTO_WAKTU di konsol browser (nama fungsi, mulai ms, lama ms) untuk mencari yang lambat */
+    window.MTO_WAKTU = [];
+    var asliRpc = function (nama, args, opsi) {
+      var mulai = Math.round(performance.now());
+      var p = Promise.resolve(asliRpc0(nama, args, opsi));
+      var catat = function () { window.MTO_WAKTU.push([nama, mulai, Math.round(performance.now()) - mulai]); };
+      p.then(catat, catat);
+      return p;
+    };
+    var jalan = {};
+    sb.rpc = function (nama, args, opsi) {
+      if (BACA.indexOf(nama) === -1) return asliRpc(nama, args, opsi);
+      var kunci = nama + '|' + JSON.stringify(args || {});
+      if (jalan[kunci]) return jalan[kunci];
+      var p = Promise.resolve(asliRpc(nama, args, opsi));
+      jalan[kunci] = p;
+      var bersih = function () { delete jalan[kunci]; };
+      p.then(bersih, bersih);
+      return p;
+    };
+  })();
 
   sb.auth.getSession().then(function (r) {
     var sesi = r && r.data && r.data.session;
@@ -1442,28 +1468,43 @@
     pasangSwitch();
     pasangFollowUp();
     terapkanPeranUI();
-    if (window.MTO_ADMIN.peran !== 'aftersales') muatDealMaker();
     if (window.MTO_ADMIN.peran === 'dealmaker') {
       /* Deal Maker hanya melihat dashboard Deal Maker: loader lain tidak dipanggil */
       if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
       return;
     }
-    muatUsulanTranskrip();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
-    muatDashboard();
-    muatMurid();
-    muatPesertaBaru();
-    muatMenungguMasukGrup();
-    muatNotifikasiAdmin();
-    muatPembayaran();
-    muatGuru();
-    muatBelumGuru();
-    muatPengajar();
-    muatJadwal();
-    muatPertemuan();
-    muatPeriode();
-    muatPermintaan();
-    muatPengaturanJadwal();
+    /* Percepat: muat dulu data halaman yang sedang dibuka, sisanya menyusul sedikit kemudian */
+    var SEMUA = {
+      dashboard: muatDashboard, pesertaBaru: muatPesertaBaru, menunggu: muatMenungguMasukGrup, notif: muatNotifikasiAdmin,
+      murid: muatMurid, pembayaran: muatPembayaran, guru: muatGuru, belumGuru: muatBelumGuru, pengajar: muatPengajar,
+      jadwal: muatJadwal, pertemuan: muatPertemuan, periode: muatPeriode, permintaan: muatPermintaan,
+      pengaturan: muatPengaturanJadwal, transkrip: muatUsulanTranskrip
+    };
+    var PRIORITAS = {
+      dashboard: ['dashboard', 'pesertaBaru', 'menunggu', 'notif'],
+      murid: ['murid', 'pembayaran'],
+      pengajar: ['pengajar', 'murid', 'guru'],
+      jadwal: ['jadwal'], pertemuan: ['pertemuan'], periode: ['periode'], permintaan: ['permintaan'],
+      pengaturan: ['pengaturan'], transkrip: ['transkrip'], notifikasi: ['notif']
+    };
+    var rute = (window.location.hash || '').replace(/^#/, '');
+    var awal = PRIORITAS[rute] || PRIORITAS.dashboard;
+    var sudah = {};
+    function jalankan(kunci) {
+      if (sudah[kunci] || !SEMUA[kunci]) return;
+      sudah[kunci] = true;
+      try { SEMUA[kunci](); } catch (e) { /* satu pemuat gagal tidak boleh menghentikan yang lain */ }
+    }
+    awal.forEach(jalankan);
+    var sisa = Object.keys(SEMUA).filter(function (k) { return !sudah[k]; });
+    var urut = ['dashboard', 'notif', 'murid', 'pembayaran', 'pengajar', 'guru', 'belumGuru', 'pesertaBaru', 'menunggu'];
+    sisa.sort(function (x, y) { var i = urut.indexOf(x), j = urut.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); });
+    (function berikut() {
+      var bagian = sisa.splice(0, 3);
+      bagian.forEach(jalankan);
+      if (sisa.length) setTimeout(berikut, 250);
+    })();
   }).catch(kembali);
 
   /* Murid: isi tabel desktop dari admin_daftar_murid. Teks dimasukkan lewat textContent (aman dari HTML). */
