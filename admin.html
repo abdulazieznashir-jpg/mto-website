@@ -79,6 +79,7 @@
   }
   .adm-topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .adm-topbar-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 480px) { .adm-topbar-nama { white-space: normal; font-size: 15px; line-height: 1.2; } }
   .adm-topbar-aksi { display: flex; align-items: center; gap: 8px; }
   .adm-keluar { min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #F0B7B0; background: #FDECEA; color: #B42318; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
   .adm-keluar:hover { background: #FAD4CF; }
@@ -124,6 +125,7 @@
   .dm-tahap-closing { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
+  .dm-pilih-pic { font: 600 13px Inter, system-ui, sans-serif; padding: 7px 10px; border-radius: 999px; border: 1px solid #C9A227; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); max-width: 100%; }
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .dm-kisi .bd-kartu { margin-bottom: 0; min-width: 0; }
@@ -981,6 +983,7 @@
             <p class="adm-dash-sub" id="dmNama">—</p>
           </div>
           <span class="dm-chip" id="dmPeriode">—</span>
+          <select id="dmPilihPic" class="dm-pilih-pic" aria-label="Pilih Deal Maker" hidden></select>
         </div>
         <div class="dm-kisi">
           <section class="bd-kartu dm-kartu-omset" aria-labelledby="dmJudulOmset">
@@ -1513,8 +1516,13 @@
   var SUPABASE_ANON_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
   var OWNER = 'abdulaziez.nashir@gmail.com';
   var AFTERSALES = 'mahkota.to3@gmail.com';
-  var DEALMAKER = 'azieznashir@gmail.com';
-  var DIIZINKAN = [OWNER, AFTERSALES, DEALMAKER];
+  // Semua PIC Deal Maker aktif. Tambahkan email PIC baru di sini dan di tabel deal_maker_pic.
+  var DAFTAR_PIC = ['azieznashir@gmail.com'];
+  var DEALMAKER = DAFTAR_PIC[0];
+  var DIIZINKAN = [OWNER, AFTERSALES].concat(DAFTAR_PIC);
+  var DM_PIC_AKTIF = DEALMAKER;
+  var DM_PIC_LIST = [];
+  var DM_PIC_SIAP = false;
   var PROFIL = 'profil.html';
 
   function kembali() { window.location.replace(PROFIL); }
@@ -1552,7 +1560,8 @@
     var sesi = r && r.data && r.data.session;
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
-    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (email === DEALMAKER ? 'dealmaker' : 'aftersales') };
+    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (DAFTAR_PIC.indexOf(email) !== -1 ? 'dealmaker' : 'aftersales') };
+    if (window.MTO_ADMIN.peran === 'dealmaker') DM_PIC_AKTIF = email;
     /* Tombol Keluar: hapus sesi lalu kembali ke halaman masuk */
     var tombolKeluar = document.getElementById('admKeluar');
     if (tombolKeluar) tombolKeluar.addEventListener('click', function () {
@@ -4051,7 +4060,38 @@
   }
   var posisiAsliDm = null;
   /* Beranda Deal Maker: omset bulan ini, omset total, lead saya, dan progres target minimal */
+  /* Daftar PIC aktif dari database, dipakai untuk pilihan Owner dan dropdown penugasan */
+  function muatDaftarPic(cb) {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    if (!sb) { if (cb) cb(); return; }
+    sb.rpc('daftar_deal_maker').then(function (r) {
+      if (!r.error && Array.isArray(r.data) && r.data.length) {
+        DM_PIC_LIST = r.data;
+      }
+      var pilih = document.getElementById('dmPilihPic');
+      if (pilih && window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner') {
+        pilih.hidden = false;
+        pilih.innerHTML = '';
+        DM_PIC_LIST.forEach(function (p) {
+          var opt = document.createElement('option'); opt.value = p.email; opt.textContent = p.nama; pilih.appendChild(opt);
+        });
+        if (DM_PIC_LIST.some(function (p) { return p.email === DM_PIC_AKTIF; })) pilih.value = DM_PIC_AKTIF;
+        else if (DM_PIC_LIST.length) DM_PIC_AKTIF = DM_PIC_LIST[0].email;
+        pilih.value = DM_PIC_AKTIF;
+        if (!pilih.dataset.ikat) {
+          pilih.dataset.ikat = '1';
+          pilih.addEventListener('change', function () {
+            DM_PIC_AKTIF = pilih.value;
+            muatDealMaker();
+            if (typeof muatDaftarDm === 'function') muatDaftarDm();
+          });
+        }
+      }
+      if (cb) cb();
+    });
+  }
   function muatDealMaker() {
+    if (!DM_PIC_SIAP) { DM_PIC_SIAP = true; muatDaftarPic(muatDealMaker); return; }
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
     if (!sb) return;
     function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; }
@@ -4060,7 +4100,7 @@
     /* Owner di tampilan Deal Maker melihat Beranda milik Zikri; jika fungsi SQL versi baru belum terpasang, pakai versi lama */
     var lihatDm = window.MTO_ADMIN.peran === 'owner' && peranAktif() === 'dealmaker';
     var panggil = lihatDm
-      ? sb.rpc('dm_beranda', { p_email: DEALMAKER }).then(function (r) { return r.error ? sb.rpc('dm_beranda') : r; })
+      ? sb.rpc('dm_beranda', { p_email: DM_PIC_AKTIF }).then(function (r) { return r.error ? sb.rpc('dm_beranda') : r; })
       : sb.rpc('dm_beranda');
     panggil.then(function (r) {
       var g = document.getElementById('dmGalat');
@@ -4146,7 +4186,7 @@
     if (!wadah) return;
     var hitung = { belum: 0, '1': 0, '2': 0, '3': 0, '4': 0, closing: 0, belum_closing: 0 };
     var daftar = DM_SEMUA.filter(function (l) {
-      return !DM_LIHAT_OWNER || String(l.dealmaker_email || '').toLowerCase() === DEALMAKER;
+      return !DM_LIHAT_OWNER || String(l.dealmaker_email || '').toLowerCase() === DM_PIC_AKTIF;
     });
     ['belum', '1', '2', '3', '4', 'closing', 'belum_closing'].forEach(function (t) {
       hitung[t] = daftar.filter(function (l) { return cocokTabDm(l, t); }).length;
@@ -4190,6 +4230,7 @@
   function muatDaftarDm() {
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
     if (!sb) return;
+    if (!DM_PIC_SIAP) { DM_PIC_SIAP = true; muatDaftarPic(muatDaftarDm); return; }
     DM_LIHAT_OWNER = window.MTO_ADMIN.peran === 'owner' && peranAktif() === 'dealmaker';
     if (!DM_TAB_SIAP) {
       DM_TAB_SIAP = true;
@@ -4270,7 +4311,8 @@
       var wrapDm = document.createElement('div'); wrapDm.className = 'dm-pilih-dm';
       var labelDm = document.createElement('span'); labelDm.textContent = 'Deal Maker';
       var pilihDm = document.createElement('select'); pilihDm.setAttribute('aria-label', 'Deal Maker untuk lead ini');
-      [['', 'Belum ditetapkan'], ['azieznashir@gmail.com', 'Deal Maker (azieznashir)']].forEach(function (o) {
+      var pilihanPic = [['', 'Belum ditetapkan']].concat(DM_PIC_LIST.map(function (p) { return [p.email, p.nama]; }));
+      pilihanPic.forEach(function (o) {
         var opt = document.createElement('option'); opt.value = o[0]; opt.textContent = o[1]; pilihDm.appendChild(opt);
       });
       var awal = (l.dealmaker_email || '').toLowerCase();
