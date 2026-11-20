@@ -3780,7 +3780,12 @@
     function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = teks; }
     function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
     isi('dmPeriode', new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }));
-    sb.rpc('dm_beranda').then(function (r) {
+    /* Owner di tampilan Deal Maker melihat Beranda milik Zikri; jika fungsi SQL versi baru belum terpasang, pakai versi lama */
+    var lihatDm = window.MTO_ADMIN.peran === 'owner' && peranAktif() === 'dealmaker';
+    var panggil = lihatDm
+      ? sb.rpc('dm_beranda', { p_email: DEALMAKER }).then(function (r) { return r.error ? sb.rpc('dm_beranda') : r; })
+      : sb.rpc('dm_beranda');
+    panggil.then(function (r) {
       var g = document.getElementById('dmGalat');
       if (r.error || !r.data) { if (g) g.hidden = false; isi('dmOmsetBulan', '—'); return; }
       if (g) g.hidden = true;

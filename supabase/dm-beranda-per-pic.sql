@@ -52,14 +52,19 @@ begin
   return hasil;
 end $function$;
 
-create or replace function public.dm_beranda()
+-- Versi 2: parameter opsional p_email agar Owner bisa melihat Beranda Deal Maker tertentu. Fungsi lama tanpa argumen dihapus agar tidak ambigu.
+drop function if exists public.dm_beranda();
+create or replace function public.dm_beranda(p_email text default null)
 returns json language plpgsql security definer set search_path to 'public'
 as $function$
-declare me text := lower(coalesce(auth.jwt() ->> 'email', ''));
+declare asli text := lower(coalesce(auth.jwt() ->> 'email', '')); me text;
 begin
-  if me not in ('abdulaziez.nashir@gmail.com', 'azieznashir@gmail.com') then
+  me := asli;
+  if asli not in ('abdulaziez.nashir@gmail.com', 'azieznashir@gmail.com') then
     raise exception 'Akses khusus Deal Maker dan Owner';
   end if;
+  /* Owner boleh melihat Beranda milik Deal Maker tertentu (Switch Account > Deal Maker). Deal Maker selalu melihat miliknya sendiri. */
+  if asli = 'abdulaziez.nashir@gmail.com' and p_email is not null then me := lower(p_email); end if;
   return (
     with lead as (
       select p.id, p.nama, p.kelas, p.status, p.dibuat_at,
@@ -87,5 +92,5 @@ begin
   );
 end $function$;
 
-revoke all on function public.dm_beranda() from public, anon;
-grant execute on function public.dm_beranda() to authenticated;
+revoke all on function public.dm_beranda(text) from public, anon;
+grant execute on function public.dm_beranda(text) to authenticated;

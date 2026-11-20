@@ -52,3 +52,8 @@ Progres keseluruhan: perkiraan 66%
 - Angka Beranda: data asli dari database, atau contoh dulu?
 - Halaqoh dipetakan ke halaman Pengajar. Sudah benar?
 - Kemiripan final: perkiraan 40% (struktur menu sudah sesuai, kartu Beranda belum)
+
+## Deal Maker: samakan tampilan Owner dan Zikri (20 Nov 2026)
+- [x] Langkah 1: Owner di Switch Account > Deal Maker kini memakai menu yang sama dengan akun Zikri (Beranda, Follow Up, Transkrip, Notifikasi), tanpa tombol cari, dan bisa kembali ke Owner. Sudah dites render lokal.
+- [x] Langkah 2 (kode): Beranda Deal Maker milik Owner meminta data Zikri lewat dm_beranda(p_email). Jika fungsi SQL baru belum terpasang, otomatis memakai versi lama (angka 0).
+- [ ] Menunggu: jalankan supabase/dm-beranda-per-pic.sql (bagian dm_beranda) di database agar Owner melihat angka Zikri.
