@@ -1,0 +1,4 @@
+-- dm_daftar_lead kini juga mengirim bukti_at (waktu upload bukti) dan total (tagihan) untuk pendaftar.
+-- Sudah diterapkan ke project bvltmjurkgnzmwtgdaic (migrasi dm_daftar_lead_bukti_total).
+-- Perubahan dibanding versi sebelumnya: kolom bukti_at dan total ditambahkan di CTE pend dan sheet,
+-- serta di objek JSON daftar. Definisi lengkap fungsi ada di database.
