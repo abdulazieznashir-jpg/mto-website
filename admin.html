@@ -3722,30 +3722,57 @@
     if (liFu) liFu.hidden = sembunyiAfterSales;
     var fuHp = document.getElementById('navFuHp');
     if (fuHp) fuHp.hidden = sembunyiAfterSales;
-    if (peran !== 'dealmaker') return;
     var sisi = document.querySelectorAll('.adm-side li');
-    for (var i = 0; i < sisi.length; i++) {
-      var a = sisi[i].querySelector('a');
-      sisi[i].hidden = !(a && DM_NAV.indexOf(a.getAttribute('href')) !== -1);
-    }
     var bawah = document.querySelectorAll('.adm-bottomnav > a, .adm-bottomnav > button');
-    for (var j = 0; j < bawah.length; j++) {
-      bawah[j].hidden = DM_NAV.indexOf(bawah[j].getAttribute('href')) === -1;
-    }
     var dmHp = document.getElementById('navDmHp');
+    var cari = document.getElementById('topCari');
+    var aDm = liDm ? liDm.querySelector('a') : null;
+    var liTr = document.querySelector('.adm-side a[href="#transkrip"]');
+    var daftarNav = liDm ? liDm.parentNode : null;
+    /* Simpan posisi asli Beranda DM dan Follow Up sekali saja, supaya Owner bisa kembali ke tampilan Owner */
+    if (daftarNav && !daftarNav.getAttribute('data-dm-posisi')) {
+      daftarNav.setAttribute('data-dm-posisi', '1');
+      posisiAsliDm = liFu ? liFu.nextSibling : null;
+    }
+    if (aktif !== 'dealmaker') {
+      /* Bukan tampilan Deal Maker: kembalikan menu yang tadi disembunyikan, urutan, dan label */
+      for (var a = 0; a < sisi.length; a++) { if (sisi[a].getAttribute('data-dm-sembunyi')) { sisi[a].hidden = false; sisi[a].removeAttribute('data-dm-sembunyi'); } }
+      for (var b = 0; b < bawah.length; b++) { if (bawah[b].getAttribute('data-dm-sembunyi')) { bawah[b].hidden = false; bawah[b].removeAttribute('data-dm-sembunyi'); } }
+      if (daftarNav && liDm && liFu && liDm.getAttribute('data-dm-urut')) {
+        daftarNav.insertBefore(liDm, posisiAsliDm);
+        daftarNav.insertBefore(liFu, posisiAsliDm);
+        liDm.removeAttribute('data-dm-urut');
+      }
+      if (aDm && aDm.lastChild) aDm.lastChild.textContent = 'Deal Maker';
+      if (dmHp && dmHp.lastChild) { dmHp.lastChild.textContent = 'Deal Maker'; dmHp.hidden = true; }
+      if (cari) cari.hidden = false;
+      return;
+    }
+    /* Tampilan Deal Maker (akun Zikri, atau Owner yang memilih Switch Account > Deal Maker) */
+    for (var i = 0; i < sisi.length; i++) {
+      var a2 = sisi[i].querySelector('a');
+      var boleh = !!(a2 && DM_NAV.indexOf(a2.getAttribute('href')) !== -1);
+      if (!boleh && !sisi[i].hidden) sisi[i].setAttribute('data-dm-sembunyi', '1');
+      sisi[i].hidden = !boleh;
+    }
+    for (var j = 0; j < bawah.length; j++) {
+      var boleh2 = DM_NAV.indexOf(bawah[j].getAttribute('href')) !== -1;
+      if (!boleh2 && !bawah[j].hidden) bawah[j].setAttribute('data-dm-sembunyi', '1');
+      bawah[j].hidden = !boleh2;
+    }
     if (dmHp) { dmHp.hidden = false; dmHp.lastChild.textContent = 'Beranda'; }
     if (fuHp) fuHp.hidden = false;
-    if (liDm) { liDm.hidden = false; var aDm = liDm.querySelector('a'); if (aDm) aDm.lastChild.textContent = 'Beranda'; }
+    if (liDm) { liDm.hidden = false; if (aDm) aDm.lastChild.textContent = 'Beranda'; }
     if (liFu) liFu.hidden = false;
     /* Urutan sidebar Deal Maker: Beranda, Follow Up, lalu Transkrip dan Notifikasi */
-    var liTr = document.querySelector('.adm-side a[href="#transkrip"]');
     if (liTr && liDm && liFu && liTr.parentNode.parentNode) {
       liTr.parentNode.parentNode.insertBefore(liDm, liTr.parentNode);
       liTr.parentNode.parentNode.insertBefore(liFu, liTr.parentNode);
+      liDm.setAttribute('data-dm-urut', '1');
     }
-    var cari = document.getElementById('topCari');
     if (cari) cari.hidden = true;
   }
+  var posisiAsliDm = null;
   /* Beranda Deal Maker: omset bulan ini, omset total, lead saya, dan progres target minimal */
   function muatDealMaker() {
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
