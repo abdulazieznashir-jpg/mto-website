@@ -127,6 +127,11 @@
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .dm-kisi .bd-kartu { margin-bottom: 0; min-width: 0; }
+  .dm-tab-wadah { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 12px; margin: 0 -2px; scrollbar-width: none; }
+  .dm-tab-wadah::-webkit-scrollbar { display: none; }
+  .dm-tab-btn { flex: 0 0 auto; white-space: nowrap; font: inherit; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #E4DCCB; background: #fff; color: #55555C; cursor: pointer; }
+  .dm-tab-btn.is-aktif { background: #1D1D1F; color: #fff; border-color: #1D1D1F; }
+  .dm-tab-jml { font-variant-numeric: tabular-nums; opacity: .75; margin-left: 2px; }
   .dm-kartu-atas { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
   .dm-kartu-atas .bd-judul { min-width: 0; }
   .dm-ikon { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
@@ -969,6 +974,20 @@
             <p class="dm-angka" id="dmTotalLead">—</p>
           </section>
         </div>
+        <section class="bd-kartu dm-daftar-kartu" aria-labelledby="dmJudulDaftar">
+          <h2 class="bd-judul" id="dmJudulDaftar">Daftar lead saya</h2>
+          <div class="dm-tab-wadah" role="tablist" aria-label="Filter lead">
+            <button type="button" role="tab" class="dm-tab-btn is-aktif" data-dm-tab="belum" aria-selected="true">Belum FU <span class="dm-tab-jml" id="dmTabBelum">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="1" aria-selected="false">FU 1 <span class="dm-tab-jml" id="dmTabFu1">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="2" aria-selected="false">FU 2 <span class="dm-tab-jml" id="dmTabFu2">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="3" aria-selected="false">FU 3 <span class="dm-tab-jml" id="dmTabFu3">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="4" aria-selected="false">FU 4 <span class="dm-tab-jml" id="dmTabFu4">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="closing" aria-selected="false">Closing <span class="dm-tab-jml" id="dmTabClosing">0</span></button>
+            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="belum_closing" aria-selected="false">Belum closing <span class="dm-tab-jml" id="dmTabBelumClosing">0</span></button>
+          </div>
+          <div id="dmDaftar" class="dm-daftar-beranda"></div>
+          <p class="bd-kosong" id="dmDaftarKosong" hidden>Tidak ada lead di tab ini.</p>
+        </section>
         <section class="bd-kartu" aria-labelledby="dmJudulPerlu">
           <h2 class="bd-judul" id="dmJudulPerlu">Perlu tindakan hari ini</h2>
           <div id="dmPerlu"></div>
