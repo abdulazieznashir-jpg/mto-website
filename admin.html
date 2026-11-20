@@ -348,6 +348,7 @@
   .dg-baris { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; font-size: 13px; }
   .dg-kosong { background: #E6F4EA; color: #2E7D32; }
   .dg-terisi { background: #F5EBD9; color: #5C4316; }
+  .dg-sempit { background: #F1EEE8; color: #6E6E73; }
   .dg-kanan { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
   .dg-nama-jam { font-weight: 600; }
   .dg-status-jam { font-size: 12px; opacity: 0.8; white-space: nowrap; }
@@ -2691,25 +2692,41 @@
         return { mulai: a, selesai: a + m, nama: b.nama || '—', kelas: m === 30 ? 'PLATINUM' : (m === 20 ? 'GOLD' : 'SILVER') };
       });
     var kisi = pkEl('div', 'dg-kisi');
-    for (var t = 900; t < 1320; t += 60) {
-      // murid ditampilkan di jam tempat sesinya mulai saja, supaya tidak terkesan memblok jam berikutnya
-      var ada = milik.filter(function (o) { return o.mulai >= t && o.mulai < t + 60; });
-      var lewat = milik.filter(function (o) { return o.mulai < t + 60 && o.selesai > t; });
-      // sisa satuan 10 menit yang belum terpakai di jam ini (dihitung dari durasi sesi sebenarnya)
-      var sisa = 0;
-      for (var u = t; u < t + 60; u += 10) {
-        var terpakai = lewat.some(function (o) { return u >= o.mulai && u < o.selesai; });
-        if (!terpakai) sisa++;
-      }
-      var status = sisa <= 1 ? 'Penuh' : (sisa <= 3 ? 'Hampir penuh' : 'Bisa diisi');
-      var baris = pkEl('div', 'dg-baris ' + (ada.length ? 'dg-terisi' : 'dg-kosong'));
-      baris.appendChild(pkEl('span', 'dg-jam', dgJam(t) + ' – ' + dgJam(t + 60)));
+    // Garis waktu 15:00-22:00: sesi terisi tampil sesuai durasi paketnya (Silver 10, Gold 20, Platinum 30),
+    // lalu celah kosong di antaranya dihitung otomatis beserta paket yang masih muat.
+    var AWAL = 900, AKHIR = 1320;
+    milik.sort(function (a, b) { return a.mulai - b.mulai; });
+    function muatPaket(menit) {
+      var p = [];
+      if (menit >= 10) p.push('Silver');
+      if (menit >= 20) p.push('Gold');
+      if (menit >= 30) p.push('Platinum');
+      return p;
+    }
+    function barisCelah(dari, sampai) {
+      var panjang = sampai - dari;
+      if (panjang <= 0) return;
+      var muat = muatPaket(panjang);
+      var baris = pkEl('div', 'dg-baris ' + (muat.length ? 'dg-kosong' : 'dg-sempit'));
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(dari) + ' – ' + dgJam(sampai) + ' · ' + panjang + ' menit'));
       var kanan = pkEl('span', 'dg-kanan');
-      if (ada.length) kanan.appendChild(pkEl('span', 'dg-nama-jam', ada.map(function (o) { return o.nama + ' · ' + o.kelas; }).join(', ')));
-      if (!ada.length) kanan.appendChild(pkEl('span', 'dg-status-jam', status));
+      kanan.appendChild(pkEl('span', 'dg-status-jam', muat.length ? 'Bisa: ' + muat.join(', ') : 'Terlalu sempit'));
       baris.appendChild(kanan);
       kisi.appendChild(baris);
     }
+    var kursor = AWAL;
+    milik.forEach(function (o) {
+      var mulai = Math.max(o.mulai, AWAL), selesai = Math.min(o.selesai, AKHIR);
+      if (mulai > kursor) barisCelah(kursor, mulai);
+      var baris = pkEl('div', 'dg-baris dg-terisi');
+      baris.appendChild(pkEl('span', 'dg-jam', dgJam(o.mulai) + ' – ' + dgJam(o.selesai) + ' · ' + (o.selesai - o.mulai) + ' menit'));
+      var kanan = pkEl('span', 'dg-kanan');
+      kanan.appendChild(pkEl('span', 'dg-nama-jam', o.nama + ' · ' + o.kelas));
+      baris.appendChild(kanan);
+      kisi.appendChild(baris);
+      if (selesai > kursor) kursor = selesai;
+    });
+    barisCelah(kursor, AKHIR);
     wadah.appendChild(kisi);
   }
   function linkWaDaftarUlang(m, sisa) {
