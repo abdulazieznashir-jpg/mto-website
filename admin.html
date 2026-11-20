@@ -731,6 +731,8 @@
   .adm-jadwal-tabel-wrap a { color: var(--adm-gold-ink, #8A6A1F); overflow-wrap: anywhere; }
   /* Pengajar: tabel di desktop; HP memakai kartu (langkah 19) */
   .adm-pengajar-tabel-wrap { display: none; }
+  /* Tabel daftar pengajar disembunyikan di semua lebar. Kartu pengajar tetap tampil. */
+  .adm-pengajar-tabel-wrap[hidden] { display: none !important; }
   .adm-pengajar-hp { display: flex; flex-direction: column; gap: 12px; padding-block: 0; }
   @media (min-width: 900px) {
     .adm-pengajar-tabel-wrap {
