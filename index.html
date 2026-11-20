@@ -1361,7 +1361,7 @@
   function ringkas() {
     var k = KELAS[S.kelas];
     return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
-      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
+      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + (S.jam || '').replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
       'Promo: ' + promoText() + '\nPeserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
   }
 
@@ -1439,7 +1439,15 @@
     hist.pop();
     show(hist[hist.length - 1]);
   }
+  // Jika pilihan jadwal ada yang kosong (mis. jam terhapus setelah ganti kelas lalu menekan kembali), arahkan ke langkah yang kurang.
+  function langkahKurang() {
+    return !S.kelas ? 'kelas' : (!S.hari ? 'hari' : (!S.durasi ? 'durasi' : (!S.jam ? 'jam' : null)));
+  }
   function show(step) {
+    if (step === 'ringkasan' || step === 'data') {
+      var kurang = langkahKurang();
+      if (kurang) { S.editing = true; hist[hist.length - 1] = kurang; step = kurang; }
+    }
     if (window.mtoTrack && step === 'data') window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
     if (window.mtoTrack && step === 'kirim') window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran terkirim' });
     Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
@@ -1500,7 +1508,7 @@
       ['Kelas', k.nama + ' · ' + k.menit + ' menit per sesi'],
       ['Hari', HARI[S.hari]],
       ['Durasi', durasiLabel(m)],
-      ['Jam mulai', S.jam.replace(':', '.') + ' WIB'],
+      ['Jam mulai', (S.jam || '').replace(':', '.') + ' WIB'],
       ['Total pertemuan', (SESI[S.hari] * m) + ' pertemuan'],
       ['Peserta', S.peserta + ' orang']
     ];
