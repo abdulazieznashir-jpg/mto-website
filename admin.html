@@ -119,7 +119,9 @@
   .dm-fu:first-child { border-top: 0; }
   .dm-tahap-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
   .dm-tahap { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--adm-bg, #FAF8F4); color: var(--adm-muted, #6E6E73); border: 1px solid var(--adm-line, #ECE7DE); }
-  .dm-tahap-ok { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
+  .dm-tahap-belum { background: #F1F1F3; color: #55555C; border-color: #DCDCE0; }
+  .dm-tahap-ok { background: #E3EEFB; color: #1D4ED8; border-color: #BFD6F5; }
+  .dm-tahap-closing { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
@@ -3882,6 +3884,17 @@
     }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
   }
 
+  /* Badge status FU: abu = belum di-FU, biru = sudah FU n, hijau = closing */
+  function badgeKelas(b) {
+    if (b === 'closing') return 'dm-tahap-closing';
+    if (b === 'sudah') return 'dm-tahap-ok';
+    return 'dm-tahap-belum';
+  }
+  function badgeTeks(l) {
+    if (l.badge === 'closing') return 'Closing';
+    if (l.badge === 'sudah') return 'Sudah FU ' + (l.fu_terakhir || 1);
+    return 'Belum di-follow-up';
+  }
   /* Daftar "Perlu tindakan hari ini": tiga lead prioritas, dibuat dengan textContent */
   function buatPerluTindakan(daftar) {
     var wadah = document.getElementById('dmPerlu');
@@ -3897,13 +3910,12 @@
       var nama = document.createElement('b');
       nama.textContent = l.nama || '—';
       var kelas = document.createElement('span');
-      kelas.textContent = l.kelas || '';
+      kelas.textContent = [l.kelas, l.harga ? 'Rp ' + Number(l.harga).toLocaleString('id-ID') : ''].filter(Boolean).join(' · ');
       teks.appendChild(nama);
       teks.appendChild(kelas);
       var badge = document.createElement('span');
-      var sudah = (l.tahap_sudah || []).length;
-      badge.className = 'dm-tahap ' + (sudah ? 'dm-tahap-ok' : '');
-      badge.textContent = sudah ? 'Sudah FU ' + sudah : 'Belum di-follow-up';
+      badge.className = 'dm-tahap ' + badgeKelas(l.badge);
+      badge.textContent = badgeTeks(l);
       var tombol = document.createElement('a');
       tombol.className = 'dm-catat-link';
       tombol.href = '#followup';
