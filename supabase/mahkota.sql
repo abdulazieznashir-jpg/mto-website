@@ -46,6 +46,7 @@ end;
 $$;
 
 -- Ringkasan untuk halaman profil: total, bulan ini, streak, peringkat, papan, dan riwayat.
+-- Versi terbaru (dengan username dan avatar di papan) ada di papan-username-avatar.sql; jalankan file itu bila mengganti fungsi ini.
 create or replace function public.ringkasan_mahkota()
 returns json
 language plpgsql
