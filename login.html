@@ -51,10 +51,13 @@
   .promo li:first-child { border-top: 0; }
   .lg-foot { text-align: center; font-size: 13px; color: var(--text-tertiary, #86868B); padding: 0 0 28px; }
   .lg-foot a { color: var(--text-secondary, #6E6E73); }
-  .jk-opsi { display: flex; gap: 10px; margin-top: 6px; }
-  .jk-pilih { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid #D2D2D7; border-radius: 12px; cursor: pointer; font-size: 15px; }
-  .jk-pilih:has(input:checked) { border-color: #1D1D1F; box-shadow: inset 0 0 0 1px #1D1D1F; }
-  .jk-pilih input { accent-color: #1D1D1F; }
+  /* Jenis kelamin: segmented control, sama dengan tab di atas */
+  .jk-opsi { display: grid; grid-template-columns: 1fr 1fr; background: #F5F5F7; border-radius: 12px; padding: 4px; margin-top: 6px; }
+  .jk-pilih { position: relative; text-align: center; padding: 10px; border-radius: 9px; font-size: 15px; font-weight: 600; color: var(--text-secondary, #6E6E73); cursor: pointer; }
+  .jk-pilih span { display: inline; margin: 0; font-size: 15px; font-weight: 600; }
+  .jk-pilih input { position: absolute; opacity: 0; pointer-events: none; margin: 0; }
+  .jk-pilih:has(input:checked) { background: #fff; color: var(--text-primary, #1D1D1F); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .jk-pilih:has(input:focus-visible) { outline: 2px solid #1D1D1F; outline-offset: 2px; }
 </style>
 </head>
 <body>
