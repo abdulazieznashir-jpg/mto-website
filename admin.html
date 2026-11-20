@@ -356,6 +356,86 @@
   .hq-form input { flex: 1; min-width: 0; height: 40px; border-radius: 12px; border: 1px solid #EEE6D8; padding: 0 12px; font-size: 14px; box-sizing: border-box; }
   .hq-simpan { height: 40px; border: 0; border-radius: 12px; background: #A9801F; color: #fff; padding: 0 14px; font-weight: 600; }
   .hq-simpan:disabled { opacity: .6; }
+  /* Halaqoh v2: tampilan sesuai mockup (ringkasan, banner, tab, daftar murid) */
+  .hqv-atas { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 16px; margin: 16px 0 14px; }
+  .hqv-kartu { background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 18px 20px; box-sizing: border-box; min-width: 0; }
+  .hqv-kepala { margin-bottom: 14px; }
+  .hqv-periode-judul { font-size: 20px; font-weight: 800; color: #A9801F; letter-spacing: -.01em; }
+  .hqv-metrik { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hqv-metrik-sel { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 0 10px; border-left: 1px solid #EEE6D8; min-width: 0; }
+  .hqv-metrik-sel:first-child { border-left: 0; padding-left: 0; }
+  .hqv-metrik-sel:last-child { padding-right: 0; }
+  .hqv-metrik-sel > span { font-size: 13px; color: #4A4740; }
+  .hqv-metrik-sel > b { font-size: 30px; font-weight: 800; color: #1D1D1F; line-height: 1.1; }
+  #hqKapasitasAngka { font-size: 22px !important; }
+  #hqKapasitasAngka.hq-ringkas-tunggu { font-size: 14px !important; font-weight: 600 !important; color: #6E6E73 !important; }
+  .hqv-metrik-sel .hqv-tunggu { font-size: 14px; font-weight: 600; color: #6E6E73; padding-top: 8px; }
+  .hqv-metrik-sel small { font-size: 12px; color: #6E6E73; }
+  .hqv-kartu-judul { margin: 0 0 12px; font-size: 15px; font-weight: 700; color: #1D1D1F; }
+  .hqv-batang { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: end; height: 150px; border-bottom: 1px solid #EEE6D8; }
+  .hqv-kolom { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; min-width: 0; }
+  .hqv-kolom > b { font-size: 13px; color: #1D1D1F; }
+  .hqv-kolom > i { display: block; width: min(56px, 70%); border-radius: 10px 10px 4px 4px; background: #F3E3B8; min-height: 3px; }
+  .hqv-kolom-aktif > i { background: #A9801F; }
+  .hqv-kolom > span { font-size: 13px; color: #4A4740; padding-bottom: 6px; }
+  .hqv-kolom-aktif > span { color: #A9801F; font-weight: 700; }
+  .hqv-banner { display: flex; align-items: center; gap: 12px; background: #FDF6E3; border: 1px solid #F1E2B8; border-radius: 18px; padding: 14px 18px; margin: 0 0 16px; flex-wrap: wrap; }
+  .hqv-banner-ikon { font-size: 22px; }
+  .hqv-banner-teks { flex: 1; min-width: 0; font-size: 16px; font-weight: 700; color: #1D1D1F; }
+  .hqv-tombol { border: 1px solid #DCD3C2; background: #FFFFFF; color: #1D1D1F; border-radius: 999px; padding: 10px 18px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .hqv-tombol:hover { border-color: #A9801F; }
+  .hqv-tab { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #ECEBEA; border-radius: 999px; padding: 4px; margin: 0 0 14px; }
+  .hqv-tab-pil { border: 0; background: transparent; border-radius: 999px; padding: 9px 0; font: inherit; font-size: 15px; color: #4A4740; cursor: pointer; }
+  .hqv-tab-aktif { background: #FFFFFF; color: #1D1D1F; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .hqv-cari-baris { display: flex; gap: 10px; align-items: center; margin: 0 0 10px; }
+  .hqv-cari { flex: 1; min-width: 0; display: block; }
+  .hqv-cari input { width: 100%; height: 46px; box-sizing: border-box; border-radius: 999px; border: 1px solid #EEE6D8; background: #FFFFFF; padding: 0 16px; font: inherit; font-size: 15px; color: #1D1D1F; }
+  .hqv-filter-tombol { height: 46px; border: 1px solid #EEE6D8; background: #FFFFFF; border-radius: 999px; padding: 0 18px; font: inherit; font-size: 14px; font-weight: 600; color: #1D1D1F; cursor: pointer; white-space: nowrap; }
+  .hqv-filter-panel { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+  .hqv-filter-panel[hidden] { display: none !important; }
+  .hqv-filter-pil { border: 1px solid #EEE6D8; background: #FFFFFF; border-radius: 999px; padding: 7px 14px; font: inherit; font-size: 13px; color: #4A4740; cursor: pointer; }
+  .hqv-filter-aktif { background: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+  .hqv-info { font-size: 13px; color: #6E6E73; margin: 0 2px 10px; }
+  .hqv-daftar { display: flex; flex-direction: column; gap: 10px; }
+  .hqv-murid { display: flex; align-items: center; gap: 14px; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px 16px; box-sizing: border-box; min-width: 0; }
+  .hqv-inisial { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%; background: #FBEBD0; color: #A9801F; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  .hqv-murid-isi { flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .hqv-murid-atas { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; }
+  .hqv-murid-nama { font-size: 16px; font-weight: 700; color: #1D1D1F; overflow-wrap: anywhere; }
+  .hqv-murid-guru { font-size: 14px; color: #4A4740; overflow-wrap: anywhere; }
+  .hqv-paket { border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .hqv-paket-platinum { background: #E4EAF2; color: #3D4A5C; }
+  .hqv-paket-gold { background: #FBEBD0; color: #8A6100; }
+  .hqv-paket-silver { background: #ECEBEA; color: #4A4740; }
+  .hqv-paket-lain { background: #F1EEE8; color: #6E6E73; }
+  .hqv-murid-jadwal { flex: 0 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding-left: 14px; border-left: 1px solid #EEE6D8; }
+  .hqv-durasi { font-size: 13px; color: #1D1D1F; }
+  .hqv-bar { height: 6px; border-radius: 999px; background: #ECE7DE; margin-top: 5px; overflow: hidden; }
+  .hqv-bar > i { display: block; height: 100%; border-radius: 999px; background: #A9801F; }
+  .hqv-jam { font-size: 13px; color: #4A4740; }
+  .hqv-panah { color: #6E6E73; font-size: 24px; line-height: 1; flex: 0 0 auto; }
+  .hqv-retensi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .hqv-retensi-kartu { background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+  .hqv-retensi-kartu span { font-size: 13px; color: #4A4740; }
+  .hqv-retensi-kartu b { font-size: 26px; font-weight: 800; color: #1D1D1F; }
+  .hqv-retensi-kartu small { font-size: 12px; color: #6E6E73; }
+  .hqv-pane[hidden] { display: none !important; }
+  @media (max-width: 760px) {
+    .hqv-atas { grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+    .hqv-kartu { padding: 16px; }
+    .hqv-metrik-sel > b { font-size: 24px; }
+    .hqv-metrik-sel > span { font-size: 12px; }
+    .hqv-batang { height: 120px; gap: 8px; }
+    .hqv-banner { padding: 14px 16px; }
+    .hqv-banner-teks { font-size: 15px; flex-basis: 100%; }
+    .hqv-tombol { flex: 1 1 100%; text-align: center; padding: 12px 16px; }
+    .hqv-tab-pil { font-size: 14px; padding: 8px 0; }
+    .hqv-murid { flex-wrap: wrap; align-items: flex-start; padding: 14px; gap: 10px 12px; }
+    .hqv-murid-isi { flex: 1 1 calc(100% - 60px); }
+    .hqv-murid-jadwal { flex: 1 1 100%; border-left: 0; padding-left: 0; padding-top: 10px; border-top: 1px solid #EEE6D8; }
+    .hqv-panah { display: none; }
+    .hqv-retensi { grid-template-columns: 1fr; }
+  }
   .pk-wrap { padding-bottom: 24px; }
   .adm-lama[hidden] { display: none !important; }
   .pk-ringkas { display: flex; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px 16px; margin: 14px 0; }
@@ -530,7 +610,7 @@
   .bd-judul { font-size: 15px; }
   .bd-toast { bottom: 96px; }
   }
-  .hq-urut .sr-only, .hq-cari .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .hq-urut .sr-only, .hq-cari .sr-only, .hqv-cari .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .adm-murid-tab { display: flex; gap: 8px; flex-wrap: wrap; }
   .adm-murid-tab-btn { border: 1px solid #e6e0d4; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
   .adm-murid-tab-btn[aria-pressed="true"] { background: #b7893a; border-color: #b7893a; color: #fff; }
@@ -1229,20 +1309,50 @@
         <h1 class="adm-dash-judul">Halaqoh</h1>
         <p class="adm-dash-sub">Pantau kapasitas, retensi, dan perubahan penting tiap pengajar.</p>
         <div class="hq-periode-chips" id="hqPeriodeChips" role="group" aria-label="Pilih periode"></div>
-        <p class="hq-catatan"><span>Ditampilkan untuk periode <b id="hqPeriodeTampil">—</b> · <button type="button" class="hq-tautan" id="hqPeriodeSemua">Semua periode</button></span><span id="hqDiperbarui">Diperbarui pukul —</span></p>
-        <div class="hq-bawah">
-          <button type="button" class="hq-bawah-tautan hq-tombol-murid" id="hqMuridAktifBuka" aria-expanded="false" aria-controls="hqMuridAktifBagian">Lihat semua murid aktif ›</button>
+        <div class="hqv-atas">
+          <section class="hqv-kartu hqv-ringkas" aria-label="Ringkasan periode">
+            <div class="hqv-kepala"><b class="hqv-periode-judul" id="hqPeriodeTampil">—</b></div>
+            <div class="hqv-metrik">
+              <div class="hqv-metrik-sel"><span>Murid aktif</span><b id="hqvMuridAktif">—</b></div>
+              <div class="hqv-metrik-sel"><span>Kapasitas terisi</span><b id="hqKapasitasAngka" class="hq-ringkas-tunggu">Menunggu data</b><small id="hqKapasitasKet">Isi kapasitas dulu</small></div>
+              <div class="hqv-metrik-sel"><span>Daftar ulang</span><b class="hqv-tunggu">Belum ada data</b></div>
+            </div>
+          </section>
+          <section class="hqv-kartu hqv-grafik" aria-labelledby="hqvGrafikJudul">
+            <h2 class="hqv-kartu-judul" id="hqvGrafikJudul">Masih aktif per periode</h2>
+            <div class="hqv-batang" id="hqvGrafik" aria-live="polite"></div>
+          </section>
         </div>
-        <section class="hq-murid-bagian" id="hqMuridAktifBagian" aria-labelledby="hqMuridAktifJudul" hidden>
-          <h2 class="adm-dash-h2" id="hqMuridAktifJudul">Semua murid aktif</h2>
-          <p class="hq-catatan" id="hqMuridAktifInfo">Pilih periode untuk melihat murid aktif.</p>
-          <div class="hq-murid-daftar" id="hqMuridAktifDaftar"></div>
-        </section>
-        <section class="hq-ringkasan" aria-label="Ringkasan halaqoh">
-          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Retensi</span><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b></div>
-          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Daftar ulang</span><b class="hq-ringkas-angka hq-ringkas-tunggu">Menunggu data</b></div>
-          <div class="hq-ringkas-sel"><span class="hq-ringkas-judul">Kapasitas</span><b class="hq-ringkas-angka hq-ringkas-tunggu" id="hqKapasitasAngka">Menunggu data</b><small id="hqKapasitasKet">Isi kapasitas dulu</small></div>
-        </section>
+        <div class="hqv-banner">
+          <span class="hqv-banner-ikon" aria-hidden="true">📅</span>
+          <b class="hqv-banner-teks" id="hqvMenunggu">Memuat data jadwal…</b>
+          <button type="button" class="hqv-tombol" id="hqvCariGuru">Cari guru tersedia</button>
+        </div>
+        <div class="hqv-tab" role="tablist" aria-label="Bagian halaqoh">
+          <button type="button" role="tab" class="hqv-tab-pil hqv-tab-aktif" data-tab="murid" aria-selected="true">Murid</button>
+          <button type="button" role="tab" class="hqv-tab-pil" data-tab="guru" aria-selected="false">Guru</button>
+          <button type="button" role="tab" class="hqv-tab-pil" data-tab="retensi" aria-selected="false">Retensi</button>
+        </div>
+        <div class="hqv-pane" id="hqvPaneMurid" role="tabpanel">
+          <div class="hqv-cari-baris">
+            <label class="hqv-cari"><span class="sr-only">Cari murid atau ustadz</span>
+              <input type="search" id="hqvCariMurid" placeholder="Cari murid atau ustadz" autocomplete="off">
+            </label>
+            <button type="button" class="hqv-filter-tombol" id="hqvFilterBuka" aria-expanded="false" aria-controls="hqvFilterPanel">Filter</button>
+          </div>
+          <div class="hqv-filter-panel" id="hqvFilterPanel" role="group" aria-label="Filter paket" hidden>
+            <button type="button" class="hqv-filter-pil hqv-filter-aktif" data-paket="semua" aria-pressed="true">Semua paket</button>
+            <button type="button" class="hqv-filter-pil" data-paket="platinum" aria-pressed="false">Platinum</button>
+            <button type="button" class="hqv-filter-pil" data-paket="gold" aria-pressed="false">Gold</button>
+            <button type="button" class="hqv-filter-pil" data-paket="silver" aria-pressed="false">Silver</button>
+          </div>
+          <p class="hqv-info" id="hqMuridAktifInfo">Pilih periode untuk melihat murid aktif.</p>
+          <div class="hqv-daftar" id="hqMuridAktifDaftar" aria-label="Daftar murid aktif"></div>
+        </div>
+        <div class="hqv-pane" id="hqvPaneRetensi" role="tabpanel" hidden>
+          <div class="hqv-retensi" id="hqvRetensi"></div>
+        </div>
+        <div class="hqv-pane" id="hqvPaneGuru" role="tabpanel" hidden>
         <div id="hqIsiPengajar">
         <div class="hq-status" role="group" aria-label="Filter kapasitas">
           <button type="button" class="hq-status-pil hq-status-aktif" data-st="semua" aria-pressed="true">Semua</button>
@@ -1290,6 +1400,7 @@
               <tr><td colspan="4" class="adm-murid-kosong">Memuat daftar pengajar…</td></tr>
             </tbody>
           </table>
+        </div>
         </div>
       </div>
     </section>
@@ -2694,18 +2805,22 @@
   }
   var HQ_LABEL = { datang: 'Akan datang', jalan: 'Berjalan', selesai: 'Selesai' };
   function hqKelasStatus(st) { return st === 'datang' ? 'hq-chip-datang' : (st === 'jalan' ? 'hq-chip-jalan' : 'hq-chip-selesai'); }
+  function hqChipTampil() {
+    var p = HQ_PERIODE.filter(function (x) { return x.periode === HQ_PILIH; })[0];
+    if (!p) return [];
+    var idxJalan = HQ_PERIODE.findIndex(function (x) { return x.status === 'jalan'; });
+    var idxPilih = HQ_PERIODE.indexOf(p);
+    var awal = Math.max(0, Math.min(idxPilih, idxJalan < 0 ? idxPilih : idxJalan) - 1);
+    return HQ_PERIODE.slice(awal, awal + 6);
+  }
   function hqTampilkanPeriode() {
     var p = HQ_PERIODE.filter(function (x) { return x.periode === HQ_PILIH; })[0];
     var chips = document.getElementById('hqPeriodeChips');
     var tampil = document.getElementById('hqPeriodeTampil');
     if (!p || !chips) return;
     if (tampil) tampil.textContent = p.periode;
-    var idxJalan = HQ_PERIODE.findIndex(function (x) { return x.status === 'jalan'; });
-    var idxPilih = HQ_PERIODE.indexOf(p);
-    var awal = Math.max(0, Math.min(idxPilih, idxJalan < 0 ? idxPilih : idxJalan) - 1);
-    var tampilChip = HQ_PERIODE.slice(awal, awal + 6);
     chips.innerHTML = '';
-    tampilChip.forEach(function (x) {
+    hqChipTampil().forEach(function (x) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'hq-chip ' + hqKelasStatus(x.status) + (x.periode === HQ_PILIH ? ' hq-chip-pilih' : '');
@@ -2718,16 +2833,15 @@
     var jalan = p.status === 'jalan';
     var isi = document.getElementById('hqIsiPengajar');
     if (isi) isi.hidden = !jalan;
-    var angka = document.getElementById('hqKapasitasAngka');
     var ketK = document.getElementById('hqKapasitasKet');
     if (!jalan) {
-      document.querySelectorAll('.hq-ringkasan .hq-ringkas-angka').forEach(function (a) { a.textContent = 'Menunggu data'; a.classList.add('hq-ringkas-tunggu'); });
+      var angka = document.getElementById('hqKapasitasAngka');
+      if (angka) { angka.textContent = 'Menunggu data'; angka.classList.add('hq-ringkas-tunggu'); }
       if (ketK) ketK.textContent = p.status === 'datang' ? 'Kapasitas belum diisi' : 'Periode telah selesai';
     } else if (typeof PENGAJAR !== 'undefined' && PENGAJAR) {
       isiRingkasanKapasitas(PENGAJAR);
     }
-    var bagianMurid = document.getElementById('hqMuridAktifBagian');
-    if (bagianMurid && !bagianMurid.hidden) bukaMuridAktif(true);
+    hqvTampilkanMurid();
   }
   function hqBukaLembar(buka) {
     var l = document.getElementById('hqLembar');
@@ -2798,53 +2912,205 @@
     return bulan + ' bulan' + (sisa ? ' ' + sisa + ' hari' : '');
   }
   var KELAS_NAMA = { silver: 'Silver', gold: 'Gold', platinum: 'Platinum' };
-  function bukaMuridAktif(buka) {
-    var bagian = document.getElementById('hqMuridAktifBagian');
-    var tombol = document.getElementById('hqMuridAktifBuka');
-    if (!bagian || !tombol) return;
-    bagian.hidden = !buka;
-    tombol.textContent = buka ? 'Sembunyikan daftar murid aktif' : 'Lihat semua murid aktif ›';
-    tombol.setAttribute('aria-expanded', buka ? 'true' : 'false');
-    if (!buka) return;
+  var HQV_CACHE = {};
+  var HQV = { tab: 'murid', paket: 'semua', cari: '' };
+  function nomorPeriode(p) { return parseInt(String(p || '').replace(/\D/g, ''), 10) || 0; }
+  function hqvMuatMurid(periode) {
+    if (HQV_CACHE[periode]) return Promise.resolve(HQV_CACHE[periode]);
+    return sb.rpc('admin_murid_periode', { p_periode: periode }).then(function (r) {
+      if (r.error || !Array.isArray(r.data)) throw new Error('muat murid gagal');
+      HQV_CACHE[periode] = r.data;
+      return r.data;
+    });
+  }
+  function hqvInisial(nama) {
+    var k = rapikanNama(nama).split(' ').filter(Boolean);
+    if (!k.length) return '?';
+    var awal = k[0].charAt(0), akhir = k.length > 1 ? k[k.length - 1].charAt(0) : '';
+    return (awal + akhir).toUpperCase();
+  }
+  function hqvKelasPaket(k) { return ['platinum', 'gold', 'silver'].indexOf(k) >= 0 ? k : 'lain'; }
+  function hqvSisaPersen(d) {
+    var total = Number(d.durasi || 0) * 30;
+    if (!total || d.sisa_hari === null || d.sisa_hari === undefined) return 0;
+    return Math.max(0, Math.min(100, Math.round((Number(d.sisa_hari) / total) * 100)));
+  }
+  function hqvBuatBaris(d) {
+    var art = document.createElement('article');
+    art.className = 'hqv-murid';
+    var inisial = pkEl('div', 'hqv-inisial', hqvInisial(d.nama));
+    inisial.setAttribute('aria-hidden', 'true');
+    art.appendChild(inisial);
+    var isi = pkEl('div', 'hqv-murid-isi');
+    var atas = pkEl('div', 'hqv-murid-atas');
+    atas.appendChild(pkEl('span', 'hqv-murid-nama', rapikanNama(d.nama)));
+    atas.appendChild(pkEl('span', 'hqv-paket hqv-paket-' + hqvKelasPaket(d.kelas), KELAS_NAMA[d.kelas] || d.kelas || '—'));
+    isi.appendChild(atas);
+    isi.appendChild(pkEl('span', 'hqv-murid-guru', d.guru || 'Belum ada ustadz'));
+    art.appendChild(isi);
+    var jadwal = pkEl('div', 'hqv-murid-jadwal');
+    var durasi = pkEl('div', 'hqv-durasi', d.durasi + ' bulan · sisa ' + teksSisa(d.sisa_hari));
+    var bar = pkEl('div', 'hqv-bar');
+    bar.setAttribute('aria-hidden', 'true');
+    var isiBar = document.createElement('i');
+    isiBar.style.width = hqvSisaPersen(d) + '%';
+    bar.appendChild(isiBar);
+    durasi.appendChild(bar);
+    jadwal.appendChild(durasi);
+    jadwal.appendChild(pkEl('span', 'hqv-jam', (d.hari && d.hari.length) ? rentangHari(d.hari) + ' · ' + jamRentang(d.jam, d.menit) : 'Belum ada jadwal'));
+    art.appendChild(jadwal);
+    var panah = pkEl('span', 'hqv-panah', '›');
+    panah.setAttribute('aria-hidden', 'true');
+    art.appendChild(panah);
+    return art;
+  }
+  function hqvRenderMurid() {
     var wadah = document.getElementById('hqMuridAktifDaftar');
     var info = document.getElementById('hqMuridAktifInfo');
-    var periode = HQ_PILIH;
-    var x = parseInt(String(periode || '').replace(/\D/g, ''), 10);
+    var baris = HQV_CACHE[HQ_PILIH];
+    if (!wadah || !info || !baris) return;
+    var hasil = baris.filter(function (d) {
+      if (HQV.paket !== 'semua' && d.kelas !== HQV.paket) return false;
+      if (!HQV.cari) return true;
+      return (String(d.nama || '') + ' ' + String(d.guru || '')).toLowerCase().indexOf(HQV.cari) >= 0;
+    });
     wadah.textContent = '';
-    if (!x) { info.textContent = 'Pilih periode terlebih dahulu.'; return; }
-    wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat daftar…'));
-    sb.rpc('admin_murid_periode', { p_periode: periode }).then(function (r) {
-      wadah.textContent = '';
-      if (r.error || !Array.isArray(r.data)) { info.textContent = 'Daftar murid aktif belum bisa dimuat.'; return; }
-      var baris = r.data;
-      var jumlah = function (k) { return baris.filter(function (d) { return d.kelas === k; }).length; };
-      var bertahan3 = baris.filter(function (d) { return d.akhir_n >= x + 3; }).length;
-      var bertahan6 = baris.filter(function (d) { return d.akhir_n >= x + 6; }).length;
-      info.textContent = periode + ': ' + baris.length + ' murid aktif (Platinum ' + jumlah('platinum') +
-        ', Gold ' + jumlah('gold') + ', Silver ' + jumlah('silver') + '). Masih aktif sampai P' + (x + 3) + ': ' +
-        bertahan3 + ' · sampai P' + (x + 6) + ': ' + bertahan6 + '.';
-      if (!baris.length) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Belum ada murid aktif di periode ini.')); return; }
-      baris.forEach(function (d) {
-        var kartu = document.createElement('div');
-        kartu.className = 'hq-murid-baris';
-        kartu.appendChild(pkEl('span', 'hq-murid-nama', rapikanNama(d.nama)));
-        kartu.appendChild(pkEl('span', 'hq-murid-ket', (d.guru || '—') + ' · ' + (KELAS_NAMA[d.kelas] || d.kelas) + ' · ' + d.durasi + ' bulan (' + d.periode_awal + '–' + d.periode_akhir + ')'));
-        var jadwal = d.hari && d.hari.length ? rentangHari(d.hari) + ' · ' + jamRentang(d.jam, d.menit) : 'Belum ada jadwal';
-        kartu.appendChild(pkEl('span', 'hq-murid-ket', jadwal + ' · sisa ' + teksSisa(d.sisa_hari)));
-        wadah.appendChild(kartu);
-      });
-    }).catch(function () { wadah.textContent = ''; info.textContent = 'Daftar murid aktif belum bisa dimuat.'; });
+    info.textContent = HQ_PILIH + ': ' + baris.length + ' murid aktif' + (hasil.length !== baris.length ? ' · ditampilkan ' + hasil.length : '');
+    if (!hasil.length) {
+      wadah.appendChild(pkEl('p', 'hqv-info', baris.length ? 'Tidak ada murid yang cocok dengan pencarian atau filter.' : 'Belum ada murid aktif di periode ini.'));
+      return;
+    }
+    hasil.forEach(function (d) { wadah.appendChild(hqvBuatBaris(d)); });
   }
-  var muridBuka = document.getElementById('hqMuridAktifBuka');
-  if (muridBuka) muridBuka.addEventListener('click', function () {
-    var bagian = document.getElementById('hqMuridAktifBagian');
-    bukaMuridAktif(bagian ? bagian.hidden : true);
-  });
+  function hqvTampilkanMurid() {
+    var p = HQ_PILIH;
+    var wadah = document.getElementById('hqMuridAktifDaftar');
+    var info = document.getElementById('hqMuridAktifInfo');
+    if (!p || !wadah || !info) return;
+    if (!HQV_CACHE[p]) {
+      wadah.textContent = '';
+      info.textContent = 'Memuat daftar murid…';
+    }
+    hqvMuatMurid(p).then(function () {
+      if (HQ_PILIH !== p) return;
+      var angka = document.getElementById('hqvMuridAktif');
+      if (angka) angka.textContent = String(HQV_CACHE[p].length);
+      hqvRenderMurid();
+      hqvGrafik();
+      if (HQV.tab === 'retensi') hqvRetensi();
+    }).catch(function () {
+      if (HQ_PILIH !== p) return;
+      wadah.textContent = '';
+      info.textContent = 'Daftar murid aktif belum bisa dimuat.';
+    });
+  }
+  function hqvRetensi() {
+    var wadah = document.getElementById('hqvRetensi');
+    if (!wadah) return;
+    var baris = HQV_CACHE[HQ_PILIH];
+    var x = nomorPeriode(HQ_PILIH);
+    wadah.textContent = '';
+    if (!baris || !x) { wadah.appendChild(pkEl('p', 'hqv-info', 'Memuat data retensi…')); return; }
+    [3, 6].forEach(function (n) {
+      var jumlah = baris.filter(function (d) { return d.akhir_n >= x + n; }).length;
+      var kartu = pkEl('div', 'hqv-retensi-kartu');
+      kartu.appendChild(pkEl('span', '', 'Masih aktif sampai P' + (x + n)));
+      kartu.appendChild(pkEl('b', '', String(jumlah)));
+      kartu.appendChild(pkEl('small', '', 'dari ' + baris.length + ' murid aktif di ' + HQ_PILIH));
+      wadah.appendChild(kartu);
+    });
+  }
+  function hqvGrafik() {
+    var wadah = document.getElementById('hqvGrafik');
+    if (!wadah) return;
+    var list = hqChipTampil().slice(0, 4);
+    if (!list.length) return;
+    Promise.all(list.map(function (x) {
+      return hqvMuatMurid(x.periode).then(function (d) { return d.length; }).catch(function () { return null; });
+    })).then(function (nilai) {
+      wadah.textContent = '';
+      var maks = Math.max.apply(null, nilai.map(function (v) { return v || 0; })) || 1;
+      list.forEach(function (x, i) {
+        var v = nilai[i];
+        var kol = pkEl('div', 'hqv-kolom' + (x.periode === HQ_PILIH ? ' hqv-kolom-aktif' : ''));
+        kol.appendChild(pkEl('b', '', v === null ? '—' : String(v)));
+        var batang = document.createElement('i');
+        batang.style.height = (v ? Math.max(6, Math.round((v / maks) * 100)) : 3) + '%';
+        batang.setAttribute('aria-hidden', 'true');
+        kol.appendChild(batang);
+        kol.appendChild(pkEl('span', '', x.periode));
+        wadah.appendChild(kol);
+      });
+    });
+  }
+  function hqvMuatMenunggu() {
+    sb.rpc('admin_daftar_belum_guru').then(function (r) {
+      var el = document.getElementById('hqvMenunggu');
+      if (!el) return;
+      if (r.error || !Array.isArray(r.data)) { el.textContent = 'Data jadwal belum bisa dimuat'; return; }
+      var n = r.data.filter(function (d) { return d.paket; }).length;
+      el.textContent = n + ' murid menunggu jadwal';
+    }).catch(function () {});
+  }
+  function hqvPilihTab(nama) {
+    HQV.tab = nama;
+    document.querySelectorAll('.hqv-tab-pil').forEach(function (b) {
+      var aktif = b.getAttribute('data-tab') === nama;
+      b.classList.toggle('hqv-tab-aktif', aktif);
+      b.setAttribute('aria-selected', aktif ? 'true' : 'false');
+    });
+    var panel = { murid: 'hqvPaneMurid', guru: 'hqvPaneGuru', retensi: 'hqvPaneRetensi' };
+    Object.keys(panel).forEach(function (k) {
+      var el = document.getElementById(panel[k]);
+      if (el) el.hidden = k !== nama;
+    });
+    if (nama === 'retensi') hqvRetensi();
+  }
+  function bindHalaqohV2() {
+    document.querySelectorAll('.hqv-tab-pil').forEach(function (b) {
+      b.addEventListener('click', function () { hqvPilihTab(b.getAttribute('data-tab')); });
+    });
+    var cariMurid = document.getElementById('hqvCariMurid');
+    if (cariMurid) cariMurid.addEventListener('input', function () {
+      HQV.cari = cariMurid.value.trim().toLowerCase();
+      hqvRenderMurid();
+    });
+    var filterBuka = document.getElementById('hqvFilterBuka');
+    var filterPanel = document.getElementById('hqvFilterPanel');
+    if (filterBuka && filterPanel) filterBuka.addEventListener('click', function () {
+      var buka = filterPanel.hidden;
+      filterPanel.hidden = !buka;
+      filterBuka.setAttribute('aria-expanded', buka ? 'true' : 'false');
+    });
+    document.querySelectorAll('.hqv-filter-pil').forEach(function (b) {
+      b.addEventListener('click', function () {
+        HQV.paket = b.getAttribute('data-paket') || 'semua';
+        document.querySelectorAll('.hqv-filter-pil').forEach(function (x) {
+          var aktif = x === b;
+          x.classList.toggle('hqv-filter-aktif', aktif);
+          x.setAttribute('aria-pressed', aktif ? 'true' : 'false');
+        });
+        hqvRenderMurid();
+      });
+    });
+    var cariGuru = document.getElementById('hqvCariGuru');
+    if (cariGuru) cariGuru.addEventListener('click', function () {
+      HALAQOH_URUT = 'sisa';
+      var urut = document.getElementById('pengajarUrut');
+      if (urut) urut.value = 'sisa';
+      hqvPilihTab('guru');
+      if (typeof PENGAJAR !== 'undefined' && PENGAJAR) tampilPengajar(PENGAJAR);
+      var pane = document.getElementById('hqvPaneGuru');
+      if (pane && pane.scrollIntoView) pane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+  bindHalaqohV2();
   var hqTutupLembar = document.getElementById('hqLembarTutup');
   if (hqTutupLembar) hqTutupLembar.addEventListener('click', function () { hqBukaLembar(false); });
   var hqLembarEl = document.getElementById('hqLembar');
   if (hqLembarEl) hqLembarEl.addEventListener('click', function (e) { if (e.target === hqLembarEl) hqBukaLembar(false); });
   muatPeriodeHalaqoh();
+  hqvMuatMenunggu();
   function barisHq(label, nilai, persen, kelasBar) {
     var r = document.createElement('div');
     r.className = 'hq-baris';
