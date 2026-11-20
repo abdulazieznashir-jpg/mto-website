@@ -336,6 +336,10 @@
   .hq-bawah { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 16px; }
   .hq-bawah-tautan { display: block; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 16px; padding: 14px 16px; color: #1D1D1F; text-decoration: none; font-size: 14px; font-weight: 600; }
   .hq-bawah-nonaktif { color: #6E6E73; background: #FAF7F1; font-weight: 500; }
+  .hq-tombol-murid { width: 100%; box-sizing: border-box; font-family: inherit; cursor: pointer; text-align: left; }
+  .hq-murid-baris { display: flex; flex-direction: column; gap: 2px; border: 1px solid #EEE6D8; border-radius: 14px; padding: 12px 14px; background: #FFFFFF; }
+  .hq-murid-nama { font-size: 15px; font-weight: 600; color: #1D1D1F; overflow-wrap: anywhere; }
+  .hq-murid-ket { font-size: 12px; color: #6E6E73; overflow-wrap: anywhere; }
   .hq-status-pil { white-space: nowrap; }
   .hq-ringkas-tunggu { font-size: 13px !important; font-weight: 600 !important; color: #6E6E73 !important; padding: 6px 0; line-height: 1.3; }
   .hq-nilai-aksi { background: #FBEBD0; border-radius: 999px; padding: 3px 10px; }
@@ -1230,6 +1234,9 @@
         <p class="adm-dash-sub">Pantau kapasitas, retensi, dan perubahan penting tiap pengajar.</p>
         <div class="hq-periode-chips" id="hqPeriodeChips" role="group" aria-label="Pilih periode"></div>
         <p class="hq-catatan"><span>Ditampilkan untuk periode <b id="hqPeriodeTampil">—</b> · <button type="button" class="hq-tautan" id="hqPeriodeSemua">Semua periode</button></span><span id="hqDiperbarui">Diperbarui pukul —</span></p>
+        <div class="hq-bawah">
+          <button type="button" class="hq-bawah-tautan hq-tombol-murid" id="hqMuridAktifBuka">Lihat semua murid aktif ›</button>
+        </div>
         <section class="hq-siapkan" id="hqSiapkan" hidden>
           <div class="hq-siapkan-ikon" aria-hidden="true">📅</div>
           <div class="hq-siapkan-teks">
@@ -1280,9 +1287,6 @@
           <ul class="adm-halaqoh-daftar" id="pengajarDetailPeserta"></ul>
         </aside>
         <div class="adm-pengajar-hp" id="pengajarKartu" aria-label="Daftar pengajar"></div>
-        <div class="hq-bawah">
-          <a href="#murid" class="hq-bawah-tautan">Lihat semua murid di Peserta</a>
-        </div>
         </div>
         <div class="adm-pengajar-tabel-wrap" hidden>
           <table aria-label="Daftar halaqoh" class="adm-murid-tabel">
@@ -1525,6 +1529,13 @@
   <div class="hq-lembar-kartu">
     <div class="hq-lembar-head"><b>Pilih Periode</b><button type="button" class="pk-tutup" id="hqLembarTutup" aria-label="Tutup">✕</button></div>
     <div class="hq-lembar-daftar" id="hqLembarDaftar"></div>
+  </div>
+</div>
+<div class="hq-lembar" id="hqMuridAktif" role="dialog" aria-modal="true" aria-label="Semua murid aktif" hidden>
+  <div class="hq-lembar-kartu">
+    <div class="hq-lembar-head"><b>Semua murid aktif</b><button type="button" class="pk-tutup" id="hqMuridAktifTutup" aria-label="Tutup">✕</button></div>
+    <p class="hq-catatan" id="hqMuridAktifInfo">Murid yang sudah masuk grup halaqoh dan sudah punya guru.</p>
+    <div class="hq-lembar-daftar" id="hqMuridAktifDaftar"></div>
   </div>
 </div>
 <div class="adm-lembar" id="lainnyaLembar" role="dialog" aria-modal="true" aria-label="Menu lainnya" hidden>
@@ -2777,6 +2788,42 @@
   }
   var hqSemua = document.getElementById('hqPeriodeSemua');
   if (hqSemua) hqSemua.addEventListener('click', function () { hqBukaLembar(true); });
+  /* Semua murid aktif: murid yang sudah masuk grup halaqoh dan sudah punya guru */
+  function bukaMuridAktif(buka) {
+    var sheet = document.getElementById('hqMuridAktif');
+    if (!sheet) return;
+    sheet.hidden = !buka;
+    if (!buka) return;
+    var wadah = document.getElementById('hqMuridAktifDaftar');
+    var info = document.getElementById('hqMuridAktifInfo');
+    wadah.textContent = '';
+    wadah.appendChild(pkEl('p', 'hq-catatan', 'Memuat daftar…'));
+    sb.rpc('admin_daftar_guru_murid').then(function (r) {
+      wadah.textContent = '';
+      if (r.error || !Array.isArray(r.data)) { info.textContent = 'Daftar murid aktif belum bisa dimuat.'; return; }
+      var aktif = r.data.filter(function (d) { return d.pengajar_email && d.pengajar_aktif !== false; });
+      aktif.sort(function (a, b) {
+        var x = (a.pengajar_nama || '') + '|' + (a.peserta_nama || '');
+        var y = (b.pengajar_nama || '') + '|' + (b.peserta_nama || '');
+        return x.localeCompare(y, 'id');
+      });
+      info.textContent = aktif.length + ' murid aktif: sudah masuk grup halaqoh dan sudah punya guru.';
+      if (!aktif.length) { wadah.appendChild(pkEl('p', 'hq-catatan', 'Belum ada murid aktif.')); return; }
+      aktif.forEach(function (d) {
+        var baris = document.createElement('div');
+        baris.className = 'hq-murid-baris';
+        baris.appendChild(pkEl('span', 'hq-murid-nama', d.peserta_nama || d.peserta_email || '(tanpa nama)'));
+        baris.appendChild(pkEl('span', 'hq-murid-ket', (d.pengajar_nama || '') + (d.jam ? ' · ' + String(d.jam).slice(0, 5) : '')));
+        wadah.appendChild(baris);
+      });
+    }).catch(function () { wadah.textContent = ''; info.textContent = 'Daftar murid aktif belum bisa dimuat.'; });
+  }
+  var muridBuka = document.getElementById('hqMuridAktifBuka');
+  if (muridBuka) muridBuka.addEventListener('click', function () { bukaMuridAktif(true); });
+  var muridTutup = document.getElementById('hqMuridAktifTutup');
+  if (muridTutup) muridTutup.addEventListener('click', function () { bukaMuridAktif(false); });
+  var muridSheet = document.getElementById('hqMuridAktif');
+  if (muridSheet) muridSheet.addEventListener('click', function (e) { if (e.target === muridSheet) bukaMuridAktif(false); });
   var hqTutupLembar = document.getElementById('hqLembarTutup');
   if (hqTutupLembar) hqTutupLembar.addEventListener('click', function () { hqBukaLembar(false); });
   var hqLembarEl = document.getElementById('hqLembar');
