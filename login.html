@@ -58,6 +58,12 @@
   .jk-pilih input { position: absolute; opacity: 0; pointer-events: none; margin: 0; }
   .jk-pilih:has(input:checked) { background: #fff; color: var(--text-primary, #1D1D1F); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .jk-pilih:has(input:focus-visible) { outline: 2px solid #1D1D1F; outline-offset: 2px; }
+
+  /* Tanggal lahir: input date di iOS Safari sering melebar dan tingginya tidak sama dengan input lain */
+  .fld { min-width: 0; }
+  .fld input[type="date"] { -webkit-appearance: none; appearance: none; display: block; width: 100%; min-width: 0; max-width: 100%; height: 50px; line-height: normal; text-align: left; }
+  .fld input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+  .fld input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
 </style>
 </head>
 <body>
