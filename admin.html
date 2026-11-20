@@ -294,7 +294,7 @@
   .hq-status-aktif { background: #A9801F !important; color: #fff !important; font-weight: 700; }
   .hq-status-pil:disabled { cursor: default; }
   .hq-legenda { font-size: 12px; color: #6E6E73; margin: 10px 2px 0; }
-  .hq-baris-cari { display: flex; flex-direction: column; gap: 10px; margin: 12px 0 0; }
+  .hq-baris-cari { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 20px; }
   .hq-urut, .hq-cari { flex: 1; min-width: 0; display: block; }
   .hq-urut select, .hq-cari input { width: 100%; height: 44px; box-sizing: border-box; border-radius: 999px; border: 1px solid #EEE6D8; background: #FFFFFF; padding: 0 14px; font-size: 13px; color: #1D1D1F; }
   .hq-kartu { display: flex; align-items: flex-start; gap: 12px; background: #FFFFFF; border: 1px solid #EEE6D8; border-radius: 18px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
@@ -325,7 +325,8 @@
   .hq-bar-hampir { background: #F5A524; }
   .hq-bar-penuh { background: #B42318; }
   .hq-nilai-aksi { color: #A9801F; font-weight: 700; }
-  .hq-menunggu { font-size: 12px; color: #6E6E73; }
+  .hq-menunggu { display: inline-flex; align-self: flex-start; font-size: 12px; font-weight: 600; color: #1E7A3C; background: #E4F3E8; border: 1px solid #BFE3C9; border-radius: 999px; padding: 3px 10px; }
+  .dg-tunggu { background: #E6F4EA; color: #2E7D32; }
   .hq-kapasitas-form { margin: 8px 0 12px; }
   .hq-form { display: flex; gap: 8px; margin: 8px 0; }
   .hq-form input { flex: 1; min-width: 0; height: 40px; border-radius: 12px; border: 1px solid #EEE6D8; padding: 0 12px; font-size: 14px; box-sizing: border-box; }
@@ -2926,6 +2927,11 @@
       .reduce(function (jumlah, b) { return jumlah + (Number(b.menit) || 10); }, 0);
     return 420 - terpakai;
   }
+  /* Hari dan jam yang diminta murid saat pendaftaran, untuk murid yang belum punya jadwal */
+  function dgDiminta(m) {
+    var hari = m.hari_diminta === 'weekend' ? 'Sab–Min' : (m.hari_diminta === 'weekday' ? 'Sen–Jum' : 'hari belum diisi');
+    return 'Diminta ' + hari + (m.jam_diminta ? ' · ' + String(m.jam_diminta) : '');
+  }
   function dgJadwalBlok(wadah, blok, judul, kode) {
     wadah.appendChild(pkEl('h4', 'dg-judul', judul + ' · sisa ' + dgSisaMenit(blok, kode) + ' menit'));
     var milik = blok.filter(function (b) { return b.blok === kode && b.jam; })
@@ -3028,6 +3034,18 @@
     var secJadwal = pkEl('div', 'dg-bagian');
     dgJadwalBlok(secJadwal, blok, 'Sen – Jum (15:00 – 22:00)', 'weekday');
     dgJadwalBlok(secJadwal, blok, 'Sab – Min (15:00 – 22:00)', 'weekend');
+    var antre = murid.filter(function (m) { return m.menunggu; });
+    if (antre.length) {
+      secJadwal.appendChild(pkEl('h4', 'dg-judul', 'Menunggu jadwal (' + antre.length + ')'));
+      antre.forEach(function (m) {
+        var baris = pkEl('div', 'dg-baris dg-tunggu');
+        baris.appendChild(pkEl('span', 'dg-jam', dgDiminta(m)));
+        var kanan = pkEl('span', 'dg-kanan');
+        kanan.appendChild(pkEl('span', 'dg-nama-jam', (m.nama || '—') + ' · ' + kelasLabel(m.kelas)));
+        baris.appendChild(kanan);
+        secJadwal.appendChild(baris);
+      });
+    }
     var secPeserta = pkEl('div', 'dg-bagian');
     secPeserta.hidden = true;
     if (perlu.length) {
@@ -3092,7 +3110,7 @@
       kananAtas.appendChild(lepas);
       atas.appendChild(kananAtas);
       kartu.appendChild(atas);
-      var jadwal = m.blok ? (m.blok === 'weekday' ? 'Sen–Jum' : 'Sab–Min') + (m.jam ? ' · ' + String(m.jam) : '') : 'Jadwal belum diisi';
+      var jadwal = m.menunggu ? dgDiminta(m) : (m.blok ? (m.blok === 'weekday' ? 'Sen–Jum' : 'Sab–Min') + (m.jam ? ' · ' + String(m.jam) : '') : 'Jadwal belum diisi');
       kartu.appendChild(pkEl('small', 'dg-meta', jadwal));
       var sisa = m.sisa_hari === null || m.sisa_hari === undefined ? 'Sisa paket: menunggu data' : (Number(m.sisa_hari) < 0 ? 'Paket habis' : 'Sisa ' + m.sisa_hari + ' hari');
       var bawah = pkEl('div', 'dg-murid-bawah');
