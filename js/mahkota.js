@@ -357,6 +357,8 @@
     $('mkStreak').textContent = d.streak;
     renderTrack(d.streak);
     usernameSaya = d.username || '';
+    var pengingat = $('pbUsernameNote');
+    if (pengingat) pengingat.hidden = !!usernameSaya;
     $('vUsername').textContent = usernameSaya || 'Belum diatur';
     $('pfUsername').textContent = usernameSaya ? '@' + usernameSaya : 'Belum ada username';
     var akun = d.avatar_key ? cariAvatar(d.avatar_key) : null;
@@ -1386,6 +1388,23 @@
     }
   }
 
+  // Alur pendaftaran yang sama dengan website, tampil di dalam modal tanpa pindah halaman.
+  function bukaPilihPaket() {
+    var modal = $('pilihSheet'), frame = $('pilihFrame');
+    if (!modal || !frame) return;
+    if (!frame.getAttribute('src')) frame.setAttribute('src', 'index.html?daftar=1');
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function tutupPilihPaket() {
+    var modal = $('pilihSheet'), frame = $('pilihFrame');
+    if (modal) modal.hidden = true;
+    if (frame) frame.removeAttribute('src');
+    document.body.style.overflow = '';
+    renderMulai();
+  }
+  if ($('pilihTutup')) $('pilihTutup').addEventListener('click', tutupPilihPaket);
+
   function renderMulai() {
     var blok = $('pkBlok'), status = $('pkStatus'), meta = $('pkMeta'), kaki = $('pkKaki'), daftar = $('pbDaftar');
     if (!blok) return;
@@ -1397,9 +1416,17 @@
       return;
     }
     if (!paketKey && !tglMulaiISO) {
-      blok.hidden = true; status.hidden = true; meta.hidden = true; kaki.hidden = true;
+      blok.hidden = true; status.hidden = true; meta.hidden = true;
       renderGrup(false);
-      var kartuPaket = $('pbPaket'); if (kartuPaket) kartuPaket.hidden = true;
+      var kartuPaket = $('pbPaket'); if (kartuPaket) kartuPaket.hidden = false;
+      kaki.hidden = false;
+      kaki.innerHTML = '<p class="pk-catatan" style="margin:0 0 10px">Anda belum memiliki paket. Pilih paket untuk mulai belajar.</p>' +
+        '<button type="button" class="pf-btn pf-btn-pri" id="pbPilihPaket">Pilih paket</button>';
+      var tombolPilih = $('pbPilihPaket');
+      if (tombolPilih && !tombolPilih.dataset.ikat) {
+        tombolPilih.dataset.ikat = '1';
+        tombolPilih.addEventListener('click', bukaPilihPaket);
+      }
       return;
     }
     if (daftar) daftar.hidden = true;

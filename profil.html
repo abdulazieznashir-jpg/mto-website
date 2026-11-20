@@ -702,6 +702,14 @@
   .cocok-baris b { font-size: 14px; min-width: 0; }
   .cocok-baris button { border: 0; border-radius: 999px; padding: 8px 12px; font: 600 13px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); white-space: nowrap; }
   .cocok-baris button:disabled { background: #D8D8DC; color: #6E6E73; }
+  .pilih-latar { position: fixed; inset: 0; z-index: 900; background: rgba(0,0,0,0.45); display: flex; align-items: stretch; justify-content: center; }
+  .pilih-latar[hidden] { display: none; }
+  .pilih-kartu { position: relative; width: 100%; max-width: 560px; background: #fff; display: flex; flex-direction: column; }
+  .pilih-atas { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #E5E5EA; font: 600 16px Inter, system-ui, sans-serif; }
+  .pilih-tutup { border: 0; background: #F2F2F7; border-radius: 999px; width: 36px; height: 36px; font-size: 20px; cursor: pointer; }
+  .pilih-frame { flex: 1; width: 100%; border: 0; min-height: 0; }
+  .pb-username-note { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; background: #FFF8E6; font-size: 14px; color: #6B4E1E; }
+  .pb-username-note button { margin-top: 8px; border: 0; border-radius: 999px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; color: #fff; background: linear-gradient(#C9982F, #B8862B); cursor: pointer; }
 </style>
 </head>
 <body>
@@ -715,46 +723,11 @@
 
 <main id="konten" class="pf-wrap">
 
-  <div class="pf-pane is-on" data-pane="beranda">
-  <section class="pb-kartu" id="adminBaruBox" hidden>
-        <p class="pf-section-title" style="margin-top:0">Admin</p>
-        <a href="admin" class="pf-row pf-link">Buka Admin Mahkota Tahfidz Online</a>
-      </section>
-  <section class="mto-hero">
-    <div class="eyebrow">Mahkota Tahfizh Online</div>
-    <h1>Hafal Al-Qur'an 30 juz dengan bimbingan terarah</h1>
-    <p>Kami siapkan jalannya. Dari Tahsin sampai Tahfidz, setiap langkah dibimbing pengajar bersertifikat dalam sesi privat 1-on-1.</p>
-  </section>
-
-  <p class="pf-section-title">Jalannya</p>
-  <ol class="mto-langkah">
-    <li><b>Pilih paket</b><span>Silver, Gold, atau Platinum, sesuai waktu harian Anda.</span></li>
-    <li><b>Kami atur pengampu</b><span>Pengajar dan jadwal disesuaikan dengan kebutuhan Anda.</span></li>
-    <li><b>Setor hafalan</b><span>Setiap sesi dibimbing langsung oleh pengajar.</span></li>
-    <li><b>Pantau progres</b><span>Lihat juz yang sudah selesai di menu Pencapaian.</span></li>
-  </ol>
-
-  <p class="pf-section-title">Program</p>
-  <div class="pf-group">
-    <div class="pf-row"><span class="pf-label">Tahsin</span><span class="pf-value">Membaca dengan tajwid yang benar</span></div>
-    <div class="pf-row"><span class="pf-label">Tahfidz Ziyadah</span><span class="pf-value">Menambah hafalan baru</span></div>
-    <div class="pf-row"><span class="pf-label">Tahfidz Muroja'ah</span><span class="pf-value">Mengulang hafalan agar tetap kuat</span></div>
+  <div class="pf-pane is-on" data-pane="pencapaian">
+  <div class="pb-username-note" id="pbUsernameNote" hidden>
+    Nama Anda belum tampil di papan skor. Atur username di menu Saya agar nama dan avatar Anda terlihat oleh peserta lain.
+    <br><button type="button" data-go="saya">Atur username</button>
   </div>
-
-  <p class="pf-section-title">Penawaran</p>
-  <a class="pf-group pf-link-card" href="deals">
-    <span class="pf-row pf-link"><span class="pf-label">Promo pendaftaran dan paket 3 bulan</span><span class="pf-chev" aria-hidden="true">›</span></span>
-  </a>
-
-  <p class="pf-section-title">Bantuan</p>
-  <div class="pf-group">
-    <a class="pf-row pf-link" href="testimoni"><span class="pf-label">Testimoni peserta</span><span class="pf-chev" aria-hidden="true">›</span></a>
-    <a class="pf-row pf-link" href="index.html#faq"><span class="pf-label">Pertanyaan yang sering diajukan</span><span class="pf-chev" aria-hidden="true">›</span></a>
-    <a class="pf-row pf-link" href="https://wa.me/6285727533000" target="_blank" rel="noopener"><span class="pf-label">Chat admin via WhatsApp</span><span class="pf-chev" aria-hidden="true">›</span></a>
-  </div>
-  </div>
-
-  <div class="pf-pane" data-pane="pencapaian">
   <p class="pf-section-title">Papan skor <button type="button" class="pb-tanya" data-bantuan="bt-papan" aria-label="Penjelasan">?</button></p>
   <div class="pf-group">
     <ol class="mk-list" id="mkPapan"></ol>
@@ -783,6 +756,10 @@
   </div>
 
   <div class="pf-pane" data-pane="saya">
+  <section class="pb-kartu" id="adminBaruBox" hidden>
+        <p class="pf-section-title" style="margin-top:0">Admin</p>
+        <a href="admin" class="pf-row pf-link">Buka Admin Mahkota Tahfidz Online</a>
+      </section>
   <section class="sy-hero">
     <svg class="sy-mandala" viewBox="0 0 240 240" aria-hidden="true"><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(0 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(30 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(60 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(90 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(120 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(150 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(180 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(210 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(240 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(270 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(300 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><ellipse cx="120" cy="66" rx="16" ry="54" transform="rotate(330 120 120)" fill="none" stroke="#C9982F" stroke-width="1" opacity=".45"/><circle cx="120" cy="120" r="34" fill="none" stroke="#C9982F" stroke-width="1" opacity=".5"/><circle cx="120" cy="120" r="78" fill="none" stroke="#C9982F" stroke-width="1" opacity=".35"/><circle cx="120" cy="120" r="10" fill="none" stroke="#C9982F" stroke-width="1" opacity=".6"/></svg>
     <h1 class="sy-title">Saya</h1>
@@ -1305,9 +1282,15 @@
   <div id="notice" class="pf-notice" aria-live="polite"></div>
 </main>
 
+<div class="pilih-latar" id="pilihSheet" hidden role="dialog" aria-modal="true" aria-label="Pilih paket">
+  <div class="pilih-kartu">
+    <div class="pilih-atas"><span>Pilih paket</span><button type="button" class="pilih-tutup" id="pilihTutup" aria-label="Tutup">×</button></div>
+    <iframe class="pilih-frame" id="pilihFrame" title="Pendaftaran Mahkota Tahfizh Online"></iframe>
+  </div>
+</div>
+
 <nav class="pf-tabbar" aria-label="Menu akun">
-  <button type="button" class="pf-tab" data-tab="beranda" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>Beranda</span></button>
-  <button type="button" class="pf-tab" data-tab="pencapaian" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="12" width="3.5" height="8" rx="1"/><rect x="10.25" y="7" width="3.5" height="13" rx="1"/><rect x="16.5" y="3" width="3.5" height="17" rx="1"/></svg><span>Pencapaian</span></button>
+  <button type="button" class="pf-tab" data-tab="pencapaian" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="12" width="3.5" height="8" rx="1"/><rect x="10.25" y="7" width="3.5" height="13" rx="1"/><rect x="16.5" y="3" width="3.5" height="17" rx="1"/></svg><span>Pencapaian</span></button>
   <button type="button" class="pf-tab" data-tab="notifikasi" aria-selected="false"><span class="pf-tab-ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pf-tab-badge" id="tabNotifBadge" hidden></span></span><span>Notifikasi</span></button>
   <button type="button" class="pf-tab" data-tab="saya" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Saya</span></button>
 </nav>

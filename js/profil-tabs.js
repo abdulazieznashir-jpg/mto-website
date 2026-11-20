@@ -1,10 +1,9 @@
-/* Navigasi akun: bar bawah (Beranda, Pencapaian, Notifikasi, Saya) dan halaman Pengaturan.
+/* Navigasi akun: bar bawah (Pencapaian, Notifikasi, Saya) dan halaman Pengaturan.
  * Pengaturan memuat Data diri, Ubah password, lalu Afiliasi, Bantuan, dan Keluar.
  * Setiap layar punya hash sendiri di URL dan tidak memuat ulang halaman.
  */
 (function () {
   var LAYAR = {
-    beranda: 'beranda',
     pencapaian: 'pencapaian',
     notifikasi: 'notifikasi',
     saya: 'saya',
@@ -18,7 +17,7 @@
   var tabs = document.querySelectorAll('.pf-tab[data-tab]');
 
   function tampilkan(nama) {
-    if (!LAYAR[nama]) nama = 'beranda';
+    if (!LAYAR[nama]) nama = 'pencapaian';
     var tab = TAB_INDUK[nama] || nama;
     panes.forEach(function (p) {
       p.classList.toggle('is-on', p.getAttribute('data-pane') === nama);
@@ -36,7 +35,7 @@
   }
 
   function dariHash() {
-    tampilkan(location.hash.replace('#', '') || 'beranda');
+    tampilkan(location.hash.replace('#', '') || 'pencapaian');
   }
 
   tabs.forEach(function (t) {
