@@ -981,6 +981,7 @@
           <div class="pk-baris">
             <label class="pk-urut"><span class="sr-only">Urutkan</span>
               <select id="pkUrut">
+                <option value="lama" selected>Urutkan: Terlama menunggu</option>
                 <option value="nama">Urutkan: Nama A–Z</option>
                 <option value="kelas">Urutkan: Kelas</option>
               </select>
@@ -1692,7 +1693,7 @@
   var PK_KELAS = 'semua';
   var PK_JK = 'semua';
   var PK_CARI = '';
-  var PK_URUT = 'nama';
+  var PK_URUT = 'lama';
   var PK_AKTIF = null;
   var PK_PENGAJAR = '';
   var URUT_KELAS = { silver: 1, gold: 2, platinum: 3 };
@@ -1808,6 +1809,12 @@
       .filter(function (p) { return PK_JK === 'semua' || jkPeserta(p) === PK_JK; })
       .filter(function (p) { return !PK_CARI || String(p.nama || '').toLowerCase().indexOf(PK_CARI) !== -1; });
     tampil.sort(function (a, b) {
+      if (PK_URUT === 'lama') {
+        /* Yang paling lama masuk grup di atas; yang baru masuk di bawah. Data tanpa tanggal di paling bawah. */
+        var ta = a.masuk_grup_at ? new Date(a.masuk_grup_at).getTime() : Infinity;
+        var tb = b.masuk_grup_at ? new Date(b.masuk_grup_at).getTime() : Infinity;
+        if (ta !== tb) return ta < tb ? -1 : 1;
+      }
       if (PK_URUT === 'kelas') {
         var d = (URUT_KELAS[kelasKunci(a.kelas)] || 9) - (URUT_KELAS[kelasKunci(b.kelas)] || 9);
         if (d) return d;
