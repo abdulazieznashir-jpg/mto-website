@@ -255,8 +255,6 @@
   .cek-trust h4 { font-size: 15px; margin-bottom: 6px; }
   .cek-trust ul { padding-left: 18px; font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
   .cek-radio { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-size: 15px; }
-  .cek-bank { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #e5e5ea; font-size: 15px; }
-  .cek-bank small { display: block; color: var(--text-secondary); font-size: 13px; }
   .cek-copy { padding: 8px 12px; border-radius: 10px; border: 1px solid #BE966A; background: #fff; color: #8a6a3f; font-size: 13px; cursor: pointer; white-space: nowrap; }
   .cek-amount { font-size: 18px; font-weight: 700; margin: 10px 0 4px; }
   .cek-chat { text-align: center; padding: 56px 0 24px; }
@@ -1058,16 +1056,6 @@
       <div id="verifyBox"></div>
       <button type="button" class="btn btn-primary btn-lg cek-full" id="toBayar" style="margin-top:16px">Lanjut ke pembayaran</button>
     </div>
-
-    <div class="flow-step" data-step="bayar">
-      <h3>Transfer ke rekening resmi</h3>
-      <div id="bayarBox"></div>
-    </div>
-
-    <div class="flow-step" data-step="kirim">
-      <h3>Kirim bukti transfer</h3>
-      <div id="kirimBox"></div>
-    </div>
   </div>
 </div>
 
@@ -1104,10 +1092,6 @@
     ziyadah:   [['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
     murojaah:  [['kuat', 'Hafalan lama dikuatkan kembali'], ['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar']]
   };
-  var REKENING = [
-    ['BSI', '7103439840'], ['BCA Syariah', '0552004772'], ['Mandiri', '1370022421529'],
-    ['CIMB Niaga', '763163454100'], ['BRI', '307001011600508'], ['E-wallet (Dana, GoPay, OVO, LinkAja, ShopeePay)', '085722366003']
-  ];
   // Daftar negara: Indonesia dulu, lalu negara terdekat, lalu yang terkenal, sisanya urut abjad.
   var NEG_ATAS = [["ID", "Indonesia", "62"], ["MY", "Malaysia", "60"], ["SG", "Singapura", "65"], ["BN", "Brunei", "673"], ["TL", "Timor Leste", "670"], ["PH", "Filipina", "63"], ["TH", "Thailand", "66"], ["VN", "Vietnam", "84"], ["KH", "Kamboja", "855"], ["LA", "Laos", "856"], ["MM", "Myanmar", "95"], ["US", "Amerika Serikat", "1"], ["AU", "Australia", "61"], ["SA", "Arab Saudi", "966"], ["GB", "Inggris", "44"], ["JP", "Jepang", "81"], ["KR", "Korea Selatan", "82"], ["CN", "Tiongkok", "86"], ["HK", "Hong Kong", "852"], ["TW", "Taiwan", "886"], ["IN", "India", "91"], ["PK", "Pakistan", "92"], ["BD", "Bangladesh", "880"], ["TR", "Turki", "90"], ["EG", "Mesir", "20"], ["AE", "Uni Emirat Arab", "971"], ["QA", "Qatar", "974"], ["KW", "Kuwait", "965"], ["OM", "Oman", "968"], ["BH", "Bahrain", "973"], ["JO", "Yordania", "962"], ["NL", "Belanda", "31"], ["DE", "Jerman", "49"], ["FR", "Prancis", "33"], ["IT", "Italia", "39"], ["ES", "Spanyol", "34"], ["CA", "Kanada", "1"], ["NZ", "Selandia Baru", "64"], ["BR", "Brasil", "55"], ["MX", "Meksiko", "52"], ["RU", "Rusia", "7"], ["SE", "Swedia", "46"], ["CH", "Swiss", "41"]];
   var NEG_LAIN = [["AF", "Afghanistan", "93"], ["ZA", "Afrika Selatan", "27"], ["AL", "Albania", "355"], ["DZ", "Aljazair", "213"], ["AO", "Angola", "244"], ["AR", "Argentina", "54"], ["AM", "Armenia", "374"], ["AT", "Austria", "43"], ["AZ", "Azerbaijan", "994"], ["BE", "Belgia", "32"], ["BT", "Bhutan", "975"], ["BO", "Bolivia", "591"], ["BA", "Bosnia dan Herzegovina", "387"], ["BG", "Bulgaria", "359"], ["CM", "Kamerun", "237"], ["CL", "Chili", "56"], ["CO", "Kolombia", "57"], ["CR", "Kosta Rika", "506"], ["HR", "Kroasia", "385"], ["CU", "Kuba", "53"], ["CZ", "Ceko", "420"], ["DK", "Denmark", "45"], ["EC", "Ekuador", "593"], ["ET", "Ethiopia", "251"], ["FI", "Finlandia", "358"], ["GE", "Georgia", "995"], ["GH", "Ghana", "233"], ["GR", "Yunani", "30"], ["GT", "Guatemala", "502"], ["HU", "Hungaria", "36"], ["IS", "Islandia", "354"], ["IQ", "Irak", "964"], ["IR", "Iran", "98"], ["IE", "Irlandia", "353"], ["KZ", "Kazakhstan", "7"], ["KE", "Kenya", "254"], ["LB", "Lebanon", "961"], ["LY", "Libya", "218"], ["MG", "Madagascar", "261"], ["MV", "Maladewa", "960"], ["MA", "Maroko", "212"], ["MU", "Mauritius", "230"], ["MN", "Mongolia", "976"], ["MZ", "Mozambik", "258"], ["NP", "Nepal", "977"], ["NG", "Nigeria", "234"], ["NO", "Norwegia", "47"], ["PS", "Palestina", "970"], ["PA", "Panama", "507"], ["PG", "Papua Nugini", "675"], ["PE", "Peru", "51"], ["PL", "Polandia", "48"], ["PT", "Portugal", "351"], ["RO", "Rumania", "40"], ["RW", "Rwanda", "250"], ["SN", "Senegal", "221"], ["RS", "Serbia", "381"], ["CY", "Siprus", "357"], ["LK", "Sri Lanka", "94"], ["SD", "Sudan", "249"], ["SY", "Suriah", "963"], ["TZ", "Tanzania", "255"], ["TN", "Tunisia", "216"], ["UG", "Uganda", "256"], ["UA", "Ukraina", "380"], ["UY", "Uruguay", "598"], ["UZ", "Uzbekistan", "998"], ["VE", "Venezuela", "58"], ["YE", "Yaman", "967"], ["ZM", "Zambia", "260"], ["ZW", "Zimbabwe", "263"], ["CI", "Pantai Gading", "225"], ["FJ", "Fiji", "679"]];
@@ -1380,14 +1364,6 @@
       'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + S.jam.replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
       'Promo: ' + promoText() + '\nPeserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
   }
-  function pesanDaftar() {
-    var s = "Assalamu'alaikum Admin Mahkota, saya sudah transfer untuk pendaftaran.\n\n" +
-      'Nama: ' + S.nama + '\nJenis kelamin: ' + S.jk + '\n';
-    s += 'Tanggal lahir: ' + (S.tgl || '-') + '\n';
-    s += 'Nomor WhatsApp: +' + waFull() + '\nEmail: ' + S.email + '\n\n' +
-      ringkas() + '\nSaya lampirkan foto bukti transfer. Jazakumullahu khairan.';
-    return s;
-  }
 
   /* ---------- alur: satu urutan untuk semua pintu masuk ---------- */
   // Urutan langkah bergantung pada pintu masuk dan pilihan yang sudah diisi lewat tautan.
@@ -1400,7 +1376,7 @@
       if (!P.jenis) r.push(S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin');
     }
     if (!P.tier) r.push('kelas');
-    r.push('hari', 'durasi', 'jam', 'ringkasan', 'data', 'bayar', 'kirim');
+    r.push('hari', 'durasi', 'jam', 'ringkasan', 'data');
     return r;
   }
   function advance(cur) {
@@ -1473,7 +1449,7 @@
     stageEl.textContent = 'Tahap ' + n + ' dari 3 · ' + label;
     barEl.style.width = (n / 3 * 100) + '%';
     var R = { harapan: renderHarapan, rekom: renderRekom, kelas: renderKelas, durasi: renderDurasi, jam: renderJam,
-      ringkasan: renderRingkasan, data: renderData, bayar: renderBayar, kirim: renderKirim };
+      ringkasan: renderRingkasan, data: renderData };
     if (R[step]) R[step]();
     var first = steps[step].querySelector('button, input, select');
     if (first && step !== 'data') setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
@@ -1602,7 +1578,7 @@
   var SB_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
   var SB_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
   var SB_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
-  var sbKlien = null, timerBayar = null;
+  var sbKlien = null;
   function sbSiap(cb) {
     if (sbKlien) return cb(sbKlien);
     if (window.supabase) { sbKlien = window.supabase.createClient(SB_URL, SB_KEY); return cb(sbKlien); }
@@ -1626,55 +1602,6 @@
         cb(null);
       });
     });
-  }
-  function tandaiBukti(cb) {
-    sbSiap(function (sb) {
-      sb.rpc('tandai_bukti', { p_id: S.pid, p_email: S.email }).then(function (r) {
-        cb(r.error ? (r.error.message || 'Gagal memperbarui status.') : null);
-      });
-    });
-  }
-  function jalankanTimer() {
-    clearInterval(timerBayar);
-    var el = document.getElementById('bayarTimer');
-    if (!el || !S.batas) return;
-    var akhir = new Date(S.batas).getTime();
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    function tik() {
-      var sisa = akhir - Date.now();
-      if (sisa <= 0) {
-        el.innerHTML = '<strong>Waktu pembayaran habis.</strong> Hubungi admin untuk dibukakan kembali.';
-        clearInterval(timerBayar);
-        return;
-      }
-      var j = Math.floor(sisa / 3600000), m = Math.floor((sisa % 3600000) / 60000), d = Math.floor((sisa % 60000) / 1000);
-      var tgl = new Date(akhir).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
-      el.innerHTML = 'Selesaikan pembayaran sebelum <strong>' + tgl + ' WIB</strong><br>Sisa waktu <strong>' + pad(j) + ':' + pad(m) + ':' + pad(d) + '</strong>';
-    }
-    tik();
-    timerBayar = setInterval(tik, 1000);
-  }
-
-  function renderBayar() {
-    var rek = REKENING.map(function (r) {
-      return '<div class="cek-bank"><div><strong>' + r[0] + '</strong><small>' + r[1] + '</small></div>' +
-        '<button type="button" class="cek-copy" data-copy="' + r[1] + '">Salin</button></div>';
-    }).join('');
-    document.getElementById('bayarBox').innerHTML =
-      '<div class="cek-timer" id="bayarTimer" style="font-size:14px;line-height:1.5;margin:0 0 12px;padding:12px 14px;border-radius:14px;background:#F5F5F7;color:#1D1D1F"></div>' +
-      '<p class="cek-alasan">Transfer ke salah satu rekening resmi di bawah ini, atas nama Abdul Aziez. Admin mengonfirmasi setelah bukti transfer diterima.</p>' +
-      '<div class="cek-amount">Nominal: ' + rupiah(totalBayar()) + '</div>' +
-      '<button type="button" class="cek-copy" data-copy="' + totalBayar() + '">Salin nominal</button>' +
-      '<div class="cek-box" style="margin-top:12px">' + rek + '</div>' +
-      '<p class="cek-err" id="bayarErr"></p>' +
-      '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="kirim">Sudah transfer, lanjut kirim bukti</button>';
-    jalankanTimer();
-  }
-  function renderKirim() {
-    document.getElementById('kirimBox').innerHTML =
-      '<p class="cek-alasan"><strong>Status: menunggu verifikasi.</strong> Pesan WhatsApp sudah terisi otomatis. Lampirkan foto bukti transfer, lalu kirim.</p>' +
-      '<p class="cek-alasan">Nomor WhatsApp: <strong>+' + esc(waFull()) + '</strong> dan email ' + esc(S.email) + '. Admin akan mengonfirmasi lewat WhatsApp.</p>' +
-      '<a class="btn btn-wa btn-lg cek-full" href="' + waLink(pesanDaftar()) + '" target="_blank" rel="noopener">Kirim bukti via WhatsApp</a>';
   }
   function copy(text, btn) {
     if (!navigator.clipboard) return;
@@ -1724,14 +1651,6 @@
     if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
     if ((b = t.closest('[data-act]'))) {
       if (b.dataset.act === 'data') advance('ringkasan');
-      if (b.dataset.act === 'kirim') {
-        tandaiBukti(function (err) {
-          var e = document.getElementById('bayarErr');
-          if (err) { if (e) e.textContent = err; return; }
-          clearInterval(timerBayar);
-          advance('bayar');
-        });
-      }
       return;
     }
     if (t.closest('#rekomNext')) { advance('rekom'); return; }
