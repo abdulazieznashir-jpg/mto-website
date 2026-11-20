@@ -622,6 +622,20 @@
     .adm-detail-nama { font-size: var(--adm-xl, 26px); }
   }
   @media (min-width: 900px) { .adm-detail { margin-top: 4px; } }
+  /* Semua panel detail (peserta, halaqoh): jendela di tengah layar, bukan menyatu dengan halaman */
+  .adm-detail, .adm-murid-dua > .adm-detail {
+    position: fixed !important; top: 50%; left: 50%; right: auto; bottom: auto; margin: 0;
+    transform: translate(-50%, -50%); z-index: 60;
+    width: min(640px, calc(100vw - 24px)); max-height: calc(100vh - 48px); overflow-y: auto;
+    box-sizing: border-box; border: 0; border-radius: 22px; background: #FFFFFF; padding: 18px;
+    box-shadow: 0 0 0 100vmax rgba(29, 29, 31, .35), 0 12px 40px rgba(0, 0, 0, .2);
+  }
+  .adm-detail-head { position: sticky; top: -18px; background: #FFFFFF; padding-block: 4px; z-index: 1; }
+  .dg-atas-bar { justify-content: flex-end; position: sticky; top: -18px; background: #FFFFFF; z-index: 1; }
+  .dg-tutup { border: 0; background: #F1EEE8; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; color: #1D1D1F; cursor: pointer; }
+  @media (min-width: 900px) {
+    .adm-murid-dua { grid-template-columns: minmax(0, 1fr); }
+  }
   .adm-murid-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .adm-murid-pager[hidden] { display: none !important; }
   .adm-murid-info { margin: 0; color: var(--adm-muted, #6E6E73); font-size: var(--adm-sm, 13px); }
@@ -2718,8 +2732,9 @@
     var blok = d.blok || [];
     var perlu = murid.filter(function (m) { return m.jeda && m.jeda_sejak && dgHariSejak(m.jeda_sejak) > 30; });
     var atasBar = pkEl('div', 'dg-atas-bar');
-    var kembali = pkEl('button', 'dg-kembali', '‹ Kembali');
+    var kembali = pkEl('button', 'dg-tutup', '✕');
     kembali.type = 'button';
+    kembali.setAttribute('aria-label', 'Tutup detail pengajar');
     kembali.addEventListener('click', function () { var pn = document.getElementById('pengajarDetail'); if (pn) pn.hidden = true; });
     atasBar.appendChild(kembali);
     wadah.appendChild(atasBar);
@@ -2846,7 +2861,6 @@
     var lama = document.getElementById('pengajarDetailPeserta');
     if (lama) { lama.hidden = true; if (lama.previousElementSibling) lama.previousElementSibling.hidden = true; }
     panel.hidden = false;
-    if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) panel.scrollIntoView({ behavior: "smooth", block: "start" });
     var head = panel.querySelector('.adm-detail-head');
     if (head) head.hidden = true;
     var wadah = document.getElementById('pengajarDetailIsi');
@@ -2861,6 +2875,13 @@
       renderDetailGuru(wadah, r.data, daftar, g.email);
     }).catch(function () { wadah.innerHTML = ''; wadah.appendChild(pkEl('p', 'hq-catatan', 'Detail guru belum bisa dimuat.')); });
   }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    ['pengajarDetail', 'muridDetail', 'pkPanel'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.hidden) { if (id === 'pkPanel') tutupPanelPeserta(); else el.hidden = true; }
+    });
+  });
   var tutupPengajar = document.getElementById('pengajarDetailTutup');
   if (tutupPengajar) tutupPengajar.addEventListener('click', function () {
     var panel = document.getElementById('pengajarDetail');
