@@ -126,7 +126,7 @@
     if (!validEmail(alamat)) { note($('notice'), 'Tulis email yang benar.', true); return; }
     if (mode === 'daftar' && !n) { note($('notice'), 'Tulis nama lengkap Anda.', true); return; }
     if (pass.length < 8) { note($('notice'), 'Password minimal 8 karakter.', true); return; }
-    var tglIn = mode === 'daftar' && window.MTO_TGL ? MTO_TGL.iso($('tglHari'), $('tglBulan'), $('tglTahun')) : '';
+    var tglIn = mode === 'daftar' ? ($('tglInput').value || '') : '';
     var usiaIn = tglIn ? MTO_TGL.usia(tglIn) : 0;
     var jkIn = mode === 'daftar' ? ((f.querySelector('input[name="jk"]:checked') || {}).value || '') : '';
     if (mode === 'daftar' && !tglIn) { note($('notice'), 'Pilih tanggal lahir Anda dengan lengkap dan benar.', true); return; }
@@ -169,7 +169,9 @@
 
   /* ---------- Inisialisasi ---------- */
   function mulai() {
-    if (window.MTO_TGL) MTO_TGL.isi($('tglHari'), $('tglBulan'), $('tglTahun'));
+    var tglEl = $('tglInput'), sekarangISO = new Date().toISOString().slice(0, 10);
+    tglEl.max = sekarangISO;
+    tglEl.min = (new Date().getFullYear() - 100) + '-01-01';
     $('tabDaftar').addEventListener('click', function () { setMode('daftar'); });
     $('tabMasuk').addEventListener('click', function () { setMode('masuk'); });
     $('formAuth').addEventListener('submit', kirim);

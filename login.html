@@ -82,14 +82,9 @@
         <label class="fld hidden" id="fldNama"><span>Nama lengkap</span>
           <input type="text" name="nama" autocomplete="name" placeholder="Nama sesuai pendaftaran">
         </label>
-        <div class="fld hidden" id="fldTgl" role="group" aria-labelledby="tglLabel">
-          <span id="tglLabel">Tanggal lahir</span>
-          <div class="tgl-grup">
-            <select id="tglHari" name="hari" aria-label="Tanggal"></select>
-            <select id="tglBulan" name="bulan" aria-label="Bulan"></select>
-            <select id="tglTahun" name="tahun" aria-label="Tahun"></select>
-          </div>
-        </div>
+        <label class="fld hidden" id="fldTgl"><span>Tanggal lahir</span>
+          <input type="date" id="tglInput" name="tgl" autocomplete="bday">
+        </label>
         <div class="fld hidden" id="fldJk" role="radiogroup" aria-labelledby="jkLabel">
           <span id="jkLabel">Jenis kelamin</span>
           <div class="jk-opsi">
