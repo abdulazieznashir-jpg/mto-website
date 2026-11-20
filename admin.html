@@ -132,6 +132,13 @@
   .dm-tab-btn { flex: 0 0 auto; white-space: nowrap; font: inherit; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #E4DCCB; background: #fff; color: #55555C; cursor: pointer; }
   .dm-tab-btn.is-aktif { background: #1D1D1F; color: #fff; border-color: #1D1D1F; }
   .dm-tab-jml { font-variant-numeric: tabular-nums; opacity: .75; margin-left: 2px; }
+  .dm-lead-kartu { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid #EEE6D8; text-decoration: none; color: inherit; min-width: 0; }
+  .dm-lead-kartu:first-child { border-top: 0; }
+  .dm-lead-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .dm-lead-info b { font-size: 14px; overflow-wrap: anywhere; }
+  .dm-lead-meta { font-size: 12px; color: var(--adm-muted, #6E6E73); overflow-wrap: anywhere; }
+  .dm-lead-kanan { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: 0 0 auto; }
+  .dm-lead-harga { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .dm-kartu-atas { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
   .dm-kartu-atas .bd-judul { min-width: 0; }
   .dm-ikon { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
@@ -3900,6 +3907,7 @@
       var bar = document.getElementById('dmBar');
       if (bar) { bar.style.width = persen + '%'; bar.setAttribute('aria-valuenow', String(persen)); }
       buatPerluTindakan(d.perlu_tindakan || []);
+      muatDaftarDm();
     }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
   }
 
@@ -3945,6 +3953,93 @@
       wadah.appendChild(baris);
     });
   }
+  /* Daftar lead di Beranda: satu pemanggilan dm_daftar_lead('semua'), lalu tab dan hitungan dihitung di browser */
+  var DM_TAB = 'belum';
+  var DM_SEMUA = [];
+  var DM_LIHAT_OWNER = false;
+  function cocokTabDm(l, t) {
+    var sudah = l.tahap_sudah || [];
+    if (t === 'belum') return sudah.length === 0;
+    if (t === 'closing') return l.status === 'diterima';
+    if (t === 'belum_closing') return l.status !== 'diterima';
+    return sudah.indexOf(Number(t)) !== -1;
+  }
+  function tanggalMasuk(t) {
+    var d = new Date(t);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function gambarDaftarDm() {
+    var wadah = document.getElementById('dmDaftar');
+    var kosong = document.getElementById('dmDaftarKosong');
+    if (!wadah) return;
+    var hitung = { belum: 0, '1': 0, '2': 0, '3': 0, '4': 0, closing: 0, belum_closing: 0 };
+    var daftar = DM_SEMUA.filter(function (l) {
+      return !DM_LIHAT_OWNER || String(l.dealmaker_email || '').toLowerCase() === DEALMAKER;
+    });
+    ['belum', '1', '2', '3', '4', 'closing', 'belum_closing'].forEach(function (t) {
+      hitung[t] = daftar.filter(function (l) { return cocokTabDm(l, t); }).length;
+    });
+    isi('dmTabBelum', hitung.belum); isi('dmTabFu1', hitung['1']); isi('dmTabFu2', hitung['2']);
+    isi('dmTabFu3', hitung['3']); isi('dmTabFu4', hitung['4']);
+    isi('dmTabClosing', hitung.closing); isi('dmTabBelumClosing', hitung.belum_closing);
+    var tampil = daftar.filter(function (l) { return cocokTabDm(l, DM_TAB); }).slice(0, 50);
+    wadah.textContent = '';
+    if (kosong) kosong.hidden = tampil.length > 0;
+    tampil.forEach(function (l) {
+      var a = document.createElement('a');
+      a.className = 'dm-lead-kartu';
+      a.href = '#followup';
+      var info = document.createElement('div');
+      info.className = 'dm-lead-info';
+      var nama = document.createElement('b');
+      nama.textContent = l.nama || '(tanpa nama)';
+      var meta = document.createElement('span');
+      meta.className = 'dm-lead-meta';
+      meta.textContent = [l.kelas, 'Masuk ' + tanggalMasuk(l.dibuat_at)].filter(Boolean).join(' · ');
+      info.appendChild(nama);
+      info.appendChild(meta);
+      var kanan = document.createElement('div');
+      kanan.className = 'dm-lead-kanan';
+      var harga = document.createElement('span');
+      harga.className = 'dm-lead-harga';
+      harga.textContent = l.harga ? 'Rp ' + Number(l.harga).toLocaleString('id-ID') : '—';
+      var badge = document.createElement('span');
+      badge.className = 'dm-tahap ' + badgeKelas(l.badge);
+      badge.textContent = badgeTeks(l);
+      kanan.appendChild(harga);
+      kanan.appendChild(badge);
+      a.appendChild(info);
+      a.appendChild(kanan);
+      wadah.appendChild(a);
+    });
+  }
+  function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = String(teks); }
+  var DM_TAB_SIAP = false;
+  function muatDaftarDm() {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    if (!sb) return;
+    DM_LIHAT_OWNER = window.MTO_ADMIN.peran === 'owner' && peranAktif() === 'dealmaker';
+    if (!DM_TAB_SIAP) {
+      DM_TAB_SIAP = true;
+      document.querySelectorAll('[data-dm-tab]').forEach(function (tb) {
+        tb.addEventListener('click', function () {
+          DM_TAB = tb.getAttribute('data-dm-tab');
+          document.querySelectorAll('[data-dm-tab]').forEach(function (x) {
+            var aktif = x === tb;
+            x.classList.toggle('is-aktif', aktif);
+            x.setAttribute('aria-selected', aktif ? 'true' : 'false');
+          });
+          gambarDaftarDm();
+        });
+      });
+    }
+    sb.rpc('dm_daftar_lead', { p_filter: 'semua' }).then(function (r) {
+      if (r.error || !r.data) return;
+      DM_SEMUA = r.data.daftar || [];
+      gambarDaftarDm();
+    });
+  }
+
   /* Follow Up: daftar lead dengan filter dan jumlah per tahap, dari dm_daftar_lead */
   var FU_FILTER = 'belum';
   function tanggalFU(t) {
