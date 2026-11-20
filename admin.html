@@ -123,6 +123,68 @@
   .dm-tahap-belum { background: #F1F1F3; color: #55555C; border-color: #DCDCE0; }
   .dm-tahap-ok { background: #E3EEFB; color: #1D4ED8; border-color: #BFD6F5; }
   .dm-tahap-closing { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
+  /* Deal Maker v2: sesuai mockup (HP dan PC) */
+  .dmv { padding-top: 8px; padding-bottom: 32px; }
+  .dmv-head { display: flex; flex-direction: column; gap: 12px; margin: 4px 0 16px; }
+  .dmv-judul { margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -.02em; color: #1D1D1F; }
+  .dmv-pilihan { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dmv-pill { position: relative; display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 140px; height: 44px; padding: 0 16px; box-sizing: border-box; border-radius: 999px; background: #FFFFFF; border: 1px solid #E5E5EA; box-shadow: 0 1px 2px rgba(0,0,0,.05); font-size: 16px; font-weight: 600; color: #1D1D1F; }
+  .dmv-pill::after { content: ''; width: 7px; height: 7px; border-right: 2px solid #1D1D1F; border-bottom: 2px solid #1D1D1F; transform: rotate(45deg); margin-top: -4px; flex: 0 0 auto; }
+  .dmv-select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .dmv-select[hidden] { display: none !important; }
+  .dmv-kartu { background: #FFFFFF; border: 1px solid #ECECF0; border-radius: 22px; padding: 18px; box-sizing: border-box; min-width: 0; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+  .dmv-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .dmv-kartu-judul { margin: 0 0 4px; font-size: 19px; font-weight: 700; color: #1D1D1F; }
+  .dmv-omset-atas { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .dmv-omset-angka { font-size: 22px; font-weight: 800; color: #1D1D1F; white-space: nowrap; }
+  .dmv-catatan { margin: 0; font-size: 14px; color: #6E6E73; }
+  .dmv-bar { height: 8px; border-radius: 999px; background: #E8E8ED; overflow: hidden; margin: 14px 0 4px; }
+  .dmv-bar > span { display: block; height: 100%; width: 0; border-radius: 999px; background: #0A6CFF; }
+  .dmv-ringkas { list-style: none; margin: 10px 0 0; padding: 0; border-top: 1px solid #ECECF0; }
+  .dmv-ringkas li { border-bottom: 1px solid #ECECF0; }
+  .dmv-ringkas-baris { width: 100%; display: flex; align-items: center; gap: 10px; padding: 14px 2px; border: 0; background: transparent; font: inherit; font-size: 17px; color: #1D1D1F; text-align: left; cursor: pointer; }
+  .dmv-ringkas-baris span { flex: 1; min-width: 0; }
+  .dmv-ringkas-baris b { font-size: 20px; font-weight: 800; }
+  .dmv-ringkas-baris i { font-style: normal; font-size: 22px; color: #8E8E93; line-height: 1; }
+  .dmv-tab { display: flex; background: #EFEFF4; border-radius: 999px; padding: 4px; margin: 12px 0 14px; }
+  .dmv-tab-pil { flex: 1; min-width: 0; border: 0; background: transparent; border-radius: 999px; padding: 10px 6px; font: inherit; font-size: 15px; font-weight: 600; color: #1D1D1F; cursor: pointer; white-space: nowrap; }
+  .dmv-tab-aktif { background: #0A6CFF; color: #FFFFFF; }
+  .dmv-antre-daftar { display: flex; flex-direction: column; gap: 14px; }
+  .dmv-verif { border: 1px solid #ECECF0; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; min-width: 0; }
+  .dmv-verif-kepala { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .dmv-verif-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .dmv-verif-id b { font-size: 18px; color: #1D1D1F; overflow-wrap: anywhere; }
+  .dmv-verif-id span { font-size: 15px; color: #6E6E73; }
+  .dmv-badge-kuning { background: #FFF0CC; color: #9A5B00; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .dmv-verif .dm-bukti { border: 1px solid #ECECF0; border-radius: 14px; background: #F7F7FA; }
+  .dmv-verif-aksi { display: flex; flex-direction: column; gap: 6px; }
+  .dmv-tombol-biru { width: 100%; height: 52px; border: 0; border-radius: 16px; background: #0A6CFF; color: #FFFFFF; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; }
+  .dmv-tombol-biru:disabled, .dmv-tombol-merah:disabled { opacity: .55; cursor: default; }
+  .dmv-tombol-merah { width: 100%; border: 0; background: transparent; color: #E5484D; font: inherit; font-size: 17px; font-weight: 600; padding: 10px; cursor: pointer; }
+  .dmv-verif-pesan { margin: 0; font-size: 13px; color: #B42318; }
+  .dmv-verif-pesan:empty { display: none; }
+  .dmv-lead { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid #ECECF0; flex-wrap: wrap; }
+  .dmv-lead:last-child { border-bottom: 0; }
+  .dmv-lead-teks { flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .dmv-lead-teks b { font-size: 17px; color: #1D1D1F; overflow-wrap: anywhere; }
+  .dmv-lead-teks span { font-size: 14px; color: #6E6E73; }
+  .dmv-catat { font-size: 14px; font-weight: 600; color: #0A6CFF; text-decoration: none; white-space: nowrap; }
+  .dmv-alur-langkah { position: relative; list-style: none; margin: 16px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .dmv-alur-langkah::before { content: ''; position: absolute; top: 10px; left: 12.5%; right: 12.5%; height: 3px; border-radius: 999px; background: #E5E5EA; }
+  .dmv-alur-langkah li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 0; }
+  .dmv-titik { position: relative; z-index: 1; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; border: 3px solid #C7C7CC; background: #FFFFFF; margin-bottom: 4px; }
+  .dmv-alur-langkah li.is-isi .dmv-titik { border-color: #0A6CFF; }
+  .dmv-alur-langkah li.is-selesai .dmv-titik { border-color: #0A6CFF; background: #0A6CFF; }
+  .dmv-alur-label { font-size: 14px; color: #4A4740; }
+  .dmv-alur-langkah b { font-size: 22px; font-weight: 800; color: #1D1D1F; }
+  @media (min-width: 900px) {
+    .dmv-judul { font-size: 40px; }
+    .dmv-head { flex-direction: row; align-items: center; justify-content: space-between; }
+    .dmv-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; }
+    .dmv-antrean { grid-column: 2; grid-row: 1 / span 2; }
+    .dmv-kartu { padding: 22px 24px; }
+    .dmv-omset-angka { font-size: 30px; }
+  }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
   .dm-pilih-pic { font: 600 13px Inter, system-ui, sans-serif; padding: 7px 10px; border-radius: 999px; border: 1px solid #C9A227; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); max-width: 100%; }
@@ -1073,78 +1135,53 @@
       </div>
     </section>
     <section class="adm-view" data-view="dealmaker" hidden>
-      <div class="bd-wrap">
-        <div class="dm-head">
-          <div>
-            <h1 class="adm-dash-judul">Deal Maker</h1>
-            <p class="adm-dash-sub" id="dmNama">—</p>
+      <div class="adm-murid-wrap dmv">
+        <div class="dmv-head">
+          <h1 class="dmv-judul">Deal Maker</h1>
+          <div class="dmv-pilihan">
+            <label class="dmv-pill">
+              <span id="dmNama">—</span>
+              <select id="dmPilihPic" class="dmv-select" aria-label="Pilih Deal Maker" hidden></select>
+            </label>
+            <span class="dmv-pill" id="dmPeriode">—</span>
           </div>
-          <span class="dm-chip" id="dmPeriode">—</span>
-          <select id="dmPilihPic" class="dm-pilih-pic" aria-label="Pilih Deal Maker" hidden></select>
         </div>
-        <div class="dm-kisi">
-          <section class="bd-kartu dm-kartu-omset" aria-labelledby="dmJudulOmset">
-            <div class="dm-kartu-atas">
-              <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
-              <span class="dm-ikon dm-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+        <div class="dmv-grid">
+          <section class="dmv-kartu dmv-omset" aria-labelledby="dmJudulOmset">
+            <div class="dmv-omset-atas">
+              <div>
+                <h2 class="dmv-kartu-judul" id="dmJudulOmset">Omset bulan ini</h2>
+                <p class="dmv-catatan" id="dmTargetTeks">Target Rp 17.000.000</p>
+              </div>
+              <b class="dmv-omset-angka" id="dmOmsetBulan">—</b>
             </div>
-            <p class="dm-omset" id="dmOmsetBulan">—</p>
-            <div class="dm-bar-wrap">
-              <div class="dm-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
-            </div>
-            <p class="bd-catatan" id="dmTargetTeks">Target Rp 17.000.000</p>
+            <div class="dmv-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
+            <ul class="dmv-ringkas">
+              <li><button type="button" class="dmv-ringkas-baris" data-dm-ke="verifikasi"><span>Perlu verifikasi</span><b id="dmPerluVerif">0</b><i aria-hidden="true">›</i></button></li>
+              <li><button type="button" class="dmv-ringkas-baris" data-dm-ke="followup"><span>Belum di-follow-up</span><b id="dmBelumFu">0</b><i aria-hidden="true">›</i></button></li>
+              <li><button type="button" class="dmv-ringkas-baris" data-dm-ke="followup"><span>Lead baru 24 jam</span><b id="dmLeadBaru">0</b><i aria-hidden="true">›</i></button></li>
+            </ul>
           </section>
-          <a class="bd-kartu dm-kartu-link" href="#followup">
-            <div class="dm-kartu-atas">
-              <h2 class="bd-judul">Lead baru (24 jam)</h2>
-              <span class="dm-ikon dm-ikon-biru" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="8" r="4"/><path d="M3 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1M19 8v6M16 11h6"/></svg></span>
+          <section class="dmv-kartu dmv-antrean" aria-labelledby="dmJudulAntrean">
+            <h2 class="dmv-kartu-judul" id="dmJudulAntrean">Antrean kerja</h2>
+            <div class="dmv-tab" role="tablist" aria-label="Antrean kerja">
+              <button type="button" role="tab" class="dmv-tab-pil dmv-tab-aktif" data-dm-antre="verifikasi" aria-selected="true">Verifikasi <span id="dmAntreVerif">0</span></button>
+              <button type="button" role="tab" class="dmv-tab-pil" data-dm-antre="followup" aria-selected="false">Follow up <span id="dmAntreFu">0</span></button>
+              <button type="button" role="tab" class="dmv-tab-pil" data-dm-antre="closing" aria-selected="false">Closing <span id="dmAntreClosing">0</span></button>
             </div>
-            <p class="dm-angka" id="dmLeadBaru">—</p>
-          </a>
-          <section class="bd-kartu">
-            <div class="dm-kartu-atas">
-              <h2 class="bd-judul">Belum bayar</h2>
-              <span class="dm-ikon dm-ikon-kuning" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg></span>
-            </div>
-            <p class="dm-angka" id="dmBelumBayar">—</p>
+            <div id="dmAntreanDaftar" class="dmv-antre-daftar"></div>
+            <p class="bd-kosong" id="dmAntreanKosong" hidden>Tidak ada item di antrean ini.</p>
           </section>
-          <section class="bd-kartu">
-            <div class="dm-kartu-atas">
-              <h2 class="bd-judul">Total lead saya</h2>
-              <span class="dm-ikon dm-ikon-abu" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-            </div>
-            <p class="dm-angka" id="dmTotalLead">—</p>
-          </section>
-        </div>
-        <section class="bd-kartu dm-daftar-kartu" aria-labelledby="dmJudulDaftar">
-          <h2 class="bd-judul" id="dmJudulDaftar">Daftar lead saya</h2>
-          <div class="dm-tab-wadah" role="tablist" aria-label="Filter lead">
-            <button type="button" role="tab" class="dm-tab-btn is-aktif" data-dm-tab="belum" aria-selected="true">Belum FU <span class="dm-tab-jml" id="dmTabBelum">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="1" aria-selected="false">FU 1 <span class="dm-tab-jml" id="dmTabFu1">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="2" aria-selected="false">FU 2 <span class="dm-tab-jml" id="dmTabFu2">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="3" aria-selected="false">FU 3 <span class="dm-tab-jml" id="dmTabFu3">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="4" aria-selected="false">FU 4 <span class="dm-tab-jml" id="dmTabFu4">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="closing" aria-selected="false">Closing <span class="dm-tab-jml" id="dmTabClosing">0</span></button>
-            <button type="button" role="tab" class="dm-tab-btn" data-dm-tab="belum_closing" aria-selected="false">Belum closing <span class="dm-tab-jml" id="dmTabBelumClosing">0</span></button>
-          </div>
-          <section class="bd-kartu dm-alur-kartu" aria-labelledby="dmJudulAlur">
-            <h2 class="bd-judul" id="dmJudulAlur">Alur pendaftar</h2>
-            <ol class="dm-alur" id="dmAlur">
-              <li><span class="dm-alur-angka" id="dmAlurLead">0</span><span class="dm-alur-label">Lead</span></li>
-              <li><span class="dm-alur-angka" id="dmAlurDaftar">0</span><span class="dm-alur-label">Pendaftar</span></li>
-              <li><span class="dm-alur-angka" id="dmAlurPurchase">0</span><span class="dm-alur-label">Purchase</span></li>
-              <li><span class="dm-alur-angka" id="dmAlurLunas">0</span><span class="dm-alur-label">Lunas</span></li>
+          <section class="dmv-kartu dmv-alur" aria-labelledby="dmJudulAlur">
+            <h2 class="dmv-kartu-judul" id="dmJudulAlur">Alur pendaftar</h2>
+            <ol class="dmv-alur-langkah" id="dmAlur">
+              <li class="is-selesai"><span class="dmv-titik" aria-hidden="true"></span><span class="dmv-alur-label">Lead</span><b id="dmAlurLead">0</b></li>
+              <li><span class="dmv-titik" aria-hidden="true"></span><span class="dmv-alur-label">Pendaftar</span><b id="dmAlurDaftar">0</b></li>
+              <li><span class="dmv-titik" aria-hidden="true"></span><span class="dmv-alur-label">Purchase</span><b id="dmAlurPurchase">0</b></li>
+              <li><span class="dmv-titik" aria-hidden="true"></span><span class="dmv-alur-label">Lunas</span><b id="dmAlurLunas">0</b></li>
             </ol>
           </section>
-          <div id="dmDaftar" class="dm-daftar-beranda"></div>
-          <p class="bd-kosong" id="dmDaftarKosong" hidden>Tidak ada lead di tab ini.</p>
-        </section>
-        <section class="bd-kartu" aria-labelledby="dmJudulPerlu">
-          <h2 class="bd-judul" id="dmJudulPerlu">Perlu tindakan hari ini</h2>
-          <div id="dmPerlu"></div>
-          <p class="bd-kosong" id="dmPerluKosong" hidden>Belum ada lead yang perlu tindakan.</p>
-          <a class="dm-lihat-semua" href="#followup">Lihat semua lead</a>
-        </section>
+        </div>
         <p class="bd-kosong" id="dmGalat" hidden>Data belum bisa dimuat. Muat ulang halaman.</p>
       </div>
     </section>
@@ -4425,13 +4462,12 @@
       var persen = Math.min(100, Math.round(bulan / target * 100));
       isi('dmNama', d.nama || '—');
       isi('dmOmsetBulan', rupiah(bulan));
-      isi('dmTargetTeks', 'Target minimal ' + rupiah(target) + ' · tercapai ' + persen + '%');
+      isi('dmTargetTeks', 'Target ' + rupiah(target) + ' · ' + persen + '%');
       isi('dmLeadBaru', String(d.lead_baru_24j || 0));
       isi('dmBelumBayar', String(d.belum_bayar || 0));
       isi('dmTotalLead', String(d.total_lead || 0));
       var bar = document.getElementById('dmBar');
       if (bar) { bar.style.width = persen + '%'; bar.setAttribute('aria-valuenow', String(persen)); }
-      buatPerluTindakan(d.perlu_tindakan || []);
       muatDaftarDm();
     }).catch(function () { var g = document.getElementById('dmGalat'); if (g) g.hidden = false; });
   }
@@ -4446,37 +4482,6 @@
     if (l.badge === 'closing') return 'Closing';
     if (l.badge === 'sudah') return 'Sudah FU ' + (l.fu_terakhir || 1);
     return 'Belum di-follow-up';
-  }
-  /* Daftar "Perlu tindakan hari ini": tiga lead prioritas, dibuat dengan textContent */
-  function buatPerluTindakan(daftar) {
-    var wadah = document.getElementById('dmPerlu');
-    var kosong = document.getElementById('dmPerluKosong');
-    if (!wadah) return;
-    wadah.textContent = '';
-    if (kosong) kosong.hidden = daftar.length > 0;
-    daftar.forEach(function (l) {
-      var baris = document.createElement('div');
-      baris.className = 'dm-perlu-baris';
-      var teks = document.createElement('div');
-      teks.className = 'dm-perlu-teks';
-      var nama = document.createElement('b');
-      nama.textContent = l.nama || '—';
-      var kelas = document.createElement('span');
-      kelas.textContent = [l.kelas, l.harga ? 'Rp ' + Number(l.harga).toLocaleString('id-ID') : ''].filter(Boolean).join(' · ');
-      teks.appendChild(nama);
-      teks.appendChild(kelas);
-      var badge = document.createElement('span');
-      badge.className = 'dm-tahap ' + badgeKelas(l.badge);
-      badge.textContent = badgeTeks(l);
-      var tombol = document.createElement('a');
-      tombol.className = 'dm-catat-link';
-      tombol.href = '#followup';
-      tombol.textContent = 'Catat follow up';
-      baris.appendChild(teks);
-      baris.appendChild(badge);
-      baris.appendChild(tombol);
-      wadah.appendChild(baris);
-    });
   }
   /* Daftar lead di Beranda: satu pemanggilan dm_daftar_lead('semua'), lalu tab dan hitungan dihitung di browser */
   var DM_TAB = 'belum';
@@ -4493,102 +4498,141 @@
     var d = new Date(t);
     return isNaN(d.getTime()) ? '' : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
   }
+  var DM_ANTRE = 'verifikasi';
+  var DM_HITUNG = null;
+  var DM_V2_SIAP = false;
+  function dmIsi(id, teks) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = teks;
+  }
+  function dmAlurIsi(id, n) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = String(n);
+    var li = el.closest('li');
+    if (li && !li.classList.contains('is-selesai')) li.classList.toggle('is-isi', n > 0);
+  }
   function gambarDaftarDm() {
-    var wadah = document.getElementById('dmDaftar');
-    var kosong = document.getElementById('dmDaftarKosong');
-    if (!wadah) return;
-    var hitung = { belum: 0, '1': 0, '2': 0, '3': 0, '4': 0, closing: 0, belum_closing: 0 };
     var daftar = DM_SEMUA.filter(function (l) {
       return !DM_LIHAT_OWNER || String(l.dealmaker_email || '').toLowerCase() === DM_PIC_AKTIF;
     });
-    ['belum', '1', '2', '3', '4', 'closing', 'belum_closing'].forEach(function (t) {
-      hitung[t] = daftar.filter(function (l) { return cocokTabDm(l, t); }).length;
-    });
-    isi('dmTabBelum', hitung.belum); isi('dmTabFu1', hitung['1']); isi('dmTabFu2', hitung['2']);
-    isi('dmTabFu3', hitung['3']); isi('dmTabFu4', hitung['4']);
-    isi('dmTabClosing', hitung.closing); isi('dmTabBelumClosing', hitung.belum_closing);
-    isi('dmAlurLead', daftar.length);
-    isi('dmAlurDaftar', daftar.filter(function (l) { return l.sumber === 'pendaftaran' && l.status === 'menunggu_bayar'; }).length);
-    isi('dmAlurPurchase', daftar.filter(function (l) { return l.status === 'menunggu_verifikasi'; }).length);
-    isi('dmAlurLunas', daftar.filter(function (l) { return l.status === 'diterima'; }).length);
-    var tampil = daftar.filter(function (l) { return cocokTabDm(l, DM_TAB); }).slice(0, 50);
+    var verif = daftar.filter(function (l) { return l.status === 'menunggu_verifikasi' && l.sumber === 'pendaftaran'; });
+    var fu = daftar.filter(function (l) { return l.status !== 'diterima'; });
+    var belumFu = fu.filter(function (l) { return (l.tahap_sudah || []).length === 0; });
+    var closing = daftar.filter(function (l) { return l.status === 'diterima'; });
+    DM_HITUNG = { verif: verif, fu: fu, closing: closing };
+    dmIsi('dmPerluVerif', String(verif.length));
+    dmIsi('dmBelumFu', String(belumFu.length));
+    dmIsi('dmAntreVerif', String(verif.length));
+    dmIsi('dmAntreFu', String(fu.length));
+    dmIsi('dmAntreClosing', String(closing.length));
+    dmAlurIsi('dmAlurLead', daftar.length);
+    dmAlurIsi('dmAlurDaftar', daftar.filter(function (l) { return l.sumber === 'pendaftaran' && l.status === 'menunggu_bayar'; }).length);
+    dmAlurIsi('dmAlurPurchase', verif.length);
+    dmAlurIsi('dmAlurLunas', closing.length);
+    if (!DM_V2_SIAP) bindDmV2();
+    gambarAntreanDm();
+  }
+  function gambarAntreanDm() {
+    var wadah = document.getElementById('dmAntreanDaftar');
+    var kosong = document.getElementById('dmAntreanKosong');
+    if (!wadah || !DM_HITUNG) return;
+    var list = DM_ANTRE === 'verifikasi' ? DM_HITUNG.verif : (DM_ANTRE === 'followup' ? DM_HITUNG.fu : DM_HITUNG.closing);
+    var tampil = list.slice(0, 50);
     wadah.textContent = '';
     if (kosong) kosong.hidden = tampil.length > 0;
     tampil.forEach(function (l) {
-      var blok = document.createElement('div');
-      blok.className = 'dm-lead-blok';
-      var a = document.createElement('a');
-      a.className = 'dm-lead-kartu';
-      a.href = '#followup';
-      var info = document.createElement('div');
-      info.className = 'dm-lead-info';
-      var nama = document.createElement('b');
-      nama.textContent = l.nama || '(tanpa nama)';
-      var meta = document.createElement('span');
-      meta.className = 'dm-lead-meta';
-      meta.textContent = [l.kelas, 'Masuk ' + tanggalMasuk(l.dibuat_at)].filter(Boolean).join(' · ');
-      info.appendChild(nama);
-      info.appendChild(meta);
-      var kanan = document.createElement('div');
-      kanan.className = 'dm-lead-kanan';
-      var harga = document.createElement('span');
-      harga.className = 'dm-lead-harga';
-      harga.textContent = l.harga ? 'Rp ' + Number(l.harga).toLocaleString('id-ID') : '—';
-      var badge = document.createElement('span');
-      badge.className = 'dm-tahap ' + badgeKelas(l.badge);
-      badge.textContent = badgeTeks(l);
-      kanan.appendChild(harga);
-      kanan.appendChild(badge);
-      a.appendChild(info);
-      a.appendChild(kanan);
-      blok.appendChild(a);
-      if (l.status === 'menunggu_verifikasi' && l.sumber === 'pendaftaran') {
-        blok.appendChild(buatAksiVerifikasi(l));
-      }
-      wadah.appendChild(blok);
+      wadah.appendChild(DM_ANTRE === 'verifikasi' ? buatKartuVerifikasi(l) : buatBarisLeadDm(l));
     });
   }
-  /* Bukti transfer sudah diunggah peserta: PIC memeriksa lalu menandai valid */
-  function buatAksiVerifikasi(l) {
-    var aksi = document.createElement('div');
-    aksi.className = 'dm-verif';
-    var teks = document.createElement('span');
-    teks.className = 'dm-verif-teks';
-    teks.textContent = 'Bukti transfer sudah masuk. Periksa, lalu konfirmasi jika valid.';
-    var rincian = document.createElement('small');
-    rincian.className = 'dm-verif-rincian';
-    var bagian = [];
-    if (l.bukti_at) bagian.push('Diunggah ' + waktuWib(l.bukti_at));
-    if (l.total) bagian.push('Tagihan Rp ' + Number(l.total).toLocaleString('id-ID') + ' (samakan dengan nominal di bukti)');
-    rincian.textContent = bagian.join(' · ');
-    var pesan = document.createElement('small');
-    pesan.className = 'dm-verif-pesan';
-    pesan.setAttribute('role', 'status');
-    var tombol = document.createElement('button');
-    tombol.type = 'button';
-    tombol.className = 'dm-verif-btn';
-    tombol.textContent = 'Bukti valid, konfirmasi';
-    tombol.addEventListener('click', function () {
-      var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
-      if (!sb) return;
-      if (!window.confirm('Tandai bukti transfer ' + (l.nama || '') + ' sebagai valid?')) return;
-      tombol.disabled = true; pesan.textContent = 'Menyimpan…';
-      sb.rpc('dm_verifikasi_bukti', { p_id: Number(l.id) }).then(function (r) {
-        if (r.error) {
-          tombol.disabled = false;
-          pesan.textContent = (r.error.message || 'Gagal menyimpan. Coba lagi.').replace(/^.*?ERROR:\s*/, '');
-          return;
-        }
-        muatDaftarDm();
-        if (typeof muatDealMaker === 'function') muatDealMaker();
+  function dmPilihAntre(nama) {
+    DM_ANTRE = nama;
+    document.querySelectorAll('[data-dm-antre]').forEach(function (x) {
+      var aktif = x.getAttribute('data-dm-antre') === nama;
+      x.classList.toggle('dmv-tab-aktif', aktif);
+      x.setAttribute('aria-selected', aktif ? 'true' : 'false');
+    });
+    gambarAntreanDm();
+  }
+  function bindDmV2() {
+    DM_V2_SIAP = true;
+    document.querySelectorAll('[data-dm-antre]').forEach(function (b) {
+      b.addEventListener('click', function () { dmPilihAntre(b.getAttribute('data-dm-antre')); });
+    });
+    document.querySelectorAll('[data-dm-ke]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        dmPilihAntre(b.getAttribute('data-dm-ke') === 'verifikasi' ? 'verifikasi' : 'followup');
+        var judul = document.getElementById('dmJudulAntrean');
+        if (judul && judul.scrollIntoView) judul.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
-    aksi.appendChild(teks);
-    aksi.appendChild(rincian);
-    aksi.appendChild(buatDropdownBukti(l));
-    aksi.appendChild(tombol);
-    aksi.appendChild(pesan);
-    return aksi;
+  }
+  function buatBarisLeadDm(l) {
+    var baris = document.createElement('article');
+    baris.className = 'dmv-lead';
+    var teks = document.createElement('div');
+    teks.className = 'dmv-lead-teks';
+    teks.appendChild(sel('b', l.nama || '(tanpa nama)'));
+    teks.appendChild(sel('span', [l.kelas, l.harga ? 'Rp ' + Number(l.harga).toLocaleString('id-ID') : ''].filter(Boolean).join(' · ')));
+    baris.appendChild(teks);
+    baris.appendChild(pkEl('span', 'dm-tahap ' + badgeKelas(l.badge), badgeTeks(l)));
+    if (l.status !== 'diterima') {
+      var catat = pkEl('a', 'dmv-catat', 'Catat follow up');
+      catat.href = '#followup';
+      baris.appendChild(catat);
+    }
+    return baris;
+  }
+  /* Bukti transfer sudah masuk: PIC memeriksa, lalu menandai valid atau meminta unggah ulang */
+  function buatKartuVerifikasi(l) {
+    var kartu = document.createElement('article');
+    kartu.className = 'dmv-verif';
+    var kepala = document.createElement('div');
+    kepala.className = 'dmv-verif-kepala';
+    var id = document.createElement('div');
+    id.className = 'dmv-verif-id';
+    id.appendChild(sel('b', l.nama || '(tanpa nama)'));
+    id.appendChild(sel('span', [l.kelas, l.total ? 'Rp ' + Number(l.total).toLocaleString('id-ID') : ''].filter(Boolean).join(' · ')));
+    kepala.appendChild(id);
+    kepala.appendChild(pkEl('span', 'dmv-badge-kuning', 'Bukti transfer masuk'));
+    kartu.appendChild(kepala);
+    kartu.appendChild(buatDropdownBukti(l));
+    var aksi = document.createElement('div');
+    aksi.className = 'dmv-verif-aksi';
+    var pesan = pkEl('p', 'dmv-verif-pesan', '');
+    pesan.setAttribute('role', 'status');
+    var valid = pkEl('button', 'dmv-tombol-biru', 'Bukti valid, konfirmasi');
+    valid.type = 'button';
+    var ulang = pkEl('button', 'dmv-tombol-merah', 'Minta bukti ulang');
+    ulang.type = 'button';
+    function galat(r) { return (r.error && r.error.message || 'Gagal menyimpan. Coba lagi.').replace(/^.*?ERROR:\s*/, ''); }
+    function setelahBerhasil() {
+      muatDaftarDm();
+      if (typeof muatDealMaker === 'function') muatDealMaker();
+    }
+    valid.addEventListener('click', function () {
+      var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+      if (!sb || !window.confirm('Tandai bukti transfer ' + (l.nama || '') + ' sebagai valid?')) return;
+      valid.disabled = true; ulang.disabled = true; pesan.textContent = 'Menyimpan…';
+      sb.rpc('dm_verifikasi_bukti', { p_id: Number(l.id) }).then(function (r) {
+        if (r.error) { valid.disabled = false; ulang.disabled = false; pesan.textContent = galat(r); return; }
+        setelahBerhasil();
+      });
+    });
+    ulang.addEventListener('click', function () {
+      var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+      if (!sb || !window.confirm('Minta ' + (l.nama || 'peserta') + ' mengunggah ulang bukti transfer?')) return;
+      valid.disabled = true; ulang.disabled = true; pesan.textContent = 'Menyimpan…';
+      sb.rpc('dm_minta_bukti_ulang', { p_id: Number(l.id) }).then(function (r) {
+        if (r.error) { valid.disabled = false; ulang.disabled = false; pesan.textContent = galat(r); return; }
+        setelahBerhasil();
+      });
+    });
+    aksi.appendChild(valid);
+    aksi.appendChild(ulang);
+    kartu.appendChild(aksi);
+    kartu.appendChild(pesan);
+    return kartu;
   }
   function waktuWib(iso) {
     var d = new Date(iso);
