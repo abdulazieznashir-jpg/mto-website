@@ -142,6 +142,13 @@
   .dm-verif-teks { font-size: 13px; color: #6B4E1E; flex: 1 1 200px; min-width: 0; }
   .dm-verif-btn { min-height: 40px; border: 0; border-radius: 999px; padding: 8px 14px; font: 600 13px Inter, system-ui, sans-serif; color: #fff; background: #1E6B3A; cursor: pointer; }
   .dm-verif-btn:disabled { background: #B9C8BE; cursor: default; }
+  .dm-bukti { flex-basis: 100%; border: 1px solid #ECE7DE; border-radius: 12px; background: #FFFFFF; }
+  .dm-bukti > summary { cursor: pointer; padding: 10px 12px; min-height: 44px; display: flex; align-items: center; font: 600 13px Inter, system-ui, sans-serif; color: #1D1D1F; list-style: none; }
+  .dm-bukti > summary::-webkit-details-marker { display: none; }
+  .dm-bukti > summary::after { content: '▾'; margin-left: auto; color: #6E6E73; transition: transform .2s; }
+  .dm-bukti[open] > summary::after { transform: rotate(180deg); }
+  .dm-bukti-isi { padding: 0 12px 12px; font-size: 13px; color: #6E6E73; }
+  .dm-bukti-img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 10px; }
   .dm-verif-pesan { flex-basis: 100%; color: #D93025; }
   .dm-verif-pesan:empty { display: none; }
   .dm-lead-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -4270,9 +4277,49 @@
       });
     });
     aksi.appendChild(teks);
+    aksi.appendChild(buatDropdownBukti(l));
     aksi.appendChild(tombol);
     aksi.appendChild(pesan);
     return aksi;
+  }
+  /* Dropdown bukti transfer: dibuka langsung di tempat, tanpa pindah halaman */
+  function buatDropdownBukti(l) {
+    var detail = document.createElement('details');
+    detail.className = 'dm-bukti';
+    var judul = document.createElement('summary');
+    judul.textContent = 'Bukti transfer';
+    var isi = document.createElement('div');
+    isi.className = 'dm-bukti-isi';
+    isi.textContent = 'Memuat bukti…';
+    detail.appendChild(judul);
+    detail.appendChild(isi);
+    var sudahMuat = false;
+    detail.addEventListener('toggle', function () {
+      if (!detail.open || sudahMuat) return;
+      var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+      if (!sb) return;
+      sudahMuat = true;
+      sb.rpc('dm_bukti_path', { p_id: Number(l.id) }).then(function (r) {
+        if (r.error || !r.data) { isi.textContent = 'Bukti belum bisa dimuat.'; sudahMuat = false; return; }
+        sb.storage.from('bukti-transfer').createSignedUrl(r.data, 300).then(function (x) {
+          if (x.error || !x.data) { isi.textContent = 'Bukti belum bisa dimuat.'; sudahMuat = false; return; }
+          isi.textContent = '';
+          if (/\.pdf$/i.test(r.data)) {
+            var tautan = document.createElement('a');
+            tautan.href = x.data.signedUrl; tautan.target = '_blank'; tautan.rel = 'noopener';
+            tautan.textContent = 'Buka bukti (PDF)';
+            isi.appendChild(tautan);
+          } else {
+            var gambar = document.createElement('img');
+            gambar.className = 'dm-bukti-img';
+            gambar.alt = 'Bukti transfer ' + (l.nama || '');
+            gambar.src = x.data.signedUrl;
+            isi.appendChild(gambar);
+          }
+        });
+      });
+    });
+    return detail;
   }
   function isi(id, teks) { var el = document.getElementById(id); if (el) el.textContent = String(teks); }
   var DM_TAB_SIAP = false;
