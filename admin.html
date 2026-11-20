@@ -125,6 +125,13 @@
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .dm-kisi .bd-kartu { margin-bottom: 0; min-width: 0; }
+  .dm-kartu-atas { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .dm-kartu-atas .bd-judul { min-width: 0; }
+  .dm-ikon { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+  .dm-ikon-hijau { color: #15803d; background: #dcfce7; }
+  .dm-ikon-biru { color: #1d4ed8; background: #dbeafe; }
+  .dm-ikon-kuning { color: #a16207; background: #fef9c3; }
+  .dm-ikon-abu { color: #475569; background: #e2e8f0; }
   .dm-kartu-omset { background: #FDF8EC; border-color: #EBDCAE; }
   .dm-kartu-link { display: block; text-decoration: none; color: inherit; }
   .dm-angka { margin: 6px 0 0; font-size: 30px; font-weight: 800; line-height: 1.1; color: var(--adm-ink, #1D1D1F); }
@@ -928,7 +935,10 @@
         </div>
         <div class="dm-kisi">
           <section class="bd-kartu dm-kartu-omset" aria-labelledby="dmJudulOmset">
-            <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
+            <div class="dm-kartu-atas">
+              <h2 class="bd-judul" id="dmJudulOmset">Omset bulan ini</h2>
+              <span class="dm-ikon dm-ikon-hijau" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            </div>
             <p class="dm-omset" id="dmOmsetBulan">—</p>
             <div class="dm-bar-wrap">
               <div class="dm-bar" role="progressbar" aria-label="Progres target minimal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dmBar"></span></div>
@@ -936,15 +946,24 @@
             <p class="bd-catatan" id="dmTargetTeks">Target Rp 17.000.000</p>
           </section>
           <a class="bd-kartu dm-kartu-link" href="#followup">
-            <h2 class="bd-judul">Lead baru (24 jam)</h2>
+            <div class="dm-kartu-atas">
+              <h2 class="bd-judul">Lead baru (24 jam)</h2>
+              <span class="dm-ikon dm-ikon-biru" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="8" r="4"/><path d="M3 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1M19 8v6M16 11h6"/></svg></span>
+            </div>
             <p class="dm-angka" id="dmLeadBaru">—</p>
           </a>
           <section class="bd-kartu">
-            <h2 class="bd-judul">Belum bayar</h2>
+            <div class="dm-kartu-atas">
+              <h2 class="bd-judul">Belum bayar</h2>
+              <span class="dm-ikon dm-ikon-kuning" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg></span>
+            </div>
             <p class="dm-angka" id="dmBelumBayar">—</p>
           </section>
           <section class="bd-kartu">
-            <h2 class="bd-judul">Total lead saya</h2>
+            <div class="dm-kartu-atas">
+              <h2 class="bd-judul">Total lead saya</h2>
+              <span class="dm-ikon dm-ikon-abu" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            </div>
             <p class="dm-angka" id="dmTotalLead">—</p>
           </section>
         </div>
