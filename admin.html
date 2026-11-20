@@ -80,6 +80,9 @@
   .adm-topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .adm-topbar-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .adm-topbar-aksi { display: flex; align-items: center; gap: 8px; }
+  .adm-keluar { min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #F0B7B0; background: #FDECEA; color: #B42318; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .adm-keluar:hover { background: #FAD4CF; }
+  .adm-keluar:disabled { opacity: 0.55; cursor: default; }
   .adm-ikon-btn {
     position: relative; width: 40px; height: 40px; border-radius: 999px; border: 0;
     background: var(--adm-bg, #FAF8F4); color: var(--adm-ink, #1D1D1F); font-size: 18px; cursor: pointer;
@@ -851,6 +854,7 @@
       <div class="adm-topbar-aksi">
         <button type="button" class="adm-ikon-btn" id="topCari" aria-label="Cari murid" aria-controls="muridCari">⌕</button>
         <span class="adm-avatar" aria-hidden="true">A</span>
+        <button type="button" class="adm-keluar" id="admKeluar">Keluar</button>
         <div class="adm-switch" id="admSwitch" hidden>
           <button type="button" class="adm-switch-btn" id="admSwitchBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="admSwitchMenu">Switch Account</button>
           <div class="adm-switch-menu" id="admSwitchMenu" role="menu" hidden>
@@ -1411,6 +1415,13 @@
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
     window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (email === DEALMAKER ? 'dealmaker' : 'aftersales') };
+    /* Tombol Keluar: hapus sesi lalu kembali ke halaman masuk */
+    var tombolKeluar = document.getElementById('admKeluar');
+    if (tombolKeluar) tombolKeluar.addEventListener('click', function () {
+      tombolKeluar.disabled = true;
+      try { sessionStorage.removeItem('mto_tampilan'); } catch (e) { /* storage diblokir: tidak apa-apa */ }
+      sb.auth.signOut().then(function () { window.location.replace('login'); }, function () { window.location.replace('login'); });
+    });
     pasangSwitch();
     pasangFollowUp();
     terapkanPeranUI();
