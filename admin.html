@@ -1671,7 +1671,7 @@
   /* Percepat: permintaan baca yang sama (nama dan argumen sama) yang sedang berjalan dipakai bersama, tidak dikirim dua kali */
   (function () {
     var BACA = ['admin_daftar_pengajar', 'admin_kapasitas_halaqoh', 'admin_jadwal_gelombang', 'admin_daftar_guru_murid',
-      'admin_ringkasan', 'admin_ringkasan_lengkap', 'admin_daftar_lunas', 'admin_daftar_belum_guru', 'admin_daftar_murid_baru'];
+      'admin_ringkasan', 'admin_ringkasan_lengkap', 'admin_daftar_lunas', 'admin_daftar_belum_guru', 'admin_daftar_murid_baru', 'admin_murid_periode'];
     var asliRpc0 = sb.rpc.bind(sb);
     /* Pencatat waktu: lihat window.MTO_WAKTU di konsol browser (nama fungsi, mulai ms, lama ms) untuk mencari yang lambat */
     window.MTO_WAKTU = [];
@@ -1732,6 +1732,7 @@
       pengaturan: ['pengaturan'], transkrip: ['transkrip'], notifikasi: ['notif']
     };
     var rute = (window.location.hash || '').replace(/^#/, '');
+    if (rute === 'pengajar' && window.MTO_PASTIKAN_HALAQOH) window.MTO_PASTIKAN_HALAQOH();
     var awal = PRIORITAS[rute] || PRIORITAS.dashboard;
     var sudah = {};
     function jalankan(kunci) {
@@ -3109,8 +3110,14 @@
   if (hqTutupLembar) hqTutupLembar.addEventListener('click', function () { hqBukaLembar(false); });
   var hqLembarEl = document.getElementById('hqLembar');
   if (hqLembarEl) hqLembarEl.addEventListener('click', function (e) { if (e.target === hqLembarEl) hqBukaLembar(false); });
-  muatPeriodeHalaqoh();
-  hqvMuatMenunggu();
+  /* Percepat: data Halaqoh (periode, murid, banner) hanya diambil saat halaman Halaqoh dibuka */
+  var HQ_DIMUAT = false;
+  window.MTO_PASTIKAN_HALAQOH = function () {
+    if (HQ_DIMUAT) return;
+    HQ_DIMUAT = true;
+    muatPeriodeHalaqoh();
+    hqvMuatMenunggu();
+  };
   function barisHq(label, nilai, persen, kelasBar) {
     var r = document.createElement('div');
     r.className = 'hq-baris';
@@ -4818,7 +4825,11 @@
       });
     }
   }
-  window.addEventListener('hashchange', function () { if (window.MTO_ADMIN) tampilRute(); });
+  window.addEventListener('hashchange', function () {
+    if (!window.MTO_ADMIN) return;
+    tampilRute();
+    if (location.hash === '#pengajar' && window.MTO_PASTIKAN_HALAQOH) window.MTO_PASTIKAN_HALAQOH();
+  });
   window.MTO_TAMPIL_RUTE = tampilRute;
 })();
 </script>
