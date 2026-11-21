@@ -11,8 +11,8 @@
     afiliasi: 'afiliasi',
     bantuan: 'bantuan'
   };
-  // Layar di bawah Saya: bar bawah tetap menandai Saya.
-  var TAB_INDUK = { pengaturan: 'saya', afiliasi: 'saya', bantuan: 'saya' };
+  // Afiliasi dan Bantuan berada di bawah Saya; Pengaturan punya pintasan sendiri di bar bawah.
+  var TAB_INDUK = { afiliasi: 'saya', bantuan: 'saya' };
   var panes = document.querySelectorAll('.pf-pane');
   var tabs = document.querySelectorAll('.pf-tab[data-tab]');
 
