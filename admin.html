@@ -149,7 +149,7 @@
   .dm-tahap-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
   .dm-tahap { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; background: #EFEFF1; color: #4A4A50; border: 0; }
   .dm-tahap-belum { background: #F1F1F3; color: #55555C; border-color: #DCDCE0; }
-  .dm-tahap-ok { background: #9A6F1E; color: #FFFFFF; }
+  .dm-tahap-ok { background: #8B5A2B; color: #FFFFFF; }
   .dm-tahap-closing { background: #E4F3E8; color: #1E7A3C; border-color: #BFE3C9; }
   /* Deal Maker v2: sesuai mockup (HP dan PC) */
   .dmv { padding-top: 8px; padding-bottom: 32px; }
@@ -4785,10 +4785,10 @@
     teks.appendChild(atas); teks.appendChild(meta);
     var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
     var sudah = l.tahap_sudah || [];
-    /* Tag menyala hanya untuk tahap terakhir yang dicapai lead (sesuai referensi) */
+    /* Tag menyala dari FU1 sampai tahap terakhir yang sudah dicapai lead */
     var tahapAktif = Number(l.fu_terakhir) || Math.max.apply(null, [0].concat(sudah));
     for (var t = 1; t <= 5; t++) {
-      var b = document.createElement('span'); b.className = 'dm-tahap' + (t === tahapAktif ? ' dm-tahap-ok' : '');
+      var b = document.createElement('span'); b.className = 'dm-tahap' + (t <= tahapAktif ? ' dm-tahap-ok' : '');
       b.textContent = 'FU' + t;
       wrapTahap.appendChild(b);
     }
