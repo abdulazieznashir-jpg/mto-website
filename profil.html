@@ -94,6 +94,13 @@
   .af-link { margin: 0 0 14px; font-size: 13px; color: var(--pf-muted); overflow-wrap: anywhere; }
   .af-cek { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-primary); }
   .af-cek input { width: auto; }
+  .bp-wrap { position: relative; }
+  .bp-wrap input { width: 100%; }
+  .bp-list { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 50; margin: 0; padding: 4px 0; list-style: none; background: #fff; border: 1px solid #D2D2D7; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); max-height: 240px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .bp-list[hidden] { display: none; }
+  .bp-opsi { padding: 12px 14px; font-size: 16px; color: var(--text-primary); cursor: pointer; }
+  .bp-opsi:hover, .bp-opsi.aktif { background: #F2F2F7; }
+  .bp-kosong { padding: 12px 14px; font-size: 14px; color: #6E6E73; }
 
   /* TAB AKUN */
   .pf-tabs { max-width: 680px; margin: 0 auto; padding: 16px max(16px, env(safe-area-inset-left, 0px)) 0 max(16px, env(safe-area-inset-right, 0px)); display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
@@ -1145,7 +1152,7 @@
 
     <form id="formAfiliasi" class="pf-edit hidden" novalidate>
       <input type="text" name="nama" placeholder="Nama pemilik rekening" aria-label="Nama pemilik rekening" autocomplete="name">
-      <input type="text" name="bank" placeholder="Bank atau e-wallet, misalnya BCA atau DANA" aria-label="Bank atau e-wallet">
+      <input type="text" name="bank" placeholder="Pilih atau cari bank / e-wallet" aria-label="Bank atau e-wallet" data-bank-pilih>
       <input type="text" name="nomor" inputmode="numeric" placeholder="Nomor rekening" aria-label="Nomor rekening">
       <label class="af-cek"><input type="checkbox" name="setuju"> Saya setuju dengan syarat program afiliasi</label>
       <div class="pf-btns">
@@ -1299,6 +1306,7 @@
 
 <script src="js/pw.js?v=9b8aff0"></script>
 <script src="js/mahkota.js?v=owner-abdul"></script>
+<script src="js/bank-pilih.js?v=1"></script>
 <script src="js/afiliasi.js?v=9b8aff0"></script>
 <script src="js/profil.js?v=owner-ke-admin-2"></script>
 <script src="js/tanggal-lahir.js?v=9b8aff0"></script>
