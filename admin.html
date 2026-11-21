@@ -111,7 +111,19 @@
   .dm-bar-wrap { margin-bottom: 8px; }
   .dm-bar { height: 10px; border-radius: 999px; background: var(--adm-line, #ECE7DE); overflow: hidden; }
   .dm-bar span { display: block; height: 100%; width: 0; background: #2FA33A; border-radius: 999px; transition: width .3s; }
-  .dm-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dm-filter { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .dm-filter::-webkit-scrollbar { display: none; }
+  .dm-filter button { flex: 0 0 auto; }
+  .dm-caption { font-size: 13px; font-style: italic; color: var(--adm-muted, #6E6E73); margin: 4px 0 12px; }
+  .dm-cari { width: 100%; box-sizing: border-box; min-height: 44px; margin: 12px 0 4px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--adm-line, #D9D4CB); background: var(--adm-surface, #FFFFFF); font: inherit; font-size: 16px; color: var(--adm-ink, #1D1D1F); }
+  .dm-fu-atas { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .dm-fu-nama { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .dm-wa { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%; background: #25D366; display: inline-flex; align-items: center; justify-content: center; }
+  .dm-wa svg { width: 20px; height: 20px; }
+  .dm-status { flex: 0 0 auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+  .dm-status-belum { background: #FBEBC8; color: #7A5A12; }
+  .dm-status-closing { background: #DDF2E3; color: #17642F; }
+  .dm-daftar .dm-tahap { color: #4A4A50; }
   .dm-filter button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--adm-line, #ECE7DE); background: var(--adm-surface, #FFFFFF); color: var(--adm-ink, #1D1D1F); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
   .dm-filter button[aria-pressed="true"] { background: var(--adm-gold-soft, #F6EEDC); border-color: var(--adm-gold, #B8912F); color: var(--adm-gold-ink, #8A6A1F); }
   .dm-filter button b { margin-left: 4px; }
@@ -1189,6 +1201,7 @@
       <div class="bd-wrap">
         <h1 class="adm-dash-judul">Follow Up</h1>
         <p class="adm-dash-sub">Lead yang perlu dihubungi, per tahap follow up</p>
+        <p class="dm-caption">Tahap FU diperbarui otomatis dari transkrip</p>
         <div class="dm-filter" role="group" aria-label="Filter follow up">
           <button type="button" data-fu="belum" aria-pressed="true">Belum FU <b id="fuBelum">0</b></button>
           <button type="button" data-fu="fu1" aria-pressed="false">Sudah FU 1 <b id="fu1">0</b></button>
@@ -1199,8 +1212,9 @@
           <button type="button" data-fu="belum_closing" aria-pressed="false">Belum closing <b id="fuBelumClosing">0</b></button>
           <button type="button" data-fu="semua" aria-pressed="false">Semua <b id="fuSemua">0</b></button>
         </div>
+        <input type="search" id="fuCari" class="dm-cari" placeholder="Cari nama atau nomor" aria-label="Cari nama atau nomor">
         <div class="dm-daftar" id="fuDaftar"></div>
-        <p class="bd-kosong" id="fuKosong" hidden>Tidak ada lead di filter ini.</p>
+        <p class="bd-kosong" id="fuKosong" hidden><b>Tidak ada lead di tahap ini</b><br>Coba pilih tahap follow up lainnya.</p>
         <p class="bd-kosong" id="fuGalat" hidden>Data follow up belum bisa dimuat. Muat ulang halaman.</p>
       </div>
     </section>
@@ -4730,8 +4744,24 @@
     var teks = document.createElement('div'); teks.className = 'dm-lead-teks';
     var nama = document.createElement('span'); nama.className = 'dm-lead-nama'; nama.textContent = l.nama || '(tanpa nama)';
     var meta = document.createElement('span'); meta.className = 'dm-lead-meta';
-    meta.textContent = [waTampilFU(l.wa), kelasLabel(l.kelas), tanggalFU(l.dibuat_at)].filter(Boolean).join(' · ');
-    teks.appendChild(nama); teks.appendChild(meta);
+    var tgl = tanggalFU(l.dibuat_at);
+    meta.textContent = [waTampilFU(l.wa), kelasLabel(l.kelas), tgl ? tgl + ' WIB' : ''].filter(Boolean).join(' · ');
+    var atas = document.createElement('div'); atas.className = 'dm-fu-atas';
+    var namaWrap = document.createElement('div'); namaWrap.className = 'dm-fu-nama';
+    namaWrap.appendChild(nama);
+    var digit = String(l.wa || '').replace(/\D/g, '');
+    if (digit) {
+      if (digit.charAt(0) === '0') digit = '62' + digit.slice(1);
+      else if (digit.indexOf('62') !== 0) digit = '62' + digit;
+      var wa = document.createElement('a'); wa.className = 'dm-wa'; wa.href = 'https://wa.me/' + digit;
+      wa.target = '_blank'; wa.rel = 'noopener'; wa.setAttribute('aria-label', 'Chat WhatsApp ' + (l.nama || 'peserta'));
+      wa.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>';
+      namaWrap.appendChild(wa);
+    }
+    atas.appendChild(namaWrap);
+    var sudahClosing = l.status === 'diterima';
+    atas.appendChild(pkEl('span', 'dm-status ' + (sudahClosing ? 'dm-status-closing' : 'dm-status-belum'), sudahClosing ? 'Closing' : 'Belum closing'));
+    teks.appendChild(atas); teks.appendChild(meta);
     var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
     var sudah = l.tahap_sudah || [];
     for (var t = 1; t <= 4; t++) {
@@ -4800,6 +4830,29 @@
     }
     return baris;
   }
+  var FU_DATA = [];
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'fuCari') gambarFuDaftar();
+  });
+  /* Menampilkan daftar follow up sesuai kolom cari (nama, atau sebagian nomor WA) */
+  function gambarFuDaftar() {
+    var wadah = document.getElementById('fuDaftar');
+    var kosong = document.getElementById('fuKosong');
+    var kolom = document.getElementById('fuCari');
+    if (!wadah) return;
+    var teks = kolom ? (kolom.value || '').trim().toLowerCase() : '';
+    /* Nomor hanya dicocokkan bila kolom cari berisi angka (dengan spasi, + atau -) saja */
+    var nomorSaja = /^[0-9+\- ]+$/.test(teks);
+    var angka = nomorSaja ? teks.replace(/\D/g, '') : '';
+    var hasil = FU_DATA.filter(function (l) {
+      if (!teks) return true;
+      if ((l.nama || '').toLowerCase().indexOf(teks) > -1) return true;
+      return !!angka && String(l.wa || '').replace(/\D/g, '').indexOf(angka) > -1;
+    });
+    wadah.innerHTML = '';
+    hasil.forEach(function (l) { wadah.appendChild(buatBarisFU(l)); });
+    if (kosong) kosong.hidden = hasil.length > 0;
+  }
   function muatFollowUp() {
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
     var wadah = document.getElementById('fuDaftar');
@@ -4814,11 +4867,13 @@
       peta.forEach(function (p) { var el = document.getElementById(p[1]); if (el) el.textContent = String(h[p[0]] || 0); });
       wadah.innerHTML = '';
       var daftar = r.data.daftar || [];
-      if (kosong) kosong.hidden = daftar.length > 0;
-      daftar.forEach(function (l) { wadah.appendChild(buatBarisFU(l)); });
+      FU_DATA = daftar;
+      gambarFuDaftar();
     }).catch(function () { var g = document.getElementById('fuGalat'); if (g) g.hidden = false; });
   }
   function pasangFollowUp() {
+    var kolomCari = document.getElementById('fuCari');
+    if (kolomCari) kolomCari.addEventListener('input', gambarFuDaftar);
     var tombol = document.querySelectorAll('[data-fu]');
     for (var i = 0; i < tombol.length; i++) {
       tombol[i].addEventListener('click', function (e) {
