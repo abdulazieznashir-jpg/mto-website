@@ -81,8 +81,8 @@
   .adm-topbar-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   @media (max-width: 480px) { .adm-topbar-nama { display: none; } }
   .adm-topbar-aksi { display: flex; align-items: center; gap: 8px; }
-  .adm-keluar { min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #F0B7B0; background: #FDECEA; color: #B42318; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-  .adm-keluar:hover { background: #FAD4CF; }
+  .adm-keluar { min-height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E6C9A0; background: #FBF3E4; color: #8A6A1F; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .adm-keluar:hover { background: #F6EAD2; }
   .adm-keluar:disabled { opacity: 0.55; cursor: default; }
   .adm-ikon-btn {
     position: relative; width: 40px; height: 40px; border-radius: 999px; border: 0;
@@ -1208,6 +1208,7 @@
           <button type="button" data-fu="fu2" aria-pressed="false">FU 2 <b id="fu2">0</b></button>
           <button type="button" data-fu="fu3" aria-pressed="false">FU 3 <b id="fu3">0</b></button>
           <button type="button" data-fu="fu4" aria-pressed="false">FU 4 <b id="fu4">0</b></button>
+          <button type="button" data-fu="fu5" aria-pressed="false">FU 5 <b id="fu5">0</b></button>
           <button type="button" data-fu="closing" aria-pressed="false">Closing <b id="fuClosing">0</b></button>
           <button type="button" data-fu="belum_closing" aria-pressed="false">Belum closing <b id="fuBelumClosing">0</b></button>
           <button type="button" data-fu="semua" aria-pressed="false">Semua <b id="fuSemua">0</b></button>
@@ -4764,7 +4765,7 @@
     teks.appendChild(atas); teks.appendChild(meta);
     var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
     var sudah = l.tahap_sudah || [];
-    for (var t = 1; t <= 4; t++) {
+    for (var t = 1; t <= 5; t++) {
       var b = document.createElement('span'); b.className = 'dm-tahap' + (sudah.indexOf(t) !== -1 ? ' dm-tahap-ok' : '');
       b.textContent = 'FU' + t;
       wrapTahap.appendChild(b);
@@ -4863,7 +4864,7 @@
       if (r.error || !r.data) { if (g) g.hidden = false; return; }
       if (g) g.hidden = true;
       var h = r.data.hitung || {};
-      var peta = [['belum', 'fuBelum'], ['fu1', 'fu1'], ['fu2', 'fu2'], ['fu3', 'fu3'], ['fu4', 'fu4'], ['closing', 'fuClosing'], ['belum_closing', 'fuBelumClosing'], ['semua', 'fuSemua']];
+      var peta = [['belum', 'fuBelum'], ['fu1', 'fu1'], ['fu2', 'fu2'], ['fu3', 'fu3'], ['fu4', 'fu4'], ['fu5', 'fu5'], ['closing', 'fuClosing'], ['belum_closing', 'fuBelumClosing'], ['semua', 'fuSemua']];
       peta.forEach(function (p) { var el = document.getElementById(p[1]); if (el) el.textContent = String(h[p[0]] || 0); });
       wadah.innerHTML = '';
       var daftar = r.data.daftar || [];
