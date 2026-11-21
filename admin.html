@@ -4712,6 +4712,15 @@
 
   /* Follow Up: daftar lead dengan filter dan jumlah per tahap, dari dm_daftar_lead */
   var FU_FILTER = 'belum';
+  /* Nomor WA tampil dengan format +62 812-2216-1572 (hanya tampilan; data tetap angka) */
+  function waTampilFU(w) {
+    var d = String(w || '').replace(/\D/g, '');
+    if (!d) return '';
+    if (d.indexOf('62') === 0) d = d.slice(2);
+    else if (d.charAt(0) === '0') d = d.slice(1);
+    if (d.length < 8) return String(w);
+    return '+62 ' + d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7);
+  }
   function tanggalFU(t) {
     var d = new Date(t);
     return isNaN(d.getTime()) ? '' : d.toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -4721,7 +4730,7 @@
     var teks = document.createElement('div'); teks.className = 'dm-lead-teks';
     var nama = document.createElement('span'); nama.className = 'dm-lead-nama'; nama.textContent = l.nama || '(tanpa nama)';
     var meta = document.createElement('span'); meta.className = 'dm-lead-meta';
-    meta.textContent = [l.wa, l.kelas, tanggalFU(l.dibuat_at)].filter(Boolean).join(' · ');
+    meta.textContent = [waTampilFU(l.wa), kelasLabel(l.kelas), tanggalFU(l.dibuat_at)].filter(Boolean).join(' · ');
     teks.appendChild(nama); teks.appendChild(meta);
     var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
     var sudah = l.tahap_sudah || [];
