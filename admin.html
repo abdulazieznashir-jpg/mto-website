@@ -4785,8 +4785,10 @@
     teks.appendChild(atas); teks.appendChild(meta);
     var wrapTahap = document.createElement('div'); wrapTahap.className = 'dm-tahap-wrap';
     var sudah = l.tahap_sudah || [];
+    /* Tag menyala hanya untuk tahap terakhir yang dicapai lead (sesuai referensi) */
+    var tahapAktif = Number(l.fu_terakhir) || Math.max.apply(null, [0].concat(sudah));
     for (var t = 1; t <= 5; t++) {
-      var b = document.createElement('span'); b.className = 'dm-tahap' + (sudah.indexOf(t) !== -1 ? ' dm-tahap-ok' : '');
+      var b = document.createElement('span'); b.className = 'dm-tahap' + (t === tahapAktif ? ' dm-tahap-ok' : '');
       b.textContent = 'FU' + t;
       wrapTahap.appendChild(b);
     }
@@ -4820,7 +4822,9 @@
     var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
     var wadah = document.getElementById('fuDaftar');
     if (!sb || !wadah) return;
-    sb.rpc('dm_daftar_lead', { p_filter: FU_FILTER }).then(function (r) {
+    /* Tombol tahap memakai nilai fu1..fu5; fungsi SQL dm_daftar_lead menerima 1..5 */
+    var kirimFilter = /^fu[1-5]$/.test(FU_FILTER) ? FU_FILTER.slice(2) : FU_FILTER;
+    sb.rpc('dm_daftar_lead', { p_filter: kirimFilter }).then(function (r) {
       var g = document.getElementById('fuGalat');
       var kosong = document.getElementById('fuKosong');
       if (r.error || !r.data) { if (g) g.hidden = false; return; }
