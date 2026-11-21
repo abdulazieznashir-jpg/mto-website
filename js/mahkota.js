@@ -1392,7 +1392,7 @@
   function bukaPilihPaket() {
     var modal = $('pilihSheet'), frame = $('pilihFrame');
     if (!modal || !frame) return;
-    if (!frame.getAttribute('src')) frame.setAttribute('src', 'index.html?daftar=1');
+    if (!frame.getAttribute('src')) frame.setAttribute('src', 'index.html?daftar=1&embed=1');
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
   }
