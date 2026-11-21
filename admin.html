@@ -79,10 +79,7 @@
   }
   .adm-topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .adm-topbar-nama { font-weight: 700; font-size: var(--adm-lg, 18px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  /* Header: Switch Account berada di baris sendiri di bawah; di HP, merek tampil di bawah "Admin" */
-  .adm-topbar { flex-wrap: wrap; row-gap: 10px; }
-  .adm-topbar > .adm-switch { flex-basis: 100%; display: flex; justify-content: flex-end; }
-  .adm-topbar > .adm-switch[hidden] { display: none !important; }
+  /* Di HP, merek tampil di bawah "Admin" */
   @media (max-width: 480px) {
     .adm-topbar-brand { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; }
     .adm-topbar-brand .adm-side-crown { grid-row: 1 / span 2; }
@@ -1110,13 +1107,13 @@
         <button type="button" class="adm-ikon-btn" id="topCari" aria-label="Cari murid" aria-controls="muridCari">⌕</button>
         <span class="adm-avatar" aria-hidden="true">A</span>
         <button type="button" class="adm-keluar" id="admKeluar">Keluar</button>
-      </div>
-      <div class="adm-switch" id="admSwitch" hidden>
-        <button type="button" class="adm-switch-btn" id="admSwitchBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="admSwitchMenu">Switch Account</button>
-        <div class="adm-switch-menu" id="admSwitchMenu" role="menu" hidden>
-          <button type="button" role="menuitemradio" aria-checked="true" data-tampilan="owner">Owner</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="aftersales">After-sales</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker">Deal Maker</button>
+        <div class="adm-switch" id="admSwitch" hidden>
+          <button type="button" class="adm-switch-btn" id="admSwitchBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="admSwitchMenu">Switch Account</button>
+          <div class="adm-switch-menu" id="admSwitchMenu" role="menu" hidden>
+            <button type="button" role="menuitemradio" aria-checked="true" data-tampilan="owner">Owner</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="aftersales">After-sales</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker">Deal Maker</button>
+          </div>
         </div>
       </div>
     </header>
