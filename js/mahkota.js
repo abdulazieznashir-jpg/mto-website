@@ -1072,6 +1072,11 @@
       var hari = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       var besok = new Date(hari.getFullYear(), hari.getMonth(), hari.getDate() + 1);
       var sesiHari = sesiDi(hari), selesaiHari = new Date(sesiHari.getTime() + menit * 60000);
+      if (!mulai) {
+        isi.innerHTML = '<div class="nj-blok">' + kartuNj('Jadwal', 'nj-hari', 'Belum Dimulai', 'Mulai', 'Menunggu ditetapkan', '',
+          '<p class="nj-catatan">Tanggal mulai halaqah akan diinformasikan admin.</p>') + '</div>';
+        return;
+      }
       var next = null;
       for (var i = 0; i < 400 && !next; i++) {
         var tg = new Date(hari.getFullYear(), hari.getMonth(), hari.getDate() + i);
