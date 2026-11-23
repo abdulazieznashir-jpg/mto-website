@@ -186,7 +186,7 @@
       sb.auth.getSession().then(function (r) {
         if (!r.data || !r.data.session) { window.location.replace('login'); return; }
         user = r.data.session.user;
-        var adminEmail = ['abdulaziez.nashir@gmail.com', 'mahkota.to3@gmail.com', 'azieznashir@gmail.com'];
+        var adminEmail = ['abdulaziez.nashir@gmail.com', 'mahkota.to3@gmail.com', 'azieznashir@gmail.com', 'mahkota.to15@gmail.com'];
         if (adminEmail.indexOf((user.email || '').toLowerCase()) !== -1) { window.location.replace('admin'); return; }
         render();
         muatKontak();

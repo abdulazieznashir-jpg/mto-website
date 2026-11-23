@@ -80,7 +80,7 @@
     sb.from('peserta')
       .upsert(baris, { onConflict: 'email', ignoreDuplicates: true })
       .then(function () {
-        var admin = ['abdulaziez.nashir@gmail.com', 'mahkota.to3@gmail.com', 'azieznashir@gmail.com'].indexOf(alamat) !== -1;
+        var admin = ['abdulaziez.nashir@gmail.com', 'mahkota.to3@gmail.com', 'azieznashir@gmail.com', 'mahkota.to15@gmail.com'].indexOf(alamat) !== -1;
         window.location.replace(admin ? 'admin.html' : 'profil.html');
       });
   }
