@@ -1720,6 +1720,7 @@
   // Semua PIC Deal Maker aktif. Tambahkan email PIC baru di sini dan di tabel deal_maker_pic.
   var DAFTAR_PIC = ['azieznashir@gmail.com', 'mahkota.to15@gmail.com'];
   var DEALMAKER = DAFTAR_PIC[0];
+  var RAHADI = 'mahkota.to15@gmail.com';
   var DIIZINKAN = [OWNER, AFTERSALES].concat(DAFTAR_PIC);
   var DM_PIC_AKTIF = DEALMAKER;
   var DM_PIC_LIST = [];
@@ -1761,7 +1762,13 @@
     var sesi = r && r.data && r.data.session;
     var email = ((sesi && sesi.user && sesi.user.email) || '').toLowerCase();
     if (!sesi || DIIZINKAN.indexOf(email) === -1) { kembali(); return; }
-    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: email === OWNER ? 'owner' : (DAFTAR_PIC.indexOf(email) !== -1 ? 'dealmaker' : 'aftersales') };
+    /* Rahadi (Deal Maker) boleh pindah ke tampilan After-sales lewat Switch Account; pilihan disimpan di sessionStorage */
+    var simpanTampilan = '';
+    try { simpanTampilan = sessionStorage.getItem('mto_tampilan') || ''; } catch (e) { simpanTampilan = ''; }
+    var peranAwal = email === OWNER ? 'owner'
+      : (email === RAHADI ? (simpanTampilan === 'aftersales' ? 'aftersales' : 'dealmaker')
+        : (DAFTAR_PIC.indexOf(email) !== -1 ? 'dealmaker' : 'aftersales'));
+    window.MTO_ADMIN = { sb: sb, user: sesi.user, owner: OWNER, peran: peranAwal, bisaSwitch: email === OWNER || email === RAHADI };
     if (window.MTO_ADMIN.peran === 'dealmaker') DM_PIC_AKTIF = email;
     /* Tombol Keluar: hapus sesi lalu kembali ke halaman masuk */
     var tombolKeluar = document.getElementById('admKeluar');
@@ -4350,11 +4357,17 @@
     var wadah = document.getElementById('admSwitch');
     var tombol = document.getElementById('admSwitchBtn');
     var menu = document.getElementById('admSwitchMenu');
-    if (!wadah || !tombol || !menu || !window.MTO_ADMIN || window.MTO_ADMIN.peran !== 'owner') return;
+    if (!wadah || !tombol || !menu || !window.MTO_ADMIN || !window.MTO_ADMIN.bisaSwitch) return;
     wadah.hidden = false;
+    var bukanOwner = window.MTO_ADMIN.peran !== 'owner';
+    if (bukanOwner) {
+      var opsiOwner = menu.querySelector('[data-tampilan="owner"]');
+      if (opsiOwner) opsiOwner.hidden = true;
+    }
     var simpan = '';
     try { simpan = sessionStorage.getItem('mto_tampilan') || ''; } catch (e) { simpan = ''; }
-    terapkanTampilan(TAMPILAN.indexOf(simpan) !== -1 ? simpan : 'owner');
+    if (bukanOwner) terapkanTampilan(window.MTO_ADMIN.peran === 'aftersales' ? 'aftersales' : 'dealmaker');
+    else terapkanTampilan(TAMPILAN.indexOf(simpan) !== -1 ? simpan : 'owner');
     tombol.addEventListener('click', function () {
       var buka = menu.hidden;
       menu.hidden = !buka;
@@ -4364,6 +4377,14 @@
       var pilih = e.target.closest ? e.target.closest('[data-tampilan]') : null;
       if (!pilih) return;
       var t = pilih.getAttribute('data-tampilan');
+      if (window.MTO_ADMIN.peran !== 'owner') {
+        /* Rahadi: pindah tampilan memuat ulang halaman supaya data dimuat sesuai peran yang dipilih */
+        var sudahAktif = window.MTO_ADMIN.peran === t || (window.MTO_ADMIN.peran === 'aftersales' && t === 'aftersales');
+        if (sudahAktif) { menu.hidden = true; tombol.setAttribute('aria-expanded', 'false'); return; }
+        try { sessionStorage.setItem('mto_tampilan', t); } catch (err) { /* storage diblokir */ }
+        window.location.reload();
+        return;
+      }
       try { sessionStorage.setItem('mto_tampilan', t); } catch (err) { /* tidak apa-apa jika storage diblokir */ }
       terapkanTampilan(t);
       menu.hidden = true;
