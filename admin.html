@@ -1122,8 +1122,11 @@
           <button type="button" class="adm-switch-btn" id="admSwitchBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="admSwitchMenu">Switch Account</button>
           <div class="adm-switch-menu" id="admSwitchMenu" role="menu" hidden>
             <button type="button" role="menuitemradio" aria-checked="true" data-tampilan="owner">Owner</button>
-            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="aftersales">After-sales</button>
-            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker">Deal Maker</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="aftersales">Idris (AS)</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker" data-pic="mahkota.to15@gmail.com">Rahadi (DM)</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker" data-pic="nurushofwilcans@gmail.com">Nuru (DM)</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker" data-pic="nafaaliffauziah@gmail.com">Nafa (DM)</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-tampilan="dealmaker" data-pic="dzikrymaoelana@gmail.com">Zikri (DM)</button>
           </div>
         </div>
       </div>
@@ -4343,7 +4346,9 @@
     document.body.setAttribute('data-tampilan', t);
     var item = document.querySelectorAll('#admSwitchMenu [data-tampilan]');
     for (var i = 0; i < item.length; i++) {
-      item[i].setAttribute('aria-checked', String(item[i].getAttribute('data-tampilan') === t));
+      var pic = item[i].getAttribute('data-pic');
+      var cocok = item[i].getAttribute('data-tampilan') === t && (!pic || pic === DM_PIC_AKTIF);
+      item[i].setAttribute('aria-checked', String(cocok));
     }
     if (window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner') {
       var h = window.location.hash;
@@ -4363,11 +4368,17 @@
     if (bukanOwner) {
       var opsiOwner = menu.querySelector('[data-tampilan="owner"]');
       if (opsiOwner) opsiOwner.hidden = true;
+      var emailSaya = ((window.MTO_ADMIN.user && window.MTO_ADMIN.user.email) || '').toLowerCase();
+      var semuaOpsi = menu.querySelectorAll('[data-pic]');
+      for (var q = 0; q < semuaOpsi.length; q++) { if (semuaOpsi[q].getAttribute('data-pic') !== emailSaya) semuaOpsi[q].hidden = true; }
     }
     var simpan = '';
     try { simpan = sessionStorage.getItem('mto_tampilan') || ''; } catch (e) { simpan = ''; }
     if (bukanOwner) terapkanTampilan(window.MTO_ADMIN.peran === 'aftersales' ? 'aftersales' : 'dealmaker');
-    else terapkanTampilan(TAMPILAN.indexOf(simpan) !== -1 ? simpan : 'owner');
+    else {
+      try { var picSimpan = sessionStorage.getItem('mto_pic') || ''; if (picSimpan) DM_PIC_AKTIF = picSimpan; } catch (e) { /* abaikan */ }
+      terapkanTampilan(TAMPILAN.indexOf(simpan) !== -1 ? simpan : 'owner');
+    }
     tombol.addEventListener('click', function () {
       var buka = menu.hidden;
       menu.hidden = !buka;
@@ -4386,7 +4397,16 @@
         return;
       }
       try { sessionStorage.setItem('mto_tampilan', t); } catch (err) { /* tidak apa-apa jika storage diblokir */ }
+      var pic = pilih.getAttribute('data-pic');
+      if (pic) { DM_PIC_AKTIF = pic; }
+      try {
+        sessionStorage.setItem('mto_tampilan', t);
+        if (pic) sessionStorage.setItem('mto_pic', pic); else sessionStorage.removeItem('mto_pic');
+      } catch (err) { /* tidak apa-apa jika storage diblokir */ }
+      var pilihPic = document.getElementById('dmPilihPic');
+      if (pic && pilihPic) pilihPic.value = pic;
       terapkanTampilan(t);
+      if (pic && t === 'dealmaker' && typeof muatDealMaker === 'function') muatDealMaker();
       menu.hidden = true;
       tombol.setAttribute('aria-expanded', 'false');
     });
