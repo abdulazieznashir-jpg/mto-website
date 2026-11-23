@@ -154,7 +154,7 @@
   /* Deal Maker v2: sesuai mockup (HP dan PC) */
   .dmv { padding-top: 8px; padding-bottom: 32px; }
   .dmv-head { display: flex; flex-direction: column; gap: 12px; margin: 4px 0 16px; }
-  .dmv-judul { margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -.02em; color: #1D1D1F; }
+  .dmv-judul { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; font-size: 34px; font-weight: 700; letter-spacing: -.02em; color: #1D1D1F; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
   .dmv-pilihan { display: flex; gap: 10px; flex-wrap: wrap; }
   .dmv-pill { position: relative; display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 140px; height: 44px; padding: 0 16px; box-sizing: border-box; border-radius: 999px; background: #FFFFFF; border: 1px solid #E5E5EA; box-shadow: 0 1px 2px rgba(0,0,0,.05); font-size: 16px; font-weight: 600; color: #1D1D1F; }
   .dmv-pill::after { content: ''; width: 7px; height: 7px; border-right: 2px solid #1D1D1F; border-bottom: 2px solid #1D1D1F; transform: rotate(45deg); margin-top: -4px; flex: 0 0 auto; }
@@ -215,7 +215,7 @@
   }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
-  .dm-lencana { display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 6px; background: #111111; color: #D4AF37; font: 700 11px Inter, system-ui, sans-serif; letter-spacing: .04em; vertical-align: middle; }
+  .dm-lencana { display: inline-block; padding: 4px 11px; border-radius: 7px; background: #111111; color: #D4AF37; font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; letter-spacing: .02em; white-space: nowrap; vertical-align: middle; }
   .dm-pilih-pic { font: 600 13px Inter, system-ui, sans-serif; padding: 7px 10px; border-radius: 999px; border: 1px solid #C9A227; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); max-width: 100%; }
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
@@ -1170,12 +1170,9 @@
     <section class="adm-view" data-view="dealmaker" hidden>
       <div class="adm-murid-wrap dmv">
         <div class="dmv-head">
-          <h1 class="dmv-judul">Deal Maker</h1>
+          <h1 class="dmv-judul"><span id="dmNama">—</span></h1>
           <div class="dmv-pilihan">
-            <label class="dmv-pill">
-              <span id="dmNama">—</span>
-              <select id="dmPilihPic" class="dmv-select" aria-label="Pilih Deal Maker" hidden></select>
-            </label>
+            <select id="dmPilihPic" aria-label="Pilih Deal Maker" hidden></select>
             <span class="dmv-pill" id="dmPeriode">—</span>
           </div>
         </div>
