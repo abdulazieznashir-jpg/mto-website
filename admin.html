@@ -4768,7 +4768,8 @@
     if (!window.confirm('Hapus permanen pendaftaran ' + (l.nama || '') + ' (' + (l.wa || '') + ')? Data dan bukti transfer tidak bisa dikembalikan.')) return;
     tombol.disabled = true;
     if (pesanEl) pesanEl.textContent = 'Menghapus…';
-    sb.rpc('admin_hapus_pendaftaran', { p_id: Number(l.id) }).then(function (r) {
+    var rpcHapus = l.sumber === 'kontak' ? 'admin_hapus_kontak' : 'admin_hapus_pendaftaran';
+    sb.rpc(rpcHapus, { p_id: Number(l.id) }).then(function (r) {
       if (r.error) {
         tombol.disabled = false;
         if (pesanEl) pesanEl.textContent = (r.error.message || 'Gagal menghapus.').replace(/^.*?ERROR:\s*/, '');
@@ -4796,7 +4797,7 @@
       catat.href = '#followup';
       baris.appendChild(catat);
     }
-    if (l.sumber === 'pendaftaran') {
+    if (l.sumber === 'pendaftaran' || l.sumber === 'kontak') {
       var hapus = pkEl('button', 'dmv-hapus', 'Hapus');
       hapus.type = 'button';
       hapus.addEventListener('click', function () { hapusPendaftaran(l, hapus, null); });
