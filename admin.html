@@ -4462,6 +4462,8 @@
     terapkanPeranUI();
     if (window.MTO_TAMPIL_RUTE) window.MTO_TAMPIL_RUTE();
     if (typeof tampilTranskrip === 'function') tampilTranskrip();
+    if (typeof muatFollowUp === 'function') muatFollowUp();
+    if (typeof muatDaftarDm === 'function') muatDaftarDm();
   }
   function pasangSwitch() {
     var wadah = document.getElementById('admSwitch');
@@ -4893,7 +4895,7 @@
         });
       });
     }
-    sb.rpc('dm_daftar_lead', { p_filter: 'semua' }).then(function (r) {
+    sb.rpc('dm_daftar_lead', { p_filter: 'semua', p_email: fuPicAktif() }).then(function (r) {
       if (r.error || !r.data) return;
       DM_SEMUA = r.data.daftar || [];
       gambarDaftarDm();
@@ -4902,6 +4904,12 @@
 
   /* Follow Up: daftar lead dengan filter dan jumlah per tahap, dari dm_daftar_lead */
   var FU_FILTER = 'belum';
+  /* Owner di tampilan Deal Maker: kirim email Deal Maker yang dipilih. Owner di tampilan Owner: null (semua lead). Deal Maker biasa: diabaikan database. */
+  function fuPicAktif() {
+    var peran = window.MTO_ADMIN && window.MTO_ADMIN.peran;
+    var tampilan = document.body.getAttribute('data-tampilan') || '';
+    return (peran === 'owner' && tampilan === 'dealmaker') ? DM_PIC_AKTIF : null;
+  }
   /* Nomor WA tampil dengan format +62 812-2216-1572 (hanya tampilan; data tetap angka) */
   function waTampilFU(w) {
     var d = String(w || '').replace(/\D/g, '');
@@ -4979,7 +4987,7 @@
     if (!sb || !wadah) return;
     /* Tombol tahap memakai nilai fu1..fu5; fungsi SQL dm_daftar_lead menerima 1..5 */
     var kirimFilter = /^fu[1-5]$/.test(FU_FILTER) ? FU_FILTER.slice(2) : FU_FILTER;
-    sb.rpc('dm_daftar_lead', { p_filter: kirimFilter }).then(function (r) {
+    sb.rpc('dm_daftar_lead', { p_filter: kirimFilter, p_email: fuPicAktif() }).then(function (r) {
       var g = document.getElementById('fuGalat');
       var kosong = document.getElementById('fuKosong');
       if (r.error || !r.data) { if (g) g.hidden = false; return; }
