@@ -215,7 +215,8 @@
   }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
-  .dm-lencana { display: inline-block; padding: 4px 11px; border-radius: 7px; background: #111111; color: #D4AF37; font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; letter-spacing: .02em; white-space: nowrap; vertical-align: middle; }
+  .dm-lencana { display: inline-block; padding: 4px 11px; border-radius: 7px; background: #111111; color: #D4AF37; font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; letter-spacing: .02em; white-space: nowrap; vertical-align: middle; margin-left: 14px; }
+  @media (max-width: 640px) { .dmv-judul { font-size: 28px; line-height: 1.2; } .dm-lencana { margin-left: 10px; font-size: 12px; padding: 4px 9px; } }
   .dm-pilih-pic { font: 600 13px Inter, system-ui, sans-serif; padding: 7px 10px; border-radius: 999px; border: 1px solid #C9A227; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); max-width: 100%; }
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
