@@ -197,6 +197,8 @@
   .dmv-lead-teks b { font-size: 17px; color: #1D1D1F; overflow-wrap: anywhere; }
   .dmv-lead-teks span { font-size: 14px; color: #6E6E73; }
   .dmv-catat { font-size: 14px; font-weight: 600; color: #0A6CFF; text-decoration: none; white-space: nowrap; }
+  .dmv-hapus { border: 0; background: transparent; font: 600 14px Inter, system-ui, sans-serif; color: #E5484D; cursor: pointer; padding: 0; white-space: nowrap; }
+  .dmv-hapus:disabled { opacity: .5; cursor: default; }
   .dmv-alur-langkah { position: relative; list-style: none; margin: 16px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .dmv-alur-langkah::before { content: ''; position: absolute; top: 10px; left: 12.5%; right: 12.5%; height: 3px; border-radius: 999px; background: #E5E5EA; }
   .dmv-alur-langkah li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 0; }
@@ -4759,6 +4761,27 @@
       });
     });
   }
+  /* Hapus pendaftaran secara manual (hanya pendaftaran; lead dari sheet tidak bisa dihapus di sini) */
+  function hapusPendaftaran(l, tombol, pesanEl) {
+    var sb = window.MTO_ADMIN && window.MTO_ADMIN.sb;
+    if (!sb) return;
+    if (!window.confirm('Hapus permanen pendaftaran ' + (l.nama || '') + ' (' + (l.wa || '') + ')? Data dan bukti transfer tidak bisa dikembalikan.')) return;
+    tombol.disabled = true;
+    if (pesanEl) pesanEl.textContent = 'Menghapus…';
+    sb.rpc('admin_hapus_pendaftaran', { p_id: Number(l.id) }).then(function (r) {
+      if (r.error) {
+        tombol.disabled = false;
+        if (pesanEl) pesanEl.textContent = (r.error.message || 'Gagal menghapus.').replace(/^.*?ERROR:\s*/, '');
+        return;
+      }
+      var path = r.data && r.data.bukti_path;
+      var hapusBukti = path ? sb.storage.from('bukti-transfer').remove([path]) : Promise.resolve({});
+      hapusBukti.then(function () {
+        muatDaftarDm();
+        if (typeof muatDealMaker === 'function') muatDealMaker();
+      });
+    });
+  }
   function buatBarisLeadDm(l) {
     var baris = document.createElement('article');
     baris.className = 'dmv-lead';
@@ -4772,6 +4795,12 @@
       var catat = pkEl('a', 'dmv-catat', 'Catat follow up');
       catat.href = '#followup';
       baris.appendChild(catat);
+    }
+    if (l.sumber === 'pendaftaran') {
+      var hapus = pkEl('button', 'dmv-hapus', 'Hapus');
+      hapus.type = 'button';
+      hapus.addEventListener('click', function () { hapusPendaftaran(l, hapus, null); });
+      baris.appendChild(hapus);
     }
     return baris;
   }
@@ -4823,6 +4852,10 @@
     aksi.appendChild(valid);
     aksi.appendChild(ulang);
     kartu.appendChild(aksi);
+    var hapus = pkEl('button', 'dmv-hapus', 'Hapus pendaftaran');
+    hapus.type = 'button';
+    hapus.addEventListener('click', function () { hapusPendaftaran(l, hapus, pesan); });
+    kartu.appendChild(hapus);
     kartu.appendChild(pesan);
     return kartu;
   }
