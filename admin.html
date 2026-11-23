@@ -215,6 +215,7 @@
   }
   .dm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .dm-head .adm-dash-judul { margin-bottom: 2px; }
+  .dm-lencana { display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 6px; background: #111111; color: #D4AF37; font: 700 11px Inter, system-ui, sans-serif; letter-spacing: .04em; vertical-align: middle; }
   .dm-pilih-pic { font: 600 13px Inter, system-ui, sans-serif; padding: 7px 10px; border-radius: 999px; border: 1px solid #C9A227; background: #FFFFFF; color: var(--adm-ink, #1D1D1F); max-width: 100%; }
   .dm-chip { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 1px solid #C9A227; color: var(--adm-ink, #1D1D1F); background: #FFFFFF; white-space: nowrap; }
   .dm-kisi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
@@ -1722,6 +1723,7 @@
   var AFTERSALES = 'mahkota.to3@gmail.com';
   // Semua PIC Deal Maker aktif. Tambahkan email PIC baru di sini dan di tabel deal_maker_pic.
   var DAFTAR_PIC = ['dzikrymaoelana@gmail.com', 'mahkota.to15@gmail.com'];
+  var NAMA_DM_LENGKAP = { 'dzikrymaoelana@gmail.com': 'Dzikry Maulana', 'mahkota.to15@gmail.com': 'Rahadi', 'nurushofwilcans@gmail.com': 'Nuru Shofwil Khoiriyah', 'nafaaliffauziah@gmail.com': 'Nafa Alif Fauziah' };
   var DEALMAKER = DAFTAR_PIC[0];
   var RAHADI = 'mahkota.to15@gmail.com';
   var DIIZINKAN = [OWNER, AFTERSALES].concat(DAFTAR_PIC);
@@ -4496,7 +4498,7 @@
       }
       var pilih = document.getElementById('dmPilihPic');
       if (pilih && window.MTO_ADMIN && window.MTO_ADMIN.peran === 'owner') {
-        pilih.hidden = false;
+        pilih.hidden = true;
         pilih.innerHTML = '';
         DM_PIC_LIST.forEach(function (p) {
           var opt = document.createElement('option'); opt.value = p.email; opt.textContent = p.nama; pilih.appendChild(opt);
@@ -4536,7 +4538,15 @@
       var target = Number(d.target || 17000000);
       var bulan = Number(d.omset_bulan_ini || 0);
       var persen = Math.min(100, Math.round(bulan / target * 100));
-      isi('dmNama', d.nama || '—');
+      var namaTampil = NAMA_DM_LENGKAP[DM_PIC_AKTIF] || d.nama || '—';
+      var elNama = document.getElementById('dmNama');
+      if (elNama) {
+        elNama.textContent = namaTampil;
+        var lencana = document.createElement('span');
+        lencana.className = 'dm-lencana';
+        lencana.textContent = 'Deal Maker';
+        elNama.appendChild(lencana);
+      }
       isi('dmOmsetBulan', rupiah(bulan));
       isi('dmTargetTeks', 'Target ' + rupiah(target) + ' · ' + persen + '%');
       isi('dmLeadBaru', String(d.lead_baru_24j || 0));
