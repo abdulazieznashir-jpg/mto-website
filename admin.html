@@ -4239,7 +4239,7 @@
     { nama: 'Nuru', peran: 'Dealmaker', file: 'Ada', tgl: '16 Nov 2026' },
     { nama: 'Nafa', peran: 'Dealmaker', file: 'Ada', tgl: '15 Nov 2026' },
     { nama: 'Zikri', peran: 'Dealmaker', file: 'Ada (Dzikry)', tgl: '17 Nov 2026' },
-    { nama: 'Rahadi', peran: 'Dealmaker', file: 'Ada', tgl: '15 Nov 2026' }
+    { nama: 'Rahadi', peran: 'Dealmaker', file: 'Ada (Logbook Transkrip Chat – Rahadi)', tgl: '22 Nov 2026', kelengkapan: '78 dari 258 lead (30%)' }
   ];
   function tampilTranskrip() {
     var wadah = document.getElementById('trAdmin');
@@ -4252,7 +4252,7 @@
       var teks = pkEl('span', 'nt-teks');
       teks.appendChild(pkEl('span', 'nt-judul', a.nama + ' · ' + a.peran));
       teks.appendChild(pkEl('span', 'nt-isi', 'File Drive: ' + a.file + ' (diubah ' + a.tgl + ')'));
-      teks.appendChild(pkEl('span', 'nt-waktu', 'Kelengkapan: Menunggu data'));
+      teks.appendChild(pkEl('span', 'nt-waktu', 'Kelengkapan: ' + (a.kelengkapan || 'Menunggu data')));
       kartu.appendChild(teks);
       wadah.appendChild(kartu);
     });
