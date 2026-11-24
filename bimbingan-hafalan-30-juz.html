@@ -494,16 +494,22 @@
   .stats-info .negara-grid img { width: 32px; height: 24px; object-fit: cover; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px #E9E0D6; }
   .stats-info .stats-note { text-align: center; color: #414141; font-size: 15px; margin: 32px 0 0; }
   @media (max-width: 700px) {
-    .stats.stats-info { padding: 40px 0; }
-    .stats-info .stats-card { padding: 28px 24px; }
-    .stats-info .stats-judul { font-size: 24px; margin-bottom: 24px; }
-    .stats-info .stats-grid { grid-template-columns: 1fr 1fr; row-gap: 20px; }
-    .stats-info .stats-grid > div:last-child { grid-column: 1 / -1; border-left: none; border-top: 1px solid #E9E0D6; padding-top: 20px; }
-    .stats-info .stat-value { font-size: 32px; white-space: nowrap; }
-    .stats-info .stat-label { font-size: 14px; }
-    .stats-info .negara-judul { font-size: 19px; }
-    .stats-info .negara-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 16px; }
-    .stats-info .negara-grid li { font-size: 14px; }
+    .hero { padding-bottom: 32px; overflow: hidden; }
+    .stats.stats-info { padding: 16px 0 40px; }
+    .stats-info .stats-card { padding: 28px 22px; border-radius: 18px; }
+    .stats-info .stats-judul { font-size: 22px; line-height: 1.3; margin: 0 0 16px; text-align: left; }
+    .stats-info .stats-grid { grid-template-columns: minmax(0,1fr); gap: 0; row-gap: 0; }
+    .stats-info .stats-grid > div { display: flex; align-items: center; gap: 16px; text-align: left; padding: 14px 0; min-width: 0; }
+    .stats-info .stats-grid > div + div { border-left: none; border-top: 1px solid #E9E0D6; }
+    .stats-info .stats-grid > div:last-child { grid-column: auto; padding-top: 12px; }
+    .stats-info .stat-value { font-size: 30px; flex: 0 0 auto; white-space: nowrap; margin: 0; line-height: 1.1; }
+    .stats-info .stat-label { margin: 0; font-size: 15px; line-height: 1.35; flex: 1 1 auto; min-width: 0; }
+    .stats-info .stats-grid > div { padding: 12px 0; }
+    .stats-info .stats-grid > div:first-child { padding-top: 0; }
+    .stats-info .negara-judul { font-size: 18px; margin: 24px 0 14px; padding-top: 24px; text-align: left; }
+    .stats-info .negara-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px 16px; }
+    .stats-info .negara-grid li { font-size: 15px; }
+    .stats-info .stats-note { font-size: 14px; margin-top: 24px; }
   }
 </style>
 </head>
