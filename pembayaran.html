@@ -315,7 +315,7 @@
     // Nomor WhatsApp PIC yang ditugaskan kepada pendaftar ini (cadangan: nomor admin umum).
     var nomor = String(d.wa_admin || NOMOR_CADANGAN).replace(/\D/g, '') || NOMOR_CADANGAN;
     ['waTanya', 'waBukti', 'waHabis', 'waMenunggu'].forEach(function (id) { setWa(id, nomor); });
-    $('waMenunggu').textContent = 'Hubungi ' + (d.pic_nama || 'admin');
+    $('waMenunggu').textContent = 'Chat admin' + (d.pic_nama ? ' (' + d.pic_nama + ')' : ' yang bertugas');
 
     $('stateMenunggu').hidden = k !== 'menunggu';
     $('stateLunas').hidden = k !== 'lunas';
