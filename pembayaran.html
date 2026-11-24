@@ -194,6 +194,31 @@
   </div>
 </main>
 
+<!-- Meta Pixel: PageView dimuat setelah halaman selesai; event Purchase dikirim lewat window.mtoTrack -->
+<script>
+  (function () {
+    var PIXEL_ID = '124403919300787';
+    var antrean = [];
+    window.mtoTrack = function (ev, params) {
+      if (window.fbq) window.fbq('track', ev, params || {});
+      else antrean.push([ev, params || {}]);
+    };
+    function muatPixel() {
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+        t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', PIXEL_ID);
+      window.fbq('track', 'PageView');
+      antrean.forEach(function (a) { window.fbq('track', a[0], a[1]); });
+      antrean = [];
+    }
+    if (document.readyState === 'complete') muatPixel();
+    else window.addEventListener('load', muatPixel);
+  })();
+</script>
+
 <script>
 (function () {
   var URL_SB = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
@@ -349,6 +374,15 @@
     renderRingkasan(d);
     renderLangkah(d, k);
     jalankanTimer();
+    if (k === 'lunas' && window.mtoTrack) {
+      var kunci = 'mtoPurchase:' + (simpan && simpan.id);
+      var sudah = false;
+      try { sudah = localStorage.getItem(kunci) === '1'; } catch (e) { sudah = false; }
+      if (!sudah) {
+        window.mtoTrack('Purchase', { value: Number(d.total) || 0, currency: 'IDR', content_name: String(d.kelas || '') });
+        try { localStorage.setItem(kunci, '1'); } catch (e) { /* penyimpanan tidak tersedia: event bisa terkirim lagi */ }
+      }
+    }
   }
 
   function muat(cb) {
