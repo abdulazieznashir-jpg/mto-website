@@ -477,6 +477,15 @@
   })();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=124403919300787&ev=PageView&noscript=1" alt=""/></noscript>
+<style>
+  .art-frame { display: block; width: min(100%, 330px); aspect-ratio: 1 / 1; margin: 0 auto; }
+  .art-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .hero .art-frame { margin: 0 auto 24px; }
+  .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
+  .about-image.about-image-art::before { display: none; }
+  .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 -12px 16px; background: none; overflow: visible; display: block; }
+  @media (max-width: 700px) { .program-card { padding: 20px; } }
+</style>
 </head>
 <body>
 <a href="#konten" class="skip-link">Lewati ke konten utama</a>
@@ -530,7 +539,7 @@
   <div class="hero-ornament"></div>
   <div class="container">
     <div class="hero-content">
-      <picture style="display:block;width:min(100%,420px);margin:0 auto 24px"><source srcset="hero.webp" type="image/webp"><img class="hero-image" src="hero.png" alt="Ilustrasi seorang muslimah membaca Al-Qur'an dengan lentera dan ikon WhatsApp" width="828" height="641" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;margin:0 auto"></picture>
+      <picture class="art-frame"><img src="bimbingan-hero-960.webp" alt="Ilustrasi muslimah belajar Al-Qur'an online dengan headset, laptop, dan pengajar di layar" width="960" height="960" fetchpriority="high" decoding="async"></picture>
       <div class="hero-badge">
         <span class="dot"></span>
         Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
@@ -587,8 +596,8 @@
 <section class="section">
   <div class="container">
     <div class="about-grid">
-      <div class="about-image reveal">
-        <div class="about-image-label"><span lang="ar">القرآن نور</span></div>
+      <div class="about-image about-image-art reveal">
+        <picture class="art-frame"><img src="bimbingan-tanya-960.webp" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="960" height="960" loading="lazy" decoding="async"></picture>
       </div>
       <div class="about-content reveal">
         <div class="eyebrow">Apakah Anda…</div>
@@ -745,9 +754,7 @@
     </div>
     <div class="programs-grid" style="max-width: 860px; margin: 0 auto;">
       <div class="program-card reveal">
-        <div class="program-card-image">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        </div>
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahsin</h3>
         <p>Untuk Anda yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
         <div class="program-pills">
@@ -757,9 +764,7 @@
         <a href="#daftar" class="btn btn-secondary" data-daftar data-program="tahsin">Daftar Kelas Tahsin</a>
       </div>
       <div class="program-card reveal">
-        <div class="program-card-image">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z"/></svg>
-        </div>
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahfidz</h3>
         <p>Untuk Anda yang ingin menambah hafalan baru (<strong>Ziyadah</strong>) dan menjaga hafalan yang sudah ada (<strong>Muroja'ah</strong>).</p>
         <div class="program-pills">
