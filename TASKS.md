@@ -10,7 +10,7 @@ Status: [x] selesai · [~] sebagian · [ ] belum · [A] perlu persetujuan pemili
 - [A] A4 Cabut EXECUTE dari role anon untuk fungsi admin_* (9 fungsi bisa dipanggil publik, sudah ada cek owner). Ditolak pemeriksaan keamanan, butuh persetujuan eksplisit
 - [A] A5 Aktifkan proteksi kata sandi bocor di pengaturan Auth Supabase (dashboard)
 - [A] A7 Facebook Pixel di 9 halaman publik masih memakai ID placeholder `PIXEL_ID`. Pelacakan iklan belum aktif. Perlu ID pixel asli dari pemilik
-- [A] A8 Ejaan brand: situs memakai "Mahkota Tahfizh" (79 kali), PLAN.md dan percakapan memakai "Mahkota Tahfidz". Perlu keputusan pemilik sebelum diseragamkan
+- [A] A8 Ejaan brand: situs memakai "Mahkota Tahfizh" (79 kali), PLAN.md dan percakapan memakai "Mahkota Tahfizh". Perlu keputusan pemilik sebelum diseragamkan
 - [A] A6 admin_daftar_murid dan admin_tambah_murid hanya mengizinkan mahkota.to3, bukan abdulaziez. Tidak dipakai frontend, tapi perlu disamakan
 - [A] A11 Nomor e-wallet di daftar rekening (index.html dan pembayaran.html, 085722366003) berbeda dari nomor WA utama 085727533000. Bisa benar (nomor e-wallet terpisah), tapi perlu konfirmasi pemilik karena menyangkut pembayaran. Tidak diubah
 - [A] A12 Data terstruktur (schema.org) di index.html memakai email admin@mahkotatahfizh.com, yang domainnya belum tentu aktif. Perlu konfirmasi alamat email resmi. Tidak diubah

@@ -15,7 +15,7 @@ Progres keseluruhan: perkiraan 66%
 - [x] Langkah 3: Halaqoh (memakai halaman Pengajar) dan Notifikasi di bottom bar
 - [x] Langkah 13: detail Peserta: inisial, pil status, label No. WhatsApp, Program, Durasi, Pengajar
 - [x] Langkah 12: detail Halaqoh menampilkan statistik (Peserta, Aktif, Belum Bayar) dan daftar peserta per pengajar
-- [x] Langkah 11: tampilan admin lama di profil.html disembunyikan. Pintu masuk utama sekarang kartu "Buka Admin Mahkota Tahfidz Online" yang mengarah ke admin.html, dan hanya muncul untuk admin.
+- [x] Langkah 11: tampilan admin lama di profil.html disembunyikan. Pintu masuk utama sekarang kartu "Buka Admin Mahkota Tahfizh Online" yang mengarah ke admin.html, dan hanya muncul untuk admin.
 - [x] Langkah 10: kolom Program (dari kelas) menggantikan WA dan Gelombang di tabel Peserta. Kolom WA tetap ada di detail peserta.
 - [x] Langkah 9: tab Peserta diganti Semua / Belum Bayar / Sudah Bayar, dihitung dari admin_daftar_lunas. Tab Aktif dan Jeda dilepas dari tampilan. Logikanya masih ada di kode.
 - [x] Langkah 8: judul dan subjudul Peserta; gaya tab sebagai pil
