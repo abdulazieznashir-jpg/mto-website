@@ -103,13 +103,20 @@
     background: var(--primary-lighter); color: var(--primary-darker); font-size: 17px;
   }
   /* COCOK UNTUK */
-  .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .audience-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
   .audience-card {
-    background: white; border-radius: var(--radius); padding: 24px;
-    border: 1px solid var(--border-light); text-align: center;
+    background: white; border-radius: var(--radius); padding: 18px 16px; text-align: center;
+    border: 1px solid var(--border-light);
   }
-  .audience-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-  .audience-desc { font-size: 14px; color: var(--text-secondary); }
+  .audience-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .audience-desc { font-size: 13px; line-height: 1.4; color: var(--text-secondary); }
+  @media (min-width: 760px) {
+    .audience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .audience-card { padding: 22px 20px; }
+    .audience-title { font-size: 17px; }
+    .audience-desc { font-size: 14px; }
+  }
+  @media (max-width: 700px) { body { padding-bottom: 96px; } }
   /* KENAPA MAHKOTA */
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
   .why-card {
@@ -637,11 +644,12 @@
       <p class="lead">Siapa pun yang ingin belajar Al-Qur'an dengan lebih mudah dan terarah, di tengah kesibukan apa pun.</p>
     </div>
     <div class="audience-grid">
-      <div class="audience-card reveal"><div class="audience-title">Ibu Rumah Tangga</div><div class="audience-desc">Yang sudah memiliki anak atau belum</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Mahasiswa</div><div class="audience-desc">Di sela jadwal kuliah</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Pelajar</div><div class="audience-desc">Jenjang SD, SMP, dan SMA/SMK</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Karyawan</div><div class="audience-desc">Swasta maupun pemerintahan</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Guru &amp; Dosen</div><div class="audience-desc">Yang ingin terus memperbaiki bacaan</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Ibu Rumah Tangga</div><div class="audience-desc">Yang sudah atau belum memiliki anak.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Orang Tua</div><div class="audience-desc">Yang ingin anaknya belajar Al-Qur'an dari rumah.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Mahasiswa</div><div class="audience-desc">Di sela jadwal kuliah.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Pelajar</div><div class="audience-desc">Dari SD hingga SMA/SMK.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Karyawan</div><div class="audience-desc">Bekerja di sektor swasta maupun pemerintahan.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Guru &amp; Dosen</div><div class="audience-desc">Guru dan dosen yang ingin memperbaiki bacaan.</div></div>
     </div>
     <div class="hero-cta reveal" style="margin: 48px 0 0;">
       <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
