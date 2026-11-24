@@ -469,6 +469,16 @@
   })();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=124403919300787&ev=PageView&noscript=1" alt=""/></noscript>
+<style>
+  .stats-info .stats-kicker { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.7); text-align: center; margin: 0 0 6px; }
+  .stats-info .stats-judul { font-size: 30px; font-weight: 700; text-align: center; margin: 0 0 40px; color: #fff; }
+  .negara-judul { font-size: 18px; font-weight: 600; text-align: center; color: #fff; margin: 56px 0 20px; }
+  .negara-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px 18px; }
+  .negara-grid li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: rgba(255,255,255,.9); }
+  .negara-grid img { width: 32px; height: 24px; object-fit: cover; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.2); }
+  .stats-info .stats-note { text-align: center; color: rgba(255,255,255,.7); margin: 36px 0 0; font-size: 15px; }
+  @media (max-width: 700px) { .stats-info .stats-judul { font-size: 24px; } }
+</style>
 </head>
 <body>
 <a href="#konten" class="skip-link">Lewati ke konten utama</a>
@@ -536,42 +546,44 @@
         <p class="cek-note" style="margin: 0 0 4px">Tiga pertanyaan singkat, lalu kami sarankan program yang sesuai.</p>
         <a href="#daftar" class="btn btn-secondary btn-lg" data-daftar>Daftar Sekarang</a>
       </div>
-      <div class="hero-features">
-        <div class="hero-feature">
-          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          <div class="hero-feature-value">Private 1-on-1</div>
-          <div class="hero-feature-label">Satu guru untuk satu peserta</div>
-        </div>
-        <div class="hero-feature">
-          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z"/></svg>
-          <div class="hero-feature-value">Meet, WhatsApp, Zoom</div>
-          <div class="hero-feature-label">Pakai aplikasi yang Anda punya</div>
-        </div>
-        <div class="hero-feature">
-          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z"/></svg>
-          <div class="hero-feature-value">Pengajar Hafidz 30 Juz</div>
-          <div class="hero-feature-label">Berpengalaman &amp; bersertifikat</div>
-        </div>
-        <div class="hero-feature">
-          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
-          <div class="hero-feature-value">Jadwal Fleksibel</div>
-          <div class="hero-feature-label">Terjadwal, bisa dinegosiasikan</div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
 <!-- BUKTI SOSIAL -->
-<section class="stats">
+<section class="stats stats-info">
   <div class="container">
+    <p class="stats-kicker">Telah dipercaya</p>
+    <h2 class="stats-judul">16.000+ peserta</h2>
     <div class="stats-grid">
-      <div class="reveal"><div class="stat-value" data-count="16000" data-suffix="+">16.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
-      <div class="reveal"><div class="stat-value">5+</div><div class="stat-label">Negara di Luar Indonesia</div></div>
-      <div class="reveal"><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan Setiap Pengajar</div></div>
-      <div class="reveal"><div class="stat-value">1:1</div><div class="stat-label">Satu Guru, Satu Peserta</div></div>
+      <div><div class="stat-value">16.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
+      <div><div class="stat-value">19</div><div class="stat-label">Negara, termasuk Indonesia</div></div>
+      <div><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan Setiap Pengajar</div></div>
+      <div><div class="stat-value">1:1</div><div class="stat-label">Satu Guru, Satu Peserta</div></div>
     </div>
-    <p class="stats-note reveal">Peserta kami belajar dari berbagai daerah di Indonesia hingga Malaysia, Singapura, Jepang, Arab Saudi, dan Spanyol.</p>
+    <h3 class="negara-judul">Peserta kami datang dari</h3>
+    <ul class="negara-grid">
+        <li><img src="https://flagcdn.com/w40/us.png" srcset="https://flagcdn.com/w80/us.png 2x" width="32" height="24" alt="Bendera Amerika Serikat" loading="lazy">Amerika Serikat</li>
+        <li><img src="https://flagcdn.com/w40/ca.png" srcset="https://flagcdn.com/w80/ca.png 2x" width="32" height="24" alt="Bendera Kanada" loading="lazy">Kanada</li>
+        <li><img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="32" height="24" alt="Bendera Singapura" loading="lazy">Singapura</li>
+        <li><img src="https://flagcdn.com/w40/sa.png" srcset="https://flagcdn.com/w80/sa.png 2x" width="32" height="24" alt="Bendera Arab Saudi" loading="lazy">Arab Saudi</li>
+        <li><img src="https://flagcdn.com/w40/bn.png" srcset="https://flagcdn.com/w80/bn.png 2x" width="32" height="24" alt="Bendera Brunei" loading="lazy">Brunei</li>
+        <li><img src="https://flagcdn.com/w40/eg.png" srcset="https://flagcdn.com/w80/eg.png 2x" width="32" height="24" alt="Bendera Mesir" loading="lazy">Mesir</li>
+        <li><img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="32" height="24" alt="Bendera Malaysia" loading="lazy">Malaysia</li>
+        <li><img src="https://flagcdn.com/w40/de.png" srcset="https://flagcdn.com/w80/de.png 2x" width="32" height="24" alt="Bendera Jerman" loading="lazy">Jerman</li>
+        <li><img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="32" height="24" alt="Bendera Jepang" loading="lazy">Jepang</li>
+        <li><img src="https://flagcdn.com/w40/tw.png" srcset="https://flagcdn.com/w80/tw.png 2x" width="32" height="24" alt="Bendera Taiwan" loading="lazy">Taiwan</li>
+        <li><img src="https://flagcdn.com/w40/ae.png" srcset="https://flagcdn.com/w80/ae.png 2x" width="32" height="24" alt="Bendera Uni Emirat Arab" loading="lazy">Uni Emirat Arab</li>
+        <li><img src="https://flagcdn.com/w40/gb.png" srcset="https://flagcdn.com/w80/gb.png 2x" width="32" height="24" alt="Bendera Inggris" loading="lazy">Inggris</li>
+        <li><img src="https://flagcdn.com/w40/tr.png" srcset="https://flagcdn.com/w80/tr.png 2x" width="32" height="24" alt="Bendera Turki" loading="lazy">Turki</li>
+        <li><img src="https://flagcdn.com/w40/pl.png" srcset="https://flagcdn.com/w80/pl.png 2x" width="32" height="24" alt="Bendera Polandia" loading="lazy">Polandia</li>
+        <li><img src="https://flagcdn.com/w40/fr.png" srcset="https://flagcdn.com/w80/fr.png 2x" width="32" height="24" alt="Bendera Prancis" loading="lazy">Prancis</li>
+        <li><img src="https://flagcdn.com/w40/au.png" srcset="https://flagcdn.com/w80/au.png 2x" width="32" height="24" alt="Bendera Australia" loading="lazy">Australia</li>
+        <li><img src="https://flagcdn.com/w40/qa.png" srcset="https://flagcdn.com/w80/qa.png 2x" width="32" height="24" alt="Bendera Qatar" loading="lazy">Qatar</li>
+        <li><img src="https://flagcdn.com/w40/se.png" srcset="https://flagcdn.com/w80/se.png 2x" width="32" height="24" alt="Bendera Swedia" loading="lazy">Swedia</li>
+        <li><img src="https://flagcdn.com/w40/nl.png" srcset="https://flagcdn.com/w80/nl.png 2x" width="32" height="24" alt="Bendera Belanda" loading="lazy">Belanda</li>
+    </ul>
+    <p class="stats-note">Peserta kami belajar dari berbagai daerah di Indonesia hingga ke luar negeri.</p>
   </div>
 </section>
 
