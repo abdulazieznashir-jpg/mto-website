@@ -10,6 +10,7 @@ const LEBAR = [390, 1280];
 // [halaman, email login simulasi (atau null), apakah perlu sesi]
 const HALAMAN = [
   ['index.html', null],
+  ['bimbingan-hafalan-30-juz.html', null],
   ['pembayaran.html', null],
   ['profil.html', 'orang.uji@gmail.com'],
   ['admin.html', 'abdulaziez.nashir@gmail.com'],
