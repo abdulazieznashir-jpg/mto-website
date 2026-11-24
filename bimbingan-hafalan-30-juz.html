@@ -470,14 +470,31 @@
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=124403919300787&ev=PageView&noscript=1" alt=""/></noscript>
 <style>
-  .stats-info .stats-kicker { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.7); text-align: center; margin: 0 0 6px; }
-  .stats-info .stats-judul { font-size: 30px; font-weight: 700; text-align: center; margin: 0 0 40px; color: #fff; }
-  .negara-judul { font-size: 18px; font-weight: 600; text-align: center; color: #fff; margin: 56px 0 20px; }
-  .negara-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px 18px; }
-  .negara-grid li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: rgba(255,255,255,.9); }
-  .negara-grid img { width: 32px; height: 24px; object-fit: cover; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.2); }
-  .stats-info .stats-note { text-align: center; color: rgba(255,255,255,.7); margin: 36px 0 0; font-size: 15px; }
-  @media (max-width: 700px) { .stats-info .stats-judul { font-size: 24px; } }
+  .stats.stats-info { background: #FAF6F2; padding: 56px 0; }
+  .stats-info .stats-card { background: #FFFFFF; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(71,40,19,.06); padding: 40px; }
+  .stats-info .stats-judul { font-size: 32px; font-weight: 700; color: #472813; text-align: center; text-wrap: balance; margin: 0 0 32px; line-height: 1.25; }
+  .stats-info .stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .stats-info .stats-grid > div { text-align: center; padding: 0 12px; }
+  .stats-info .stats-grid > div + div { border-left: 1px solid #E9E0D6; }
+  .stats-info .stat-value { font-size: 44px; font-weight: 700; color: #B8853C; line-height: 1.1; }
+  .stats-info .stat-label { font-size: 15px; color: #1A1A1A; margin-top: 6px; line-height: 1.4; }
+  .stats-info .negara-judul { font-size: 22px; font-weight: 700; color: #472813; text-align: center; margin: 40px 0 24px; padding-top: 32px; border-top: 1px solid #E9E0D6; }
+  .stats-info .negara-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px 20px; }
+  .stats-info .negara-grid li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #1A1A1A; min-width: 0; }
+  .stats-info .negara-grid img { width: 32px; height: 24px; object-fit: cover; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px #E9E0D6; }
+  .stats-info .stats-note { text-align: center; color: #414141; font-size: 15px; margin: 32px 0 0; }
+  @media (max-width: 700px) {
+    .stats.stats-info { padding: 40px 0; }
+    .stats-info .stats-card { padding: 28px 24px; }
+    .stats-info .stats-judul { font-size: 24px; margin-bottom: 24px; }
+    .stats-info .stats-grid { grid-template-columns: 1fr 1fr; row-gap: 20px; }
+    .stats-info .stats-grid > div:last-child { grid-column: 1 / -1; border-left: none; border-top: 1px solid #E9E0D6; padding-top: 20px; }
+    .stats-info .stat-value { font-size: 32px; white-space: nowrap; }
+    .stats-info .stat-label { font-size: 14px; }
+    .stats-info .negara-judul { font-size: 19px; }
+    .stats-info .negara-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px 16px; }
+    .stats-info .negara-grid li { font-size: 14px; }
+  }
 </style>
 </head>
 <body>
@@ -553,37 +570,38 @@
 <!-- BUKTI SOSIAL -->
 <section class="stats stats-info">
   <div class="container">
-    <p class="stats-kicker">Telah dipercaya</p>
-    <h2 class="stats-judul">16.000+ peserta</h2>
-    <div class="stats-grid">
-      <div><div class="stat-value">16.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
-      <div><div class="stat-value">19</div><div class="stat-label">Negara, termasuk Indonesia</div></div>
-      <div><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan Setiap Pengajar</div></div>
-      <div><div class="stat-value">1:1</div><div class="stat-label">Satu Guru, Satu Peserta</div></div>
-    </div>
-    <h3 class="negara-judul">Peserta kami datang dari</h3>
-    <ul class="negara-grid">
+    <div class="stats-card">
+      <h2 class="stats-judul">Dipercaya lebih dari 16.000 peserta</h2>
+      <div class="stats-grid">
+        <div><div class="stat-value">20</div><div class="stat-label">Negara, termasuk Indonesia</div></div>
+        <div><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan setiap pengajar</div></div>
+        <div><div class="stat-value">1:1</div><div class="stat-label">Satu guru, satu peserta</div></div>
+      </div>
+      <h3 class="negara-judul">Peserta kami datang dari</h3>
+      <ul class="negara-grid">
         <li><img src="https://flagcdn.com/w40/us.png" srcset="https://flagcdn.com/w80/us.png 2x" width="32" height="24" alt="Bendera Amerika Serikat" loading="lazy">Amerika Serikat</li>
-        <li><img src="https://flagcdn.com/w40/ca.png" srcset="https://flagcdn.com/w80/ca.png 2x" width="32" height="24" alt="Bendera Kanada" loading="lazy">Kanada</li>
-        <li><img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="32" height="24" alt="Bendera Singapura" loading="lazy">Singapura</li>
         <li><img src="https://flagcdn.com/w40/sa.png" srcset="https://flagcdn.com/w80/sa.png 2x" width="32" height="24" alt="Bendera Arab Saudi" loading="lazy">Arab Saudi</li>
+        <li><img src="https://flagcdn.com/w40/au.png" srcset="https://flagcdn.com/w80/au.png 2x" width="32" height="24" alt="Bendera Australia" loading="lazy">Australia</li>
+        <li><img src="https://flagcdn.com/w40/nl.png" srcset="https://flagcdn.com/w80/nl.png 2x" width="32" height="24" alt="Bendera Belanda" loading="lazy">Belanda</li>
         <li><img src="https://flagcdn.com/w40/bn.png" srcset="https://flagcdn.com/w80/bn.png 2x" width="32" height="24" alt="Bendera Brunei" loading="lazy">Brunei</li>
-        <li><img src="https://flagcdn.com/w40/eg.png" srcset="https://flagcdn.com/w80/eg.png 2x" width="32" height="24" alt="Bendera Mesir" loading="lazy">Mesir</li>
-        <li><img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="32" height="24" alt="Bendera Malaysia" loading="lazy">Malaysia</li>
-        <li><img src="https://flagcdn.com/w40/de.png" srcset="https://flagcdn.com/w80/de.png 2x" width="32" height="24" alt="Bendera Jerman" loading="lazy">Jerman</li>
-        <li><img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="32" height="24" alt="Bendera Jepang" loading="lazy">Jepang</li>
-        <li><img src="https://flagcdn.com/w40/tw.png" srcset="https://flagcdn.com/w80/tw.png 2x" width="32" height="24" alt="Bendera Taiwan" loading="lazy">Taiwan</li>
-        <li><img src="https://flagcdn.com/w40/ae.png" srcset="https://flagcdn.com/w80/ae.png 2x" width="32" height="24" alt="Bendera Uni Emirat Arab" loading="lazy">Uni Emirat Arab</li>
+        <li><img src="https://flagcdn.com/w40/id.png" srcset="https://flagcdn.com/w80/id.png 2x" width="32" height="24" alt="Bendera Indonesia" loading="lazy">Indonesia</li>
         <li><img src="https://flagcdn.com/w40/gb.png" srcset="https://flagcdn.com/w80/gb.png 2x" width="32" height="24" alt="Bendera Inggris" loading="lazy">Inggris</li>
-        <li><img src="https://flagcdn.com/w40/tr.png" srcset="https://flagcdn.com/w80/tr.png 2x" width="32" height="24" alt="Bendera Turki" loading="lazy">Turki</li>
+        <li><img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="32" height="24" alt="Bendera Jepang" loading="lazy">Jepang</li>
+        <li><img src="https://flagcdn.com/w40/de.png" srcset="https://flagcdn.com/w80/de.png 2x" width="32" height="24" alt="Bendera Jerman" loading="lazy">Jerman</li>
+        <li><img src="https://flagcdn.com/w40/ca.png" srcset="https://flagcdn.com/w80/ca.png 2x" width="32" height="24" alt="Bendera Kanada" loading="lazy">Kanada</li>
+        <li><img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="32" height="24" alt="Bendera Malaysia" loading="lazy">Malaysia</li>
+        <li><img src="https://flagcdn.com/w40/eg.png" srcset="https://flagcdn.com/w80/eg.png 2x" width="32" height="24" alt="Bendera Mesir" loading="lazy">Mesir</li>
         <li><img src="https://flagcdn.com/w40/pl.png" srcset="https://flagcdn.com/w80/pl.png 2x" width="32" height="24" alt="Bendera Polandia" loading="lazy">Polandia</li>
         <li><img src="https://flagcdn.com/w40/fr.png" srcset="https://flagcdn.com/w80/fr.png 2x" width="32" height="24" alt="Bendera Prancis" loading="lazy">Prancis</li>
-        <li><img src="https://flagcdn.com/w40/au.png" srcset="https://flagcdn.com/w80/au.png 2x" width="32" height="24" alt="Bendera Australia" loading="lazy">Australia</li>
         <li><img src="https://flagcdn.com/w40/qa.png" srcset="https://flagcdn.com/w80/qa.png 2x" width="32" height="24" alt="Bendera Qatar" loading="lazy">Qatar</li>
+        <li><img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="32" height="24" alt="Bendera Singapura" loading="lazy">Singapura</li>
         <li><img src="https://flagcdn.com/w40/se.png" srcset="https://flagcdn.com/w80/se.png 2x" width="32" height="24" alt="Bendera Swedia" loading="lazy">Swedia</li>
-        <li><img src="https://flagcdn.com/w40/nl.png" srcset="https://flagcdn.com/w80/nl.png 2x" width="32" height="24" alt="Bendera Belanda" loading="lazy">Belanda</li>
-    </ul>
-    <p class="stats-note">Peserta kami belajar dari berbagai daerah di Indonesia hingga ke luar negeri.</p>
+        <li><img src="https://flagcdn.com/w40/tw.png" srcset="https://flagcdn.com/w80/tw.png 2x" width="32" height="24" alt="Bendera Taiwan" loading="lazy">Taiwan</li>
+        <li><img src="https://flagcdn.com/w40/tr.png" srcset="https://flagcdn.com/w80/tr.png 2x" width="32" height="24" alt="Bendera Turki" loading="lazy">Turki</li>
+        <li><img src="https://flagcdn.com/w40/ae.png" srcset="https://flagcdn.com/w80/ae.png 2x" width="32" height="24" alt="Bendera Uni Emirat Arab" loading="lazy">Uni Emirat Arab</li>
+      </ul>
+      <p class="stats-note">Peserta kami belajar dari berbagai daerah di Indonesia hingga ke luar negeri.</p>
+    </div>
   </div>
 </section>
 
