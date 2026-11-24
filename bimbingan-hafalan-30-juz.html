@@ -116,6 +116,8 @@
     .audience-title { font-size: 17px; }
     .audience-desc { font-size: 14px; }
   }
+  .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
+  .about-image.about-image-art::before { display: none; }
   @media (max-width: 700px) { body { padding-bottom: 96px; } }
   /* KENAPA MAHKOTA */
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
@@ -616,8 +618,8 @@
 <section class="section">
   <div class="container">
     <div class="about-grid">
-      <div class="about-image reveal">
-        <div class="about-image-label"><span lang="ar">القرآن نور</span></div>
+      <div class="about-image about-image-art reveal">
+        <picture><source srcset="bimbingan-tanya.webp" type="image/webp"><img src="bimbingan-tanya.png" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="900" height="960" loading="lazy" decoding="async" style="display:block;width:100%;height:auto"></picture>
       </div>
       <div class="about-content reveal">
         <div class="eyebrow">Apakah ini kondisi Anda?</div>
