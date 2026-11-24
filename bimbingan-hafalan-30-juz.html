@@ -118,8 +118,11 @@
   }
   .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
   .about-image.about-image-art::before { display: none; }
-  .program-card-image.program-card-image-art { aspect-ratio: 1/1; margin: -12px -12px 24px; background: none; overflow: visible; display: block; }
+  .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 0 16px; background: none; overflow: visible; display: block; }
   .guarantee-note { font-size: 14px; line-height: 1.5; color: #414141; text-align: center; max-width: 420px; margin: 4px auto 0; }
+  .art-frame { display: block; width: 280px; max-width: 100%; aspect-ratio: 1 / 1; margin: 0 auto; }
+  .art-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .hero .art-frame { margin: 0 auto 24px; }
   @media (max-width: 700px) { body { padding-bottom: 96px; } }
   /* KENAPA MAHKOTA */
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
@@ -566,7 +569,7 @@
   <div class="hero-ornament"></div>
   <div class="container">
     <div class="hero-content">
-      <picture style="display:block;width:min(100%,420px);margin:0 auto 24px"><source srcset="bimbingan-hero-3d.webp" type="image/webp"><img class="hero-image" src="bimbingan-hero-3d.png" alt="Ilustrasi muslimah belajar Al-Qur'an online dengan headset, laptop, dan pengajar di layar" width="900" height="700" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;margin:0 auto"></picture>
+      <picture class="art-frame"><source srcset="bimbingan-hero-640.webp" type="image/webp"><img src="bimbingan-hero-640.png" alt="Ilustrasi muslimah belajar Al-Qur'an online dengan headset, laptop, dan pengajar di layar" width="640" height="640" fetchpriority="high" decoding="async"></picture>
       <div class="hero-badge">
         <span class="dot"></span>
         Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
@@ -628,7 +631,7 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-image about-image-art reveal">
-        <picture><source srcset="bimbingan-tanya.webp" type="image/webp"><img src="bimbingan-tanya.png" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="900" height="960" loading="lazy" decoding="async" style="display:block;width:100%;height:auto"></picture>
+        <picture class="art-frame"><source srcset="bimbingan-tanya-640.webp" type="image/webp"><img src="bimbingan-tanya-640.png" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="640" height="640" loading="lazy" decoding="async"></picture>
       </div>
       <div class="about-content reveal">
         <div class="eyebrow">Apakah ini kondisi Anda?</div>
@@ -787,7 +790,7 @@
     <div class="programs-grid" style="max-width: 860px; margin: 0 auto;">
       <div class="program-card reveal">
         <div class="program-card-image program-card-image-art">
-          <picture style="display:block;width:100%;height:100%"><source srcset="bimbingan-kelas-tahsin.webp" type="image/webp"><img src="bimbingan-kelas-tahsin.png" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="800" height="809" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:contain"></picture>
+          <picture class="art-frame"><source srcset="bimbingan-tahsin-640.webp" type="image/webp"><img src="bimbingan-tahsin-640.png" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="640" height="640" loading="lazy" decoding="async"></picture>
         </div>
         <h3>Kelas Tahsin</h3>
         <p>Untuk Anda yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
@@ -799,7 +802,7 @@
       </div>
       <div class="program-card reveal">
         <div class="program-card-image program-card-image-art">
-          <picture style="display:block;width:100%;height:100%"><source srcset="bimbingan-kelas-tahfidz.webp" type="image/webp"><img src="bimbingan-kelas-tahfidz.png" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="800" height="731" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:contain"></picture>
+          <picture class="art-frame"><source srcset="bimbingan-tahfidz-640.webp" type="image/webp"><img src="bimbingan-tahfidz-640.png" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="640" height="640" loading="lazy" decoding="async"></picture>
         </div>
         <h3>Kelas Tahfidz</h3>
         <p>Untuk Anda yang ingin menambah hafalan baru (<strong>Ziyadah</strong>) dan menjaga hafalan yang sudah ada (<strong>Muroja'ah</strong>).</p>
