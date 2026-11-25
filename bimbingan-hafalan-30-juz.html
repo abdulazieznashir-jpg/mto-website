@@ -1933,14 +1933,6 @@
         return '<button type="button" class="ask-opt" data-prog="' + p + '"><span>' + esc(PROG[p].t) + '</span></button>';
       });
       body.innerHTML = progs.join('');
-    } else if (s.k === 'kontak') {
-      title.textContent = 'Data Anda';
-      body.innerHTML = '<form class="ask-form" id="askKontak" novalidate>' +
-        '<label>Nama<input name="nama" autocomplete="name" maxlength="100" placeholder="Nama lengkap"></label>' +
-        '<label>Nomor WhatsApp<input name="wa" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>' +
-        '<p class="ask-err" id="askErr" role="alert"></p>' +
-        '<button type="submit" class="ask-btn">Lanjut</button>' +
-        '<p class="ask-kecil">Data Anda hanya dipakai admin untuk menghubungi Anda terkait program ini.</p></form>';
     } else if (s.k === 'kelas') {
       var pg = PROG[s.p], m0 = pg.dur[0];
       title.textContent = 'Pilih kelas ' + pg.lbl;
@@ -1960,12 +1952,17 @@
       }).join('');
     } else if (s.k === 'ringkas') {
       var c2 = KELAS[s.k2], mo = monthly(s.k2, s.m);
-      title.textContent = 'Konfirmasi pertanyaan';
-      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[s.p].lbl + ' ' + c2.n + ' ' + s.m + ' bulan' });
-      var q = (lead ? 'nama saya ' + lead.nama + ', ' : '') + 'saya ingin menanyakan program ' + PROG[s.p].lbl + ', durasi ' + s.m + ' bulan, kelas ' + c2.n + ' (' + c2.menit + ' menit per sesi).';
-      body.innerHTML = '<p class="ask-sum">' + esc(q.charAt(0).toUpperCase() + q.slice(1)) + '</p>' +
+      title.textContent = 'Ringkasan pilihan Anda';
+      var ringkasTeks = 'saya ingin menanyakan program ' + PROG[s.p].lbl + ', durasi ' + s.m + ' bulan, kelas ' + c2.n + ' (' + c2.menit + ' menit per sesi).';
+      body.innerHTML = '<p class="ask-sum">' + esc(ringkasTeks.charAt(0).toUpperCase() + ringkasTeks.slice(1)) + '</p>' +
         '<span class="ask-tag">Harga ' + rb(mo) + ' per bulan · harga coret ' + rb(c2.asli) + ' · diskon ' + pct(c2.asli, mo) + '%</span>' +
-        '<a class="ask-btn ask-btn-wa" target="_blank" rel="noopener" href="' + waLink("Assalamu'alaikum, " + q + ' Mohon info lebih lanjut.') + '">' + WA_ICON + 'Tanya Admin via WhatsApp</a>';
+        '<form class="ask-form" id="askKontak" novalidate>' +
+        '<p class="ask-kecil">Isi nama dan nomor WhatsApp agar admin bisa membalas pertanyaan Anda.</p>' +
+        '<label>Nama<input name="nama" autocomplete="name" maxlength="100" placeholder="Nama lengkap"></label>' +
+        '<label>Nomor WhatsApp<input name="wa" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>' +
+        '<p class="ask-err" id="askErr" role="alert"></p>' +
+        '<button type="submit" class="ask-btn ask-btn-wa">' + WA_ICON + 'Tanya Admin via WhatsApp</button>' +
+        '<p class="ask-kecil">Data Anda hanya dipakai admin untuk menghubungi Anda terkait program ini.</p></form>';
     }
   }
   function go(s) { hist.push(s); draw(s); }
@@ -1974,7 +1971,7 @@
   body.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     var cur = hist[hist.length - 1];
-    if (t.dataset.prog) go({ k: 'kontak', p: t.dataset.prog });
+    if (t.dataset.prog) go({ k: 'kelas', p: t.dataset.prog });
     else if (t.dataset.kelas) go({ k: 'durasi', p: cur.p, k2: t.dataset.kelas });
     else if (t.dataset.dur) go({ k: 'ringkas', p: cur.p, k2: cur.k2, m: +t.dataset.dur });
   });
@@ -1987,25 +1984,30 @@
     var nama = f.nama.value.trim(), wa = f.wa.value.replace(/\D/g, '');
     if (nama.length < 2) { err.textContent = 'Mohon isi nama Anda.'; return; }
     if (wa.length < 9 || wa.length > 15) { err.textContent = 'Mohon isi nomor WhatsApp yang aktif.'; return; }
-    // Sudah tersimpan untuk pertanyaan ini (misal setelah kembali): lanjut tanpa menyimpan ulang.
-    if (lead && lead.program === cur.p) { go({ k: 'kelas', p: cur.p }); return; }
     err.textContent = '';
+    // Jendela dibuka saat klik supaya tidak diblokir browser; alamatnya diisi setelah data tersimpan.
+    var jendela = window.open('', '_blank');
     btn.disabled = true; btn.textContent = 'Menyimpan…';
     fetch(SB_REST + '/rest/v1/rpc/daftar_kontak', {
       method: 'POST',
       headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_nama: nama, p_wa: wa, p_program: PROG[cur.p].lbl, p_kelas: null, p_durasi: null })
+      body: JSON.stringify({ p_nama: nama, p_wa: wa, p_program: PROG[cur.p].lbl, p_kelas: KELAS[cur.k2].n, p_durasi: cur.m })
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
     }).then(function (x) {
       if (!x.ok) throw new Error((x.j && x.j.message) || 'gagal');
       pic = { wa: String(x.j.wa_admin || WA), nama: x.j.pic_nama || '' };
       lead = { nama: nama, program: cur.p };
-      go({ k: 'kelas', p: cur.p });
+      var q = 'nama saya ' + nama + ', saya ingin menanyakan program ' + PROG[cur.p].lbl + ', durasi ' + cur.m + ' bulan, kelas ' + KELAS[cur.k2].n + ' (' + KELAS[cur.k2].menit + ' menit per sesi).';
+      var url = waLink("Assalamu'alaikum, " + q + ' Mohon info lebih lanjut.');
+      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' });
+      if (jendela) jendela.location.href = url; else window.location.href = url;
+      btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
     }).catch(function (x) {
-      btn.disabled = false; btn.textContent = 'Lanjut';
+      if (jendela) jendela.close();
+      btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
       var pesanGalat = x && x.message;
-      err.textContent = (pesanGalat && pesanGalat !== 'gagal' && pesanGalat.indexOf('Failed') === -1 && pesanGalat.indexOf('fetch') === -1) ? pesanGalat : 'Data belum tersimpan. Periksa koneksi, lalu coba lagi.';
+      err.textContent = (pesanGalat && pesanGalat !== 'gagal' && pesanGalat.indexOf('Failed') === -1 && pesanGalat.indexOf('fetch') === -1) ? pesanGalat : 'Data belum tersimpan, jadi WhatsApp belum dibuka. Periksa koneksi, lalu coba lagi.';
     });
   });
   document.addEventListener('click', function (e) {
