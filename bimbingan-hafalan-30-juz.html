@@ -181,6 +181,12 @@
   html.embed body > :not(#cek) { display: none !important; }
   html.embed #cek.flow-backdrop { background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; align-items: stretch; }
   html.embed .flow { max-width: none; max-height: 100vh; max-height: 100dvh; border-radius: 0; box-shadow: none; transform: none; }
+  /* HP: alur pendaftaran jadi layar penuh yang menempel di bawah, bukan kartu melayang di tengah */
+  @media (max-width: 640px) {
+    .flow-backdrop { padding: 0; align-items: stretch; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .flow { max-width: none; width: 100%; height: 100vh; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; padding: max(16px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); transform: translateY(24px); }
+    .flow-backdrop.open .flow { transform: none; }
+  }
   html.embed .flow-close { display: none; }
   .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: sticky; top: 0; z-index: 3; background: #fff; padding: 4px 0 8px; }
   .flow-back, .flow-close {
@@ -385,6 +391,8 @@
   .ask-backdrop[hidden] { display: none; }
   .ask-panel { background: #fff; color: #1d1d1f; width: 100%; max-width: 520px; max-height: 86vh; overflow-y: auto; border-radius: 20px 20px 0 0; }
   @media (min-width: 700px) { .ask-backdrop { align-items: center; } .ask-panel { border-radius: 20px; } }
+  /* HP: panel tanya juga layar penuh, sama seperti alur pendaftaran */
+  @media (max-width: 699px) { .ask-panel { max-width: none; height: 100vh; height: 100dvh; max-height: 100dvh; border-radius: 0; } }
   .ask-top { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e5ea; }
   .ask-top h3 { margin: 0; flex: 1; font-size: 17px; }
   .ask-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d2d2d7; background: #fff; font-size: 20px; line-height: 1; cursor: pointer; color: #1d1d1f; }
