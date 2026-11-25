@@ -1,9 +1,11 @@
 RewriteEngine On
 
 # Alamat tanpa .html (kecuali index): /program-afiliasi -> program-afiliasi.html
+# Garis miring di akhir dialihkan ke alamat tanpa garis miring (hanya jika halamannya ada)
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^/.]+)/$ /$1 [R=301,L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^([^/.]+)/$ /$1 [R=301,L]
 RewriteRule ^([^/.]+)$ $1.html [L]
 
 # Alihkan permanen alamat lama .html ke alamat tanpa .html
