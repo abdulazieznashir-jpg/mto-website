@@ -1519,7 +1519,6 @@
 
   function openFlow(opts) {
     S = { peserta: 1, mode: opts.mode, program: opts.program || null, jenis: opts.jenis || null, kelas: opts.tier || null, periode: null, editing: false };
-    if (window.mtoTrack) window.mtoTrack('Lead', { content_name: opts.mode === 'daftar' ? 'Daftar dari paket' : 'Cek Program' });
     P = { program: opts.program || null, jenis: opts.jenis || null, tier: opts.tier || null };
     if (P.jenis && P.tier && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
     hist = [];
@@ -1553,7 +1552,6 @@
       if (kurang) { S.editing = true; hist[hist.length - 1] = kurang; step = kurang; }
     }
     if (window.mtoTrack && step === 'data') window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
-    if (window.mtoTrack && step === 'kirim') window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran terkirim' });
     Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
     backBtn.hidden = hist.length <= 1;
     var n = STAGE_OF[step];
@@ -1799,6 +1797,7 @@
       if (!dataValid()) return;
       simpanPendaftaran(function (err) {
         if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
+        if (window.mtoTrack) window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran tersimpan' });
         try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
         window.location.href = 'pembayaran';
       });
@@ -2013,6 +2012,7 @@
       var q = 'nama saya ' + nama + ', saya ingin menanyakan program ' + PROG[cur.p].lbl + ', durasi ' + cur.m + ' bulan, kelas ' + KELAS[cur.k2].n + ' (' + KELAS[cur.k2].menit + ' menit per sesi).';
       var url = waLink("Assalamu'alaikum, " + q + ' Mohon info lebih lanjut.');
       if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' });
+      if (window.mtoTrack) window.mtoTrack('Contact', { content_name: 'WhatsApp dari panel tanya' });
       if (jendela) jendela.location.href = url; else window.location.href = url;
       btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
     }).catch(function (x) {

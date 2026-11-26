@@ -48,7 +48,7 @@
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
       if (!a || !window.fbq) return;
-      window.fbq('track', a.id === 'flowWa' ? 'Lead' : 'Contact');
+      window.fbq('track', 'Contact');
     });
   })();
 </script>
