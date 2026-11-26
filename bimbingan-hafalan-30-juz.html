@@ -100,28 +100,13 @@
     background: var(--primary-lighter); color: var(--primary-darker); font-size: 17px;
   }
   /* COCOK UNTUK */
-  .audience-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+  .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
   .audience-card {
-    background: white; border-radius: var(--radius); padding: 18px 16px; text-align: center;
-    border: 1px solid var(--border-light);
+    background: white; border-radius: var(--radius); padding: 24px;
+    border: 1px solid var(--border-light); text-align: center;
   }
-  .audience-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .audience-desc { font-size: 13px; line-height: 1.4; color: var(--text-secondary); }
-  @media (min-width: 760px) {
-    .audience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
-    .audience-card { padding: 22px 20px; }
-    .audience-title { font-size: 17px; }
-    .audience-desc { font-size: 14px; }
-  }
-  .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
-  .about-image.about-image-art::before { display: none; }
-  .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 -12px 16px; background: none; overflow: visible; display: block; }
-  @media (max-width: 700px) { .program-card { padding: 20px; } }
-  .guarantee-note { font-size: 14px; line-height: 1.5; color: #414141; text-align: center; max-width: 420px; margin: 4px auto 0; }
-  .art-frame { display: block; width: min(100%, 330px); aspect-ratio: 1 / 1; margin: 0 auto; }
-  .art-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
-  .hero .art-frame { margin: 0 auto 24px; }
-  @media (max-width: 700px) { body { padding-bottom: 96px; } }
+  .audience-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .audience-desc { font-size: 14px; color: var(--text-secondary); }
   /* KENAPA MAHKOTA */
   .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
   .why-card {
@@ -181,13 +166,13 @@
   html.embed body > :not(#cek) { display: none !important; }
   html.embed #cek.flow-backdrop { background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; align-items: stretch; }
   html.embed .flow { max-width: none; max-height: 100vh; max-height: 100dvh; border-radius: 0; box-shadow: none; transform: none; }
+  html.embed .flow-close { display: none; }
   /* HP: alur pendaftaran jadi layar penuh yang menempel di bawah, bukan kartu melayang di tengah */
   @media (max-width: 640px) {
     .flow-backdrop { padding: 0; align-items: stretch; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
     .flow { max-width: none; width: 100%; height: 100vh; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; padding: max(16px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); transform: translateY(24px); }
     .flow-backdrop.open .flow { transform: none; }
   }
-  html.embed .flow-close { display: none; }
   .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: sticky; top: 0; z-index: 3; background: #fff; padding: 4px 0 8px; }
   .flow-back, .flow-close {
     width: 36px; height: 36px; border-radius: 50%;
@@ -536,37 +521,13 @@
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=124403919300787&ev=PageView&noscript=1" alt=""/></noscript>
 <style>
-  .stats.stats-info { background: #FAF6F2; padding: 56px 0; }
-  .stats-info .stats-card { background: #FFFFFF; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(71,40,19,.06); padding: 40px; }
-  .stats-info .stats-judul { font-size: 32px; font-weight: 700; color: #472813; text-align: center; text-wrap: balance; margin: 0 0 32px; line-height: 1.25; }
-  .stats-info .stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
-  .stats-info .stats-grid > div { text-align: center; padding: 0 12px; }
-  .stats-info .stats-grid > div + div { border-left: 1px solid #E9E0D6; }
-  .stats-info .stat-value { font-size: 44px; font-weight: 700; color: #B8853C; line-height: 1.1; }
-  .stats-info .stat-label { font-size: 15px; color: #1A1A1A; margin-top: 6px; line-height: 1.4; }
-  .stats-info .negara-judul { font-size: 22px; font-weight: 700; color: #472813; text-align: center; margin: 40px 0 24px; padding-top: 32px; border-top: 1px solid #E9E0D6; }
-  .stats-info .negara-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px 20px; }
-  .stats-info .negara-grid li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #1A1A1A; min-width: 0; }
-  .stats-info .negara-grid img { width: 32px; height: 24px; object-fit: cover; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px #E9E0D6; }
-  .stats-info .stats-note { text-align: center; color: #414141; font-size: 15px; margin: 32px 0 0; }
-  @media (max-width: 700px) {
-    .hero { padding-bottom: 32px; overflow: hidden; }
-    .stats.stats-info { padding: 16px 0 40px; }
-    .stats-info .stats-card { padding: 28px 22px; border-radius: 18px; }
-    .stats-info .stats-judul { font-size: 22px; line-height: 1.3; margin: 0 0 16px; text-align: left; }
-    .stats-info .stats-grid { grid-template-columns: minmax(0,1fr); gap: 0; row-gap: 0; }
-    .stats-info .stats-grid > div { display: flex; align-items: center; gap: 16px; text-align: left; padding: 14px 0; min-width: 0; }
-    .stats-info .stats-grid > div + div { border-left: none; border-top: 1px solid #E9E0D6; }
-    .stats-info .stats-grid > div:last-child { grid-column: auto; padding-top: 12px; }
-    .stats-info .stat-value { font-size: 30px; flex: 0 0 auto; white-space: nowrap; margin: 0; line-height: 1.1; }
-    .stats-info .stat-label { margin: 0; font-size: 15px; line-height: 1.35; flex: 1 1 auto; min-width: 0; }
-    .stats-info .stats-grid > div { padding: 12px 0; }
-    .stats-info .stats-grid > div:first-child { padding-top: 0; }
-    .stats-info .negara-judul { font-size: 18px; margin: 24px 0 14px; padding-top: 24px; text-align: left; }
-    .stats-info .negara-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px 16px; }
-    .stats-info .negara-grid li { font-size: 15px; }
-    .stats-info .stats-note { font-size: 14px; margin-top: 24px; }
-  }
+  .art-frame { display: block; width: min(100%, 330px); aspect-ratio: 1 / 1; margin: 0 auto; }
+  .art-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .hero .art-frame { margin: 0 auto 24px; }
+  .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
+  .about-image.about-image-art::before { display: none; }
+  .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 -12px 16px; background: none; overflow: visible; display: block; }
+  @media (max-width: 700px) { .program-card { padding: 20px; } }
 </style>
 </head>
 <body>
@@ -626,55 +587,51 @@
         <span class="dot"></span>
         Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
       </div>
-      <h1 class="animate">Bimbingan Hafalan hingga <span class="accent">30 Juz</span><br>dan Perbaikan Bacaan Al-Qur'an.</h1>
+      <h1 class="animate">Ingin hafal 30 Juz<br><span class="accent">dengan bimbingan terarah?</span></h1>
       <p class="lead animate" style="animation-delay: 0.1s">
-        Privat 1-on-1 dari rumah, untuk anak maupun dewasa. Dibimbing pengajar hafidz/hafidzah 30 juz, jadwal fleksibel, bisa mulai dari nol.
+        Kami siapkan jalannya, mulai hari ini. Belajar dari dasar hingga mahir dan hafal 30 Juz, cukup dari rumah. Tanpa malu, tanpa bingung, agar Anda tidak hanya bisa dan hafal, tetapi juga istiqamah bersama Al-Qur'an.
       </p>
       <div class="hero-cta animate" style="animation-delay: 0.2s; margin-bottom: 60px; flex-direction: column; align-items: center; gap: 12px">
         <button type="button" id="cekOpen" class="btn btn-primary btn-lg">Cek Program yang Cocok (1 Menit)</button>
         <p class="cek-note" style="margin: 0 0 4px">Tiga pertanyaan singkat, lalu kami sarankan program yang sesuai.</p>
         <a href="#daftar" class="btn btn-secondary btn-lg" data-daftar>Daftar Sekarang</a>
-        <p class="guarantee-note">Coba dulu tanpa risiko. Jika tidak cocok dalam 7 hari pertama, dana kami kembalikan 100%.</p>
+      </div>
+      <div class="hero-features">
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <div class="hero-feature-value">Private 1-on-1</div>
+          <div class="hero-feature-label">Satu guru untuk satu peserta</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z"/></svg>
+          <div class="hero-feature-value">Meet, WhatsApp, Zoom</div>
+          <div class="hero-feature-label">Pakai aplikasi yang Anda punya</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z"/></svg>
+          <div class="hero-feature-value">Pengajar Hafidz 30 Juz</div>
+          <div class="hero-feature-label">Berpengalaman &amp; bersertifikat</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+          <div class="hero-feature-value">Jadwal Fleksibel</div>
+          <div class="hero-feature-label">Terjadwal, bisa dinegosiasikan</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- BUKTI SOSIAL -->
-<section class="stats stats-info">
+<section class="stats">
   <div class="container">
-    <div class="stats-card">
-      <h2 class="stats-judul">Dipercaya lebih dari 16.000 peserta</h2>
-      <div class="stats-grid">
-        <div><div class="stat-value">20</div><div class="stat-label">Negara, termasuk Indonesia</div></div>
-        <div><div class="stat-value">30 Juz</div><div class="stat-label">Pengajar hafal 30 juz</div></div>
-        <div><div class="stat-value">1:1</div><div class="stat-label">Satu pengajar, satu peserta</div></div>
-      </div>
-      <h3 class="negara-judul">Peserta kami berasal dari</h3>
-      <ul class="negara-grid">
-        <li><img src="https://flagcdn.com/w40/us.png" srcset="https://flagcdn.com/w80/us.png 2x" width="32" height="24" alt="Bendera Amerika Serikat" loading="lazy">Amerika Serikat</li>
-        <li><img src="https://flagcdn.com/w40/sa.png" srcset="https://flagcdn.com/w80/sa.png 2x" width="32" height="24" alt="Bendera Arab Saudi" loading="lazy">Arab Saudi</li>
-        <li><img src="https://flagcdn.com/w40/au.png" srcset="https://flagcdn.com/w80/au.png 2x" width="32" height="24" alt="Bendera Australia" loading="lazy">Australia</li>
-        <li><img src="https://flagcdn.com/w40/nl.png" srcset="https://flagcdn.com/w80/nl.png 2x" width="32" height="24" alt="Bendera Belanda" loading="lazy">Belanda</li>
-        <li><img src="https://flagcdn.com/w40/bn.png" srcset="https://flagcdn.com/w80/bn.png 2x" width="32" height="24" alt="Bendera Brunei" loading="lazy">Brunei</li>
-        <li><img src="https://flagcdn.com/w40/id.png" srcset="https://flagcdn.com/w80/id.png 2x" width="32" height="24" alt="Bendera Indonesia" loading="lazy">Indonesia</li>
-        <li><img src="https://flagcdn.com/w40/gb.png" srcset="https://flagcdn.com/w80/gb.png 2x" width="32" height="24" alt="Bendera Inggris" loading="lazy">Inggris</li>
-        <li><img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="32" height="24" alt="Bendera Jepang" loading="lazy">Jepang</li>
-        <li><img src="https://flagcdn.com/w40/de.png" srcset="https://flagcdn.com/w80/de.png 2x" width="32" height="24" alt="Bendera Jerman" loading="lazy">Jerman</li>
-        <li><img src="https://flagcdn.com/w40/ca.png" srcset="https://flagcdn.com/w80/ca.png 2x" width="32" height="24" alt="Bendera Kanada" loading="lazy">Kanada</li>
-        <li><img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="32" height="24" alt="Bendera Malaysia" loading="lazy">Malaysia</li>
-        <li><img src="https://flagcdn.com/w40/eg.png" srcset="https://flagcdn.com/w80/eg.png 2x" width="32" height="24" alt="Bendera Mesir" loading="lazy">Mesir</li>
-        <li><img src="https://flagcdn.com/w40/pl.png" srcset="https://flagcdn.com/w80/pl.png 2x" width="32" height="24" alt="Bendera Polandia" loading="lazy">Polandia</li>
-        <li><img src="https://flagcdn.com/w40/fr.png" srcset="https://flagcdn.com/w80/fr.png 2x" width="32" height="24" alt="Bendera Prancis" loading="lazy">Prancis</li>
-        <li><img src="https://flagcdn.com/w40/qa.png" srcset="https://flagcdn.com/w80/qa.png 2x" width="32" height="24" alt="Bendera Qatar" loading="lazy">Qatar</li>
-        <li><img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="32" height="24" alt="Bendera Singapura" loading="lazy">Singapura</li>
-        <li><img src="https://flagcdn.com/w40/se.png" srcset="https://flagcdn.com/w80/se.png 2x" width="32" height="24" alt="Bendera Swedia" loading="lazy">Swedia</li>
-        <li><img src="https://flagcdn.com/w40/tw.png" srcset="https://flagcdn.com/w80/tw.png 2x" width="32" height="24" alt="Bendera Taiwan" loading="lazy">Taiwan</li>
-        <li><img src="https://flagcdn.com/w40/tr.png" srcset="https://flagcdn.com/w80/tr.png 2x" width="32" height="24" alt="Bendera Turki" loading="lazy">Turki</li>
-        <li><img src="https://flagcdn.com/w40/ae.png" srcset="https://flagcdn.com/w80/ae.png 2x" width="32" height="24" alt="Bendera Uni Emirat Arab" loading="lazy">Uni Emirat Arab</li>
-      </ul>
-      <p class="stats-note">Peserta kami belajar dari berbagai daerah di Indonesia dan luar negeri.</p>
+    <div class="stats-grid">
+      <div class="reveal"><div class="stat-value" data-count="16000" data-suffix="+">16.000+</div><div class="stat-label">Peserta Telah Bergabung</div></div>
+      <div class="reveal"><div class="stat-value">20</div><div class="stat-label">Negara, termasuk Indonesia</div></div>
+      <div class="reveal"><div class="stat-value">30 Juz</div><div class="stat-label">Hafalan Setiap Pengajar</div></div>
+      <div class="reveal"><div class="stat-value">1:1</div><div class="stat-label">Satu Guru, Satu Peserta</div></div>
     </div>
+    <p class="stats-note reveal">Peserta kami belajar dari berbagai daerah di Indonesia hingga Malaysia, Singapura, Jepang, Arab Saudi, dan Belanda.</p>
   </div>
 </section>
 
@@ -686,16 +643,16 @@
         <picture class="art-frame"><img src="bimbingan-tanya-960.webp" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="960" height="960" loading="lazy" decoding="async"></picture>
       </div>
       <div class="about-content reveal">
-        <div class="eyebrow">Apakah ini kondisi Anda?</div>
+        <div class="eyebrow">Apakah Anda…</div>
         <h2>Pernah merasa seperti ini?</h2>
         <ul class="pain-list">
-          <li><span class="pain-icon">?</span><span>Menganggap menghafal Al-Qur'an sulit dan memakan waktu lama.</span></li>
-          <li><span class="pain-icon">?</span><span>Ingin didampingi pengajar yang terpercaya di bidang Al-Qur'an.</span></li>
-          <li><span class="pain-icon">?</span><span>Ingin menghafal Al-Qur'an, tetapi waktu selalu habis untuk kesibukan lain.</span></li>
-          <li><span class="pain-icon">?</span><span>Ingin konsisten menghafal, tetapi belum punya lingkungan yang mendukung.</span></li>
-          <li><span class="pain-icon">?</span><span>Ingin belajar dengan cara yang terarah dan mudah dijalani.</span></li>
+          <li><span class="pain-icon">?</span><span>Menganggap menghafal Al-Qur'an itu susah dan lama?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin mendapatkan <strong>guru yang kredibel</strong> di bidang Al-Qur'an?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin hafal Al-Qur'an, tetapi sibuk sehingga tidak punya banyak waktu untuk menghafal?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin konsisten menghafal, tetapi tidak punya lingkungan yang mendukung?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin tahu cara menghafal Al-Qur'an yang <strong>terarah dan mudah dijalani</strong>?</span></li>
         </ul>
-        <p class="pain-answer">Jika salah satu di atas sesuai dengan Anda, Mahkota Tahfizh Online bisa membantu Anda memulai dengan langkah yang terarah.</p>
+        <p class="pain-answer">Jika iya, <strong>Program Mahkota Tahfizh Online</strong> adalah program yang cocok untuk Anda.</p>
       </div>
     </div>
   </div>
@@ -710,12 +667,11 @@
       <p class="lead">Siapa pun yang ingin belajar Al-Qur'an dengan lebih mudah dan terarah, di tengah kesibukan apa pun.</p>
     </div>
     <div class="audience-grid">
-      <div class="audience-card reveal"><div class="audience-title">Ibu Rumah Tangga</div><div class="audience-desc">Yang sudah atau belum memiliki anak.</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Orang Tua</div><div class="audience-desc">Yang ingin anaknya belajar Al-Qur'an dari rumah.</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Mahasiswa</div><div class="audience-desc">Di sela jadwal kuliah.</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Pelajar</div><div class="audience-desc">Dari SD hingga SMA/SMK.</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Karyawan</div><div class="audience-desc">Bekerja di sektor swasta maupun pemerintahan.</div></div>
-      <div class="audience-card reveal"><div class="audience-title">Guru &amp; Dosen</div><div class="audience-desc">Guru dan dosen yang ingin memperbaiki bacaan.</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Ibu Rumah Tangga</div><div class="audience-desc">Yang sudah memiliki anak atau belum</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Mahasiswa</div><div class="audience-desc">Di sela jadwal kuliah</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Pelajar</div><div class="audience-desc">Jenjang SD, SMP, dan SMA/SMK</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Karyawan</div><div class="audience-desc">Swasta maupun pemerintahan</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Guru &amp; Dosen</div><div class="audience-desc">Yang ingin terus memperbaiki bacaan</div></div>
     </div>
     <div class="hero-cta reveal" style="margin: 48px 0 0;">
       <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
@@ -841,9 +797,7 @@
     </div>
     <div class="programs-grid" style="max-width: 860px; margin: 0 auto;">
       <div class="program-card reveal">
-        <div class="program-card-image program-card-image-art">
-          <picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="960" height="960" loading="lazy" decoding="async"></picture>
-        </div>
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahsin</h3>
         <p>Untuk Anda yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
         <div class="program-pills">
@@ -853,9 +807,7 @@
         <a href="#daftar" class="btn btn-secondary" data-daftar data-program="tahsin">Daftar Kelas Tahsin</a>
       </div>
       <div class="program-card reveal">
-        <div class="program-card-image program-card-image-art">
-          <picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="960" height="960" loading="lazy" decoding="async"></picture>
-        </div>
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahfidz</h3>
         <p>Untuk Anda yang ingin menambah hafalan baru (<strong>Ziyadah</strong>) dan menjaga hafalan yang sudah ada (<strong>Muroja'ah</strong>).</p>
         <div class="program-pills">
@@ -2003,6 +1955,10 @@
   function go(s) { hist.push(s); draw(s); }
   function open() { hist = []; pic = null; lead = null; go({ k: 'list' }); modal.hidden = false; document.body.style.overflow = 'hidden'; }
   function close() { modal.hidden = true; document.body.style.overflow = ''; }
+  // Tautan "Chat WhatsApp" dari halaman lain membuka panel ini: index.html?ask=1
+  document.addEventListener('DOMContentLoaded', function () {
+    try { if (new URLSearchParams(location.search).get('ask') === '1') open(); } catch (e) {}
+  });
   body.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     var cur = hist[hist.length - 1];
