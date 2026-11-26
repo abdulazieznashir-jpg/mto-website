@@ -4360,7 +4360,7 @@
         var baris = pkEl('div', 'trd-baris');
         var teks = pkEl('div', 'trd-teks');
         teks.appendChild(pkEl('b', '', l.nama || '(tanpa nama)'));
-        teks.appendChild(pkEl('span', 'trd-meta', 'Masuk ' + trTanggal(l.tanggal_masuk) + (l.status_terakhir ? ' · ' + l.status_terakhir : '')));
+        teks.appendChild(pkEl('span', 'trd-meta', (l.hp ? l.hp + ' · ' : '') + (l.sheet_id ? l.sheet_id + ' · ' : '') + 'Masuk ' + trTanggal(l.tanggal_masuk) + (l.status_terakhir ? ' · ' + l.status_terakhir : '')));
         baris.appendChild(teks);
         var link = trLinkWa(l.hp);
         if (link) {
