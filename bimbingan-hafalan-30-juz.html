@@ -410,10 +410,10 @@
   .ask-pct { display: inline-block; background: #FDECEC; color: #D32F2F; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 4px; }
   .ask-m { display: block; margin-top: 2px; }
   .ask-tag { display: inline-block; align-self: flex-start; font-size: 13px; color: #6e6e73; background: #f2f2f7; padding: 6px 12px; border-radius: 999px; }
-  a.ask-btn.ask-btn-wa { background: #25D366; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  a.ask-btn.ask-btn-wa, .ask-btn.ask-btn-wa { background: #0E7A6E; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 0 20px; font-size: 16px; }
   a.ask-btn.ask-btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
   .ask-note, .ask-sum { font-size: 15px; line-height: 1.6; margin: 0; }
-  .ask-form { display: flex; flex-direction: column; gap: 14px; }
+  .ask-form { display: flex; flex-direction: column; gap: 16px; }
   .ask-form label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; color: #1d1d1f; }
   .ask-form input { font: inherit; font-size: 16px; font-weight: 400; padding: 12px 14px; border: 1px solid #d2d2d7; border-radius: 12px; background: #fff; color: #1d1d1f; }
   .ask-form input:focus { outline: 2px solid #BE966A; outline-offset: 1px; }
@@ -421,6 +421,17 @@
   .ask-kecil { font-size: 13px; color: #6e6e73; margin: 0; line-height: 1.5; }
   .ask-form button[disabled] { opacity: .6; cursor: default; }
   .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
+  .ask-harga { display: flex; flex-direction: column; gap: 6px; }
+  .ask-harga-utama { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .ask-harga-utama strong { font-size: 28px; line-height: 1.1; font-weight: 700; color: #1d1d1f; }
+  .ask-harga-utama span { font-size: 15px; color: #6e6e73; }
+  .ask-harga-sub { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; color: #6e6e73; }
+  .ask-hemat { background: #8A6A3E; color: #fff; padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; }
+  .ask-err:empty { display: none; }
+  .ask-btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .ask-form .ask-btn-wa { position: sticky; bottom: 0; margin-top: 4px; }
+  @media (max-width: 699px) { .ask-body { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); } }
+
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
   .rc { margin: 8px 0 16px; }
   .promo-list { grid-template-columns: minmax(0, 1fr); }
@@ -1955,7 +1966,8 @@
       title.textContent = 'Ringkasan pilihan Anda';
       var ringkasTeks = 'saya ingin menanyakan program ' + PROG[s.p].lbl + ', durasi ' + s.m + ' bulan, kelas ' + c2.n + ' (' + c2.menit + ' menit per sesi).';
       body.innerHTML = '<p class="ask-sum">' + esc(ringkasTeks.charAt(0).toUpperCase() + ringkasTeks.slice(1)) + '</p>' +
-        '<span class="ask-tag">Harga ' + rb(mo) + ' per bulan · harga coret ' + rb(c2.asli) + ' · diskon ' + pct(c2.asli, mo) + '%</span>' +
+        '<div class="ask-harga"><div class="ask-harga-utama"><strong>' + rb(mo) + '</strong><span>/ bulan</span></div>' +
+        '<div class="ask-harga-sub"><s>' + rb(c2.asli) + '</s><span class="ask-hemat">Hemat ' + pct(c2.asli, mo) + '%</span></div></div>' +
         '<form class="ask-form" id="askKontak" novalidate>' +
         '<p class="ask-kecil">Isi nama dan nomor WhatsApp agar admin bisa membalas pertanyaan Anda.</p>' +
         '<label>Nama<input name="nama" autocomplete="name" maxlength="100" placeholder="Nama lengkap"></label>' +
