@@ -1417,15 +1417,24 @@
     if (!S.periode) S.periode = 'berikut';
     var cards = '';
     if (j.ongoing) {
-      cards += periodeCard('berjalan', 'Ikut periode berjalan',
+      cards += periodeCard('berjalan', 'Ikut periode berjalan · Gelombang ' + gelNo(j.ongoing.s),
         'Mulai ' + tgl(j.ongoing.s) + ', selesai ' + tgl(j.ongoing.e) + '.',
         'Terpotong ' + j.cut + ' hari');
     }
     var wait = Math.round((j.next.s - j.today) / DAY);
-    cards += periodeCard('berikut', 'Ikut periode berikutnya',
+    // Nomor gelombang publik: tanggal 12 = Gelombang 1, tanggal 27 = Gelombang 2 (sementara)
+    function gelNo(d) { return d.getDate() === 12 ? 1 : 2; }
+    cards += periodeCard('berikut', 'Ikut periode berikutnya · Gelombang ' + gelNo(j.next.s),
       'Mulai ' + tgl(j.next.s) + ', selesai ' + tgl(j.next.e) + '.',
       'Menunggu ' + wait + ' hari');
+    // Gelombang 3 dan 4: layout disiapkan, belum bisa dipilih
+    cards += gelombangSegera(3) + gelombangSegera(4);
     return '<div class="periode-wrap" role="radiogroup" aria-label="Pilih periode">' + cards + '</div>';
+  }
+  function gelombangSegera(n) {
+    return '<button type="button" class="periode-card" role="radio" aria-checked="false" disabled style="opacity:.55;cursor:not-allowed">' +
+      '<span class="periode-radio"></span>' +
+      '<span class="periode-text"><span class="periode-tag">Segera dibuka</span><span class="periode-title">Gelombang ' + n + '</span><span class="periode-desc">Belum dibuka untuk pendaftaran</span></span></button>';
   }
   function periodeCard(key, title, desc, tag) {
     var on = S.periode === key;
