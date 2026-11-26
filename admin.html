@@ -1654,6 +1654,12 @@
               <input type="date" id="gtglGelombang2">
             </label>
             <button type="button" class="adm-pengaturan-tombol" data-simpan-gelombang="gelombang_2">Simpan Gelombang 2</button>
+            <label class="adm-pengaturan-label">Gelombang 3 <span class="adm-dash-catatan">Segera dibuka</span>
+              <input type="date" id="gtglGelombang3" disabled>
+            </label>
+            <label class="adm-pengaturan-label">Gelombang 4 <span class="adm-dash-catatan">Segera dibuka</span>
+              <input type="date" id="gtglGelombang4" disabled>
+            </label>
             <p class="adm-dash-catatan" id="gelombangInfo" aria-live="polite" hidden></p>
           </form>
         </div>
@@ -3739,6 +3745,26 @@
   }
 
   /* Periode: isi tabel dan kartu dari admin_jadwal_gelombang (fungsi yang sudah ada) */
+  // Gelombang 3 dan 4: tampil sebagai 'Segera dibuka' sampai tanggalnya ditetapkan
+  function tambahSegeraDibuka(body, kartu) {
+    [3, 4].forEach(function (n) {
+      var tr = document.createElement('tr');
+      tr.appendChild(sel('td', '—'));
+      tr.appendChild(sel('td', 'Gelombang ' + n));
+      tr.appendChild(sel('td', 'Segera dibuka'));
+      tr.appendChild(sel('td', 'Segera dibuka'));
+      body.appendChild(tr);
+      if (kartu) {
+        var item = document.createElement('article');
+        item.className = 'adm-murid-kartu-item';
+        var judul = sel('div', 'Gelombang ' + n);
+        judul.className = 'adm-murid-kartu-nama';
+        item.appendChild(judul);
+        item.appendChild(baris('Status', 'Segera dibuka'));
+        kartu.appendChild(item);
+      }
+    });
+  }
   function tglPeriode(t) {
     if (!t) return '—';
     var d = new Date(String(t).slice(0, 10) + 'T00:00:00');
@@ -3746,7 +3772,7 @@
     return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
   }
   function namaGelombang(k) {
-    return k === 'gelombang_1' ? 'Gelombang 1' : (k === 'gelombang_2' ? 'Gelombang 2' : (k || '—'));
+    return k === 'gelombang_1' ? 'Gelombang 1' : (k === 'gelombang_2' ? 'Gelombang 2' : (k === 'gelombang_3' ? 'Gelombang 3' : (k === 'gelombang_4' ? 'Gelombang 4' : (k || '—'))));
   }
   function muatPeriode() {
     var body = document.getElementById('periodeBody');
@@ -3784,6 +3810,7 @@
           kartu.appendChild(item);
         }
       });
+      tambahSegeraDibuka(body, kartu);
     }).catch(function () { pesan('Periode belum bisa dimuat.'); });
   }
 
@@ -3918,6 +3945,7 @@
           kartu.appendChild(item);
         }
       });
+      tambahSegeraDibuka(body, kartu);
     }).catch(function () { var trG = document.createElement('tr'); var tdG = document.createElement('td'); tdG.colSpan = 4; tdG.className = 'adm-murid-kosong'; tdG.textContent = 'Jadwal gelombang belum bisa dimuat.'; trG.appendChild(tdG); body.innerHTML = ''; body.appendChild(trG); });
   }
   function bindPengaturan() {
