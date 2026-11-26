@@ -473,9 +473,33 @@
     var PIXEL_ID = '124403919300787';
     var antrean = [];
     // Pemanggil event tetap aman; event yang terjadi sebelum Pixel siap disimpan lalu dikirim
-    window.mtoTrack = function (ev, params) {
-      if (window.fbq) window.fbq('track', ev, params || {});
-      else antrean.push([ev, params || {}]);
+    // Kode uji dari Events Manager (Test events), format TESTxxxxx. Kosongkan saat kampanye live.
+    var TEST_EVENT_CODE = '';
+    function idUnik() { return 'mto' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+    function cookie(n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+    function fbcDariUrl() {
+      try { var c = new URLSearchParams(location.search).get('fbclid'); return c ? 'fb.1.' + Date.now() + '.' + c : ''; } catch (e) { return ''; }
+    }
+    function kirimServer(ev, eid, p, user) {
+      try {
+        fetch('https://bvltmjurkgnzmwtgdaic.supabase.co/functions/v1/meta-capi', {
+          method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_name: ev, event_id: eid, event_source_url: location.href.split('#')[0],
+            phone: (user && user.phone) || '', email: (user && user.email) || '',
+            fbp: cookie('_fbp'), fbc: cookie('_fbc') || fbcDariUrl(),
+            custom_data: p, test_event_code: TEST_EVENT_CODE || undefined
+          })
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    // Satu event_id dipakai untuk Pixel (browser) dan Conversions API (server) agar Meta mendeduplikasi
+    window.mtoTrack = function (ev, params, user) {
+      var p = params || {}, eid = idUnik();
+      if (window.fbq) window.fbq('track', ev, p, { eventID: eid });
+      else antrean.push([ev, p, eid]);
+      kirimServer(ev, eid, p, user);
+      return eid;
     };
     if (!PIXEL_ID || PIXEL_ID === 'PIXEL_ID') return;
     function muatPixel() {
@@ -486,7 +510,7 @@
       }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
       window.fbq('init', PIXEL_ID);
       window.fbq('track', 'PageView');
-      antrean.forEach(function (a) { window.fbq('track', a[0], a[1]); });
+      antrean.forEach(function (a) { window.fbq('track', a[0], a[1], { eventID: a[2] }); });
       antrean = [];
     }
     // Pixel dimuat setelah halaman selesai, supaya tidak berebut jaringan dengan konten utama
@@ -1797,7 +1821,7 @@
       if (!dataValid()) return;
       simpanPendaftaran(function (err) {
         if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
-        if (window.mtoTrack) window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran tersimpan' });
+        if (window.mtoTrack) window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran tersimpan' }, { phone: waFull(), email: S.email });
         try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
         window.location.href = 'pembayaran';
       });
@@ -2011,8 +2035,8 @@
       lead = { nama: nama, program: cur.p };
       var q = 'nama saya ' + nama + ', saya ingin menanyakan program ' + PROG[cur.p].lbl + ', durasi ' + cur.m + ' bulan, kelas ' + KELAS[cur.k2].n + ' (' + KELAS[cur.k2].menit + ' menit per sesi).';
       var url = waLink("Assalamu'alaikum, " + q + ' Mohon info lebih lanjut.');
-      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' });
-      if (window.mtoTrack) window.mtoTrack('Contact', { content_name: 'WhatsApp dari panel tanya' });
+      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' }, { phone: wa });
+      if (window.mtoTrack) window.mtoTrack('Contact', { content_name: 'WhatsApp dari panel tanya' }, { phone: wa });
       if (jendela) jendela.location.href = url; else window.location.href = url;
       btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
     }).catch(function (x) {
