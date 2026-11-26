@@ -329,6 +329,8 @@
       : '';
   }
 
+  // Purchase dimatikan selama masa uji. Ubah ke true setelah pengujian selesai.
+  var PURCHASE_AKTIF = false;
   function tampil(d) {
     data = d;
     var k = keadaan(d);
@@ -375,7 +377,7 @@
     renderRingkasan(d);
     renderLangkah(d, k);
     jalankanTimer();
-    if (k === 'lunas' && window.mtoTrack) {
+    if (PURCHASE_AKTIF && k === 'lunas' && window.mtoTrack) {
       var kunci = 'mtoPurchase:' + (simpan && simpan.id);
       var sudah = false;
       try { sudah = localStorage.getItem(kunci) === '1'; } catch (e) { sudah = false; }
