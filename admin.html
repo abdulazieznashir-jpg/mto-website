@@ -4344,6 +4344,16 @@
     kartu.appendChild(bar);
     kartu.appendChild(pkEl('span', 'trd-isi-teks', d.cocok + ' dari ' + d.total + ' lead sudah ada transkripnya'));
     kartu.appendChild(pkEl('span', 'trd-isi-teks', 'Chat terakhir masuk: ' + trTanggal(d.terakhir_chat)));
+    if (d.terakhir_edit) {
+      var te = new Date(d.terakhir_edit);
+      var teTgl = te.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      var teJam = te.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
+      kartu.appendChild(pkEl('span', 'trd-isi-teks', 'Logbook terakhir diedit: ' + trTanggal(teTgl) + ', ' + teJam + ' WIB'));
+    }
+    if (d.diperbarui_at) {
+      var dp = new Date(d.diperbarui_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+      kartu.appendChild(pkEl('span', 'trd-isi-teks', 'Angka dihitung ulang: ' + trTanggal(dp)));
+    }
     return { el: kartu, pct: pct };
   }
   function trDaftarBelum(d) {
