@@ -354,6 +354,14 @@
   .hq-chip-pilih.hq-chip-datang small { background: rgba(255,255,255,.22); color: #FFFFFF; }
   .hq-chip-pilih.hq-chip-selesai { background: #6E6E73; border-color: #6E6E73; color: #FFFFFF; }
   .hq-chip-pilih.hq-chip-selesai small { background: rgba(255,255,255,.22); color: #FFFFFF; }
+  .hq-gelombang-baris { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 8px 0 0; }
+  .hq-gel-kartu { min-width: 0; border: 1px solid #EEE6D8; background: #FFFFFF; border-radius: 14px; padding: 10px 10px; display: flex; flex-direction: column; gap: 4px; color: #1D1D1F; }
+  .hq-gel-kartu small { font-size: 11px; color: #6E6E73; text-transform: uppercase; letter-spacing: .04em; }
+  .hq-gel-kartu b { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+  .hq-gel-segera { background: #FAF8F4; border-style: dashed; }
+  .hq-gel-segera b { color: #6E6E73; font-weight: 500; }
+  .hq-gel-baner { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; background: #E3EEFB; color: #1F5FA8; font-size: 13px; }
+  @media (max-width: 560px) { .hq-gelombang-baris { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .hq-tautan { border: 0; background: transparent; color: #8A6100; font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 0; }
   .hq-ringkas-judul { font-weight: 700; font-size: 13px !important; }
   .hq-lembar { position: fixed; inset: 0; z-index: 70; background: rgba(29, 29, 31, .35); display: flex; align-items: center; justify-content: center; padding: 24px 12px; box-sizing: border-box; }
@@ -1394,6 +1402,13 @@
         <h1 class="adm-dash-judul">Halaqoh</h1>
         <p class="adm-dash-sub">Pantau kapasitas, retensi, dan perubahan penting tiap pengajar.</p>
         <div class="hq-periode-chips" id="hqPeriodeChips" role="group" aria-label="Pilih periode"></div>
+        <div class="hq-gelombang-baris" id="hqGelombangBaris" aria-label="Gelombang pendaftaran">
+          <div class="hq-gel-kartu" data-kode="gelombang_1"><small>Gelombang 1</small><b>Memuat…</b></div>
+          <div class="hq-gel-kartu" data-kode="gelombang_2"><small>Gelombang 2</small><b>Memuat…</b></div>
+          <div class="hq-gel-kartu hq-gel-segera"><small>Gelombang 3</small><b>Segera dibuka</b></div>
+          <div class="hq-gel-kartu hq-gel-segera"><small>Gelombang 4</small><b>Segera dibuka</b></div>
+        </div>
+        <p class="hq-gel-baner">Pendaftar baru masuk ke gelombang terdekat yang masih terbuka.</p>
         <div class="hqv-atas">
           <section class="hqv-kartu hqv-ringkas" aria-label="Ringkasan periode">
             <div class="hqv-kepala"><b class="hqv-periode-judul" id="hqPeriodeTampil">—</b></div>
@@ -2957,9 +2972,20 @@
     }
     l.hidden = !buka;
   }
+  /* Kartu gelombang Halaqoh: tanggal mulai gelombang 1 dan 2 dari data; 3 dan 4 tetap "Segera dibuka" */
+  function hqIsiGelombang(data) {
+    data.forEach(function (g) {
+      var kartu = document.querySelector('#hqGelombangBaris .hq-gel-kartu[data-kode="' + g.kode + '"]');
+      if (!kartu || kartu.dataset.isi) return;
+      kartu.dataset.isi = '1';
+      var b = kartu.querySelector('b');
+      if (b) b.textContent = 'Mulai ' + tglPeriode(g.mulai);
+    });
+  }
   function muatPeriodeHalaqoh() {
     sb.rpc('admin_jadwal_gelombang').then(function (r) {
       if (r.error || !Array.isArray(r.data) || !r.data.length) return;
+      hqIsiGelombang(r.data);
       var peta = {};
       r.data.forEach(function (g) {
         var m = String(g.mulai).slice(0, 10), e = String(g.berakhir).slice(0, 10);
