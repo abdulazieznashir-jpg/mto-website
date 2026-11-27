@@ -1,56 +1,116 @@
 // Mahkota Tahfizh Online — Shared JavaScript
+(() => {
+  'use strict';
 
-// Mobile menu toggle
-const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-if (navToggle && mobileMenu) {
-  navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-  document.querySelectorAll('.mobile-menu a').forEach(a => {
-    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  const html = document.documentElement;
+
+  // Mobile menu
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  const closeMobileMenu = () => {
+    if (!navToggle || !mobileMenu) return;
+    mobileMenu.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  if (navToggle && mobileMenu) {
+    navToggle.setAttribute('aria-expanded', mobileMenu.classList.contains('open') ? 'true' : 'false');
+    navToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMobileMenu();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) closeMobileMenu();
+    }, { passive: true });
+  }
+
+  // FAQ accordion with accessible expanded state.
+  document.querySelectorAll('.faq-item').forEach((item, index) => {
+    const button = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    if (!button || !answer) return;
+
+    if (!answer.id) answer.id = `faq-answer-${index + 1}`;
+    button.setAttribute('aria-controls', answer.id);
+    button.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+
+    button.addEventListener('click', () => {
+      const willOpen = !item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach((otherItem) => {
+        otherItem.classList.remove('open');
+        const otherButton = otherItem.querySelector('.faq-question');
+        if (otherButton) otherButton.setAttribute('aria-expanded', 'false');
+      });
+
+      if (willOpen) {
+        item.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    });
   });
-}
 
-// FAQ accordion
-document.querySelectorAll('.faq-question').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
-});
+  // Reveal-on-scroll is progressive enhancement: content stays visible
+  // if JavaScript or IntersectionObserver is unavailable.
+  if ('IntersectionObserver' in window) {
+    const revealElements = document.querySelectorAll('.reveal');
+    if (revealElements.length) {
+      html.classList.add('js-reveal-ready');
+      const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-// Reveal on scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+      revealElements.forEach((element) => observer.observe(element));
     }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
 
-// Nav background on scroll
-const nav = document.getElementById('nav');
-if (nav) {
-  window.addEventListener('scroll', () => {
-    nav.style.background = window.scrollY > 20
-      ? 'rgba(251, 251, 253, 0.95)'
-      : 'rgba(251, 251, 253, 0.85)';
-  });
-}
+  // Navigation background on scroll
+  const nav = document.getElementById('nav');
+  if (nav) {
+    const updateNavBackground = () => {
+      nav.style.background = window.scrollY > 20
+        ? 'rgba(251, 251, 253, 0.95)'
+        : 'rgba(251, 251, 253, 0.85)';
+    };
+    updateNavBackground();
+    window.addEventListener('scroll', updateNavBackground, { passive: true });
+  }
 
-// Smooth scroll with offset (untuk anchor internal)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    if (href === '#') return;
-    const target = document.querySelector(href);
-    if (target) {
-      e.preventDefault();
-      const offsetTop = target.offsetTop - 52;
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-    }
+  // Smooth scroll for valid internal anchors only.
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (event) => {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+
+      let target = null;
+      try {
+        target = document.querySelector(href);
+      } catch (_) {
+        return;
+      }
+
+      if (!target) return;
+      event.preventDefault();
+      const offsetTop = target.getBoundingClientRect().top + window.scrollY - 52;
+      window.scrollTo({
+        top: Math.max(0, offsetTop),
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+      });
+    });
   });
-});
+})();
