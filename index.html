@@ -1484,7 +1484,7 @@
     c.sort(function (a, b) { return a.s - b.s; });
     var next = null, ongoing = null;
     c.forEach(function (x) {
-      if (x.s >= today && !next) next = x;
+      if (x.s > today && !next) next = x;
       if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
     });
     var cut = ongoing ? Math.floor((today - ongoing.s) / DAY) : 0;
