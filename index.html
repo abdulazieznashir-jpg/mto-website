@@ -668,7 +668,6 @@
   .journey-package .flow-option-body { grid-column:1; }.journey-package .flow-option-price { grid-column:2; grid-row:2; align-self:center; text-align:right; }
   @media(max-width:540px) { html.registration-active .flow { padding: max(14px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom)); } html.registration-active [data-step="program"] .flow-options, html.registration-active [data-step^="jenis"] .flow-options { grid-template-columns:1fr; } .journey-progress { padding-left:4px; padding-right:4px; } .journey-progress small { font-size:9px; } .journey-banner { min-height:100px; } }
 </style>
-  <link rel="stylesheet" href="css/premium-ui.css?v=20261127">
 </head>
 <body>
 <a href="#konten" class="skip-link">Lewati ke konten utama</a>
@@ -1163,20 +1162,31 @@
 <!-- ALUR PENDAFTARAN: satu alur untuk semua pintu masuk (Cek Program dan Daftar) -->
 <div class="flow-backdrop" id="cek" aria-hidden="true">
   <div class="flow" role="region" aria-label="Pendaftaran Mahkota Tahfizh Online">
-    <div class="journey-head" aria-live="polite"><div class="journey-banner"><span class="journey-kicker">PENDAFTARAN MAHKOTA TAHFIZH ONLINE</span><strong id="journeyTitle">2 PROGRAM</strong><span id="journeyBadge"></span></div><ol class="journey-progress" aria-label="Tahapan pendaftaran"><li data-journey="0"><i>♛</i><small>Program</small></li><li data-journey="1"><i>♛</i><small>Hari</small></li><li data-journey="2"><i>♛</i><small>Paket</small></li><li data-journey="3"><i>♛</i><small>Durasi</small></li><li data-journey="4"><i>♛</i><small>Daftar</small></li></ol></div>
     <div class="flow-top">
-      <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="flow-brand" aria-label="Mahkota Tahfizh Online"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M7 30c5-1 10-1 15 2 5-3 10-3 15-2M8 34c5-1 9-.4 14 2 5-2.4 9-3 14-2M10 17l4 4 8-10 8 10 4-4-2 9H12zM22 5v9M19 8l3-4 3 4"/></svg><span>Mahkota<br>Tahfizh Online</span></div>
       <div class="flow-stage" id="legacyFlowStage" aria-live="polite"><span id="cekStage"></span><div class="flow-bar"><i id="cekBar"></i></div></div>
-      <button class="flow-close" id="cekClose" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <button class="flow-close" id="cekClose" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
     </div>
+    <div class="flow-hero" aria-label="Pendaftaran kelas">
+      <div class="flow-hero-copy"><span class="flow-hero-kicker">PENDAFTARAN</span><strong id="journeyTitle">Pilih Program</strong><span id="journeyBadge"></span><p>Pilih program sesuai kebutuhan Anda, lalu atur jadwal belajar yang paling nyaman.</p></div>
+      <div class="flow-hero-art" aria-hidden="true"><svg viewBox="0 0 250 170" aria-hidden="true">
+<ellipse cx="127" cy="151" rx="98" ry="9" fill="#D9C6A4" opacity=".3"/>
+<path d="M62 130 121 72l13 5 51 53M190 130 132 72l-13 5-50 53M53 134h146" fill="none" stroke="#9A6734" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46 68c22-14 47-13 77 2v51c-28-15-53-16-77-2zM204 68c-22-14-47-13-81 2v51c29-15 56-16 81-2z" fill="#FFFDF8" stroke="#B88A3B" stroke-width="3" stroke-linejoin="round"/>
+<path d="M125 70v51M58 77c18-9 36-7 54 1M195 77c-18-9-36-7-60 1M58 88c17-7 34-5 51 2M194 88c-17-7-34-5-54 2" fill="none" stroke="#D7BD8A" stroke-width="2" stroke-linecap="round"/>
+<path d="M72 65c17-7 33-6 49 1M178 65c-17-7-33-6-47 1" fill="none" stroke="#8D6A36" stroke-width="3"/>
+</svg></div>
+    </div>
+    <div class="journey-head" aria-live="polite"><ol class="journey-progress" aria-label="Tahapan pendaftaran"><li data-journey="0"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c3.4-.9 6.1-.3 8 1.6v12c-1.9-1.9-4.6-2.5-8-1.6zM20 5.5c-3.4-.9-6.1-.3-8 1.6v12c1.9-1.9 4.6-2.5 8-1.6z"/></svg></i><small>Program</small></li><li data-journey="1"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M4 9.5h16"/></svg></i><small>Hari</small></li><li data-journey="2"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></i><small>Paket</small></li><li data-journey="3"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></i><small>Durasi</small></li><li data-journey="4"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></i><small>Daftar</small></li></ol></div>
 
     <!-- Tahap 1 (pintu Daftar): program -->
     <div class="flow-step" data-step="program">
       <h3>Program apa yang ingin Anda ikuti?</h3>
       <p>Pilih satu. Belum yakin? Jawab tiga pertanyaan singkat, lalu kami sarankan programnya.</p>
       <div class="flow-options">
-        <button type="button" class="flow-option" data-pick="program" data-value="tahsin"><span class="flow-option-body"><span class="flow-option-title">Tahsin</span><span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span></span></button>
-        <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
+        <button type="button" class="flow-option" data-pick="program" data-value="tahsin"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 10c7-2 13 0 19 4v25c-6-4-12-6-19-4zM43 10c-7-2-13 0-19 4v25c6-4 12-6 19-4z"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahsin</span><span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span></span></button>
+        <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 12c6-2 12 0 17 4v25c-5-4-11-6-17-4zM41 12c-6-2-12 0-17 4v25c5-4 11-6 17-4zM13 8h22"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
       </div>
       <button type="button" class="cek-link" data-go-cek>Belum yakin? Cek program yang cocok</button>
     </div>
@@ -1185,8 +1195,8 @@
       <h3>Tahsin yang mana?</h3>
       <p>Pilih yang paling sesuai dengan bacaan Anda saat ini.</p>
       <div class="flow-options">
-        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="pratahsin"><span class="flow-option-body"><span class="flow-option-title">Pra Tahsin</span><span class="flow-option-desc">Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.</span></span></button>
-        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="reguler"><span class="flow-option-body"><span class="flow-option-title">Tahsin Reguler</span><span class="flow-option-desc">Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="pratahsin"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 9c7-2 13 0 19 4v28c-6-4-12-6-19-4zM43 9c-7-2-13 0-19 4v28c6-4 12-6 19-4z"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Pra Tahsin</span><span class="flow-option-desc">Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="reguler"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m8 14 16 7 16-7M8 14v10l16 8 16-8V14M12 34l-4 6m28-6 4 6M24 21v11"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahsin Reguler</span><span class="flow-option-desc">Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.</span></span></button>
       </div>
     </div>
 
@@ -1194,8 +1204,8 @@
       <h3>Hafalan seperti apa yang Anda butuhkan?</h3>
       <p>Ziyadah untuk menambah hafalan baru, Muroja'ah untuk menjaga hafalan yang sudah ada.</p>
       <div class="flow-options">
-        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="ziyadah"><span class="flow-option-body"><span class="flow-option-title">Ziyadah</span><span class="flow-option-desc">Menambah hafalan baru, disetorkan dan dikoreksi setiap hari.</span></span></button>
-        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="murojaah"><span class="flow-option-body"><span class="flow-option-title">Muroja'ah</span><span class="flow-option-desc">Menjaga hafalan lama agar tidak mudah hilang.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="ziyadah"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 12c7-2 13 0 19 4v26c-6-4-12-6-19-4zM43 12c-7-2-13 0-19 4v26c6-4 12-6 19-4z"/><path d="M24 4v10m-5-5h10"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Ziyadah</span><span class="flow-option-desc">Menambah hafalan baru, disetorkan dan dikoreksi setiap hari.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="murojaah"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 12c7-2 13 0 19 4v26c-6-4-12-6-19-4zM43 12c-7-2-13 0-19 4v26c6-4 12-6 19-4z"/><path d="M33 8a14 14 0 0 1 8 7m-1-6 1 6-6-1M15 40a14 14 0 0 1-8-7m1 6-1-6 6 1"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Muroja'ah</span><span class="flow-option-desc">Menjaga hafalan lama agar tidak mudah hilang.</span></span></button>
       </div>
     </div>
 
@@ -1692,9 +1702,9 @@
     legacy.hidden = S.mode === 'daftar';
     if (S.mode === 'daftar') {
       var idx = step === 'hari' ? 1 : step === 'kelas' ? 2 : (step === 'durasi' || step === 'jam') ? 3 : (step === 'ringkasan' || step === 'data') ? 4 : 0;
-      document.getElementById('journeyTitle').textContent = step === 'program' ? '2 PROGRAM' :
-        step === 'jenisTahsin' ? 'KELAS TAHSIN' : step === 'jenisTahfidz' ? 'KELAS TAHFIDZ' :
-        (step === 'hari' ? (LBL[S.jenis] || 'PILIH PROGRAM') : (step === 'ringkasan' || step === 'data' ? 'PENDAFTARAN' : (LBL[S.jenis] || 'PROGRAM')));
+      document.getElementById('journeyTitle').textContent = step === 'program' ? 'Pilih Program' :
+        step === 'jenisTahsin' ? 'Kelas Tahsin' : step === 'jenisTahfidz' ? 'Kelas Tahfidz' :
+        (step === 'hari' ? (LBL[S.jenis] || 'PILIH PROGRAM') : (step === 'ringkasan' || step === 'data' ? 'Data Pendaftaran' : (LBL[S.jenis] || 'PROGRAM')));
       document.getElementById('journeyBadge').textContent = idx >= 2 && S.hari ? HARI[S.hari].toUpperCase() : '';
       document.querySelectorAll('.journey-progress li').forEach(function (el, i) { el.classList.toggle('done', i < idx); el.classList.toggle('current', i === idx); });
     } else {
@@ -1737,10 +1747,12 @@
     document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
       var c = KELAS[k];
       var tag = k === 'gold' ? '<span class="flow-tag">Paling populer</span>' : '';
+      var ikon = k === 'gold' ? '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m7 16 10 8 7-14 8 14 9-8-4 19H11zM24 5v4"/></svg>' : '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 18 19-18 19L6 24zM6 24h36M24 5v38"/></svg>';
       return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '">' +
-        '<span class="journey-package-name">' + c.nama + '</span><span class="flow-option-body"><span class="flow-option-title">' + c.menit + ' menit per pertemuan ' + tag + '</span>' +
-        '<span class="flow-option-desc">' + GAYA_DESC[k] + ' ' + (SESI[S.hari] || 15) + ' pertemuan per bulan.</span></span>' +
-        '<span class="flow-option-price">' + rupiah(c.list) + '<small>per bulan</small></span></button>';
+        '<span class="journey-package-main"><span class="journey-package-icon">' + ikon + '</span><span class="journey-package-copy"><span class="journey-package-heading"><span class="journey-package-name">' + c.nama + '</span>' + tag + '</span>' +
+        '<span class="flow-option-body"><span class="flow-option-title">' + c.menit + ' menit per pertemuan</span><span class="package-meetings">' + (SESI[S.hari] || 15) + ' pertemuan per bulan</span>' +
+        '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></span></span>' +
+        '<span class="flow-option-price">' + rupiah(c.list) + '<small>per bulan</small><span class="package-choose">Pilih Paket <b aria-hidden="true">›</b></span></span></button>';
     }).join('');
   }
   function renderDurasi() {

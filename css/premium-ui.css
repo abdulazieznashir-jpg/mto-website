@@ -246,3 +246,311 @@ html.registration-active .journey-package {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Full registration layout: header, illustrated class intro, icon stepper and package comparison. */
+.flow-brand { display: none; }
+html.registration-active, html.registration-active body { background: #F8F5EE; }
+html.registration-active #cek.flow-backdrop {
+  background: #F8F5EE;
+  background-image: radial-gradient(ellipse at 78% 16%, rgba(222,198,154,.18), transparent 28%), linear-gradient(180deg,#FFFEFB 0%,#F8F5EE 75%,#F4EBDD 100%);
+}
+html.registration-active .flow {
+  width: min(100%, 900px);
+  max-width: 900px;
+  padding: max(18px,env(safe-area-inset-top)) clamp(20px,5vw,56px) max(30px,env(safe-area-inset-bottom));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+html.registration-active .flow-top {
+  min-height: 68px;
+  margin: 0 auto 14px;
+  padding: 0;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+}
+html.registration-active .flow-back, html.registration-active .flow-close {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.9);
+  background: rgba(255,255,255,.88);
+  color: #24231F;
+  box-shadow: 0 6px 20px rgba(55,43,23,.09);
+}
+html.registration-active .flow-back:hover, html.registration-active .flow-close:hover {
+  background: #FFF;
+  color: #805D25;
+  box-shadow: 0 8px 22px rgba(55,43,23,.13);
+}
+html.registration-active .flow-back svg, html.registration-active .flow-close svg { width: 22px; height: 22px; }
+html.registration-active .flow-brand {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  color: #211F1A;
+  font-size: 18px;
+  font-weight: 720;
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  white-space: nowrap;
+}
+html.registration-active .flow-brand svg { display: block; width: 48px; height: 48px; flex: none; fill: none; stroke: #B98527; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+html.registration-active #legacyFlowStage { display: none; }
+html.registration-active .flow-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 184px;
+  overflow: hidden;
+  margin: 0 -8px 16px;
+  padding: 20px 18px 22px;
+  border-radius: 22px;
+  background: linear-gradient(115deg,rgba(255,254,251,.93) 2%,rgba(251,247,239,.77) 68%,rgba(241,229,206,.58));
+}
+html.registration-active .flow-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -6%;
+  right: -6%;
+  bottom: -38px;
+  height: 72px;
+  border-radius: 50% 48% 0 0;
+  background: rgba(255,255,255,.7);
+  transform: rotate(-2deg);
+}
+html.registration-active .flow-hero-copy { position: relative; z-index: 2; max-width: 67%; display: flex; flex-direction: column; align-items: flex-start; }
+html.registration-active .flow-hero-kicker { color: #A87924; font-size: 13px; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; }
+html.registration-active .flow-hero-copy strong {
+  color: #171715;
+  font-size: clamp(30px,5vw,48px);
+  font-weight: 760;
+  line-height: 1.03;
+  letter-spacing: -.045em;
+}
+html.registration-active #journeyBadge {
+  display: inline-flex;
+  width: max-content;
+  margin-top: 9px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  color: #795318;
+  background: #F8E8C5;
+  font-size: 14px;
+  font-weight: 650;
+}
+html.registration-active #journeyBadge:empty { display: none; }
+html.registration-active .flow-hero-copy p { max-width: 390px; margin: 10px 0 0; color: #5F5C56; font-size: 16px; line-height: 1.42; }
+html.registration-active .flow-hero-art {
+  position: absolute;
+  z-index: 1;
+  right: -4px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 38%;
+  max-width: 290px;
+  height: 170px;
+  border-radius: 52% 48% 15% 15%;
+  background: radial-gradient(ellipse at 50% 82%,rgba(203,168,102,.23),transparent 65%);
+}
+html.registration-active .flow-hero-art svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 8px rgba(91,61,24,.1)); }
+html.registration-active .journey-head { display: block; max-width: none; margin: 0 0 34px; }
+html.registration-active .journey-progress {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 20px 12px 16px;
+  border: 1px solid #EEE7DC;
+  border-radius: 26px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 12px 28px rgba(57,44,24,.08);
+}
+html.registration-active .journey-progress li { flex: 1; min-width: 0; gap: 7px; color: #76736D; }
+html.registration-active .journey-progress li:not(:last-child):after { z-index: 0; top: 20px; left: 50%; right: -50%; height: 2px; background: #E5E0D7; }
+html.registration-active .journey-progress li.done:after { background: #B98527; }
+html.registration-active .journey-progress i {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid #E8E5DF;
+  border-radius: 50%;
+  background: #FFFEFB;
+  color: #3B3934;
+  font-size: 16px;
+}
+html.registration-active .journey-progress i svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html.registration-active .journey-progress li.done i, html.registration-active .journey-progress li.current i { border-color: #B98527; background: linear-gradient(145deg,#D5A32E,#B67B14); color: #fff; }
+html.registration-active .journey-progress li.done, html.registration-active .journey-progress li.current { color: #80591D; }
+html.registration-active .journey-progress small { z-index: 1; color: inherit; font-size: 13px; font-weight: 600; }
+html.registration-active .flow-top { margin-bottom: 12px; }
+html.registration-active .flow-step { max-width: none; padding-top: 0; }
+html.registration-active .flow-step h3 { color: #191816; text-align: center; font-size: clamp(24px,4vw,36px); line-height: 1.13; letter-spacing: -.03em; margin: 0 0 8px; }
+html.registration-active .flow-step > p { color: #706D67; text-align: center; margin: 0 auto 22px; max-width: 640px; font-size: 16px; }
+html.registration-active [data-step="jenisTahsin"] h3, html.registration-active [data-step="jenisTahsin"] > p,
+html.registration-active [data-step="jenisTahfidz"] h3, html.registration-active [data-step="jenisTahfidz"] > p { text-align: left; margin-left: 0; }
+html.registration-active [data-step="program"] .flow-options,
+html.registration-active [data-step^="jenis"] .flow-options { display: grid; grid-template-columns: 1fr; gap: 14px; }
+html.registration-active [data-step="program"] .flow-option,
+html.registration-active [data-step^="jenis"] .flow-option {
+  min-height: 126px;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 18px 20px;
+  border: 1px solid #EAE4D9;
+  border-radius: 22px;
+  text-align: left;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 8px 20px rgba(55,43,23,.06);
+}
+html.registration-active [data-step="program"] .flow-option:hover,
+html.registration-active [data-step^="jenis"] .flow-option:hover { border-color: #D1AD68; background: #FFFEFB; box-shadow: 0 12px 26px rgba(55,43,23,.1); }
+html.registration-active [data-step="program"] .flow-option-icon,
+html.registration-active [data-step^="jenis"] .flow-option-icon {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  flex: none;
+  border-radius: 20px;
+  background: #FBF1DF;
+  color: #A97925;
+}
+html.registration-active [data-step="program"] .flow-option-icon svg,
+html.registration-active [data-step^="jenis"] .flow-option-icon svg { width: 46px; height: 46px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+html.registration-active [data-step="program"] .flow-option-body,
+html.registration-active [data-step^="jenis"] .flow-option-body { text-align: left; }
+html.registration-active [data-step="program"] .flow-option-title,
+html.registration-active [data-step^="jenis"] .flow-option-title { justify-content: flex-start; font-size: 21px; font-weight: 700; text-transform: none; letter-spacing: -.02em; }
+html.registration-active [data-step="program"] .flow-option-desc,
+html.registration-active [data-step^="jenis"] .flow-option-desc { margin-top: 5px; font-size: 15px; line-height: 1.45; }
+html.registration-active .journey-days { gap: 12px; }
+html.registration-active .journey-day {
+  align-items: flex-start;
+  gap: 5px;
+  padding: 17px 20px;
+  border: 1px solid #EAE4D9;
+  border-radius: 20px;
+  background: rgba(255,255,255,.92);
+  text-align: left;
+  box-shadow: 0 8px 20px rgba(55,43,23,.06);
+}
+html.registration-active .journey-day strong { color: #976D25; font-size: 25px; letter-spacing: -.02em; }
+html.registration-active .journey-day em { align-self: flex-end; margin-top: 4px; padding: 7px 20px; border-radius: 999px; background: #B98527; color: #fff; font-size: 13px; }
+html.registration-active .journey-day:hover { transform: translateY(-2px); }
+html.registration-active .journey-foot { margin-top: 16px; text-align: center; color: #77736B; font-size: 14px; }
+html.registration-active .journey-packages { gap: 14px; }
+html.registration-active .journey-package {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(170px,220px);
+  align-items: stretch;
+  gap: 18px;
+  min-height: 176px;
+  padding: 18px;
+  border: 1px solid #EAE4D9;
+  border-radius: 24px;
+  background: rgba(255,255,255,.94);
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(55,43,23,.06);
+}
+html.registration-active .journey-package.recommended { border: 2px solid #D3A84F; box-shadow: 0 12px 30px rgba(151,109,37,.13); }
+html.registration-active .journey-package-main { display: grid; grid-template-columns: 68px minmax(0,1fr); align-items: start; gap: 14px; min-width: 0; }
+html.registration-active .journey-package-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: #FBF1DF; color: #A97925; }
+html.registration-active .journey-package-icon svg { width: 42px; height: 42px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html.registration-active .journey-package-copy { display: grid; min-width: 0; gap: 7px; }
+html.registration-active .journey-package-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+html.registration-active .journey-package-name { color: #1F1D19; font-size: 25px; font-weight: 750; line-height: 1.1; text-transform: none; }
+html.registration-active .journey-package .flow-option-body { display: grid; gap: 7px; min-width: 0; }
+html.registration-active .journey-package .flow-option-title { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; color: #2B2924; font-size: 15px; font-weight: 500; }
+html.registration-active .journey-package .flow-option-desc { color: #69665F; font-size: 14px; line-height: 1.4; }
+html.registration-active .journey-package .flow-tag { margin: 0; padding: 5px 12px; border-radius: 999px; background: #FBF0DC; color: #8A5D15; font-size: 13px; font-weight: 650; text-transform: none; letter-spacing: 0; }
+html.registration-active .package-meetings { color: #2B2924; font-size: 15px; line-height: 1.3; }
+html.registration-active .journey-package .flow-option-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding-left: 16px;
+  border-left: 1px solid #E6E0D6;
+  color: #201E1A;
+  font-size: clamp(19px,2.6vw,26px);
+  font-weight: 750;
+  white-space: nowrap;
+}
+html.registration-active .journey-package .flow-option-price small { color: #79756E; font-size: 14px; font-weight: 450; }
+html.registration-active .package-choose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  margin-top: 15px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #B98527;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+html.registration-active .package-choose b { font-size: 22px; line-height: 1; }
+html.registration-active .journey-package:not(.recommended) .package-choose { background: #F1EEE8; color: #27241F; }
+html.registration-active .flow-summary { background: #FFFEFB; border: 1px solid #EAE4D9; border-radius: 20px; }
+html.registration-active .cek-jadwal, html.registration-active .periode-card { box-shadow: 0 4px 14px rgba(55,43,23,.045); }
+@media (max-width: 600px) {
+  html.registration-active .flow { padding-left: 16px; padding-right: 16px; }
+  html.registration-active .flow-top { min-height: 54px; grid-template-columns: 46px 1fr 46px; gap: 8px; margin-bottom: 10px; }
+  html.registration-active .flow-back, html.registration-active .flow-close { width: 44px; height: 44px; }
+  html.registration-active .flow-brand { gap: 6px; font-size: 15px; }
+  html.registration-active .flow-brand svg { width: 40px; height: 40px; }
+  html.registration-active .flow-hero { min-height: 164px; margin: 0 -4px 14px; padding: 16px 12px 18px; border-radius: 20px; }
+  html.registration-active .flow-hero-copy { max-width: 72%; }
+  html.registration-active .flow-hero-kicker { margin-bottom: 7px; font-size: 11px; letter-spacing: 1.5px; }
+  html.registration-active .flow-hero-copy strong { font-size: clamp(29px,8vw,37px); }
+  html.registration-active .flow-hero-copy p { max-width: 220px; font-size: 14px; line-height: 1.35; }
+  html.registration-active .flow-hero-art { right: -12px; width: 43%; height: 140px; }
+  html.registration-active .journey-head { margin-bottom: 28px; }
+  html.registration-active .journey-progress { padding: 14px 3px 12px; border-radius: 22px; }
+  html.registration-active .journey-progress li { gap: 6px; }
+  html.registration-active .journey-progress li:not(:last-child):after { top: 17px; }
+  html.registration-active .journey-progress i { width: 36px; height: 36px; }
+  html.registration-active .journey-progress i svg { width: 19px; height: 19px; }
+  html.registration-active .journey-progress small { font-size: 11px; }
+  html.registration-active .flow-step h3 { font-size: 27px; }
+  html.registration-active .flow-step > p { margin-bottom: 18px; font-size: 15px; }
+  html.registration-active [data-step="program"] .flow-option,
+  html.registration-active [data-step^="jenis"] .flow-option { min-height: 108px; gap: 13px; padding: 14px; border-radius: 20px; }
+  html.registration-active [data-step="program"] .flow-option-icon,
+  html.registration-active [data-step^="jenis"] .flow-option-icon { width: 64px; height: 64px; border-radius: 17px; }
+  html.registration-active [data-step="program"] .flow-option-icon svg,
+  html.registration-active [data-step^="jenis"] .flow-option-icon svg { width: 38px; height: 38px; }
+  html.registration-active [data-step="program"] .flow-option-title,
+  html.registration-active [data-step^="jenis"] .flow-option-title { font-size: 19px; }
+  html.registration-active [data-step="program"] .flow-option-desc,
+  html.registration-active [data-step^="jenis"] .flow-option-desc { font-size: 14px; }
+  html.registration-active .journey-package { grid-template-columns: minmax(0,1fr) 116px; gap: 10px; min-height: 158px; padding: 13px 11px; border-radius: 20px; }
+  html.registration-active .journey-package-main { grid-template-columns: 48px minmax(0,1fr); gap: 8px; }
+  html.registration-active .journey-package-icon { width: 46px; height: 46px; border-radius: 14px; }
+  html.registration-active .journey-package-icon svg { width: 30px; height: 30px; }
+  html.registration-active .journey-package-name { font-size: 19px; }
+  html.registration-active .journey-package-heading { gap: 5px; }
+  html.registration-active .journey-package .flow-tag { padding: 3px 8px; font-size: 10px; }
+  html.registration-active .journey-package .flow-option-title, html.registration-active .package-meetings { font-size: 12px; }
+  html.registration-active .journey-package .flow-option-desc { font-size: 12px; }
+  html.registration-active .journey-package .flow-option-price { padding-left: 8px; font-size: 17px; }
+  html.registration-active .journey-package .flow-option-price small { font-size: 12px; }
+  html.registration-active .package-choose { min-height: 36px; gap: 5px; margin-top: 9px; padding: 0 10px; font-size: 12px; }
+  html.registration-active .journey-day { padding: 14px 16px; }
+}
