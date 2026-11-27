@@ -498,6 +498,36 @@
     html.embed .flow-option { min-height: 68px; padding: 16px; }
     html.embed .flow-step { padding-top: 4px; }
   }
+
+  /* Data diri: tata letak yang jelas, tanpa mengubah field atau payload pendaftaran. */
+  html.embed #dataForm {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px;
+    max-width: 680px; margin: 0 auto;
+  }
+  html.embed #dataForm > label:first-child,
+  html.embed #dataForm > .cek-jk,
+  html.embed #dataForm > .cek-wa,
+  html.embed #dataForm > .cek-check { grid-column: 1 / -1; }
+  html.embed #dataForm > label { margin-top: 14px; }
+  html.embed #dataForm .cek-wa-row { grid-template-columns: minmax(110px, 150px) minmax(0, 1fr); }
+  html.embed #toBayar, html.embed #dataHint, html.embed #verifyBox { max-width: 680px; margin-left: auto; margin-right: auto; }
+  html.embed #toBayar { display: block; }
+  html.embed .cek-box { border: 1px solid #e5ded3; background: #fff; padding: 18px 22px; }
+  html.embed .cek-row { padding: 12px 0; border-color: #eee9e1; }
+  html.embed .cek-row span:first-child { color: #756b5f; }
+  html.embed .cek-row span:last-child { color: #2b2722; }
+  html.embed .rc { margin-top: 18px; }
+  html.embed .rc-card { border: 1px solid #e5ded3; border-radius: 16px; background: #fff; padding: 18px; }
+  html.embed .rc-total { border-top-color: #e5ded3; padding-top: 16px; }
+  html.embed .cek-edit button { border-color: #e5ded3; border-radius: 12px; }
+  @media (max-width: 640px) {
+    html.embed #dataForm { grid-template-columns: 1fr; gap: 2px; }
+    html.embed #dataForm > label:first-child,
+    html.embed #dataForm > .cek-jk,
+    html.embed #dataForm > .cek-wa,
+    html.embed #dataForm > .cek-check { grid-column: auto; }
+    html.embed #dataForm .cek-wa-row { grid-template-columns: 112px minmax(0, 1fr); }
+  }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
