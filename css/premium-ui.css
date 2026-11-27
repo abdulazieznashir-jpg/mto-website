@@ -839,3 +839,93 @@ html.registration-active .journey-package .package-choose { margin-top: 0; paddi
 @media (max-width: 420px) {
   html.registration-active .journey-package .flow-option-price { grid-column: 1 / -1; grid-row: auto; width: 100%; }
 }
+
+
+/* Package choices match the text-led Silver, Gold, Platinum reference. */
+html.registration-active #kelasOpts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+html.registration-active .journey-package {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 21px 24px;
+  border: 1px solid #EAE4D9;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .96);
+  color: #171715;
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(55, 43, 23, .06);
+  transition: border-color .2s, background .2s, box-shadow .2s, transform .2s;
+}
+html.registration-active .journey-package:hover,
+html.registration-active .journey-package:focus-visible {
+  border-color: #D3A84F;
+  background: #FFFCF5;
+  box-shadow: 0 10px 24px rgba(129, 94, 37, .11);
+}
+html.registration-active .journey-package:focus-visible {
+  outline: 2px solid #B98527;
+  outline-offset: 3px;
+}
+html.registration-active .journey-package.recommended {
+  border: 2px solid #D3A84F;
+  padding: 20px 23px;
+  background: linear-gradient(110deg, #FFFCF5, #FFF9EB);
+  box-shadow: 0 8px 22px rgba(151, 109, 37, .1);
+}
+html.registration-active .journey-package-copy {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+html.registration-active .journey-package-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+html.registration-active .journey-package-name {
+  color: #171715;
+  font-size: clamp(25px, 4vw, 31px);
+  font-weight: 750;
+  line-height: 1.12;
+  letter-spacing: -.035em;
+  text-transform: none;
+}
+html.registration-active .journey-package .flow-tag {
+  margin: 0;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: #FBF0DC;
+  color: #8A5D15;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+}
+html.registration-active .journey-package .flow-option-title {
+  color: #24231F;
+  font-size: clamp(16px, 2.5vw, 19px);
+  font-weight: 650;
+  line-height: 1.35;
+}
+html.registration-active .journey-package .flow-option-desc {
+  max-width: none;
+  margin: 0;
+  color: #5F5C56;
+  font-size: clamp(15px, 2.3vw, 18px);
+  line-height: 1.48;
+}
+@media (max-width: 600px) {
+  html.registration-active #kelasOpts { gap: 12px; }
+  html.registration-active .journey-package,
+  html.registration-active .journey-package.recommended { padding: 18px 19px; border-radius: 22px; }
+  html.registration-active .journey-package-heading { gap: 7px; }
+  html.registration-active .journey-package-name { font-size: clamp(24px, 7vw, 29px); }
+  html.registration-active .journey-package .flow-tag { padding: 4px 10px; font-size: 12px; }
+  html.registration-active .journey-package .flow-option-title { font-size: 16px; }
+  html.registration-active .journey-package .flow-option-desc { font-size: 15px; line-height: 1.45; }
+}
