@@ -796,3 +796,21 @@ html.registration-active .flow-top {
   backdrop-filter: blur(14px);
   box-shadow: 0 5px 18px rgba(65,48,20,.06);
 }
+
+
+/* Registration duration cards: pricing is introduced at the duration decision. */
+html.registration-active #durasiOpts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+html.registration-active .journey-duration { display:flex; flex-direction:column; align-items:stretch; gap:12px; min-height:0; padding:20px; border:1px solid #E8E0D3; border-radius:22px; background:rgba(255,255,255,.96); box-shadow:0 8px 24px rgba(55,43,23,.07); text-align:left; }
+html.registration-active .journey-duration:hover, html.registration-active .journey-duration[aria-pressed="true"] { border-color:#D1A443; background:#FFFCF5; box-shadow:0 12px 28px rgba(129,94,37,.12); }
+.duration-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.duration-heading .flow-option-title { font-size:22px; font-weight:750; }
+.duration-meetings { color:#625C53; font-size:14px; }
+.duration-pricing { display:grid; gap:5px; }
+.duration-old-price { color:#827B70; font-size:15px; text-decoration:line-through; }
+.duration-old-price small, .duration-monthly small { margin-left:4px; font-size:.72em; font-weight:500; }
+.duration-monthly { color:#A97925; font-size:24px; }
+.duration-total { display:grid; gap:3px; margin-top:7px; color:#625C53; font-size:13px; }
+.duration-total strong { color:#171513; font-size:20px; }
+.duration-savings { color:#8A6427; font-size:13px; font-weight:650; }
+.duration-choose { align-self:flex-start; margin-top:2px; }
+@media(max-width:600px) { html.registration-active #durasiOpts { grid-template-columns:1fr; gap:12px; } html.registration-active .journey-duration { padding:17px; } }
