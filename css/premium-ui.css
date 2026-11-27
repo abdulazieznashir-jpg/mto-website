@@ -783,3 +783,16 @@ html.registration-active .flow-step[data-step="hari"] > h3::after {
   html.registration-active .journey-day-copy small { font-size: 10px; }
   html.registration-active .journey-online p { padding-left: 11px; }
 }
+
+/* Keep the registration header readable while its panel scrolls. */
+html.registration-active .flow-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 8px 10px;
+  border-radius: 18px;
+  background: rgba(255,254,251,.96);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 5px 18px rgba(65,48,20,.06);
+}
