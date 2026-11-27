@@ -450,6 +450,84 @@
   .rc-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 8px; padding-top: 14px; border-top: 1px solid #e6dccf; font-size: 16px; font-weight: 700; color: #5a3b1c; }
   .rc-total strong { font-size: 18px; color: #2b1c0e; }
   .rc-old { color: #8a8a8a; font-weight: 400; font-size: 14px; margin-right: 6px; }
+
+  /* Pendaftaran full-page: susunan konten dan kontrol untuk layar tersendiri. */
+  html.embed, html.embed body { min-height: 100%; background: #f7f5f0; }
+  html.embed #cek.flow-backdrop {
+    position: fixed; inset: 0; display: flex; align-items: stretch; justify-content: center;
+    padding: 0; background: #f7f5f0; opacity: 0; pointer-events: none;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  html.embed #cek.flow-backdrop.open { opacity: 1; pointer-events: auto; }
+  html.embed .flow {
+    width: 100%; max-width: 920px; height: 100vh; height: 100dvh; max-height: none;
+    margin: 0 auto; padding: 24px clamp(20px, 5vw, 64px) 48px; overflow-y: auto;
+    border-radius: 0; background: #f7f5f0; box-shadow: none; transform: none;
+  }
+  html.embed .flow-top {
+    position: sticky; top: 0; z-index: 5; min-height: 52px; margin: 0 auto 36px;
+    padding: 8px 0 14px; border-bottom: 1px solid #e7e1d7; background: #f7f5f0;
+  }
+  html.embed .flow-back, html.embed .flow-close {
+    width: 42px; height: 42px; border: 1px solid #e7e1d7; border-radius: 50%;
+    background: #fff; color: #57452f;
+  }
+  html.embed .flow-stage { max-width: 500px; margin: 0 auto; color: #756b5f; }
+  html.embed .flow-bar { background: #e8e1d6; }
+  html.embed .flow-bar i { background: #8b6e4e; }
+  html.embed .flow-step { max-width: 720px; margin: 0 auto; padding: 8px 0 48px; }
+  html.embed .flow-step h3 { margin: 0 0 10px; color: #25221e; font-size: clamp(28px, 4vw, 38px); line-height: 1.15; letter-spacing: -.03em; }
+  html.embed .flow-step > p { max-width: 620px; margin-bottom: 24px; color: #71695f; line-height: 1.55; }
+  html.embed .flow-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  html.embed .flow-option { min-height: 76px; padding: 18px; border-color: #e5ded3; border-radius: 16px; background: #fff; }
+  html.embed .flow-option:hover, html.embed .flow-option:focus-visible { border-color: #a88962; background: #fffdf9; }
+  html.embed .flow-option-title { color: #2b2722; }
+  html.embed .flow-option-desc { color: #756b5f; line-height: 1.45; }
+  html.embed .flow-summary { border: 1px solid #e5ded3; border-radius: 18px; background: #fff; padding: 20px; }
+  html.embed .cek-form label { margin-top: 18px; color: #423a31; font-weight: 500; }
+  html.embed .cek-input, html.embed .cek-form input { border-color: #ded6ca; border-radius: 12px; background: #fff; }
+  html.embed .cek-check { font-weight: 400 !important; }
+  html.embed .cek-verify { border: 1px solid #eadcc6; background: #fbf4e9; }
+  html.embed .cek-full { min-height: 54px; border-radius: 14px; background: #8b6e4e; }
+  html.embed .cek-full:hover:not(:disabled) { background: #755a3d; }
+  html.embed .cek-note, html.embed .flow-note { color: #756b5f; }
+  @media (max-width: 640px) {
+    html.embed .flow { padding: max(14px, env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px)); }
+    html.embed .flow-top { margin-bottom: 24px; }
+    html.embed .flow-options { grid-template-columns: 1fr; }
+    html.embed .flow-option { min-height: 68px; padding: 16px; }
+    html.embed .flow-step { padding-top: 4px; }
+  }
+
+  /* Data diri: tata letak yang jelas, tanpa mengubah field atau payload pendaftaran. */
+  html.embed #dataForm {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px;
+    max-width: 680px; margin: 0 auto;
+  }
+  html.embed #dataForm > label:first-child,
+  html.embed #dataForm > .cek-jk,
+  html.embed #dataForm > .cek-wa,
+  html.embed #dataForm > .cek-check { grid-column: 1 / -1; }
+  html.embed #dataForm > label { margin-top: 14px; }
+  html.embed #dataForm .cek-wa-row { grid-template-columns: minmax(110px, 150px) minmax(0, 1fr); }
+  html.embed #toBayar, html.embed #dataHint, html.embed #verifyBox { max-width: 680px; margin-left: auto; margin-right: auto; }
+  html.embed #toBayar { display: block; }
+  html.embed .cek-box { border: 1px solid #e5ded3; background: #fff; padding: 18px 22px; }
+  html.embed .cek-row { padding: 12px 0; border-color: #eee9e1; }
+  html.embed .cek-row span:first-child { color: #756b5f; }
+  html.embed .cek-row span:last-child { color: #2b2722; }
+  html.embed .rc { margin-top: 18px; }
+  html.embed .rc-card { border: 1px solid #e5ded3; border-radius: 16px; background: #fff; padding: 18px; }
+  html.embed .rc-total { border-top-color: #e5ded3; padding-top: 16px; }
+  html.embed .cek-edit button { border-color: #e5ded3; border-radius: 12px; }
+  @media (max-width: 640px) {
+    html.embed #dataForm { grid-template-columns: 1fr; gap: 2px; }
+    html.embed #dataForm > label:first-child,
+    html.embed #dataForm > .cek-jk,
+    html.embed #dataForm > .cek-wa,
+    html.embed #dataForm > .cek-check { grid-column: auto; }
+    html.embed #dataForm .cek-wa-row { grid-template-columns: 112px minmax(0, 1fr); }
+  }
 </style>
 
 <!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
@@ -1734,14 +1812,27 @@
   document.querySelectorAll('[data-daftar]').forEach(function (el) {
     el.addEventListener('click', function (e) {
       e.preventDefault();
-      openFlow({ mode: 'daftar', program: el.dataset.program, jenis: el.dataset.jenis, tier: el.dataset.tier });
+      // Buka pendaftaran sebagai halaman penuh dan bawa pilihan dari tombol paket/program.
+      var tujuan = new URL('index.html', window.location.href);
+      tujuan.searchParams.set('embed', '1');
+      tujuan.searchParams.set('daftar', '1');
+      ['program', 'jenis', 'tier'].forEach(function (k) {
+        if (el.dataset[k]) tujuan.searchParams.set(k, el.dataset[k]);
+        else tujuan.searchParams.delete(k);
+      });
+      window.location.assign(tujuan.pathname + tujuan.search);
     });
   });
   // Dibuka dari profil peserta (index.html?daftar=1): langsung tampil alur pendaftaran yang sama.
   try {
     var qs = new URLSearchParams(location.search);
     if (qs.get('embed') === '1') document.documentElement.classList.add('embed');
-    if (qs.get('daftar') === '1') openFlow({ mode: 'daftar' });
+    if (qs.get('daftar') === '1') openFlow({
+      mode: 'daftar',
+      program: qs.get('program') || null,
+      jenis: qs.get('jenis') || null,
+      tier: qs.get('tier') || null
+    });
   } catch (err) { /* abaikan */ }
   document.getElementById('cekOpen').addEventListener('click', function () { openFlow({ mode: 'cek' }); });
   document.getElementById('cekClose').addEventListener('click', close);
