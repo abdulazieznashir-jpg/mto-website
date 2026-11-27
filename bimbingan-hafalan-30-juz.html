@@ -1953,11 +1953,11 @@
         '<div class="ask-harga"><div class="ask-harga-utama"><strong>' + rb(mo) + '</strong><span>/ bulan</span></div>' +
         '<div class="ask-harga-sub"><s>' + rb(c2.asli) + '</s><span class="ask-hemat">Hemat ' + pct(c2.asli, mo) + '%</span></div></div>' +
         '<form class="ask-form" id="askKontak" novalidate>' +
-        '<p class="ask-kecil">Isi nama dan nomor WhatsApp agar admin bisa membalas pertanyaan Anda.</p>' +
+        '<p class="ask-kecil">Isi nama dan nomor WhatsApp agar admin bisa membalas pertanyaan Anda. Ini hanya untuk bertanya. Jika ingin langsung mendaftar, tutup panel ini lalu pilih Daftar.</p>' +
         '<label>Nama<input name="nama" autocomplete="name" maxlength="100" placeholder="Nama lengkap"></label>' +
         '<label>Nomor WhatsApp<input name="wa" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>' +
         '<p class="ask-err" id="askErr" role="alert"></p>' +
-        '<button type="submit" class="ask-btn ask-btn-wa">' + WA_ICON + 'Tanya Admin via WhatsApp</button>' +
+        '<button type="submit" class="ask-btn ask-btn-wa">' + WA_ICON + 'Tanya admin dulu (belum mendaftar)</button>' +
         '<p class="ask-kecil">Data Anda hanya dipakai admin untuk menghubungi Anda terkait program ini.</p></form>';
     }
   }
@@ -2003,10 +2003,14 @@
       if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' }, { phone: wa });
       if (window.mtoTrack) window.mtoTrack('Contact', { content_name: 'WhatsApp dari panel tanya' }, { phone: wa });
       if (jendela) jendela.location.href = url; else window.location.href = url;
-      btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
+      btn.textContent = 'Pertanyaan sudah terkirim'; btn.disabled = true;
+      err.innerHTML = '';
+      var ulang = document.createElement('a'); ulang.href = url; ulang.target = '_blank'; ulang.rel = 'noopener';
+      ulang.className = 'ask-btn ask-btn-wa'; ulang.textContent = 'Buka WhatsApp lagi';
+      err.appendChild(ulang);
     }).catch(function (x) {
       if (jendela) jendela.close();
-      btn.disabled = false; btn.textContent = 'Tanya Admin via WhatsApp';
+      btn.disabled = false; btn.textContent = 'Tanya admin dulu (belum mendaftar)';
       var pesanGalat = x && x.message;
       err.textContent = (pesanGalat && pesanGalat !== 'gagal' && pesanGalat.indexOf('Failed') === -1 && pesanGalat.indexOf('fetch') === -1) ? pesanGalat : 'Data belum tersimpan, jadi WhatsApp belum dibuka. Periksa koneksi, lalu coba lagi.';
     });
