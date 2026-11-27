@@ -57,7 +57,7 @@
 
 /* Dua gelombang yang datanya tersedia ditampilkan sebagai pilihan visual. */
 .adm-view[data-view="pengajar"] .hq-gelombang-baris {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin: -4px 0 0;
 }
@@ -87,7 +87,6 @@
 }
 .adm-view[data-view="pengajar"] .hq-gel-kartu:first-child small,
 .adm-view[data-view="pengajar"] .hq-gel-kartu:first-child b { color: #FFFFFF; }
-.adm-view[data-view="pengajar"] .hq-gel-kartu:nth-child(n+3) { display: none; }
 .adm-view[data-view="pengajar"] .hq-gel-baner {
   margin: -8px 0 0;
   padding: 11px 14px;
