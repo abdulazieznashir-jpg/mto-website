@@ -1734,14 +1734,27 @@
   document.querySelectorAll('[data-daftar]').forEach(function (el) {
     el.addEventListener('click', function (e) {
       e.preventDefault();
-      openFlow({ mode: 'daftar', program: el.dataset.program, jenis: el.dataset.jenis, tier: el.dataset.tier });
+      // Buka pendaftaran sebagai halaman penuh dan bawa pilihan dari tombol paket/program.
+      var tujuan = new URL('index.html', window.location.href);
+      tujuan.searchParams.set('embed', '1');
+      tujuan.searchParams.set('daftar', '1');
+      ['program', 'jenis', 'tier'].forEach(function (k) {
+        if (el.dataset[k]) tujuan.searchParams.set(k, el.dataset[k]);
+        else tujuan.searchParams.delete(k);
+      });
+      window.location.assign(tujuan.pathname + tujuan.search);
     });
   });
   // Dibuka dari profil peserta (index.html?daftar=1): langsung tampil alur pendaftaran yang sama.
   try {
     var qs = new URLSearchParams(location.search);
     if (qs.get('embed') === '1') document.documentElement.classList.add('embed');
-    if (qs.get('daftar') === '1') openFlow({ mode: 'daftar' });
+    if (qs.get('daftar') === '1') openFlow({
+      mode: 'daftar',
+      program: qs.get('program') || null,
+      jenis: qs.get('jenis') || null,
+      tier: qs.get('tier') || null
+    });
   } catch (err) { /* abaikan */ }
   document.getElementById('cekOpen').addEventListener('click', function () { openFlow({ mode: 'cek' }); });
   document.getElementById('cekClose').addEventListener('click', close);
