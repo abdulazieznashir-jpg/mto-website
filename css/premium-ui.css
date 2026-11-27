@@ -1098,3 +1098,74 @@ html.registration-active .journey-duration[aria-pressed="true"] {
   .duration-total { font-size: 13px; }
   .duration-total strong { font-size: 15px; }
 }
+
+
+/* Refine duration cards for a less compressed, SF-system typography treatment. */
+html.registration-active .flow,
+html.registration-active .flow button,
+html.registration-active .flow input,
+html.registration-active .flow select {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html.registration-active .journey-duration {
+  grid-template-columns: minmax(132px, .82fr) minmax(0, 1.38fr);
+  gap: 24px;
+  padding: 24px 22px;
+}
+html.registration-active .journey-duration[aria-pressed="true"] { padding: 23px 21px; }
+html.registration-active .duration-meta { gap: 11px; }
+html.registration-active .duration-title {
+  font-size: clamp(24px, 3.7vw, 30px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+html.registration-active .duration-meetings {
+  font-size: clamp(16px, 2.4vw, 19px);
+  line-height: 1.4;
+}
+html.registration-active .duration-pricing { padding-left: 24px; }
+html.registration-active .duration-monthly {
+  font-size: clamp(28px, 4.2vw, 36px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+}
+html.registration-active .duration-monthly small {
+  font-size: .56em;
+  letter-spacing: 0;
+}
+html.registration-active .duration-total {
+  gap: 8px;
+  line-height: 1.45;
+}
+@media (max-width: 600px) {
+  html.registration-active .journey-duration {
+    grid-template-columns: minmax(105px, .78fr) minmax(0, 1.22fr);
+    gap: 17px;
+    padding: 21px 18px;
+    border-radius: 23px;
+  }
+  html.registration-active .journey-duration[aria-pressed="true"] { padding: 20px 17px; }
+  html.registration-active .duration-pricing { padding-left: 17px; }
+  html.registration-active .duration-title { font-size: clamp(24px, 5.7vw, 29px); }
+  html.registration-active .duration-meetings { font-size: 16px; }
+  html.registration-active .duration-monthly { font-size: clamp(25px, 6vw, 34px); }
+}
+@media (max-width: 390px) {
+  html.registration-active .journey-duration {
+    grid-template-columns: minmax(91px, .74fr) minmax(0, 1.26fr);
+    gap: 14px;
+    padding: 20px 14px;
+  }
+  html.registration-active .journey-duration[aria-pressed="true"] { padding: 19px 13px; }
+  html.registration-active .duration-pricing { padding-left: 13px; }
+  html.registration-active .duration-title { font-size: 24px; }
+  html.registration-active .duration-meetings { font-size: 15px; }
+  html.registration-active .duration-monthly { font-size: clamp(23px, 6.2vw, 27px); }
+  html.registration-active .duration-reference,
+  html.registration-active .duration-reference s { font-size: 14px; }
+  html.registration-active .duration-total { font-size: 14px; }
+  html.registration-active .duration-total strong { font-size: 17px; }
+}
