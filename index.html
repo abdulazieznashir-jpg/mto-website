@@ -1748,7 +1748,7 @@
     document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
       var c = KELAS[k];
       var tag = k === 'gold' ? '<span class="flow-tag">Paling populer</span>' : '';
-      var ikon = k === 'gold' ? '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m7 16 10 8 7-14 8 14 9-8-4 19H11zM24 5v4"/></svg>' : '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 18 19-18 19L6 24zM6 24h36M24 5v38"/></svg>';
+      var ikon = k === 'gold' ? '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m7 16 10 8 7-14 8 14 9-8-4 19H11zM24 5v4"/></svg>' : (k === 'platinum' ? '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 18 19-18 19L6 24zM6 24h36M24 5v38"/></svg>' : '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 13c-5-4-11-4-17-2v25c6-2 12-2 17 2m0-25c5-4 11-4 17-2v25c-6-2-12-2-17 2M24 13v25"/></svg>');
       return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '">' +
         '<span class="journey-package-main"><span class="journey-package-icon">' + ikon + '</span><span class="journey-package-copy"><span class="journey-package-heading"><span class="journey-package-name">' + c.nama + '</span>' + tag + '</span>' +
         '<span class="flow-option-body"><span class="flow-option-title">' + c.menit + ' menit per pertemuan</span>' +
