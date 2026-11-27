@@ -835,3 +835,7 @@ html.registration-active .journey-package .package-choose { margin-top: 0; paddi
   html.registration-active .journey-package .flow-option-price { align-items: flex-start; }
   html.registration-active .journey-package .package-choose { align-self: flex-start; }
 }
+
+@media (max-width: 420px) {
+  html.registration-active .journey-package .flow-option-price { grid-column: 1 / -1; grid-row: auto; width: 100%; }
+}
