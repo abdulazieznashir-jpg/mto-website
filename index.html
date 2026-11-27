@@ -143,37 +143,11 @@
   .program-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
   .program-card .btn { width: 100%; }
 
-  /* ALUR PENDAFTARAN (MODAL) */
-  .flow-backdrop {
-    position: fixed; inset: 0; z-index: 2000;
-    background: rgba(29, 29, 31, 0.45);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 16px;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
-  }
-  .flow-backdrop.open { opacity: 1; pointer-events: auto; }
-  .flow {
-    background: white; width: 100%; max-width: 520px;
-    max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto;
-    border-radius: var(--radius-lg); padding: 28px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
-    transform: translateY(16px) scale(0.98);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .flow-backdrop.open .flow { transform: none; }
-  /* Mode tampilan di dalam lembar "Pilih paket" profil: hanya alur pendaftaran, tanpa beranda di belakangnya. */
-  html.embed body > :not(#cek) { display: none !important; }
-  html.embed #cek.flow-backdrop { background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; align-items: stretch; }
-  html.embed .flow { max-width: none; max-height: 100vh; max-height: 100dvh; border-radius: 0; box-shadow: none; transform: none; }
-  html.embed .flow-close { display: none; }
-  /* HP: alur pendaftaran jadi layar penuh yang menempel di bawah, bukan kartu melayang di tengah */
-  @media (max-width: 640px) {
-    .flow-backdrop { padding: 0; align-items: stretch; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
-    .flow { max-width: none; width: 100%; height: 100vh; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; padding: max(16px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); transform: translateY(24px); }
-    .flow-backdrop.open .flow { transform: none; }
-  }
-  .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: sticky; top: 0; z-index: 3; background: #fff; padding: 4px 0 8px; }
+  /* Alur pendaftaran menjadi bagian halaman normal, bukan modal/overlay. */
+  .flow-backdrop { display: none; width: 100%; padding: 24px 22px; background: #FBFBFD; }
+  .flow-backdrop.open { display: block; }
+  .flow { width: 100%; max-width: 760px; margin: 0 auto; padding: 28px; background: #fff; border: 1px solid var(--border-light); border-radius: 20px; box-shadow: none; overflow: visible; }
+  .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: static; background: #fff; padding: 4px 0 8px; }
   .flow-back, .flow-close {
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -235,7 +209,6 @@
   .flow .btn-wa:hover { background: #1EBE5A; opacity: 1; }
   .flow .btn-wa svg { width: 20px; height: 20px; }
   .flow-note { font-size: 13px; color: var(--text-tertiary); text-align: center; margin-top: 12px; }
-  body.flow-lock { overflow: hidden; }
   @media (max-width: 480px) {
     .flow { padding: 22px; }
     .flow-option { padding: 16px; gap: 12px; }
@@ -372,13 +345,11 @@
   .pricing-was { font-size: 15px; color: #86868b; text-decoration: line-through; margin-bottom: 4px; }
   .pricing-price .rb { font-size: 22px; font-weight: 700; color: var(--text-primary); align-self: baseline; }
   .pricing-price .harga-pct { align-self: center; margin-left: 6px; }
-  .ask-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; }
+  /* Panel tanya admin juga mengikuti alur dokumen, tanpa backdrop melayang. */
+  .ask-backdrop { display: block; width: 100%; padding: 24px 22px; background: #FBFBFD; }
   .ask-backdrop[hidden] { display: none; }
-  .ask-panel { background: #fff; color: #1d1d1f; width: 100%; max-width: 520px; max-height: 86vh; overflow-y: auto; border-radius: 20px 20px 0 0; }
-  @media (min-width: 700px) { .ask-backdrop { align-items: center; } .ask-panel { border-radius: 20px; } }
-  /* HP: panel tanya juga layar penuh, sama seperti alur pendaftaran */
-  @media (max-width: 699px) { .ask-panel { max-width: none; height: 100vh; height: 100dvh; max-height: 100dvh; border-radius: 0; } }
-  .ask-top { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e5ea; }
+  .ask-panel { width: 100%; max-width: 760px; margin: 0 auto; background: #fff; color: #1d1d1f; border: 1px solid #e5e5ea; border-radius: 18px; overflow: visible; }
+  .ask-top { position: static; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e5ea; }
   .ask-top h3 { margin: 0; flex: 1; font-size: 17px; }
   .ask-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d2d2d7; background: #fff; font-size: 20px; line-height: 1; cursor: pointer; color: #1d1d1f; }
   .ask-nav[hidden] { display: none; }
@@ -414,7 +385,7 @@
   .ask-hemat { background: #8A6A3E; color: #fff; padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; }
   .ask-err:empty { display: none; }
   .ask-btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
-  .ask-form .ask-btn-wa { position: sticky; bottom: 0; margin-top: 4px; }
+  .ask-form .ask-btn-wa { position: static; margin-top: 4px; }
   @media (max-width: 699px) { .ask-body { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); } }
 
   .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
@@ -606,6 +577,52 @@
   .about-image.about-image-art::before { display: none; }
   .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 -12px 16px; background: none; overflow: visible; display: block; }
   @media (max-width: 700px) { .program-card { padding: 20px; } }
+
+  /* Program dan pendaftaran mengikuti referensi satu kolom, pada semua ukuran layar. */
+  #program.section { padding: 36px 0 56px; }
+  #program .program-page { width: min(100% - 32px, 400px); margin: 0 auto; }
+  #program .program-banner {
+    padding: 22px 16px; margin: 0 0 14px; text-align: center; color: #fff;
+    border: 4px solid #d5ae77; border-radius: 16px;
+    background: radial-gradient(ellipse at 10% 50%, rgba(213,174,119,.22), transparent 42%), #111;
+  }
+  #program .program-banner-kicker { margin: 0 0 4px; color: #e2c49c; font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+  #program .program-banner h2 { margin: 0; color: #fff; font-size: clamp(25px, 7vw, 34px); line-height: 1.05; }
+  #program .program-progress {
+    margin: 0 0 16px; padding: 12px 8px 10px; color: #fff;
+    border: 4px solid #ffc800; border-radius: 15px; background: #111;
+  }
+  #program .program-progress ol { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; margin: 0; padding: 0; list-style: none; }
+  #program .program-progress li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; text-align: center; }
+  #program .program-progress li:not(:last-child)::after { content: ""; position: absolute; top: 12px; left: calc(50% + 13px); width: calc(100% - 22px); height: 4px; background: #777; }
+  #program .program-progress li.current::after { background: linear-gradient(90deg, #ffc800 50%, #777 50%); }
+  #program .program-progress li span { z-index: 1; display: grid; place-items: center; width: 25px; height: 25px; border: 2px solid #bbb; border-radius: 50%; background: #fff; color: #333; font-size: 11px; font-weight: 700; }
+  #program .program-progress li.current span { border-color: #ffc800; background: #ffc800; color: #111; }
+  #program .program-progress li small { color: #eee; font-size: 9px; line-height: 1.1; }
+  #program .programs-grid.program-list { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: none; margin: 0; }
+  #program .program-card { padding: 12px; border: 3px solid #161616; border-radius: 15px; box-shadow: none; }
+  #program .program-card:hover { transform: none; border-color: #161616; box-shadow: none; }
+  #program .program-card-image { aspect-ratio: 3.6 / 1; margin: 0 0 10px; border-radius: 8px; }
+  #program .program-card h3 { margin: 0 0 4px; text-align: center; font-size: 23px; font-weight: 800; }
+  #program .program-card p { margin: 0 0 10px; text-align: center; font-size: 13px; line-height: 1.4; }
+  #program .program-card .btn { width: auto; min-width: 112px; min-height: 38px; margin: 0 auto; padding: 8px 20px; display: flex; justify-content: center; }
+  #program .program-chat {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;
+    margin: 14px 0 0; padding: 14px; border: 3px solid #d5ae77; border-radius: 12px; background: #fff;
+  }
+  #program .program-chat-copy { display: flex; flex-direction: column; gap: 2px; }
+  #program .program-chat-copy strong { font-size: 14px; }
+  #program .program-chat-copy span { color: var(--text-secondary); font-size: 12px; }
+  #program .program-chat .btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 8px 12px; border-radius: 8px; background: #ffc800; color: #111; font-size: 14px; font-weight: 700; }
+  #program .program-chat .btn-wa:hover { background: #f0bd00; }
+  #program .program-chat .btn-wa svg { width: 19px; height: 19px; color: #168b4a; }
+  @media (max-width: 420px) {
+    #program.section { padding-top: 24px; }
+    #program .program-page { width: calc(100% - 24px); }
+    #program .program-banner { padding: 18px 12px; }
+    #program .program-card { padding: 10px; }
+    #program .program-chat { gap: 8px; padding: 11px; }
+  }
 </style>
 </head>
 <body>
@@ -867,34 +884,48 @@
 </section>
 
 <!-- 2 PROGRAM -->
-<section class="section" id="program">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="eyebrow">2 Program</div>
-      <h2>Mulai dari mana pun Anda sekarang.</h2>
-    </div>
-    <div class="programs-grid" style="max-width: 860px; margin: 0 auto;">
-      <div class="program-card reveal">
-        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="960" height="960" loading="lazy" decoding="async"></picture></div>
+<section class="section" id="program" aria-labelledby="programTitle">
+  <div class="container program-page">
+    <header class="program-banner reveal">
+      <p class="program-banner-kicker">PENDAFTARAN MAHKOTA TAHFIZH ONLINE</p>
+      <h2 id="programTitle">2 PROGRAM</h2>
+    </header>
+
+    <nav class="program-progress" aria-label="Tahapan pendaftaran">
+      <ol>
+        <li class="current" aria-current="step"><span>1</span><small>Program</small></li>
+        <li><span>2</span><small>Hari</small></li>
+        <li><span>3</span><small>Paket</small></li>
+        <li><span>4</span><small>Durasi</small></li>
+        <li><span>5</span><small>Daftar</small></li>
+      </ol>
+    </nav>
+
+    <div class="programs-grid program-list">
+      <article class="program-card reveal">
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi belajar membaca Al-Qur'an bersama pengajar" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahsin</h3>
-        <p>Untuk Anda yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
-        <div class="program-pills">
-          <span class="program-tag">Makhraj &amp; Tajwid</span>
-          <span class="program-tag">Dari Dasar</span>
-        </div>
-        <a href="#daftar" class="btn btn-secondary" data-daftar data-program="tahsin">Daftar Kelas Tahsin</a>
-      </div>
-      <div class="program-card reveal">
-        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="960" height="960" loading="lazy" decoding="async"></picture></div>
+        <p>Untuk yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
+        <a href="#daftar" class="btn btn-primary" data-daftar data-program="tahsin" aria-label="Daftar Kelas Tahsin">Daftar</a>
+      </article>
+      <article class="program-card reveal">
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi belajar menghafal Al-Qur'an bersama pengajar" width="960" height="960" loading="lazy" decoding="async"></picture></div>
         <h3>Kelas Tahfidz</h3>
-        <p>Untuk Anda yang ingin menambah hafalan baru (<strong>Ziyadah</strong>) dan menjaga hafalan yang sudah ada (<strong>Muroja'ah</strong>).</p>
-        <div class="program-pills">
-          <span class="program-tag">Ziyadah</span>
-          <span class="program-tag">Muroja'ah</span>
-        </div>
-        <a href="#daftar" class="btn btn-primary" data-daftar data-program="tahfidz">Daftar Kelas Tahfidz</a>
-      </div>
+        <p>Untuk yang ingin menambah hafalan baru dan menjaga hafalan yang sudah ada.</p>
+        <a href="#daftar" class="btn btn-primary" data-daftar data-program="tahfidz" aria-label="Daftar Kelas Tahfidz">Daftar</a>
+      </article>
     </div>
+
+    <aside class="program-chat">
+      <div class="program-chat-copy">
+        <strong>Ada Pertanyaan?</strong>
+        <span>Admin kami siap membantu.</span>
+      </div>
+      <a class="btn btn-wa" href="https://wa.me/6285727533000" data-ask target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Chat di WhatsApp
+      </a>
+    </aside>
   </div>
 </section>
 
@@ -1100,7 +1131,7 @@
 
 <!-- ALUR PENDAFTARAN: satu alur untuk semua pintu masuk (Cek Program dan Daftar) -->
 <div class="flow-backdrop" id="cek" aria-hidden="true">
-  <div class="flow" role="dialog" aria-modal="true" aria-label="Pendaftaran Mahkota Tahfizh Online">
+  <div class="flow" role="region" aria-label="Pendaftaran Mahkota Tahfizh Online">
     <div class="flow-top">
       <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="flow-stage" aria-live="polite"><span id="cekStage"></span><div class="flow-bar"><i id="cekBar"></i></div></div>
@@ -1590,13 +1621,12 @@
     if (menu) menu.classList.remove('open');
     cek.classList.add('open');
     cek.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('flow-lock');
     go(route()[0]);
+    cek.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function close() {
     cek.classList.remove('open');
     cek.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('flow-lock');
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
   function go(step, noPush) { if (!noPush) hist.push(step); show(step); }
@@ -2053,8 +2083,8 @@
     }
   }
   function go(s) { hist.push(s); draw(s); }
-  function open() { hist = []; pic = null; lead = null; go({ k: 'list' }); modal.hidden = false; document.body.style.overflow = 'hidden'; }
-  function close() { modal.hidden = true; document.body.style.overflow = ''; }
+  function open() { hist = []; pic = null; lead = null; go({ k: 'list' }); modal.hidden = false; modal.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  function close() { modal.hidden = true; }
   // Tautan "Chat WhatsApp" dari halaman lain membuka panel ini: index.html?ask=1
   document.addEventListener('DOMContentLoaded', function () {
     try { if (new URLSearchParams(location.search).get('ask') === '1') open(); } catch (e) {}
