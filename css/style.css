@@ -363,9 +363,23 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 .faq-question:hover { color: var(--primary-text); }
 .faq-icon { width: 24px; height: 24px; color: var(--primary); transition: transform 0.3s; flex-shrink: 0; }
 .faq-item.open .faq-icon { transform: rotate(45deg); }
-.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.faq-answer-inner { padding: 0 0 24px; color: var(--text-secondary); font-size: 16px; line-height: 1.6; }
-.faq-item.open .faq-answer { max-height: 500px; }
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.faq-answer-inner {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 0 24px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.faq-item.open .faq-answer { grid-template-rows: 1fr; }
+@media (prefers-reduced-motion: reduce) {
+  .faq-answer { transition: none; }
+}
 
 /* BLOG */
 .blog-grid {
@@ -448,10 +462,25 @@ h4, .h4 { font-size: 21px; font-weight: 600; line-height: 1.25; letter-spacing: 
 }
 .animate { animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both; }
 .reveal {
-  opacity: 0; transform: translateY(30px);
+  opacity: 1;
+  transform: none;
+}
+html.js-reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(30px);
   transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+html.js-reveal-ready .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js-reveal-ready .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 /* WHATSAPP FLOATING */
 .wa-float {
