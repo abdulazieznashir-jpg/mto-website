@@ -814,3 +814,24 @@ html.registration-active .journey-duration:hover, html.registration-active .jour
 .duration-savings { color:#8A6427; font-size:13px; font-weight:650; }
 .duration-choose { align-self:flex-start; margin-top:2px; }
 @media(max-width:600px) { html.registration-active #durasiOpts { grid-template-columns:1fr; gap:12px; } html.registration-active .journey-duration { padding:17px; } }
+
+
+/* Embedded registration can be narrower than the desktop browser; keep package choices readable there. */
+html.embed #kelasOpts { grid-template-columns: minmax(0,1fr); }
+html.registration-active .journey-package { grid-template-columns: minmax(0,1fr) auto; column-gap: 20px; }
+html.registration-active .journey-package .flow-option-price { align-items: flex-end; justify-content: center; padding-left: 0; border-left: 0; }
+html.registration-active .journey-package .package-choose { margin-top: 0; padding-inline: 16px; }
+@media (max-width: 760px) {
+  html.registration-active #kelasOpts { grid-template-columns: minmax(0,1fr); }
+  html.registration-active .journey-package { column-gap: 12px; padding: 16px; }
+  html.registration-active .journey-package-main { grid-template-columns: 56px minmax(0,1fr); gap: 12px; }
+  html.registration-active .journey-package-icon { width: 56px; height: 56px; border-radius: 16px; }
+  html.registration-active .journey-package-icon svg { width: 36px; height: 36px; }
+  html.registration-active .journey-package .flow-option-desc { max-width: 42ch; }
+  html.registration-active .journey-package .package-choose { min-height: 40px; padding-inline: 13px; font-size: 14px; }
+}
+@media (max-width: 420px) {
+  html.registration-active .journey-package { grid-template-columns: minmax(0,1fr); row-gap: 12px; }
+  html.registration-active .journey-package .flow-option-price { align-items: flex-start; }
+  html.registration-active .journey-package .package-choose { align-self: flex-start; }
+}
