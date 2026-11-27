@@ -273,7 +273,7 @@
   .adm-view[data-view="pengajar"] .adm-dash-sub { font-size: 14px; margin-top: -8px; }
   .adm-view[data-view="pengajar"] .hq-periode-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .adm-view[data-view="pengajar"] .hq-chip { min-height: 60px; border-radius: 15px; }
-  .adm-view[data-view="pengajar"] .hq-gelombang-baris { gap: 8px; }
+  .adm-view[data-view="pengajar"] .hq-gelombang-baris { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .adm-view[data-view="pengajar"] .hq-gel-kartu { min-height: 56px; padding: 10px 8px; flex-direction: column; gap: 2px; text-align: center; }
   .adm-view[data-view="pengajar"] .hq-gel-kartu small,
   .adm-view[data-view="pengajar"] .hq-gel-kartu b { font-size: 13px; }
