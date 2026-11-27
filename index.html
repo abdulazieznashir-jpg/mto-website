@@ -1244,22 +1244,22 @@
     <div class="flow-step" data-step="hari">
       <h3 id="hariTitle">Pilih waktu belajar yang paling nyaman</h3>
       <div id="hariCopy" class="journey-copy"></div>
-      <p class="journey-prompt">Pilih waktu yang paling cocok buat kamu:</p>
+      <p class="journey-prompt">Pilih waktu yang paling sesuai dengan aktivitas Anda:</p>
       <div class="journey-days">
-        <button type="button" class="journey-day" data-pick="hari" data-value="weekday"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekdays</strong><span>Senin–Jumat</span><b>15 pertemuan dalam 1 bulan</b><small>Cocok untuk kamu yang ingin rutin belajar di hari kerja.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="journey-day" data-pick="hari" data-value="weekend"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekend</strong><span>Sabtu &amp; Ahad</span><b>8 pertemuan dalam 1 bulan</b><small>Cocok untuk kamu yang ingin belajar di akhir pekan.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="journey-day" data-pick="hari" data-value="weekday"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekdays</strong><span>Senin–Jumat</span><small>Cocok untuk Anda yang ingin rutin belajar di hari kerja.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="journey-day" data-pick="hari" data-value="weekend"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekend</strong><span>Sabtu &amp; Ahad</span><small>Cocok untuk Anda yang ingin belajar di akhir pekan.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
       </div>
     </div>
 
     <div class="flow-step" data-step="kelas">
-      <h3>Pilih paket belajar yang paling cocok untukmu</h3>
-      <p>Semua paket mendapat bimbingan privat 1-on-1. Pilih waktu sesi sesuai kebutuhanmu.</p>
+      <h3>Pilih paket belajar yang paling cocok untuk Anda</h3>
+      <p>Semua paket mendapat bimbingan privat 1-on-1. Pilih durasi sesi sesuai kebutuhan Anda.</p>
       <div class="flow-options journey-packages" id="kelasOpts"></div>
     </div>
 
     <div class="flow-step" data-step="durasi">
       <h3>Berapa lama Anda ingin belajar?</h3>
-      <p>Durasi lebih panjang berarti biaya per bulan lebih ringan.</p>
+      <p>Semakin panjang durasi belajar, semakin hemat biaya yang Anda keluarkan.</p>
       <div class="flow-options" id="durasiOpts"></div>
     </div>
 
@@ -1299,9 +1299,9 @@
     platinum: { nama: 'Platinum', menit: 30, asli: 875000, list: 499000, paket: 439000 }
   };
   var GAYA_DESC = {
-    silver: 'Singkat, untuk jadwal yang padat.',
-    gold: 'Lebih longgar untuk setoran dan koreksi.',
-    platinum: 'Waktu terpanjang untuk bimbingan mendalam.'
+    silver: 'Cocok untuk jadwal yang padat dan Anda yang ingin fokus pada praktik bacaan atau hafalan.',
+    gold: 'Lebih leluasa untuk setoran, koreksi, dan pendalaman materi.',
+    platinum: 'Waktu lebih panjang untuk bimbingan yang lebih mendalam.'
   };
   var SESI = { weekday: 15, weekend: 8 };
   var HARI = { weekday: 'Weekdays', weekend: 'Weekend' };
@@ -1751,16 +1751,25 @@
       var ikon = k === 'gold' ? '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m7 16 10 8 7-14 8 14 9-8-4 19H11zM24 5v4"/></svg>' : '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 18 19-18 19L6 24zM6 24h36M24 5v38"/></svg>';
       return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '">' +
         '<span class="journey-package-main"><span class="journey-package-icon">' + ikon + '</span><span class="journey-package-copy"><span class="journey-package-heading"><span class="journey-package-name">' + c.nama + '</span>' + tag + '</span>' +
-        '<span class="flow-option-body"><span class="flow-option-title">' + c.menit + ' menit per pertemuan</span><span class="package-meetings">' + (SESI[S.hari] || 15) + ' pertemuan per bulan</span>' +
+        '<span class="flow-option-body"><span class="flow-option-title">' + c.menit + ' menit per pertemuan</span>' +
         '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></span></span>' +
-        '<span class="flow-option-price">' + rupiah(c.list) + '<small>per bulan</small><span class="package-choose">Pilih Paket <b aria-hidden="true">›</b></span></span></button>';
+        '<span class="flow-option-price"><span class="package-choose">Pilih Paket <b aria-hidden="true">›</b></span></span></button>';
     }).join('');
   }
   function renderDurasi() {
+    var c = KELAS[S.kelas];
     document.getElementById('durasiOpts').innerHTML = durasiOpts().map(function (m) {
-      return '<button type="button" class="flow-option" data-pick="durasi" data-value="' + m + '"><span class="flow-option-body">' +
-        '<span class="flow-option-title">' + durasiLabel(m) + '</span>' +
-        '<span class="flow-option-desc">' + (SESI[S.hari] * m) + ' pertemuan</span></span></button>';
+      var monthly = perBulan(S.kelas, m);
+      var reference = (paketAktif(m) && awalOn() && !kodeAktif()) ? c.list : c.asli;
+      var savings = Math.max(0, reference - monthly) * m * S.peserta;
+      var meetings = (SESI[S.hari] || 15) * m;
+      var oldPrice = reference > monthly ? '<s class="duration-old-price">' + rupiah(reference) + '<small>/bulan</small></s>' : '';
+      var savingLine = savings ? '<span class="duration-savings">Hemat ' + rupiah(savings) + ' selama ' + m + ' bulan</span>' : '';
+      return '<button type="button" class="flow-option journey-duration" data-pick="durasi" data-value="' + m + '" aria-pressed="' + (Number(S.durasi) === m) + '">' +
+        '<span class="duration-heading"><span class="flow-option-title">' + durasiLabel(m) + '</span><span class="duration-meetings">' + meetings + ' pertemuan</span></span>' +
+        '<span class="duration-pricing">' + oldPrice + '<strong class="duration-monthly">' + rupiah(monthly) + '<small>/bulan</small></strong>' +
+        '<span class="duration-total">Total pembayaran · ' + S.peserta + (S.peserta === 1 ? ' peserta' : ' peserta') + '<strong>' + rupiah(monthly * m * S.peserta) + '</strong></span>' + savingLine + '</span>' +
+        '<span class="package-choose duration-choose">Pilih Durasi <b aria-hidden="true">›</b></span></button>';
     }).join('');
   }
   function renderJam() {
@@ -1779,7 +1788,6 @@
       ['Hari', HARI[S.hari]],
       ['Durasi', durasiLabel(m)],
       ['Jam mulai', (S.jam || '').replace(':', '.') + ' WIB'],
-      ['Total pertemuan', (SESI[S.hari] * m) + ' pertemuan'],
       ['Peserta', S.peserta + ' orang']
     ];
     var box = '<div class="cek-box">' + rows.map(function (r) {
