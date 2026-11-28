@@ -1217,8 +1217,8 @@
       <div class="flow-hero-art" aria-hidden="true"><svg viewBox="0 0 320 280" role="img" aria-label="Ornamen mandala Islami berwarna emas" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#C88D22" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".72"><circle cx="252" cy="157" r="112"/><circle cx="252" cy="157" r="92"/><circle cx="252" cy="157" r="61"/><circle cx="252" cy="157" r="29"/><g opacity=".78"><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(30 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(60 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(90 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(120 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(150 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(180 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(210 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(240 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(270 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(300 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(330 252 157)"/></g><path d="m252 17 5 11 11 5-11 5-5 11-5-11-11-5 11-5 5-11Z" fill="#D49B2F" stroke="none"/><path d="m252 135 4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9Z" fill="#D49B2F" stroke="none"/></g></svg></div>
     </div>
     <div class="journey-context" aria-live="polite">
-      <strong id="journeyGreeting">Assalamu'alaikum. Mari mulai pendaftaran.</strong>
-      <p id="journeyContextCopy">Saya pandu tahap demi tahap supaya pilihan program dan informasi pendaftaran terasa jelas.</p>
+      <strong id="journeyGreeting">Assalamu’alaikum warahmatullahi wabarakatuh</strong>
+      <p id="journeyContextCopy">Selamat datang di Mahkota Tahfizh Online. MasyaAllah, senang sekali bisa terhubung dengan Anda.</p>
     </div>
     <div class="journey-head">
       <ol class="journey-progress" id="journeyProgress" aria-label="Progres pendaftaran"></ol>
@@ -1226,8 +1226,8 @@
     </div>
 
     <div class="flow-step" data-step="nama">
-      <h3>Kenalan dulu, ya</h3>
-      <p>Nama panggilan membuat sapaan terasa lebih dekat. Nama lengkap akan digunakan pada sertifikat.</p>
+      <h3>Boleh berkenalan dulu?</h3>
+      <p>Sebelum kita mengenal lebih jauh program yang tersedia, boleh berkenalan dulu?</p>
       <div class="cek-form" id="nameFields"></div>
       <p class="profile-hint" id="nameHint"></p>
       <button type="button" class="btn btn-primary btn-lg cek-full profile-next" data-profile-next="nama" disabled>Lanjutkan</button>
@@ -1868,7 +1868,7 @@
       if (count) count.textContent = (idx + 1) + ' dari ' + routeSteps.length;
       document.getElementById('journeyTitle').textContent = titles[step] || 'Pendaftaran';
       var greetings = {
-        nama: ['Assalamu’alaikum. Mari kenalan dulu.', 'Nama panggilan dipakai untuk sapaan; nama lengkap Anda akan dicetak pada sertifikat.'],
+        nama: ['Assalamu’alaikum warahmatullahi wabarakatuh', 'Selamat datang di Mahkota Tahfizh Online. MasyaAllah, senang sekali bisa terhubung dengan Anda.'],
         program: ['Baik, Kak ' + (S.sapaan || '') + '.', 'Tahsin berfokus pada perbaikan bacaan. Tahfidz mendampingi setoran hafalan dan muroja’ah.'],
         jenisTahsin: ['Mari pilih fokus belajar, Kak ' + (S.sapaan || '') + '.', 'Kelas Pra Tahsin dimulai dari huruf dan makhraj; kelas Reguler berfokus memperbaiki bacaan dan tajwid.'],
         jenisTahfidz: ['Mari tentukan target belajar, Kak ' + (S.sapaan || '') + '.', 'Ziyadah untuk menambah hafalan; Muroja’ah untuk menjaga dan menguatkan hafalan yang sudah dimiliki.'],
