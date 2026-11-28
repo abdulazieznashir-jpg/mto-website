@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="id" class="interactive-variant">
+<head>
+<meta charset="UTF-8">
+<meta name="facebook-domain-verification" content="sk7dfkrq438xg4x5ev83qt59468tqq" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<base href="/">
+<title>Mahkota Tahfizh Online — Versi Interaktif</title>
+<meta name="description" content="Ingin hafal 30 Juz dengan bimbingan terarah? Private Tahsin dan Tahfidz 1-on-1 bersama pengajar hafidz 30 Juz via Google Meet, WhatsApp, atau Zoom. Telah diikuti 16.000+ peserta.">
+<meta name="keywords" content="tahfidz online, tahsin online, setoran hafalan online, ziyadah, murojaah, belajar al-qur'an online, mengaji online privat, mahkota tahfizh">
+<meta name="author" content="Mahkota Tahfizh Online">
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mahkota Tahfizh Online — Private Tahsin &amp; Tahfidz 1-on-1">
+<meta property="og:description" content="Private Tahsin dan Tahfidz 1-on-1 bersama pengajar hafidz 30 Juz. Telah diikuti 16.000+ peserta.">
+<meta property="og:url" content="https://mahkotatahfizh.com">
+<meta property="og:site_name" content="Mahkota Tahfizh Online">
+<meta property="og:locale" content="id_ID">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mahkota Tahfizh Online">
+<meta name="twitter:description" content="Private Tahsin & Tahfidz 1-on-1 bersama pengajar hafidz 30 Juz.">
+
+<link rel="canonical" href="https://mahkotatahfizh.com/interaktif/">
+<link rel="stylesheet" href="css/style.css?v=20261128">
+
+<!-- Schema Markup: EducationalOrganization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Mahkota Tahfizh Online",
+  "alternateName": "MTO",
+  "url": "https://mahkotatahfizh.com",
+  "description": "Tahsin dan Tahfidz Al-Qur'an online 1-on-1 dengan Ustadz dan Ustadzah bersertifikat.",
+  "email": "admin@mahkotatahfizh.com",
+  "telephone": "+62-857-2753-3000",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Jl. Panggeran XII No. 06/43, Triharjo",
+    "addressLocality": "Sleman",
+    "postalCode": "55514",
+    "addressRegion": "Yogyakarta",
+    "addressCountry": "ID"
+  },
+  "foundingDate": "2019"
+}
+</script>
+
+<!-- Schema Markup: WebSite -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Mahkota Tahfizh Online",
+  "url": "https://mahkotatahfizh.com",
+  "inLanguage": "id-ID"
+}
+</script>
+
+<!-- Gaya khusus halaman utama: langkah belajar + alur pendaftaran.
+     Memakai variabel warna yang sama dari css/style.css. -->
+<style>
+  /* LANGKAH BELAJAR */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  .step-card {
+    background: white; border-radius: var(--radius-lg);
+    padding: 32px; border: 1px solid var(--border-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .step-card:hover { transform: translateY(-4px); border-color: var(--primary-light); box-shadow: var(--shadow-md); }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--primary-lighter); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px; margin-bottom: 20px;
+  }
+  .step-card h3 { font-size: 21px; margin-bottom: 8px; }
+  .step-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.5; }
+
+
+  /* BUKTI SOSIAL */
+  .stats-note { text-align: center; color: rgba(255,255,255,0.7); font-size: 15px; margin-top: 40px; }
+  /* APAKAH KAMU */
+  .pain-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin: 8px 0 28px; }
+  .pain-list li { display: flex; gap: 14px; align-items: flex-start; font-size: 17px; line-height: 1.45; }
+  .pain-icon {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: var(--text-primary); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; margin-top: 1px;
+  }
+  .pain-answer {
+    padding: 20px 24px; border-radius: var(--radius);
+    background: var(--primary-lighter); color: var(--primary-darker); font-size: 17px;
+  }
+  /* COCOK UNTUK */
+  .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .audience-card {
+    background: white; border-radius: var(--radius); padding: 24px;
+    border: 1px solid var(--border-light); text-align: center;
+  }
+  .audience-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .audience-desc { font-size: 14px; color: var(--text-secondary); }
+  /* KENAPA MAHKOTA */
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .why-card {
+    background: white; border-radius: var(--radius-lg); padding: 28px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .why-card:hover { transform: translateY(-4px); border-color: var(--primary-light); box-shadow: var(--shadow-md); }
+  .why-card-wide { grid-column: 1 / -1; text-align: center; background: var(--primary-lighter); border-color: var(--primary-light); }
+  .why-card-wide .why-icon { margin-left: auto; margin-right: auto; }
+  .why-card-wide p { max-width: 560px; margin: 0 auto; }
+  .why-icon { width: 32px; height: 32px; color: var(--primary); margin-bottom: 16px; }
+  .why-card h3 { font-size: 19px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .why-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.5; }
+  /* TESTIMONI */
+  .testi-band { padding: 100px 0; }
+  .testi-single {
+    max-width: 640px; margin: 0 auto; text-align: center;
+    background: white; color: var(--text-primary);
+    border-radius: var(--radius-lg); padding: 40px 32px;
+  }
+  .testi-single .testimonial-quote-icon { margin: 0 auto 16px; }
+  .testi-quote { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.45; letter-spacing: -0.01em; margin-bottom: 24px; }
+  .testi-name { font-weight: 600; font-size: 16px; }
+  .testi-city { font-size: 14px; color: var(--text-tertiary); }
+  .testi-link { color: var(--primary); font-weight: 500; }
+  .testi-grid { columns: 2; column-gap: 20px; }
+  .testi-grid .testi-single { break-inside: avoid; max-width: none; margin: 0 0 20px; padding: 28px; display: block; }
+  .testi-grid .testi-quote { font-size: 18px; }
+  @media (max-width: 640px) { .testi-grid { columns: 1; } }
+  .testimonial-stars { color: #E0A526; letter-spacing: 2px; margin-top: 12px; font-size: 14px; }
+
+  /* PROGRAM (TAHSIN / TAHFIDZ) */
+  .program-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .program-card .btn { width: 100%; }
+
+  /* Alur pendaftaran menjadi bagian halaman normal, bukan modal/overlay. */
+  .flow-backdrop { display: none; width: 100%; padding: 24px 22px; background: #FBFBFD; }
+  .flow-backdrop.open { display: block; }
+  .flow { width: 100%; max-width: 760px; margin: 0 auto; padding: 28px; background: #fff; border: 1px solid var(--border-light); border-radius: 20px; box-shadow: none; overflow: visible; }
+  .flow-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 36px; position: static; background: #fff; padding: 4px 0 8px; }
+  .flow-back, .flow-close {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary); background: var(--bg-gray);
+    transition: background 0.2s, color 0.2s;
+  }
+  .flow-back:hover, .flow-close:hover { background: var(--primary-lighter); color: var(--primary-dark); }
+  .flow-back svg, .flow-close svg { width: 18px; height: 18px; }
+  .flow-back[hidden] { visibility: hidden; display: flex; }
+  .flow-dots { display: flex; gap: 6px; }
+  .flow-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .flow-dots span.on { background: var(--primary); width: 18px; border-radius: 3px; }
+  .flow-step { display: none; }
+  .flow-step.active { display: block; animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+  .flow-step h3 { font-size: 26px; margin-bottom: 6px; }
+  .flow-step > p { color: var(--text-secondary); font-size: 15px; margin-bottom: 20px; }
+  .flow-crumb { font-size: 13px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; min-height: 18px; }
+  .flow-options { display: flex; flex-direction: column; gap: 12px; }
+  .flow-option {
+    width: 100%; text-align: left;
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px; border-radius: var(--radius);
+    border: 2px solid var(--border-light); background: white;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-primary);
+  }
+  .flow-option:focus-visible {
+    outline: 2px solid var(--primary); outline-offset: 2px;
+  }
+  @media (hover: hover) {
+    .flow-option:hover { border-color: var(--primary); background: var(--primary-lighter); }
+  }
+  .flow-option.suggested { border-color: var(--primary); }
+  .flow-option-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: var(--primary-lighter); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit; font-size: 22px; font-weight: 700;
+  }
+  .flow-option-body { flex: 1; min-width: 0; }
+  .flow-option-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .flow-option-desc { font-size: 14px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+  .flow-option-price { font-size: 17px; font-weight: 700; white-space: nowrap; }
+  .flow-option-price small { display: block; font-size: 12px; font-weight: 500; color: var(--text-tertiary); text-align: right; }
+  .flow-tag {
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 2px 8px; border-radius: var(--radius-full);
+    background: var(--primary); color: white;
+  }
+  .flow-summary {
+    background: var(--bg-gray); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 20px;
+  }
+  .flow-summary-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; font-size: 15px; }
+  .flow-summary-row + .flow-summary-row { border-top: 1px solid var(--border-light); }
+  .flow-summary-row span:first-child { color: var(--text-secondary); }
+  .flow-summary-row span:last-child { font-weight: 600; text-align: right; }
+  .flow .btn-wa { width: 100%; background: #25D366; color: white; }
+  .flow .btn-wa:hover { background: #1EBE5A; opacity: 1; }
+  .flow .btn-wa svg { width: 20px; height: 20px; }
+  .flow-note { font-size: 13px; color: var(--text-tertiary); text-align: center; margin-top: 12px; }
+  @media (max-width: 480px) {
+    .flow { padding: 22px; }
+    .flow-option { padding: 16px; gap: 12px; }
+    .flow-option-icon { width: 38px; height: 38px; font-size: 19px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow, .flow-backdrop, .flow-step.active { transition: none; animation: none; }
+  }
+
+  /* Cek Program yang Cocok */
+  .cek-cta { margin: 0 0 60px; text-align: center; }
+  .cek-cta .cek-note { font-size: 14px; color: var(--text-secondary); margin: 8px auto 0; max-width: 420px; }
+  .cek-input, .cek-form input[type=text], .cek-form input[type=tel], .cek-form input[type=number] { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #d2d2d7; font-size: 16px; box-sizing: border-box; margin-top: 6px; background: #fff; }
+  .cek-full { width: 100%; margin-top: 14px; }
+  .cek-err { color: #c0392b; font-size: 14px; margin: 8px 0 0; }
+  .cek-box { background: #f5f5f7; border-radius: 16px; padding: 14px 16px; margin: 12px 0; font-size: 15px; }
+  .cek-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e5e5ea; }
+  .cek-row:last-child { border-bottom: none; }
+  .cek-row > span:last-child { text-align: right; font-weight: 600; }
+  .cek-stepper { display: inline-flex; align-items: center; gap: 14px; }
+  .cek-stepper button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d2d2d7; background: #fff; font-size: 18px; cursor: pointer; }
+  .cek-edit { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .cek-edit button { flex: 1 1 45%; padding: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #fff; font-size: 14px; cursor: pointer; }
+  .cek-alasan { font-size: 15px; color: var(--text-secondary); margin: 6px 0 14px; }
+  .cek-trust { margin: 12px 0; }
+  .cek-trust h4 { font-size: 15px; margin-bottom: 6px; }
+  .cek-trust ul { padding-left: 18px; font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .cek-radio { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-size: 15px; }
+  .cek-copy { padding: 8px 12px; border-radius: 10px; border: 1px solid #BE966A; background: #fff; color: #8a6a3f; font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .cek-amount { font-size: 18px; font-weight: 700; margin: 10px 0 4px; }
+  .cek-chat { text-align: center; padding: 56px 0 24px; }
+  .cek-chat h3 { font-size: 22px; margin-bottom: 6px; }
+  .cek-chat p { color: var(--text-secondary); margin-bottom: 16px; }
+  .cek-form label { display: block; margin-top: 12px; font-size: 15px; }
+  .cek-form > div > span { display: block; margin-top: 12px; font-size: 15px; }
+  .cek-form .cek-radio label { display: inline-flex; align-items: center; gap: 6px; margin-top: 0; }
+  .cek-input { display: block; }
+  /* Tanggal lahir: ukuran sama dengan kolom lain (iOS sering melebarkan input date). */
+  .cek-form input[type="date"].cek-input { -webkit-appearance: none; appearance: none; min-width: 0; max-width: 100%; height: 50px; padding: 0 16px; box-sizing: border-box; line-height: normal; }
+  /* Jenis kelamin: segmented control, sama dengan pendaftaran akun. */
+  .cek-jk { margin-top: 12px; }
+  .cek-jk > span { display: block; font-size: 15px; }
+  .cek-jk-opsi { display: grid; grid-template-columns: 1fr 1fr; background: #F5F5F7; border-radius: 12px; padding: 4px; margin-top: 6px; }
+  .cek-jk-pilih { position: relative; display: block; margin-top: 0; text-align: center; padding: 10px; border-radius: 9px; font-size: 15px; font-weight: 600; color: #6E6E73; cursor: pointer; }
+  .cek-jk-pilih span { font-size: 15px; font-weight: 600; margin: 0; }
+  .cek-jk-pilih input { position: absolute; opacity: 0; pointer-events: none; margin: 0; }
+  .cek-jk-pilih:has(input:checked) { background: #fff; color: #1D1D1F; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .cek-jk-pilih:has(input:focus-visible) { outline: 2px solid #1D1D1F; outline-offset: 2px; }
+  .cek-full:disabled { opacity: 0.45; cursor: not-allowed; }
+  .cek-edit button:hover, .cek-copy:hover { background: #f5f5f7; }
+  .cek-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 52vh; overflow-y: auto; padding: 2px; }
+  .cek-slot { padding: 12px 0; border-radius: 12px; border: 1px solid #d2d2d7; background: #fff; font-size: 15px; cursor: pointer; }
+  .cek-slot:hover, .cek-slot.on { border-color: #BE966A; background: #f5f5f7; }
+  .cek-jadwal { display: flex; gap: 14px; align-items: center; border: 1px solid #BE966A; background: #fffaf3; border-radius: 16px; padding: 16px; margin: 16px 0; }
+  .cek-jadwal-icon { width: 46px; height: 46px; border-radius: 50%; background: #BE966A; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cek-jadwal-icon svg { width: 22px; height: 22px; }
+  .cek-jadwal-body { flex: 1; min-width: 0; }
+  .cek-jadwal-row { font-size: 15px; line-height: 1.5; color: var(--text-primary); margin-bottom: 6px; }
+  .cek-jadwal-row strong { font-weight: 600; }
+  .cek-jadwal-note { font-size: 14px; color: var(--text-secondary); margin-top: 8px; margin-bottom: 0; }
+  .periode-wrap { display: grid; gap: 12px; margin: 16px 0; }
+  .periode-card { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px 18px; border-radius: 18px; background: #fff; border: 1px solid #d2d2d7; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .periode-card:hover { border-color: #BE966A; }
+  .periode-card:focus-visible { outline: 2px solid #BE966A; outline-offset: 2px; }
+  .periode-card[aria-checked="true"] { border: 2px solid #BE966A; padding: 15px 17px; box-shadow: 0 4px 16px rgba(190, 150, 106, 0.18); }
+  .periode-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #c7c7cc; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .periode-card[aria-checked="true"] .periode-radio { border-color: #BE966A; background: #BE966A; }
+  .periode-card[aria-checked="true"] .periode-radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+  .periode-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .periode-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .periode-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.4; }
+  .periode-tag { align-self: flex-start; font-size: 12px; font-weight: 600; color: #8a6a3f; background: #fbf5ec; border-radius: 999px; padding: 3px 9px; margin-bottom: 4px; white-space: nowrap; }
+  /* Ukuran tombol utama seragam: hero, Cek Program, dan CTA bawah */
+  .hero-cta .btn, .cek-cta .btn, .cta-section .btn, .cek-chat .btn {
+    width: 300px; max-width: 100%; height: 56px; padding: 0 20px;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-sizing: border-box; text-align: center; line-height: 1.2; font-size: 16px;
+  }
+  .flow-stage { flex: 1; min-width: 0; text-align: center; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .flow-bar { height: 4px; margin: 8px 12px 0; border-radius: 999px; background: #e8e8ed; overflow: hidden; }
+  .flow-bar i { display: block; height: 100%; width: 0; background: #BE966A; border-radius: 999px; transition: width 0.35s ease; }
+  .flow-tag { display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 11px; font-weight: 600; color: #8a6a3f; background: #fbf5ec; border-radius: 999px; padding: 2px 8px; }
+  .cek-link { all: unset; display: block; box-sizing: border-box; margin: 18px auto 0; font-size: 15px; font-weight: 500; color: #8a6a3f; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .cek-link:focus-visible { outline: 2px solid #BE966A; outline-offset: 2px; }
+  .cek-rekom { border: 1px solid #d2d2d7; border-radius: 18px; padding: 18px; background: #fff; margin: 16px 0; }
+  .cek-rekom h4 { margin: 10px 0 6px; font-size: 18px; color: var(--text-primary); }
+  .cek-rekom p { margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 15px; }
+  .cek-verify { background: #fbf5ec; border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--text-primary); }
+  .cek-verify p { margin: 0 0 10px; }
+  .cek-wa > span { display: block; font-size: 15px; margin-bottom: 6px; }
+  .cek-wa-row { display: grid; gap: 8px; }
+  .cek-wa-row .cek-kode { width: 100%; }
+  .harga-wrap { margin: 6px 0 14px; }
+  .harga { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .harga-now { font-size: 34px; font-weight: 700; color: #BE966A; letter-spacing: -0.5px; line-height: 1.1; }
+  .harga-now .rb { font-size: 0.5em; font-weight: 700; margin-left: 2px; }
+  .harga-now .per { font-size: 15px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0; }
+  .harga-pct, .harga-hemat { display: inline-block; background: #E53935; color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .harga-coret { color: #86868b; text-decoration: line-through; font-size: 15px; margin-top: 6px; }
+  .harga-hemat { margin-top: 8px; }
+  .rb { font-size: 0.55em; font-weight: 600; }
+  .cek-check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; min-height: 44px; margin-top: 8px; color: var(--text-primary); }
+  .cek-check input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; accent-color: #BE966A; }
+  .harga-pct { background: #FDECEC; color: #D32F2F; }
+  .harga-note { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; line-height: 1.4; }
+  .harga-hemat { margin: 0 0 10px; }
+  .promo-sec { background: #f6f2ec; border-radius: 22px; overflow: hidden; margin: 16px 0; }
+  .promo-head { background: #C62828; color: #fff; padding: 16px 18px 18px; }
+  .promo-head h4 { margin: 0; font-size: 18px; color: #fff; }
+  .promo-head p { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+  .promo-list { padding: 12px; display: grid; gap: 12px; }
+  .promo-card { position: relative; background: #fff; border-radius: 16px; border: 1px solid #e6dccf; padding: 14px; overflow: hidden; }
+  .promo-tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: #5a3b1c; border: 1.5px solid #5a3b1c; border-radius: 999px; padding: 2px 10px; margin-bottom: 10px; }
+  .promo-row { display: flex; align-items: center; gap: 12px; }
+  .promo-ico { width: 40px; height: 40px; border-radius: 50%; background: #fbf5ec; color: #5a3b1c; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .promo-ico svg { width: 20px; height: 20px; }
+  .promo-text { flex: 1; min-width: 0; }
+  .promo-text strong { display: block; font-size: 17px; color: #2b1c0e; line-height: 1.3; }
+  .promo-text strong .rb { font-size: 0.6em; }
+  .promo-head p .rb { font-size: 0.75em; }
+  .promo-text small { display: block; margin-top: 3px; font-size: 13px; color: #7a6a58; line-height: 1.4; }
+  .promo-text small .rb { font-size: 0.8em; }
+  .promo-btn { flex-shrink: 0; border: 1.5px solid #8a7560; color: #5a3b1c; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; min-width: 84px; cursor: pointer; }
+  .promo-btn.on { background: #5a3b1c; border-color: #5a3b1c; color: #fff; }
+  .promo-btn:disabled { color: #b8a993; border-color: #d9cfc1; cursor: not-allowed; }
+  .promo-foot { margin: 12px -14px -14px; padding: 10px 14px; background: #fbf5ec; color: #6b4520; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .promo-foot button { background: none; border: none; color: #5a3b1c; font-weight: 700; text-decoration: underline; padding: 0; font-size: 13px; cursor: pointer; }
+  .promo-foot .promo-cta { background: #5a3b1c; color: #fff; border: 0; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .promo-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .promo-top .promo-tag { margin-bottom: 0; }
+  .promo-card::before, .promo-card::after { content: ""; position: absolute; top: 50%; width: 18px; height: 18px; border-radius: 50%; background: #f6f2ec; transform: translateY(-50%); }
+  .promo-card::before { left: -10px; }
+  .promo-card::after { right: -10px; }
+  .pricing-was { font-size: 15px; color: #86868b; text-decoration: line-through; margin-bottom: 4px; }
+  .pricing-price .rb { font-size: 22px; font-weight: 700; color: var(--text-primary); align-self: baseline; }
+  .pricing-price .harga-pct { align-self: center; margin-left: 6px; }
+  /* Panel tanya admin juga mengikuti alur dokumen, tanpa backdrop melayang. */
+  .ask-backdrop { display: block; width: 100%; padding: 24px 22px; background: #FBFBFD; }
+  .ask-backdrop[hidden] { display: none; }
+  .ask-panel { width: 100%; max-width: 760px; margin: 0 auto; background: #fff; color: #1d1d1f; border: 1px solid #e5e5ea; border-radius: 18px; overflow: visible; }
+  .ask-top { position: static; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e5ea; }
+  .ask-top h3 { margin: 0; flex: 1; font-size: 17px; }
+  .ask-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d2d2d7; background: #fff; font-size: 20px; line-height: 1; cursor: pointer; color: #1d1d1f; }
+  .ask-nav[hidden] { display: none; }
+  .ask-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .ask-opt { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid #d2d2d7; border-radius: 14px; background: #fff; font: inherit; font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; }
+  .ask-opt:hover { border-color: #BE966A; }
+  .ask-opt small { display: block; font-size: 13px; font-weight: 400; color: #6e6e73; margin-top: 2px; }
+  .ask-opt-col { flex-direction: column; align-items: stretch; gap: 8px; }
+  .ask-opt-col .ask-right, .ask-opt .ask-right { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+  .ask-name { display: block; }
+  .ask-price { font-size: 15px; color: #1d1d1f; }
+  .ask-price s { color: #86868b; font-weight: 400; margin-right: 4px; }
+  .ask-price small, .ask-m { display: inline; font-weight: 400; font-size: 13px; color: #6e6e73; }
+  .ask-pct { display: inline-block; background: #FDECEC; color: #D32F2F; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 4px; }
+  .ask-m { display: block; margin-top: 2px; }
+  .ask-tag { display: inline-block; align-self: flex-start; font-size: 13px; color: #6e6e73; background: #f2f2f7; padding: 6px 12px; border-radius: 999px; }
+  a.ask-btn.ask-btn-wa, .ask-btn.ask-btn-wa { background: #0E7A6E; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 0 20px; font-size: 16px; }
+  a.ask-btn.ask-btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .ask-note, .ask-sum { font-size: 15px; line-height: 1.6; margin: 0; }
+  .ask-form { display: flex; flex-direction: column; gap: 16px; }
+  .ask-form label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; color: #1d1d1f; }
+  .ask-form input { font: inherit; font-size: 16px; font-weight: 400; padding: 12px 14px; border: 1px solid #d2d2d7; border-radius: 12px; background: #fff; color: #1d1d1f; }
+  .ask-form input:focus { outline: 2px solid #BE966A; outline-offset: 1px; }
+  .ask-err { font-size: 14px; color: #D32F2F; margin: 0; min-height: 1em; }
+  .ask-kecil { font-size: 13px; color: #6e6e73; margin: 0; line-height: 1.5; }
+  .ask-form button[disabled] { opacity: .6; cursor: default; }
+  .ask-sum { padding: 14px 16px; border-radius: 14px; background: #f7f1e9; }
+  .ask-harga { display: flex; flex-direction: column; gap: 6px; }
+  .ask-harga-utama { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .ask-harga-utama strong { font-size: 28px; line-height: 1.1; font-weight: 700; color: #1d1d1f; }
+  .ask-harga-utama span { font-size: 15px; color: #6e6e73; }
+  .ask-harga-sub { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; color: #6e6e73; }
+  .ask-hemat { background: #8A6A3E; color: #fff; padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; }
+  .ask-err:empty { display: none; }
+  .ask-btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .ask-form .ask-btn-wa { position: static; margin-top: 4px; }
+  @media (max-width: 699px) { .ask-body { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); } }
+
+  .ask-btn { display: block; text-align: center; padding: 14px; border-radius: 999px; background: #BE966A; color: #fff; font: inherit; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
+  .rc { margin: 8px 0 16px; }
+  .promo-list { grid-template-columns: minmax(0, 1fr); }
+  .kode-box { min-width: 0; background: #fff; border: 1px solid #e6dccf; border-radius: 16px; padding: 14px; }
+  .kode-box.applied { background: #fffaf2; border-color: #e9d9bf; }
+  .kode-label { display: block; font-size: 14px; font-weight: 600; color: #2b1c0e; margin: 0 0 8px; }
+  .kode-field { display: flex; align-items: center; gap: 4px; min-height: 48px; padding: 0 6px 0 14px; border: 1px solid #d9cfc1; border-radius: 12px; background: #fbfaf8; }
+  .kode-field:focus-within { border-color: #5a3b1c; background: #fff; box-shadow: 0 0 0 3px rgba(90,59,28,0.12); }
+  .kode-field input { flex: 1 1 0; width: 0; min-width: 0; height: 46px; border: 0; outline: 0; background: transparent; font-family: inherit; font-size: 16px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #2b1c0e; }
+  .kode-field input::placeholder { text-transform: none; letter-spacing: 0; font-weight: 400; color: #a39382; }
+  .kode-clear { width: 26px; height: 26px; border-radius: 50%; border: 0; background: #e4dbcf; color: #5a3b1c; font-size: 16px; line-height: 1; cursor: pointer; flex-shrink: 0; padding: 0; }
+  .kode-apply { flex-shrink: 0; border: 0; background: none; color: #C62828; font-size: 15px; font-weight: 700; padding: 10px 8px; cursor: pointer; font-family: inherit; }
+  .kode-apply:disabled { color: #c4b9ab; cursor: default; }
+  .kode-row { display: flex; align-items: center; gap: 12px; }
+  .kode-check { width: 32px; height: 32px; border-radius: 50%; background: #2E7D32; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; }
+  .kode-check.muted { background: #e4dbcf; color: #5a3b1c; }
+  .kode-check svg { width: 18px; height: 18px; }
+  .kode-info { flex: 1; min-width: 0; }
+  .kode-info strong { display: block; font-size: 15px; color: #2b1c0e; letter-spacing: 0.3px; }
+  .kode-info small { display: block; margin-top: 2px; font-size: 13px; color: #7a6a58; line-height: 1.4; }
+  .kode-remove { flex-shrink: 0; border: 0; background: none; color: #5a3b1c; font-size: 14px; font-weight: 600; text-decoration: underline; cursor: pointer; padding: 4px 0; font-family: inherit; }
+  .kode-timer-row { margin-top: 12px; padding-top: 10px; border-top: 1px solid #efe5d6; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 13px; color: #6b5a48; }
+  .kode-timer { color: #C62828; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kode-msg { margin: 8px 2px 0; font-size: 13px; color: #C62828; font-weight: 600; }
+  .rc-title { font-size: 18px; font-weight: 700; color: #2b1c0e; margin: 8px 0 10px; }
+  .rc-card { background: #fff; border-radius: 20px; border: 1px solid #e6dccf; padding: 16px 18px 14px; }
+  .rc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 15px; color: #4a4a4a; }
+  .rc-row > span:first-child, .rc-total > span:first-child { flex: 1; min-width: 0; }
+  .rc-row > span:last-child, .rc-total > span:last-child { white-space: nowrap; text-align: right; }
+  .rc-disc { color: #C62828; font-weight: 600; }
+  .rc-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 8px; padding-top: 14px; border-top: 1px solid #e6dccf; font-size: 16px; font-weight: 700; color: #5a3b1c; }
+  .rc-total strong { font-size: 18px; color: #2b1c0e; }
+  .rc-old { color: #8a8a8a; font-weight: 400; font-size: 14px; margin-right: 6px; }
+
+  /* Pendaftaran full-page: susunan konten dan kontrol untuk layar tersendiri. */
+  html.embed, html.embed body { min-height: 100%; background: #f7f5f0; }
+  html.embed #cek.flow-backdrop {
+    position: fixed; inset: 0; display: flex; align-items: stretch; justify-content: center;
+    padding: 0; background: #f7f5f0; opacity: 0; pointer-events: none;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  html.embed #cek.flow-backdrop.open { opacity: 1; pointer-events: auto; }
+  html.embed .flow {
+    width: 100%; max-width: 920px; height: 100vh; height: 100dvh; max-height: none;
+    margin: 0 auto; padding: 24px clamp(20px, 5vw, 64px) 48px; overflow-y: auto;
+    border-radius: 0; background: #f7f5f0; box-shadow: none; transform: none;
+  }
+  html.embed .flow-top {
+    position: sticky; top: 0; z-index: 5; min-height: 52px; margin: 0 auto 36px;
+    padding: 8px 0 14px; border-bottom: 1px solid #e7e1d7; background: #f7f5f0;
+  }
+  html.embed .flow-back, html.embed .flow-close {
+    width: 42px; height: 42px; border: 1px solid #e7e1d7; border-radius: 50%;
+    background: #fff; color: #57452f;
+  }
+  html.embed .flow-stage { max-width: 500px; margin: 0 auto; color: #756b5f; }
+  html.embed .flow-bar { background: #e8e1d6; }
+  html.embed .flow-bar i { background: #8b6e4e; }
+  html.embed .flow-step { max-width: 720px; margin: 0 auto; padding: 8px 0 48px; }
+  html.embed .flow-step h3 { margin: 0 0 10px; color: #25221e; font-size: clamp(28px, 4vw, 38px); line-height: 1.15; letter-spacing: -.03em; }
+  html.embed .flow-step > p { max-width: 620px; margin-bottom: 24px; color: #71695f; line-height: 1.55; }
+  html.embed .flow-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  html.embed .flow-option { min-height: 76px; padding: 18px; border-color: #e5ded3; border-radius: 16px; background: #fff; }
+  html.embed .flow-option:hover, html.embed .flow-option:focus-visible { border-color: #a88962; background: #fffdf9; }
+  html.embed .flow-option-title { color: #2b2722; }
+  html.embed .flow-option-desc { color: #756b5f; line-height: 1.45; }
+  html.embed .flow-summary { border: 1px solid #e5ded3; border-radius: 18px; background: #fff; padding: 20px; }
+  html.embed .cek-form label { margin-top: 18px; color: #423a31; font-weight: 500; }
+  html.embed .cek-input, html.embed .cek-form input { border-color: #ded6ca; border-radius: 12px; background: #fff; }
+  html.embed .cek-check { font-weight: 400 !important; }
+  html.embed .cek-verify { border: 1px solid #eadcc6; background: #fbf4e9; }
+  html.embed .cek-full { min-height: 54px; border-radius: 14px; background: #8b6e4e; }
+  html.embed .cek-full:hover:not(:disabled) { background: #755a3d; }
+  html.embed .cek-note, html.embed .flow-note { color: #756b5f; }
+  @media (max-width: 640px) {
+    html.embed .flow { padding: max(14px, env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px)); }
+    html.embed .flow-top { margin-bottom: 24px; }
+    html.embed .flow-options { grid-template-columns: 1fr; }
+    html.embed .flow-option { min-height: 68px; padding: 16px; }
+    html.embed .flow-step { padding-top: 4px; }
+  }
+
+  /* Data diri: tata letak yang jelas, tanpa mengubah field atau payload pendaftaran. */
+  html.embed #dataForm {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px;
+    max-width: 680px; margin: 0 auto;
+  }
+  html.embed #dataForm > label:first-child,
+  html.embed #dataForm > .cek-jk,
+  html.embed #dataForm > .cek-wa,
+  html.embed #dataForm > .cek-check { grid-column: 1 / -1; }
+  html.embed #dataForm > label { margin-top: 14px; }
+  html.embed #dataForm .cek-wa-row { grid-template-columns: minmax(110px, 150px) minmax(0, 1fr); }
+  html.embed #toBayar, html.embed #dataHint, html.embed #verifyBox { max-width: 680px; margin-left: auto; margin-right: auto; }
+  html.embed #toBayar { display: block; }
+  html.embed .cek-box { border: 1px solid #e5ded3; background: #fff; padding: 18px 22px; }
+  html.embed .cek-row { padding: 12px 0; border-color: #eee9e1; }
+  html.embed .cek-row span:first-child { color: #756b5f; }
+  html.embed .cek-row span:last-child { color: #2b2722; }
+  html.embed .rc { margin-top: 18px; }
+  html.embed .rc-card { border: 1px solid #e5ded3; border-radius: 16px; background: #fff; padding: 18px; }
+  html.embed .rc-total { border-top-color: #e5ded3; padding-top: 16px; }
+  html.embed .cek-edit button { border-color: #e5ded3; border-radius: 12px; }
+  @media (max-width: 640px) {
+    html.embed #dataForm { grid-template-columns: 1fr; gap: 2px; }
+    html.embed #dataForm > label:first-child,
+    html.embed #dataForm > .cek-jk,
+    html.embed #dataForm > .cek-wa,
+    html.embed #dataForm > .cek-check { grid-column: auto; }
+    html.embed #dataForm .cek-wa-row { grid-template-columns: 112px minmax(0, 1fr); }
+  }
+</style>
+
+<!-- Meta Pixel: ganti PIXEL_ID dengan ID dari Meta Events Manager -->
+<script>
+  (function () {
+    var PIXEL_ID = '124403919300787';
+    var antrean = [];
+    // Pemanggil event tetap aman; event yang terjadi sebelum Pixel siap disimpan lalu dikirim
+    // Kode uji dari Events Manager (Test events), format TESTxxxxx. Kosongkan saat kampanye live.
+    var TEST_EVENT_CODE = '';
+    function idUnik() { return 'mto' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+    function cookie(n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+    function fbcDariUrl() {
+      try { var c = new URLSearchParams(location.search).get('fbclid'); return c ? 'fb.1.' + Date.now() + '.' + c : ''; } catch (e) { return ''; }
+    }
+    function kirimServer(ev, eid, p, user) {
+      try {
+        fetch('https://bvltmjurkgnzmwtgdaic.supabase.co/functions/v1/meta-capi', {
+          method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_name: ev, event_id: eid, event_source_url: location.href.split('#')[0],
+            phone: (user && user.phone) || '', email: (user && user.email) || '',
+            fbp: cookie('_fbp'), fbc: cookie('_fbc') || fbcDariUrl(),
+            custom_data: p, test_event_code: TEST_EVENT_CODE || undefined
+          })
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    // Satu event_id dipakai untuk Pixel (browser) dan Conversions API (server) agar Meta mendeduplikasi
+    window.mtoTrack = function (ev, params, user) {
+      var p = params || {}, eid = idUnik();
+      if (window.fbq) window.fbq('track', ev, p, { eventID: eid });
+      else antrean.push([ev, p, eid]);
+      kirimServer(ev, eid, p, user);
+      return eid;
+    };
+    if (!PIXEL_ID || PIXEL_ID === 'PIXEL_ID') return;
+    function muatPixel() {
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+        t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', PIXEL_ID);
+      window.fbq('track', 'PageView');
+      antrean.forEach(function (a) { window.fbq('track', a[0], a[1], { eventID: a[2] }); });
+      antrean = [];
+    }
+    // Pixel dimuat setelah halaman selesai, supaya tidak berebut jaringan dengan konten utama
+    if (document.readyState === 'complete') muatPixel();
+    else window.addEventListener('load', muatPixel);
+
+    // ViewContent: paket belajar terlihat di layar (sekali saja)
+    document.addEventListener('DOMContentLoaded', function () {
+      var card = document.querySelector('.pricing-card');
+      if (!card || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { window.mtoTrack('ViewContent', { content_name: 'Paket Belajar' }); io.disconnect(); }
+      }, { threshold: 0.3 });
+      io.observe(card);
+    });
+
+    // Contact: setiap tautan WhatsApp yang diklik
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
+      if (a) window.mtoTrack('Contact', { content_name: a.textContent.trim().slice(0, 60) });
+    });
+  })();
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=124403919300787&ev=PageView&noscript=1" alt=""/></noscript>
+<style>
+  .art-frame { display: block; width: min(100%, 330px); aspect-ratio: 1 / 1; margin: 0 auto; }
+  .art-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .hero .art-frame { margin: 0 auto 24px; }
+  .about-image.about-image-art { background: none; box-shadow: none; aspect-ratio: auto; overflow: visible; border-radius: 0; }
+  .about-image.about-image-art::before { display: none; }
+  .program-card-image.program-card-image-art { aspect-ratio: auto; margin: 0 -12px 16px; background: none; overflow: visible; display: block; }
+  @media (max-width: 700px) { .program-card { padding: 20px; } }
+
+  /* Program dan pendaftaran mengikuti referensi satu kolom, pada semua ukuran layar. */
+  #program.section { padding: 36px 0 56px; }
+  #program .program-page { width: min(100% - 32px, 400px); margin: 0 auto; }
+  #program .program-banner {
+    padding: 22px 16px; margin: 0 0 14px; text-align: center; color: #fff;
+    border: 4px solid #d5ae77; border-radius: 16px;
+    background: radial-gradient(ellipse at 10% 50%, rgba(213,174,119,.22), transparent 42%), #111;
+  }
+  #program .program-banner-kicker { margin: 0 0 4px; color: #e2c49c; font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+  #program .program-banner h2 { margin: 0; color: #fff; font-size: clamp(25px, 7vw, 34px); line-height: 1.05; }
+  #program .program-progress {
+    margin: 0 0 16px; padding: 12px 8px 10px; color: #fff;
+    border: 4px solid #ffc800; border-radius: 15px; background: #111;
+  }
+  #program .program-progress ol { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; margin: 0; padding: 0; list-style: none; }
+  #program .program-progress li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; text-align: center; }
+  #program .program-progress li:not(:last-child)::after { content: ""; position: absolute; top: 12px; left: calc(50% + 13px); width: calc(100% - 22px); height: 4px; background: #777; }
+  #program .program-progress li.current::after { background: linear-gradient(90deg, #ffc800 50%, #777 50%); }
+  #program .program-progress li span { z-index: 1; display: grid; place-items: center; width: 25px; height: 25px; border: 2px solid #bbb; border-radius: 50%; background: #fff; color: #333; font-size: 11px; font-weight: 700; }
+  #program .program-progress li.current span { border-color: #ffc800; background: #ffc800; color: #111; }
+  #program .program-progress li small { color: #eee; font-size: 9px; line-height: 1.1; }
+  #program .programs-grid.program-list { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: none; margin: 0; }
+  #program .program-card { padding: 12px; border: 3px solid #161616; border-radius: 15px; box-shadow: none; }
+  #program .program-card:hover { transform: none; border-color: #161616; box-shadow: none; }
+  #program .program-card-image { aspect-ratio: 3.6 / 1; margin: 0 0 10px; border-radius: 8px; }
+  #program .program-card h3 { margin: 0 0 4px; text-align: center; font-size: 23px; font-weight: 800; }
+  #program .program-card p { margin: 0 0 10px; text-align: center; font-size: 13px; line-height: 1.4; }
+  #program .program-card .btn { width: auto; min-width: 112px; min-height: 38px; margin: 0 auto; padding: 8px 20px; display: flex; justify-content: center; }
+  #program .program-chat {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;
+    margin: 14px 0 0; padding: 14px; border: 3px solid #d5ae77; border-radius: 12px; background: #fff;
+  }
+  #program .program-chat-copy { display: flex; flex-direction: column; gap: 2px; }
+  #program .program-chat-copy strong { font-size: 14px; }
+  #program .program-chat-copy span { color: var(--text-secondary); font-size: 12px; }
+  #program .program-chat .btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 8px 12px; border-radius: 8px; background: #ffc800; color: #111; font-size: 14px; font-weight: 700; }
+  #program .program-chat .btn-wa:hover { background: #f0bd00; }
+  #program .program-chat .btn-wa svg { width: 19px; height: 19px; color: #168b4a; }
+  @media (max-width: 420px) {
+    #program.section { padding-top: 24px; }
+    #program .program-page { width: calc(100% - 24px); }
+    #program .program-banner { padding: 18px 12px; }
+    #program .program-card { padding: 10px; }
+    #program .program-chat { gap: 8px; padding: 11px; }
+  }
+
+  /* Pendaftaran dibuka sebagai layar tersendiri dari tombol Daftar. */
+  #legacyFlowStage[hidden] { display:none !important; }
+  .journey-head { display:none; }
+  html.registration-active, html.registration-active body { height:100%; overflow:hidden; }
+  html.registration-active #cek.flow-backdrop { position:fixed; z-index:10000; inset:0; display:flex; justify-content:center; align-items:stretch; overflow:hidden; padding:0; background:#f7f5f0; }
+  html.registration-active .flow { width:100%; max-width:760px; height:100dvh; max-height:none; overflow:auto; margin:0 auto; padding:20px clamp(18px,4vw,42px) 40px; border:0; border-radius:0; box-shadow:none; background:#f7f5f0; }
+  html.registration-active .journey-head { display:block; margin:0 auto 18px; max-width:680px; }
+  .journey-banner { min-height:118px; padding:20px 24px; border:5px solid #e6bd83; border-radius:22px; background:#090807; color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+  .journey-banner:before,.journey-banner:after { content:'۞'; position:absolute; top:50%; transform:translateY(-50%); color:#d9b47b; font-size:78px; opacity:.32; }
+  .journey-banner:before { left:8px; }.journey-banner:after { right:8px; }
+  .journey-kicker { font-size:10px; letter-spacing:2px; color:#e6bd83; position:relative; z-index:1; }
+  .journey-banner strong { font-size:clamp(26px,6vw,42px); line-height:1.05; position:relative; z-index:1; }
+  #journeyBadge { min-height:0; margin-top:4px; padding:0 12px; background:#ffc400; border-radius:4px; color:#111; font-weight:800; }
+  #journeyBadge:not(:empty) { padding:3px 12px; }
+  .journey-progress { display:flex; list-style:none; margin:14px 0 0; padding:14px 10px 10px; border:5px solid #ffca00; border-radius:18px; background:#050505; }
+  .journey-progress li { flex:1; min-width:0; position:relative; display:flex; flex-direction:column; align-items:center; gap:5px; color:#aaa; }
+  .journey-progress li:not(:last-child):after { content:''; position:absolute; height:5px; left:50%; right:-50%; top:13px; background:#b8b8b8; }
+  .journey-progress li.done:after { background:#ffca00; }
+  .journey-progress i { z-index:1; width:28px; height:28px; border:3px solid #ddd; border-radius:50%; display:grid; place-items:center; background:#fff; color:#555; font-size:13px; font-style:normal; }
+  .journey-progress li.done i,.journey-progress li.current i { background:#ffca00; border-color:#ffca00; color:#111; }
+  .journey-progress small { z-index:1; font-size:10px; color:inherit; }
+  .journey-progress li.done,.journey-progress li.current { color:#ffca00; }
+  html.registration-active .flow-top { margin-bottom:18px; }
+  html.registration-active .flow-step { max-width:680px; padding-top:4px; }
+  html.registration-active .flow-step h3 { font-size:clamp(23px,5vw,32px); color:#765300; text-align:center; margin-bottom:10px; }
+  html.registration-active .flow-step > p { text-align:center; }
+  html.registration-active [data-step="program"] .flow-options, html.registration-active [data-step^="jenis"] .flow-options { display:grid; grid-template-columns:1fr 1fr; }
+  html.registration-active [data-step="program"] .flow-option, html.registration-active [data-step^="jenis"] .flow-option { min-height:150px; justify-content:center; border:4px solid #111; border-radius:20px; text-align:center; background:white; }
+  html.registration-active [data-step="program"] .flow-option-title, html.registration-active [data-step^="jenis"] .flow-option-title { justify-content:center; font-size:22px; text-transform:uppercase; }
+  html.registration-active .journey-copy { color:#3f382e; line-height:1.6; }
+  html.registration-active .journey-copy p { margin:0 0 12px; }
+  html.registration-active .journey-prompt { margin:20px 0 12px; text-align:center; font-weight:700; }
+  .journey-days { display:grid; gap:16px; }
+  .journey-day { display:flex; flex-direction:column; align-items:center; gap:5px; padding:16px 18px; border:4px solid #e6bd83; border-radius:18px; background:white; color:#24201a; text-align:center; cursor:pointer; font:inherit; }
+  .journey-day strong { color:#c49233; font-size:clamp(26px,6vw,40px); line-height:1.1; }
+  .journey-day span { font-weight:700; }.journey-day b { font-size:14px; }.journey-day small { color:#625c53; }
+  .journey-day em { margin-top:4px; padding:5px 18px; border-radius:5px; background:#ffc400; color:#111; font-style:normal; font-weight:800; }
+  .journey-day:hover,.journey-package:hover,.journey-package.recommended { border-color:#ffc400; background:#fffdf5; }
+  html.registration-active .journey-packages { gap:14px; }
+  html.registration-active .journey-package { display:grid; grid-template-columns:1fr auto; gap:10px; padding:18px; border:3px solid #d7d2ca; border-radius:18px; }
+  .journey-package-name { grid-column:1/-1; font-size:28px; font-weight:800; color:#bd8c2c; text-transform:uppercase; }
+  .journey-package .flow-option-body { grid-column:1; }.journey-package .flow-option-price { grid-column:2; grid-row:2; align-self:center; text-align:right; }
+  @media(max-width:540px) { html.registration-active .flow { padding: max(14px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom)); } html.registration-active [data-step="program"] .flow-options, html.registration-active [data-step^="jenis"] .flow-options { grid-template-columns:1fr; } .journey-progress { padding-left:4px; padding-right:4px; } .journey-progress small { font-size:9px; } .journey-banner { min-height:100px; } }
+</style>
+  <link rel="stylesheet" href="css/premium-ui.css?v=20261128-5">
+  <link rel="stylesheet" href="css/interaktif.css?v=1">
+</head>
+<body>
+<a href="#konten" class="skip-link">Lewati ke konten utama</a>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="nav-container">
+    <a href="/interaktif/" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="currentColor">
+        <path d="M16 3L4 10v4l12-7 12 7v-4L16 3zm0 8L6 17v11h5v-7h10v7h5V17L16 11z"/>
+      </svg>
+      Mahkota Tahfizh
+    </a>
+    <ul class="nav-menu">
+      <li><a href="tentang">Tentang</a></li>
+      <li><a href="/interaktif/#program">Program</a></li>
+      <li><a href="testimoni">Testimoni</a></li>
+      <li><a href="/interaktif/#faq">FAQ</a></li>
+      <li><a href="blog">Blog</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login" class="nav-masuk" id="navMasuk">Masuk</a>
+      <a href="#daftar" class="btn btn-primary" data-daftar>Daftar Sekarang</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="tentang">Tentang Kami</a></li>
+    <li><a href="/interaktif/#program">Program</a></li>
+    <li><a href="testimoni">Testimoni</a></li>
+    <li><a href="/interaktif/#faq">FAQ</a></li>
+    <li><a href="blog">Blog</a></li>
+    <li><a href="login" id="navMasukMobile">Masuk</a></li>
+  </ul>
+  <div class="mobile-menu-cta">
+    <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
+    <a href="https://wa.me/6285727533000" class="btn btn-secondary btn-lg" data-ask>Chat WhatsApp</a>
+  </div>
+</div>
+
+<main id="konten">
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-ornament"></div>
+  <div class="container">
+    <div class="hero-content">
+      <picture class="art-frame"><img src="bimbingan-hero-960.webp" alt="Ilustrasi muslimah belajar Al-Qur'an online dengan headset, laptop, dan pengajar di layar" width="960" height="960" fetchpriority="high" decoding="async"></picture>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Private 1-on-1 via Google Meet, WhatsApp &amp; Zoom
+      </div>
+      <h1 class="animate">Ingin hafal 30 Juz<br><span class="accent">dengan bimbingan terarah?</span></h1>
+      <p class="lead animate" style="animation-delay: 0.1s">
+        Kami siapkan jalannya, mulai hari ini. Belajar dari dasar hingga mahir dan hafal 30 Juz, cukup dari rumah. Tanpa malu, tanpa bingung, agar Anda tidak hanya bisa dan hafal, tetapi juga istiqamah bersama Al-Qur'an.
+      </p>
+      <div class="hero-cta animate" style="animation-delay: 0.2s; margin-bottom: 60px; flex-direction: column; align-items: center; gap: 12px">
+        <button type="button" id="cekOpen" class="btn btn-primary btn-lg">Cek Program yang Cocok (1 Menit)</button>
+        <p class="cek-note" style="margin: 0 0 4px">Tiga pertanyaan singkat, lalu kami sarankan program yang sesuai.</p>
+        <a href="#daftar" class="btn btn-secondary btn-lg" data-daftar>Daftar Sekarang</a>
+      </div>
+      <div class="hero-features">
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <div class="hero-feature-value">Private 1-on-1</div>
+          <div class="hero-feature-label">Satu guru untuk satu peserta</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z"/></svg>
+          <div class="hero-feature-value">Meet, WhatsApp, Zoom</div>
+          <div class="hero-feature-label">Pakai aplikasi yang Anda punya</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z"/></svg>
+          <div class="hero-feature-value">Pengajar Hafidz 30 Juz</div>
+          <div class="hero-feature-label">Berpengalaman &amp; bersertifikat</div>
+        </div>
+        <div class="hero-feature">
+          <svg class="hero-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+          <div class="hero-feature-value">Jadwal Fleksibel</div>
+          <div class="hero-feature-label">Terjadwal, bisa dinegosiasikan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUKTI KEPERCAYAAN -->
+<section class="trust-section" aria-labelledby="trust-title">
+  <div class="container">
+    <div class="trust-card">
+      <header class="trust-header reveal">
+        <p class="trust-eyebrow">Bukti kepercayaan</p>
+        <h2 id="trust-title">Dipercaya oleh <span class="trust-highlight">16.000+</span> peserta</h2>
+      </header>
+
+      <div class="trust-metrics" aria-label="Pencapaian Mahkota Tahfizh Online">
+        <div class="trust-metric reveal">
+          <div class="trust-stat-value">20</div>
+          <p class="trust-metric-label">Negara, termasuk Indonesia</p>
+        </div>
+        <div class="trust-metric reveal">
+          <div class="trust-stat-value">30 Juz</div>
+          <p class="trust-metric-label">Hafalan setiap pengajar</p>
+        </div>
+        <div class="trust-metric reveal">
+          <div class="trust-stat-value">1:1</div>
+          <p class="trust-metric-label">Satu guru, satu peserta</p>
+        </div>
+      </div>
+
+      <div class="trust-countries reveal">
+        <h3>Peserta kami datang dari</h3>
+        <ul class="trust-country-list" aria-label="20 negara asal peserta">
+          <li><span aria-hidden="true">🇺🇸</span> Amerika Serikat</li>
+          <li><span aria-hidden="true">🇸🇦</span> Arab Saudi</li>
+          <li><span aria-hidden="true">🇦🇺</span> Australia</li>
+          <li><span aria-hidden="true">🇳🇱</span> Belanda</li>
+          <li><span aria-hidden="true">🇧🇳</span> Brunei</li>
+          <li><span aria-hidden="true">🇮🇩</span> Indonesia</li>
+          <li><span aria-hidden="true">🇬🇧</span> Inggris</li>
+          <li><span aria-hidden="true">🇯🇵</span> Jepang</li>
+          <li><span aria-hidden="true">🇩🇪</span> Jerman</li>
+          <li><span aria-hidden="true">🇨🇦</span> Kanada</li>
+          <li><span aria-hidden="true">🇲🇾</span> Malaysia</li>
+          <li><span aria-hidden="true">🇪🇬</span> Mesir</li>
+          <li><span aria-hidden="true">🇵🇱</span> Polandia</li>
+          <li><span aria-hidden="true">🇫🇷</span> Prancis</li>
+          <li><span aria-hidden="true">🇶🇦</span> Qatar</li>
+          <li><span aria-hidden="true">🇸🇬</span> Singapura</li>
+          <li><span aria-hidden="true">🇸🇪</span> Swedia</li>
+          <li><span aria-hidden="true">🇹🇼</span> Taiwan</li>
+          <li><span aria-hidden="true">🇹🇷</span> Turki</li>
+          <li><span aria-hidden="true">🇦🇪</span> Uni Emirat Arab</li>
+        </ul>
+        <p class="trust-caption">Belajar Al-Qur’an bersama pengajar dari mana pun Anda berada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APAKAH KAMU -->
+<section class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image about-image-art reveal">
+        <picture class="art-frame"><img src="bimbingan-tanya-960.webp" alt="Ilustrasi muslimah dengan tanda tanya di sekitar kepalanya, duduk di meja belajar dengan Al-Qur'an dan laptop" width="960" height="960" loading="lazy" decoding="async"></picture>
+      </div>
+      <div class="about-content reveal">
+        <div class="eyebrow">Apakah Anda…</div>
+        <h2>Pernah merasa seperti ini?</h2>
+        <ul class="pain-list">
+          <li><span class="pain-icon">?</span><span>Menganggap menghafal Al-Qur'an itu susah dan lama?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin mendapatkan <strong>guru yang kredibel</strong> di bidang Al-Qur'an?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin hafal Al-Qur'an, tetapi sibuk sehingga tidak punya banyak waktu untuk menghafal?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin konsisten menghafal, tetapi tidak punya lingkungan yang mendukung?</span></li>
+          <li><span class="pain-icon">?</span><span>Ingin tahu cara menghafal Al-Qur'an yang <strong>terarah dan mudah dijalani</strong>?</span></li>
+        </ul>
+        <p class="pain-answer">Jika iya, <strong>Program Mahkota Tahfizh Online</strong> adalah program yang cocok untuk Anda.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COCOK UNTUK -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Untuk Siapa</div>
+      <h2>Program ini cocok untuk…</h2>
+      <p class="lead">Siapa pun yang ingin belajar Al-Qur'an dengan lebih mudah dan terarah, di tengah kesibukan apa pun.</p>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card reveal"><div class="audience-title">Ibu Rumah Tangga</div><div class="audience-desc">Yang sudah memiliki anak atau belum</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Mahasiswa</div><div class="audience-desc">Di sela jadwal kuliah</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Pelajar</div><div class="audience-desc">Jenjang SD, SMP, dan SMA/SMK</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Karyawan</div><div class="audience-desc">Swasta maupun pemerintahan</div></div>
+      <div class="audience-card reveal"><div class="audience-title">Guru &amp; Dosen</div><div class="audience-desc">Yang ingin terus memperbaiki bacaan</div></div>
+    </div>
+    <div class="hero-cta reveal" style="margin: 48px 0 0;">
+      <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
+      <a href="https://wa.me/6285727533000" class="btn btn-secondary btn-lg" data-ask>Ada Pertanyaan? Chat Kami</a>
+    </div>
+  </div>
+</section>
+
+<!-- KENAPA MAHKOTA -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Keunggulan</div>
+      <h2>Kenapa Mahkota Tahfizh Online?</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        <h3>Pengajar Hafidz &amp; Hafidzah 30 Juz</h3>
+        <p>Seluruh pengajar kami hafal 30 Juz, berpengalaman, dan bersertifikat.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89L17 22l-5-3-5 3 1.52-9.11"/></svg>
+        <h3>E-Sertifikat</h3>
+        <p>Diberikan kepada peserta yang mengikuti program secara tuntas dari awal hingga akhir periode.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+        <h3>Waktu Belajar Fleksibel</h3>
+        <p>Jadwal tetap terstruktur, namun bisa dinegosiasikan sesuai kesibukan Anda.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <h3>Network</h3>
+        <p>Dapatkan teman dan sahabat seperjuangan dari berbagai daerah.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        <h3>Jaminan Ganti Pengajar</h3>
+        <p>Belum cocok dengan pengajar Anda? Kami carikan pengganti yang lebih sesuai.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        <h3>Untuk Semua Kalangan</h3>
+        <p>Bagi siapa saja dan di mana saja, dari anak-anak hingga dewasa, laki-laki maupun perempuan.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7h.01"/></svg>
+        <h3>Biaya Terjangkau</h3>
+        <p>Belajar privat 1-on-1 dengan fasilitas lengkap, mulai Rp199 ribu per bulan.</p>
+      </div>
+      <div class="why-card reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <h3>Admin Fast Respon</h3>
+        <p>Responsif, andal, dan solutif. Itulah kesan yang sering disampaikan peserta tentang admin kami.</p>
+      </div>
+      <div class="why-card why-card-wide reveal">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        <h3>1-on-1 Bersama Pengajar</h3>
+        <p>Peserta dan pengajar belajar berdua saja, sehingga Anda lebih fokus dan tidak perlu malu dengan peserta lain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONI -->
+<section class="stats testi-band">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom: 40px;">
+      <div class="eyebrow">Kesan Peserta</div>
+      <h2 style="color: white;">Ini kata mereka yang sudah bergabung.</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-single">
+        <p class="testi-quote">"Maasya Allah ini adalah tempat tahfidz online yg paling nyaman menurut saya. Selain ustadzahnya juga sudah terjamin kualitasnya bahkan sudah mempunyai sanad, program setor disesuaikan dengan kemampuan. Cocok untuk saya yg menghafal sambil bekerja"</p>
+        <div class="testi-name">Citra Atrina Sari</div>
+        <div class="testi-city">Depok</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah saya sudah mengikuti program ini 6 periode, Alhamdulillah bisa memperbaiki kualitas bacaan Al-Qur'an saya dan menambah jumlah halan saya. Jazaakumullahu Khairan utk program MTO"</p>
+        <div class="testi-name">Anisa Rizki Rahmayani</div>
+        <div class="testi-city">Bogor</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah, setelah mengikuti program MTO selama dua bulan, saya bisa membaca Al-Qur'an dengan lebih baik dan kekuatan Hapalan Alquran saya juga lebih baik."</p>
+        <div class="testi-name">Sarlina</div>
+        <div class="testi-city">Bekasi</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah setelah ana mengikuti program mahkota tahfidz online ini ana bisa menambah hafalan di tengah kesibukan, bisa mengatur waktu luang untuk muroja'ah"</p>
+        <div class="testi-name">Arika Al Fadiyah</div>
+        <div class="testi-city">Sidayu, Gresik, Jawa timur</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah ustazahnya sangat mutqin dalam membimbing ana, jadi hafalan ana benar-benar mantap dari segi tajwid panjang pendek makharijul dst."</p>
+        <div class="testi-name">Aanisah Hani Sharfina</div>
+        <div class="testi-city">Batam</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+      <div class="testi-single">
+        <p class="testi-quote">"Alhamdulillah merasa terbantu sekali untuk menjaga hafalan saya setelah mengikuti program ini.Tidak hanya itu, saya juga mendapat perbaikan bacaan agar bacaan saya jauh lebih baik lagi.Dan saya juga mendapatkan teman seperjuangan yang sama-sama berjuang untuk menjaga hafalannya. Dan itu adalah sebuah anugerah."</p>
+        <div class="testi-name">Afifah</div>
+        <div class="testi-city">Bogor</div>
+        <div class="testimonial-stars">★★★★★</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 32px;">
+      <a href="testimoni" class="btn-ghost testi-link">Lihat ratusan testimoni lainnya</a>
+    </div>
+  </div>
+</section>
+
+<!-- 2 PROGRAM -->
+<section class="section" id="program">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">2 Program</div>
+      <h2>Mulai dari mana pun Anda sekarang.</h2>
+    </div>
+    <div class="programs-grid" style="max-width: 860px; margin: 0 auto;">
+      <div class="program-card reveal">
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahsin-960.webp" alt="Ilustrasi pengajar mengajarkan huruf hijaiyah lewat video call kepada murid" width="960" height="960" loading="lazy" decoding="async"></picture></div>
+        <h3>Kelas Tahsin</h3>
+        <p>Untuk Anda yang ingin belajar dari dasar atau memperbaiki bacaan Al-Qur'an sesuai tajwid yang benar.</p>
+        <div class="program-pills">
+          <span class="program-tag">Makhraj &amp; Tajwid</span>
+          <span class="program-tag">Dari Dasar</span>
+        </div>
+        <a href="#daftar" class="btn btn-secondary" data-daftar data-program="tahsin">Daftar Kelas Tahsin</a>
+      </div>
+      <div class="program-card reveal">
+        <div class="program-card-image program-card-image-art"><picture class="art-frame"><img src="bimbingan-tahfidz-960.webp" alt="Ilustrasi muslimah menghafal Al-Qur'an dengan kalender setoran, buku hafalan, dan pengajar di video call" width="960" height="960" loading="lazy" decoding="async"></picture></div>
+        <h3>Kelas Tahfidz</h3>
+        <p>Untuk Anda yang ingin menambah hafalan baru (<strong>Ziyadah</strong>) dan menjaga hafalan yang sudah ada (<strong>Muroja'ah</strong>).</p>
+        <div class="program-pills">
+          <span class="program-tag">Ziyadah</span>
+          <span class="program-tag">Muroja'ah</span>
+        </div>
+        <a href="#daftar" class="btn btn-primary" data-daftar data-program="tahfidz">Daftar Kelas Tahfidz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAKET -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Paket Belajar</div>
+      <h2>Pilih durasi yang Anda sanggupi setiap hari.</h2>
+      <p class="lead">Berlaku untuk Tahsin maupun Tahfidz, dengan jadwal weekdays atau weekends.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-tier">Silver</div>
+        <div class="pricing-name">10 Menit</div>
+        <div class="pricing-duration">Langkah awal yang ringan</div>
+        <div class="pricing-was">Rp350.000</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">Rp</span>
+          <span class="pricing-amount">199</span><span class="rb">rb</span>
+          <span class="harga-pct">43%</span>
+        </div>
+        <div class="pricing-period">per bulan</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 10 menit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pengajar bersertifikat</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Laporan progres bulanan</li>
+        </ul>
+        <a href="#daftar" class="btn btn-secondary" data-daftar data-tier="silver">Pilih Silver</a>
+      </div>
+
+      <div class="pricing-card featured reveal">
+        <div class="pricing-badge">Paling Populer</div>
+        <div class="pricing-tier">Gold</div>
+        <div class="pricing-name">20 Menit</div>
+        <div class="pricing-duration">Waktu ideal untuk progres stabil</div>
+        <div class="pricing-was">Rp580.000</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">Rp</span>
+          <span class="pricing-amount">349</span><span class="rb">rb</span>
+          <span class="harga-pct">40%</span>
+        </div>
+        <div class="pricing-period">per bulan</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 20 menit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pengajar bersertifikat pilihan</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Laporan progres mingguan</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Akses grup peserta</li>
+        </ul>
+        <a href="#daftar" class="btn btn-primary" data-daftar data-tier="gold">Pilih Gold</a>
+      </div>
+
+      <div class="pricing-card reveal">
+        <div class="pricing-tier">Platinum</div>
+        <div class="pricing-name">30 Menit</div>
+        <div class="pricing-duration">Untuk target yang lebih besar</div>
+        <div class="pricing-was">Rp875.000</div>
+        <div class="pricing-price">
+          <span class="pricing-currency">Rp</span>
+          <span class="pricing-amount">499</span><span class="rb">rb</span>
+          <span class="harga-pct">43%</span>
+        </div>
+        <div class="pricing-period">per bulan</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sesi private 1-on-1 selama 30 menit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Jadwal weekdays atau weekends</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pengajar premium pilihan peserta</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Laporan progres harian</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Konsultasi langsung dengan mentor</li>
+        </ul>
+        <a href="#daftar" class="btn btn-secondary" data-daftar data-tier="platinum">Pilih Platinum</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEGERA DAFTAR -->
+<section class="cta-section" id="daftar">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Segera daftarkan diri Anda.</h2>
+      <p class="lead">Amankan waktu belajar Anda sebelum periode berikutnya dimulai.</p>
+      <div class="wave" id="waveTimer" aria-label="Hitung mundur periode berikutnya">
+        <p class="wave-label">Periode berikutnya &middot; <span id="waveDate"></span></p>
+        <div class="wave-row" role="timer">
+          <div class="wave-unit"><span id="wD">0</span><small>hari</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wH">00</span><small>jam</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wM">00</span><small>menit</small></div>
+          <span class="wave-colon" aria-hidden="true">:</span>
+          <div class="wave-unit"><span id="wS">00</span><small>detik</small></div>
+        </div>
+      </div>
+      <div class="cta-buttons">
+        <a href="#daftar" class="btn btn-primary btn-lg" data-daftar>Daftar Sekarang</a>
+        <a href="https://wa.me/6285727533000" class="btn btn-secondary btn-lg" data-ask>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Ada Pertanyaan? Chat via WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">FAQ</div>
+      <h2>Pertanyaan yang sering ditanyakan.</h2>
+    </div>
+    <div class="faq-container reveal">
+      <div class="faq-item">
+        <button class="faq-question">Apakah ada biayanya?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Ya. Biaya dihitung per bulan sesuai durasi sesi: Silver 10 menit Rp199.000, Gold 20 menit Rp349.000, dan Platinum 30 menit Rp499.000.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Berapa lama durasi pembelajaran di Mahkota?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Setiap sesi berlangsung 10, 20, atau 30 menit sesuai paket, dengan pilihan jadwal weekdays atau weekends. Program berjalan per bulan dan bisa diperpanjang sesuai target Anda.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Media apa yang digunakan selama proses pembelajaran?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Pembelajaran dilakukan secara private 1-on-1 melalui Google Meet, WhatsApp, atau Zoom. Pilih aplikasi yang paling nyaman untuk Anda.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Apakah program ini khusus online, dan apakah cocok untuk yang baru belajar?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Program ini berlangsung online sehingga bisa diikuti dari mana saja. Sangat cocok untuk pemula, karena Kelas Tahsin dimulai dari dasar. Untuk informasi kelas offline, silakan hubungi admin kami.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Metode pembayaran yang tersedia apa saja?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Pembayaran dilakukan melalui transfer. Admin akan mengirimkan detail pembayaran melalui WhatsApp setelah jadwal belajar Anda disepakati.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Apa yang membedakan kelas Private Silver dan Private Gold?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Silver berdurasi 10 menit per sesi dengan laporan progres bulanan. Gold berdurasi 20 menit per sesi, dengan pengajar pilihan, laporan progres mingguan, dan akses grup peserta.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<!-- FOOTER -->
+<section class="cek-chat" aria-labelledby="cekChatTitle">
+  <div class="container">
+    <h3 id="cekChatTitle">Chat Admin via WhatsApp</h3>
+    <p>Tanya dulu, tanpa daftar. Admin kami siap membantu.</p>
+    <a class="btn btn-secondary btn-lg" href="https://wa.me/6285727533000" data-ask target="_blank" rel="noopener">Chat Admin via WhatsApp</a>
+  </div>
+</section>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h4>Mahkota Tahfizh Online</h4>
+        <p>Private Tahsin dan Tahfidz Al-Qur'an 1-on-1 bersama pengajar hafidz 30 Juz.</p>
+        <p style="margin-top:-8px;">Jl. Panggeran XII No. 06/43, Triharjo, Kec. Sleman, Kab. Sleman, Daerah Istimewa Yogyakarta 55514</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/mahkota.to" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/><path d="M9.75 15.02l5.75-3.27-5.75-3.27v6.54z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Program</h5>
+        <ul>
+          <li><a href="#daftar" data-daftar data-program="tahsin">Tahsin</a></li>
+          <li><a href="#daftar" data-daftar data-program="tahfidz" data-jenis="ziyadah">Tahfidz Ziyadah</a></li>
+          <li><a href="#daftar" data-daftar data-program="tahfidz" data-jenis="murojaah">Tahfidz Muroja'ah</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Perusahaan</h5>
+        <ul>
+          <li><a href="tentang">Tentang Kami</a></li>
+          <li><a href="blog">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Bantuan</h5>
+        <ul>
+          <li><a href="/interaktif/#faq">FAQ</a></li>
+          <li><a href="https://wa.me/6285727533000" data-ask>Chat WhatsApp</a></li>
+          <li><a href="kebijakan-privasi">Kebijakan Privasi</a></li>
+          <li><a href="syarat-ketentuan">Syarat &amp; Ketentuan</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Mahkota Tahfizh Online. Semua hak dilindungi.</div>
+      <div>Dibuat dengan hati di Sleman, Yogyakarta 🇮🇩</div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/6285727533000" class="wa-float" aria-label="Chat WhatsApp" data-ask>
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<!-- ALUR PENDAFTARAN: satu alur untuk semua pintu masuk (Cek Program dan Daftar) -->
+<div class="flow-backdrop" id="cek" aria-hidden="true">
+  <div class="flow" role="region" aria-label="Pendaftaran Mahkota Tahfizh Online">
+    <div class="flow-top">
+      <button class="flow-back" id="cekBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="flow-brand" aria-label="Mahkota Tahfizh Online"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M7 30c5-1 10-1 15 2 5-3 10-3 15-2M8 34c5-1 9-.4 14 2 5-2.4 9-3 14-2M10 17l4 4 8-10 8 10 4-4-2 9H12zM22 5v9M19 8l3-4 3 4"/></svg><span>Mahkota<br>Tahfizh Online</span></div>
+      <div class="flow-stage" id="legacyFlowStage" aria-live="polite"><span id="cekStage"></span><div class="flow-bar"><i id="cekBar"></i></div></div>
+      <button class="flow-close" id="cekClose" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flow-hero" aria-label="Pendaftaran kelas">
+      <div class="flow-hero-copy"><span class="flow-hero-kicker">PENDAFTARAN</span><strong id="journeyTitle">Pilih Program</strong></div>
+      <div class="flow-hero-art" aria-hidden="true"><svg viewBox="0 0 320 280" role="img" aria-label="Ornamen mandala Islami berwarna emas" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#C88D22" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".72"><circle cx="252" cy="157" r="112"/><circle cx="252" cy="157" r="92"/><circle cx="252" cy="157" r="61"/><circle cx="252" cy="157" r="29"/><g opacity=".78"><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(30 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(60 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(90 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(120 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(150 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(180 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(210 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(240 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(270 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(300 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(330 252 157)"/></g><path d="m252 17 5 11 11 5-11 5-5 11-5-11-11-5 11-5 5-11Z" fill="#D49B2F" stroke="none"/><path d="m252 135 4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9Z" fill="#D49B2F" stroke="none"/></g></svg></div>
+    </div>
+    <div class="journey-head" aria-live="polite"><ol class="journey-progress" aria-label="Tahapan pendaftaran"><li data-journey="0"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c3.4-.9 6.1-.3 8 1.6v12c-1.9-1.9-4.6-2.5-8-1.6zM20 5.5c-3.4-.9-6.1-.3-8 1.6v12c1.9-1.9 4.6-2.5 8-1.6z"/></svg></i><small>Program</small></li><li data-journey="1"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M4 9.5h16"/></svg></i><small>Hari</small></li><li data-journey="2"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></i><small>Paket</small></li><li data-journey="3"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></i><small>Durasi</small></li><li data-journey="4"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></i><small>Daftar</small></li></ol></div>
+
+    <!-- Tahap 1 (pintu Daftar): program -->
+    <div class="flow-step" data-step="program">
+      <h3>Program apa yang ingin Anda ikuti?</h3>
+      <p>Pilih satu. Belum yakin? Jawab tiga pertanyaan singkat, lalu kami sarankan programnya.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="program" data-value="tahsin"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 10c7-2 13 0 19 4v25c-6-4-12-6-19-4zM43 10c-7-2-13 0-19 4v25c6-4 12-6 19-4z"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahsin</span><span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span></span></button>
+        <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 12c6-2 12 0 17 4v25c-5-4-11-6-17-4zM41 12c-6-2-12 0-17 4v25c5-4 11-6 17-4zM13 8h22"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
+      </div>
+      <button type="button" class="cek-link" data-go-cek>Belum yakin? Cek program yang cocok</button>
+    </div>
+
+    <div class="flow-step" data-step="jenisTahsin">
+      <h3>Tahsin yang mana?</h3>
+      <p>Pilih yang paling sesuai dengan bacaan Anda saat ini.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="pratahsin"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 9c7-2 13 0 19 4v28c-6-4-12-6-19-4zM43 9c-7-2-13 0-19 4v28c6-4 12-6 19-4z"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Pra Tahsin</span><span class="flow-option-desc">Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahsin" data-value="reguler"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m8 14 16 7 16-7M8 14v10l16 8 16-8V14M12 34l-4 6m28-6 4 6M24 21v11"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahsin Reguler</span><span class="flow-option-desc">Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.</span></span></button>
+      </div>
+    </div>
+
+    <div class="flow-step" data-step="jenisTahfidz">
+      <h3>Hafalan seperti apa yang Anda butuhkan?</h3>
+      <p>Ziyadah untuk menambah hafalan baru, Muroja'ah untuk menjaga hafalan yang sudah ada.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="ziyadah"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 12c7-2 13 0 19 4v26c-6-4-12-6-19-4zM43 12c-7-2-13 0-19 4v26c6-4 12-6 19-4z"/><path d="M24 4v10m-5-5h10"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Ziyadah</span><span class="flow-option-desc">Menambah hafalan baru, disetorkan dan dikoreksi setiap hari.</span></span></button>
+        <button type="button" class="flow-option" data-pick="jenisTahfidz" data-value="murojaah"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 12c7-2 13 0 19 4v26c-6-4-12-6-19-4zM43 12c-7-2-13 0-19 4v26c6-4 12-6 19-4z"/><path d="M33 8a14 14 0 0 1 8 7m-1-6 1 6-6-1M15 40a14 14 0 0 1-8-7m1 6-1-6 6 1"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Muroja'ah</span><span class="flow-option-desc">Menjaga hafalan lama agar tidak mudah hilang.</span></span></button>
+      </div>
+    </div>
+
+    <!-- Tahap 1 (pintu Cek Program): tiga pertanyaan lalu rekomendasi -->
+    <div class="flow-step" data-step="untuk">
+      <h3>Assalamu'alaikum. Untuk siapa program ini?</h3>
+      <p>Tiga pertanyaan singkat, lalu kami tunjukkan program yang sesuai.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="untuk" data-value="diri"><span class="flow-option-body"><span class="flow-option-title">Diri sendiri</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="anak"><span class="flow-option-body"><span class="flow-option-title">Anak</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="orangtua"><span class="flow-option-body"><span class="flow-option-title">Orang tua</span></span></button>
+        <button type="button" class="flow-option" data-pick="untuk" data-value="keluarga"><span class="flow-option-body"><span class="flow-option-title">Beberapa anggota keluarga</span></span></button>
+      </div>
+    </div>
+
+    <div class="flow-step" data-step="kondisi">
+      <h3>Bagaimana kondisi bacaan saat ini?</h3>
+      <p>Pilih yang paling mendekati. Tidak ada jawaban yang salah.</p>
+      <div class="flow-options">
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="belum_baca"><span class="flow-option-body"><span class="flow-option-title">Belum bisa membaca Al-Qur'an</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="iqro"><span class="flow-option-body"><span class="flow-option-title">Masih belajar Iqro</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="ragu_tajwid"><span class="flow-option-body"><span class="flow-option-title">Sudah bisa, tetapi masih ragu tajwid</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="baik_mau_hafal"><span class="flow-option-body"><span class="flow-option-title">Bacaan sudah baik dan ingin menghafal</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="punya_hafalan"><span class="flow-option-body"><span class="flow-option-title">Sudah punya hafalan dan ingin dikuatkan</span></span></button>
+        <button type="button" class="flow-option" data-pick="kondisi" data-value="pernah_hafal"><span class="flow-option-body"><span class="flow-option-title">Pernah hafal, tetapi mulai samar</span></span></button>
+      </div>
+    </div>
+
+    <div class="flow-step" data-step="harapan">
+      <h3>Apa yang paling ingin Anda capai?</h3>
+      <div class="flow-options" id="harapanOpts"></div>
+    </div>
+
+    <div class="flow-step" data-step="rekom">
+      <h3>Program yang sesuai untuk Anda</h3>
+      <div id="rekomBox"></div>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="rekomNext">Atur jadwal belajar</button>
+    </div>
+
+    <!-- Tahap 2: atur jadwal (sama untuk semua pintu) -->
+    <div class="flow-step" data-step="hari">
+      <h3 id="hariTitle">Pilih waktu belajar yang paling nyaman</h3>
+      <div id="hariCopy" class="journey-copy"></div>
+      <p class="journey-prompt">Pilih waktu yang paling sesuai dengan aktivitas Anda:</p>
+      <div class="journey-days">
+        <button type="button" class="journey-day" data-pick="hari" data-value="weekday"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekdays</strong><span>Senin–Jumat</span><small>Cocok untuk Anda yang ingin rutin belajar di hari kerja.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="journey-day" data-pick="hari" data-value="weekend"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekend</strong><span>Sabtu &amp; Ahad</span><small>Cocok untuk Anda yang ingin belajar di akhir pekan.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
+      </div>
+    </div>
+
+    <div class="flow-step" data-step="kelas">
+      <h3>Pilih paket belajar yang paling cocok untuk Anda</h3>
+      <p>Semua paket mendapat bimbingan privat 1-on-1. Pilih durasi sesi sesuai kebutuhan Anda.</p>
+      <div class="flow-options journey-packages" id="kelasOpts"></div>
+    </div>
+
+    <div class="flow-step" data-step="durasi">
+      <h3>Berapa lama Anda ingin belajar?</h3>
+      <p>Semakin panjang durasi belajar, semakin hemat biaya yang Anda keluarkan.</p>
+      <div class="flow-options" id="durasiOpts"></div>
+    </div>
+
+    <div class="flow-step" data-step="jam">
+      <h3>Jam berapa sesi dimulai?</h3>
+      <p id="jamInfo"></p>
+      <select id="jamSel" class="cek-input" style="margin-top:12px" aria-label="Jam mulai sesi"></select>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="jamNext" style="margin-top:20px">Lanjut</button>
+    </div>
+
+    <!-- Tahap 3: daftar (sama untuk semua pintu) -->
+    <div class="flow-step" data-step="ringkasan">
+      <h3>Ringkasan pilihan Anda</h3>
+      <div id="ringkasanBox"></div>
+    </div>
+
+    <div class="flow-step" data-step="data">
+      <form id="dataForm" class="cek-form" novalidate></form>
+      <div id="verifyBox"></div>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="toBayar" style="margin-top:16px">Lanjut ke pembayaran</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var cek = document.getElementById('cek');
+  if (!cek) return;
+
+  var WA = '6285727533000';
+  var LBL = { pratahsin: 'Tahsin · Pra Tahsin', reguler: 'Tahsin · Reguler', ziyadah: 'Tahfidz · Ziyadah', murojaah: "Tahfidz · Muroja'ah" };
+  var KELAS = {
+    silver:   { nama: 'Silver',   menit: 10, asli: 350000, list: 199000, paket: 175000 },
+    gold:     { nama: 'Gold',     menit: 20, asli: 580000, list: 349000, paket: 307000 },
+    platinum: { nama: 'Platinum', menit: 30, asli: 875000, list: 499000, paket: 439000 }
+  };
+  var GAYA_DESC = {
+    silver: 'Cocok untuk jadwal yang padat dan Anda yang ingin fokus pada praktik bacaan atau hafalan.',
+    gold: 'Lebih leluasa untuk setoran, koreksi, dan pendalaman materi.',
+    platinum: 'Waktu lebih panjang untuk bimbingan yang lebih mendalam.'
+  };
+  var SESI = { weekday: 15, weekend: 8 };
+  var HARI = { weekday: 'Weekdays', weekend: 'Weekend' };
+  // Draf aturan rekomendasi (menunggu revisi pemilik).
+  var REKOM = { belum_baca: 'pratahsin', iqro: 'pratahsin', ragu_tajwid: 'reguler', baik_mau_hafal: 'ziyadah', punya_hafalan: 'murojaah', pernah_hafal: 'murojaah' };
+  var ALASAN = {
+    pratahsin: 'Mulai dari dasar makhraj dan huruf agar bacaan kokoh sejak awal.',
+    reguler: 'Memperbaiki makhraj, sifat huruf, dan tajwid agar bacaan lebih yakin.',
+    ziyadah: 'Bacaan Anda sudah baik, sekarang saatnya menambah hafalan secara terarah.',
+    murojaah: 'Hafalan yang sudah ada perlu dikuatkan kembali agar tidak mudah hilang.'
+  };
+  var HARAPAN = {
+    pratahsin: [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    reguler:   [['shalat', 'Shalat lebih tenang'], ['keluarga', 'Bisa mengajari keluarga'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    ziyadah:   [['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar'], ['usia', 'Usia bukan halangan']],
+    murojaah:  [['kuat', 'Hafalan lama dikuatkan kembali'], ['penghafal', 'Menjadi penghafal'], ['konsisten', 'Konsisten belajar']]
+  };
+  // Daftar negara: Indonesia dulu, lalu negara terdekat, lalu yang terkenal, sisanya urut abjad.
+  var NEG_ATAS = [["ID", "Indonesia", "62"], ["MY", "Malaysia", "60"], ["SG", "Singapura", "65"], ["BN", "Brunei", "673"], ["TL", "Timor Leste", "670"], ["PH", "Filipina", "63"], ["TH", "Thailand", "66"], ["VN", "Vietnam", "84"], ["KH", "Kamboja", "855"], ["LA", "Laos", "856"], ["MM", "Myanmar", "95"], ["US", "Amerika Serikat", "1"], ["AU", "Australia", "61"], ["SA", "Arab Saudi", "966"], ["GB", "Inggris", "44"], ["JP", "Jepang", "81"], ["KR", "Korea Selatan", "82"], ["CN", "Tiongkok", "86"], ["HK", "Hong Kong", "852"], ["TW", "Taiwan", "886"], ["IN", "India", "91"], ["PK", "Pakistan", "92"], ["BD", "Bangladesh", "880"], ["TR", "Turki", "90"], ["EG", "Mesir", "20"], ["AE", "Uni Emirat Arab", "971"], ["QA", "Qatar", "974"], ["KW", "Kuwait", "965"], ["OM", "Oman", "968"], ["BH", "Bahrain", "973"], ["JO", "Yordania", "962"], ["NL", "Belanda", "31"], ["DE", "Jerman", "49"], ["FR", "Prancis", "33"], ["IT", "Italia", "39"], ["ES", "Spanyol", "34"], ["CA", "Kanada", "1"], ["NZ", "Selandia Baru", "64"], ["BR", "Brasil", "55"], ["MX", "Meksiko", "52"], ["RU", "Rusia", "7"], ["SE", "Swedia", "46"], ["CH", "Swiss", "41"]];
+  var NEG_LAIN = [["AF", "Afghanistan", "93"], ["ZA", "Afrika Selatan", "27"], ["AL", "Albania", "355"], ["DZ", "Aljazair", "213"], ["AO", "Angola", "244"], ["AR", "Argentina", "54"], ["AM", "Armenia", "374"], ["AT", "Austria", "43"], ["AZ", "Azerbaijan", "994"], ["BE", "Belgia", "32"], ["BT", "Bhutan", "975"], ["BO", "Bolivia", "591"], ["BA", "Bosnia dan Herzegovina", "387"], ["BG", "Bulgaria", "359"], ["CM", "Kamerun", "237"], ["CL", "Chili", "56"], ["CO", "Kolombia", "57"], ["CR", "Kosta Rika", "506"], ["HR", "Kroasia", "385"], ["CU", "Kuba", "53"], ["CZ", "Ceko", "420"], ["DK", "Denmark", "45"], ["EC", "Ekuador", "593"], ["ET", "Ethiopia", "251"], ["FI", "Finlandia", "358"], ["GE", "Georgia", "995"], ["GH", "Ghana", "233"], ["GR", "Yunani", "30"], ["GT", "Guatemala", "502"], ["HU", "Hungaria", "36"], ["IS", "Islandia", "354"], ["IQ", "Irak", "964"], ["IR", "Iran", "98"], ["IE", "Irlandia", "353"], ["KZ", "Kazakhstan", "7"], ["KE", "Kenya", "254"], ["LB", "Lebanon", "961"], ["LY", "Libya", "218"], ["MG", "Madagascar", "261"], ["MV", "Maladewa", "960"], ["MA", "Maroko", "212"], ["MU", "Mauritius", "230"], ["MN", "Mongolia", "976"], ["MZ", "Mozambik", "258"], ["NP", "Nepal", "977"], ["NG", "Nigeria", "234"], ["NO", "Norwegia", "47"], ["PS", "Palestina", "970"], ["PA", "Panama", "507"], ["PG", "Papua Nugini", "675"], ["PE", "Peru", "51"], ["PL", "Polandia", "48"], ["PT", "Portugal", "351"], ["RO", "Rumania", "40"], ["RW", "Rwanda", "250"], ["SN", "Senegal", "221"], ["RS", "Serbia", "381"], ["CY", "Siprus", "357"], ["LK", "Sri Lanka", "94"], ["SD", "Sudan", "249"], ["SY", "Suriah", "963"], ["TZ", "Tanzania", "255"], ["TN", "Tunisia", "216"], ["UG", "Uganda", "256"], ["UA", "Ukraina", "380"], ["UY", "Uruguay", "598"], ["UZ", "Uzbekistan", "998"], ["VE", "Venezuela", "58"], ["YE", "Yaman", "967"], ["ZM", "Zambia", "260"], ["ZW", "Zimbabwe", "263"], ["CI", "Pantai Gading", "225"], ["FJ", "Fiji", "679"]];
+  NEG_LAIN.sort(function (a, b) { return a[1].localeCompare(b[1], 'id'); });
+  var NEG_SEMUA = NEG_ATAS.concat(NEG_LAIN);
+  function flagOf(iso) { return String.fromCodePoint.apply(null, iso.split('').map(function (c) { return 127397 + c.charCodeAt(0); })); }
+  function dialOf(iso) { for (var i = 0; i < NEG_SEMUA.length; i++) { if (NEG_SEMUA[i][0] === iso) return NEG_SEMUA[i][2]; } return '62'; }
+  var STAGE_NAME = { 1: 'Kenali kebutuhan', 2: 'Atur jadwal', 3: 'Daftar' };
+  var STAGE_OF = {
+    program: 1, jenisTahsin: 1, jenisTahfidz: 1, untuk: 1, kondisi: 1, harapan: 1, rekom: 1,
+    kelas: 2, hari: 2, durasi: 2, jam: 2,
+    ringkasan: 3, data: 3, bayar: 3, kirim: 3
+  };
+
+  var steps = {};
+  cek.querySelectorAll('.flow-step').forEach(function (el) { steps[el.dataset.step] = el; });
+  var backBtn = document.getElementById('cekBack');
+  var stageEl = document.getElementById('cekStage');
+  var barEl = document.getElementById('cekBar');
+  var S = {}, P = {}, hist = [], lastFocus = null;
+
+  /* ---------- utilitas ---------- */
+  function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
+  // Harga ditulis dalam ribuan (rb), sedangkan total pembayaran tetap lengkap.
+  function rbFmt(n) { return 'Rp' + Number(n / 1000).toLocaleString('id-ID') + '<span class="rb">rb</span>'; }
+  // Urutan: HEMAT di atas, lalu harga, persen diskon, dan harga asli yang dicoret.
+  function priceBlock(k, m) {
+    var c = KELAS[k], monthly = perBulan(k, m);
+    var pctAll = Math.round((c.asli - monthly) / c.asli * 100);
+    var hematAll = (c.asli - monthly) * m * S.peserta;
+    var html = '';
+    if (hematAll > 0) html += '<span class="harga-hemat">HEMAT ' + rupiah(hematAll) + '</span>';
+    html += '<div class="harga"><span class="harga-now">' + rbFmt(monthly) + '<span class="per"> /bulan</span></span>';
+    if (pctAll > 0) html += '<span class="harga-pct">' + pctAll + '%</span>';
+    html += '</div>';
+    if (pctAll > 0) html += '<div class="harga-coret">' + rupiah(c.asli * m * S.peserta) + '</div>';
+    var pr = [];
+    if (kodeAktif()) pr.push('Kode ' + KODE.kode + ' ' + KODE.pct + '%');
+    else if (awalOn()) pr.push('Promo ' + promoPct(k) + '%');
+    if (paketAktif(m)) pr.push('potongan paket 3 bulan 12%');
+    if (pr.length) html += '<p class="harga-note">' + pr.join(' + ') + '</p>';
+    return '<div class="harga-wrap">' + html + '</div>';
+  }
+  // Seksi promo bergaya kartu: setiap promo bisa dipakai atau dilepas.
+  var PROMO_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>';
+  function promoSection() {
+    var c = KELAS[S.kelas], m = S.durasi, n = S.peserta;
+    var kode = kodeAktif(), on1 = awalOn(), on2 = S.paketPromo !== false;
+    var qual = m >= 3, eff2 = (on1 || kode) && qual && on2;
+    var save1 = (c.asli - c.list) * m * n;
+    var saveK = c.asli * KODE.pct / 100 * m * n;
+    var save2 = (c.list - c.paket) * Math.max(m, 3) * n;
+    var total = (kode ? saveK : (on1 ? save1 : 0)) + (eff2 ? save2 : 0);
+    function btn(key, on, disabled) {
+      return '<button type="button" class="promo-btn' + (on ? ' on' : '') + '" data-toggle="' + key + '"' + (disabled ? ' disabled' : '') + '>' + (on ? 'Dipakai' : 'Pakai') + '</button>';
+    }
+    var foot2 = '';
+    if (kode) foot2 = '';
+    else if (!on1) foot2 = '<div class="promo-foot">Pakai promo pendaftaran untuk membuka potongan ini</div>';
+    else if (!qual) foot2 = '<div class="promo-foot"><span>Berlaku untuk paket 3 bulan</span><button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div>';
+    var card2 = '<div class="promo-card">' +
+      '<div class="promo-top"><span class="promo-tag">PAKET 3 BULAN</span>' + btn('paketPromo', eff2, !(on1 || kode) || !qual) + '</div>' +
+      '<div class="promo-text"><strong>Ekstra hemat ' + rbFmt(save2) + '</strong>' +
+      '<small>Potongan tambahan 12%, digabung dengan ' + (kode ? 'kode ' + KODE.kode : 'promo pendaftaran') + '</small></div>' + foot2 + '</div>';
+    var card1 = '';
+    if (!kode) {
+      card1 = '<div class="promo-card">' +
+        '<div class="promo-top"><span class="promo-tag">PROMO PENDAFTARAN</span>' + btn('promoAwal', on1, false) + '</div>' +
+        '<div class="promo-text"><strong>Hemat ' + rbFmt(save1) + '</strong>' +
+        '<small>Diskon ' + promoPct(S.kelas) + '% untuk pendaftaran ini</small></div></div>';
+    }
+    var sub = total > 0
+      ? 'Anda hemat ' + rbFmt(total) + ' untuk pendaftaran ini.'
+      : 'Pakai promo di bawah untuk mendapatkan harga terbaik.';
+    return '<div class="promo-sec"><div class="promo-head"><h4>Penawaran Khusus untuk Anda</h4>' +
+      '<p>' + sub + '</p></div>' +
+      '<div class="promo-list">' + kodeCard() + card1 + card2 + '</div></div>';
+  }
+  // Kolom kode promo bergaya Apple: label di atas, satu field dengan tombol di ujung kanan.
+  var CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function kodeCard() {
+    var c = KELAS[S.kelas], m = S.durasi, n = S.peserta;
+    var msg = S.kodeMsg ? '<p class="kode-msg">' + esc(S.kodeMsg) + '</p>' : '';
+    if (!S.kode) {
+      var v = String(S.kodeIn || '');
+      return '<div class="kode-box"><label class="kode-label" for="kodeInput">Punya kode promo?</label>' +
+        '<div class="kode-field"><input id="kodeInput" type="text" name="kode" placeholder="Contoh: ABD" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(v) + '">' +
+        '<button type="button" class="kode-clear" data-kode-x aria-label="Hapus isian"' + (v ? '' : ' style="display:none"') + '>&times;</button>' +
+        '<button type="button" class="kode-apply" data-kode-apply' + (v.trim() ? '' : ' disabled') + '>Terapkan</button></div>' + msg + '</div>';
+    }
+    function row(ok, title, sub) {
+      return '<div class="kode-row"><span class="kode-check' + (ok ? '' : ' muted') + '">' + (ok ? CHECK_ICON : '!') + '</span>' +
+        '<div class="kode-info"><strong>' + title + '</strong><small>' + sub + '</small></div>' +
+        '<button type="button" class="kode-remove" data-kode-clear>Hapus</button></div>';
+    }
+    if (Date.now() >= KODE.akhir.getTime()) {
+      return '<div class="kode-box applied">' + row(false, 'Kode ' + KODE.kode + ' sudah berakhir', 'Promo ini tidak lagi bisa dipakai.') + '</div>';
+    }
+    if (!kodeAktif()) {
+      return '<div class="kode-box">' + row(false, 'Kode ' + KODE.kode + ' belum aktif', 'Berlaku untuk paket minimal 3 bulan.') +
+        '<div class="kode-timer-row"><span>Potongan ' + KODE.pct + '% untuk paket 3 bulan atau lebih.</span>' +
+        '<button type="button" class="promo-cta" data-set-durasi="3">Pilih 3 bulan</button></div></div>';
+    }
+    return '<div class="kode-box applied">' +
+      row(true, 'Kode ' + KODE.kode + ' · potongan ' + KODE.pct + '%', 'Hemat ' + rbFmt(c.asli * KODE.pct / 100 * m * n) + ' untuk paket ' + durasiLabel(m) + (n > 1 ? ' · ' + n + ' peserta' : '') + '.') +
+      '<div class="kode-timer-row"><span>Berakhir dalam</span><b class="kode-timer" id="kodeTimer">' + fmtSisa(KODE.akhir.getTime() - Date.now()) + '</b><span>· 17 Nov 2026, 23.59 WIB</span></div></div>';
+  }
+  function syncKodeUi() {
+    var v = String(S.kodeIn || '').trim();
+    var ap = document.querySelector('[data-kode-apply]'), x = document.querySelector('[data-kode-x]');
+    if (ap) ap.disabled = !v;
+    if (x) x.style.display = S.kodeIn ? '' : 'none';
+  }
+  var KODE = { kode: 'ABD', pct: 50, akhir: new Date('2026-11-17T23:59:00+07:00') };
+  function kodeAktif() { return !!S.kode && S.kode === KODE.kode && S.durasi >= 3 && Date.now() < KODE.akhir.getTime(); }
+  function awalOn() { return S.promoAwal !== false && !kodeAktif(); }
+  function applyKode() {
+    var v = String(S.kodeIn || '').trim().toUpperCase();
+    S.kodeMsg = '';
+    if (!v) S.kodeMsg = 'Masukkan kode promo terlebih dahulu.';
+    else if (v !== KODE.kode) S.kodeMsg = 'Kode promo tidak dikenali.';
+    else if (Date.now() >= KODE.akhir.getTime()) S.kodeMsg = 'Kode ' + KODE.kode + ' sudah berakhir.';
+    else { S.kode = v; S.kodeIn = ''; }
+    renderRingkasan();
+  }
+  function fmtSisa(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000));
+    var h = Math.floor(s / 3600), mi = Math.floor((s % 3600) / 60), d = s % 60;
+    function p(x) { return (x < 10 ? '0' : '') + x; }
+    return p(h) + ':' + p(mi) + ':' + p(d);
+  }
+  var kodeTimer = null;
+  function startKodeTimer() {
+    if (kodeTimer) { clearInterval(kodeTimer); kodeTimer = null; }
+    if (!kodeAktif()) return;
+    kodeTimer = setInterval(function () {
+      var el = document.getElementById('kodeTimer');
+      var sisa = KODE.akhir.getTime() - Date.now();
+      if (!el) { clearInterval(kodeTimer); kodeTimer = null; return; }
+      if (sisa <= 0) { clearInterval(kodeTimer); kodeTimer = null; renderRingkasan(); return; }
+      el.textContent = fmtSisa(sisa);
+    }, 1000);
+  }
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function waLink(msg) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg); }
+  function isAnak() { return S.untuk === 'anak'; }
+  function normWa(v) { return String(v || '').replace(/\D/g, '').replace(/^0+/, ''); }
+  function waFull() { return dialOf(S.kodeNeg || 'ID') + normWa(S.wa); }
+  // Tampilan kolom WA: awalan +kode negara selalu otomatis; yang disimpan hanya digit lokal.
+  function waTampil(raw) { return '+' + dialOf(S.kodeNeg || 'ID') + String(raw || ''); }
+  function waBersih(teks, iso) {
+    var t = String(teks || '').trim(), d = t.replace(/\D/g, ''), dial = dialOf(iso || 'ID');
+    // Kode negara di awal dibuang, dengan atau tanpa '+'. Nomor lokal tidak diawali kode negara (mis. ID mulai 8).
+    if (d.indexOf(dial) === 0) d = d.slice(dial.length);
+    return d.replace(/^0+/, '');
+  }
+  function waValid() { return normWa(S.wa).length >= 8; }
+  // Dua kolom dianggap sama bila angka setelah kode negara dan angka 0 di depan sama.
+  // Contoh yang dianggap sama: 08xxx, 0 8xxx, +628xxx, 628xxx, 8xxx.
+  function kunciWa(teks) { return waBersih(teks, S.kodeNeg || 'ID'); }
+  // Menjelaskan letak perbedaan dua kolom, dihitung dari angka setelah awalan.
+  function jelasBedaWa() {
+    var a = kunciWa(S.wa), b = kunciWa(S.wa2), n = Math.min(a.length, b.length);
+    for (var i = 0; i < n; i++) {
+      if (a.charAt(i) !== b.charAt(i)) {
+        return 'Nomor belum sama. Digit ke-' + (i + 1) + ' berbeda: kolom pertama "' + a.charAt(i) + '", kolom kedua "' + b.charAt(i) + '". Periksa angka ini.';
+      }
+    }
+    if (a.length !== b.length) {
+      return 'Nomor belum sama. Jumlah digit berbeda: kolom pertama ' + a.length + ' digit, kolom kedua ' + b.length + ' digit.';
+    }
+    return 'Nomor belum sama. Periksa kembali kedua kolom.';
+  }
+  function waCocok() { return waValid() && kunciWa(S.wa) !== '' && kunciWa(S.wa) === kunciWa(S.wa2); }
+  function emailValid() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email || ''); }
+  function dataValid() { return !!(S.nama && S.jk && S.tgl && waCocok() && emailValid() && S.confirm); }
+  function kelasList() { return S.jenis === 'pratahsin' ? ['gold', 'platinum'] : ['silver', 'gold', 'platinum']; }
+  function durasiOpts() { return [1, 3]; }
+  // Jam mulai: 05.00 sampai 22.00 WIB, selang sesuai panjang sesi.
+  function slotList() {
+    var menit = KELAS[S.kelas].menit, out = [];
+    for (var m = 5 * 60; m <= 22 * 60; m += menit) {
+      var hh = Math.floor(m / 60), mm = m % 60;
+      out.push((hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm);
+    }
+    return out;
+  }
+  function promoPct(k) { return Math.round((KELAS[k].asli - KELAS[k].list) / KELAS[k].asli * 100); }
+  // Potongan paket 3 bulan hanya berlaku bersama promo awal dan minimal 3 bulan.
+  function paketAktif(m) { return (awalOn() || kodeAktif()) && S.paketPromo !== false && m >= 3; }
+  function perBulan(k, months) {
+    var c = KELAS[k];
+    if (kodeAktif() && months >= 3) return c.asli * (1 - KODE.pct / 100) - (paketAktif(months) ? c.list - c.paket : 0);
+    if (S.promoAwal === false || kodeAktif()) return kodeAktif() ? c.asli * (1 - KODE.pct / 100) : c.asli;
+    return paketAktif(months) ? c.paket : c.list;
+  }
+  function promoText() {
+    var t = [];
+    if (kodeAktif()) t.push('kode ' + KODE.kode + ' ' + KODE.pct + '%');
+    else if (awalOn()) t.push('promo awal ' + promoPct(S.kelas) + '%');
+    if (paketAktif(S.durasi)) t.push('potongan paket 3 bulan 12%');
+    return t.length ? t.join(' + ') : 'tidak dipakai';
+  }
+  function totalBayar() { return perBulan(S.kelas, S.durasi) * S.durasi * S.peserta; }
+  function hemat() { return S.durasi >= 3 ? (KELAS[S.kelas].list - KELAS[S.kelas].paket) * S.durasi * S.peserta : 0; }
+  // Ringkasan pembayaran bergaya kwitansi: harga, setiap diskon dengan labelnya, dan total.
+  function receiptBlock(k, m) {
+    var c = KELAS[k], n = S.peserta, base = c.asli * m * n;
+    var kode = kodeAktif();
+    var p1 = kode ? c.asli * KODE.pct / 100 * m * n : (awalOn() ? (c.asli - c.list) * m * n : 0);
+    var p2 = paketAktif(m) ? (c.list - c.paket) * m * n : 0;
+    var total = base - p1 - p2;
+    var rows = '<div class="rc-row"><span>Harga paket · ' + durasiLabel(m) + (n > 1 ? ' · ' + n + ' peserta' : '') + '</span><span>' + rupiah(base) + '</span></div>';
+    if (p1) rows += '<div class="rc-row rc-disc"><span>' + (kode ? 'Kode ' + KODE.kode + ' · diskon ' + KODE.pct + '%' : 'Diskon promo awal ' + promoPct(k) + '%') + '</span><span>-' + rupiah(p1) + '</span></div>';
+    if (p2) rows += '<div class="rc-row rc-disc"><span>Potongan paket 3 bulan 12%</span><span>-' + rupiah(p2) + '</span></div>';
+    var tot = '<div class="rc-total"><span>Total pembayaran</span><span>' + ((p1 || p2) ? '<s class="rc-old">' + rupiah(base) + '</s>' : '') + '<strong>' + rupiah(total) + '</strong></span></div>';
+    return '<div class="rc"><div class="rc-title">Ringkasan pembayaran</div><div class="rc-card">' + rows + tot + '</div></div>';
+  }
+  function durasiLabel(m) { return m + ' bulan'; }
+  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  function tgl(d) { return d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
+  var DAY = 86400000;
+  // Gelombang: mulai tanggal 12 (selesai tanggal 10 bulan berikutnya) dan mulai tanggal 27 (selesai tanggal 25 bulan berikutnya).
+  function jadwal() {
+    var t = new Date(), y = t.getFullYear(), m = t.getMonth();
+    var today = new Date(y, m, t.getDate());
+    var c = [];
+    for (var o = -2; o <= 2; o++) {
+      c.push({ s: new Date(y, m + o, 12), e: new Date(y, m + o + 1, 10) });
+      c.push({ s: new Date(y, m + o, 27), e: new Date(y, m + o + 1, 25) });
+    }
+    c.sort(function (a, b) { return a.s - b.s; });
+    var next = null, ongoing = null;
+    c.forEach(function (x) {
+      if (x.s > today && !next) next = x;
+      if (x.s <= today && x.e >= today) ongoing = x; // yang paling baru dimulai
+    });
+    var cut = ongoing ? Math.floor((today - ongoing.s) / DAY) : 0;
+    return { next: next, ongoing: ongoing, cut: cut, today: today };
+  }
+  function periodeBox(j) {
+    if (!j.ongoing) S.periode = 'berikut';
+    if (!S.periode) S.periode = 'berikut';
+    var cards = '';
+    if (j.ongoing) {
+      cards += periodeCard('berjalan', 'Ikut periode berjalan · Gelombang ' + gelNo(j.ongoing.s),
+        'Mulai ' + tgl(j.ongoing.s) + ', selesai ' + tgl(j.ongoing.e) + '.',
+        'Terpotong ' + j.cut + ' hari');
+    }
+    var wait = Math.round((j.next.s - j.today) / DAY);
+    // Nomor gelombang publik: tanggal 12 = Gelombang 1, tanggal 27 = Gelombang 2 (sementara)
+    function gelNo(d) { return d.getDate() === 12 ? 1 : 2; }
+    cards += periodeCard('berikut', 'Ikut periode berikutnya · Gelombang ' + gelNo(j.next.s),
+      'Mulai ' + tgl(j.next.s) + ', selesai ' + tgl(j.next.e) + '.',
+      'Menunggu ' + wait + ' hari');
+    // Gelombang 3 dan 4: layout disiapkan, belum bisa dipilih
+    cards += gelombangSegera(3) + gelombangSegera(4);
+    return '<div class="periode-wrap" role="radiogroup" aria-label="Pilih periode">' + cards + '</div>';
+  }
+  function gelombangSegera(n) {
+    return '<button type="button" class="periode-card" role="radio" aria-checked="false" disabled style="opacity:.55;cursor:not-allowed">' +
+      '<span class="periode-radio"></span>' +
+      '<span class="periode-text"><span class="periode-tag">Segera dibuka</span><span class="periode-title">Gelombang ' + n + '</span><span class="periode-desc">Belum dibuka untuk pendaftaran</span></span></button>';
+  }
+  function periodeCard(key, title, desc, tag) {
+    var on = S.periode === key;
+    return '<button type="button" class="periode-card" role="radio" aria-checked="' + on + '" data-periode="' + key + '">' +
+      '<span class="periode-radio"></span>' +
+      '<span class="periode-text"><span class="periode-tag">' + tag + '</span><span class="periode-title">' + title + '</span><span class="periode-desc">' + desc + '</span></span></button>';
+  }
+  function periodeLabel() {
+    var j = jadwal();
+    if (S.periode === 'berjalan' && j.ongoing) return 'periode berjalan (mulai ' + tgl(j.ongoing.s) + ', terpotong ' + j.cut + ' hari)';
+    return 'periode berikutnya (mulai ' + tgl(j.next.s) + ')';
+  }
+  function ringkas() {
+    var k = KELAS[S.kelas];
+    return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
+      'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + (S.jam || '').replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
+      'Promo: ' + promoText() + '\nPeserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
+  }
+
+  /* ---------- alur: satu urutan untuk semua pintu masuk ---------- */
+  // Urutan langkah bergantung pada pintu masuk dan pilihan yang sudah diisi lewat tautan.
+  function route() {
+    var r = [];
+    if (S.mode === 'cek') {
+      r.push('untuk', 'kondisi', 'harapan', 'rekom');
+      if (!P.tier) r.push('kelas');
+      r.push('hari', 'durasi', 'jam', 'ringkasan', 'data');
+    } else {
+      if (!P.program) r.push('program');
+      if (!P.jenis) r.push(S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin');
+      r.push('hari');
+      if (!P.tier) r.push('kelas');
+      r.push('durasi', 'jam', 'ringkasan', 'data');
+    }
+    return r;
+  }
+  function advance(cur) {
+    var r = route(), i = r.indexOf(cur);
+    if (i >= 0 && r[i + 1]) go(r[i + 1]);
+  }
+  // Setelah langkah selesai: saat mengubah dari ringkasan, kembali ke ringkasan.
+  function done(cur) {
+    if (S.editing) {
+      var miss = !S.durasi ? 'durasi' : (!S.jam ? 'jam' : null);
+      if (miss) return go(miss);
+      S.editing = false;
+      return go('ringkasan');
+    }
+    advance(cur);
+  }
+  function cleanup() {
+    if (!S.kelas) return;
+    if (S.durasi && durasiOpts().indexOf(S.durasi) < 0) S.durasi = null;
+    if (S.jam && slotList().indexOf(S.jam) < 0) S.jam = null;
+  }
+  function pick(key, v) {
+    if (key === 'program') { S.program = v; S.jenis = P.jenis || null; return advance('program'); }
+    if (key === 'jenisTahsin' || key === 'jenisTahfidz') {
+      S.jenis = v;
+      if (P.tier && S.kelas && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
+      return done(key);
+    }
+    if (key === 'untuk') { S.untuk = v; return advance('untuk'); }
+    if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; return advance('kondisi'); }
+    if (key === 'harapan') { S.harapan = v; return advance('harapan'); }
+    if (key === 'kelas') { S.kelas = v; cleanup(); return done('kelas'); }
+    if (key === 'hari') { S.hari = v; return done('hari'); }
+    if (key === 'durasi') { S.durasi = Number(v); return done('durasi'); }
+  }
+
+  function openFlow(opts) {
+    S = { peserta: 1, mode: opts.mode, program: opts.program || null, jenis: opts.jenis || null, kelas: opts.tier || null, periode: null, editing: false };
+    P = { program: opts.program || null, jenis: opts.jenis || null, tier: opts.tier || null };
+    if (P.jenis && P.tier && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
+    hist = [];
+    lastFocus = document.activeElement;
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.remove('open');
+    cek.classList.add('open');
+    if (S.mode === 'daftar') document.documentElement.classList.add('registration-active');
+    cek.setAttribute('aria-hidden', 'false');
+    go(route()[0]);
+    cek.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function close() {
+    cek.classList.remove('open');
+    document.documentElement.classList.remove('registration-active');
+    cek.setAttribute('aria-hidden', 'true');
+    if (lastFocus) lastFocus.focus({ preventScroll: true });
+  }
+  function go(step, noPush) { if (!noPush) hist.push(step); show(step); }
+  function back() {
+    if (hist.length <= 1) return;
+    hist.pop();
+    show(hist[hist.length - 1]);
+  }
+  // Jika pilihan jadwal ada yang kosong (mis. jam terhapus setelah ganti kelas lalu menekan kembali), arahkan ke langkah yang kurang.
+  function langkahKurang() {
+    return !S.kelas ? 'kelas' : (!S.hari ? 'hari' : (!S.durasi ? 'durasi' : (!S.jam ? 'jam' : null)));
+  }
+  function show(step) {
+    if (step === 'ringkasan' || step === 'data') {
+      var kurang = langkahKurang();
+      if (kurang) { S.editing = true; hist[hist.length - 1] = kurang; step = kurang; }
+    }
+    if (window.mtoTrack && step === 'data') window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
+    Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
+    var flowPanel = cek.querySelector('.flow');
+    if (flowPanel) flowPanel.scrollTop = 0;
+    backBtn.hidden = hist.length <= 1;
+    var n = STAGE_OF[step];
+    var label = n === 1 ? (S.mode === 'daftar' ? 'Pilih program' : STAGE_NAME[1]) : STAGE_NAME[n];
+    var legacy = document.getElementById('legacyFlowStage');
+    legacy.hidden = S.mode === 'daftar';
+    if (S.mode === 'daftar') {
+      var idx = step === 'hari' ? 1 : step === 'kelas' ? 2 : (step === 'durasi' || step === 'jam') ? 3 : (step === 'ringkasan' || step === 'data') ? 4 : 0;
+      document.getElementById('journeyTitle').textContent = step === 'program' ? 'Pilih Program' :
+        step === 'jenisTahsin' ? 'Kelas Tahsin' : step === 'jenisTahfidz' ? 'Kelas Tahfidz' :
+        (step === 'hari' ? (LBL[S.jenis] || 'PILIH PROGRAM') : (step === 'ringkasan' || step === 'data' ? 'Data Pendaftaran' : (LBL[S.jenis] || 'PROGRAM')));
+
+      document.querySelectorAll('.journey-progress li').forEach(function (el, i) { el.classList.toggle('done', i < idx); el.classList.toggle('current', i === idx); });
+    } else {
+      stageEl.textContent = 'Tahap ' + n + ' dari 3 · ' + label;
+      barEl.style.width = (n / 3 * 100) + '%';
+    }
+    var R = { harapan: renderHarapan, rekom: renderRekom, hari: renderHari, kelas: renderKelas, durasi: renderDurasi, jam: renderJam,
+      ringkasan: renderRingkasan, data: renderData };
+    if (R[step]) R[step]();
+    var first = steps[step].querySelector('button, input, select');
+    if (first && step !== 'data') setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
+  }
+
+  /* ---------- render langkah ---------- */
+  function renderHarapan() {
+    var html = isAnak() ? '<p class="cek-alasan">Ananda dekat dengan Al-Qur\'an sejak dini.</p>' : '';
+    (HARAPAN[S.jenis] || []).forEach(function (p) {
+      if (p[0] === 'usia' && isAnak()) return;
+      html += '<button type="button" class="flow-option" data-pick="harapan" data-value="' + p[0] + '"><span class="flow-option-body"><span class="flow-option-title">' + p[1] + '</span></span></button>';
+    });
+    document.getElementById('harapanOpts').innerHTML = html;
+  }
+  function renderRekom() {
+    document.getElementById('rekomBox').innerHTML =
+      '<div class="cek-rekom"><span class="flow-tag">Paling sesuai</span><h4>' + LBL[S.jenis] + '</h4><p>' + ALASAN[S.jenis] + '</p></div>' +
+      '<p class="cek-alasan">Jika ingin mengubah jawaban, gunakan tombol kembali.</p>';
+  }
+  function renderHari() {
+    var titles = { pratahsin: "Kelas Pra Tahsin (Iqro') Private", reguler: 'Kelas Tahsin Private', ziyadah: 'Kelas Tahfidz Ziyadah', murojaah: "Kelas Tahfidz Muroja'ah" };
+    var copy = {
+      pratahsin: { intro: "Khusus untuk Anda yang ingin mulai belajar membaca Al-Qur'an dari dasar, dengan bimbingan yang fokus dan bertahap.", title: 'Yang akan dipelajari:', points: ['Mengenal huruf hijaiyah dan makhraj', 'Melatih bacaan sesuai kaidah tajwid', 'Menerapkan tajwid dasar dalam bacaan Al-Qur\'an'] },
+      reguler: { intro: "Untuk Anda yang ingin memperbaiki bacaan Al-Qur'an agar lebih tepat dan yakin.", title: 'Fokus pembelajaran:', points: ['Memperbaiki makhraj dan sifat huruf', 'Melatih bacaan sesuai kaidah tajwid', 'Pendampingan intensif secara privat'] },
+      ziyadah: { intro: "Untuk Anda yang ingin menambah hafalan Al-Qur'an secara bertahap dan terukur.", title: 'Target fleksibel:', points: ['Mulai dari Juz Amma atau lanjut dari hafalan yang sudah dimiliki', 'Target disesuaikan dengan kemampuan dan kebutuhan Anda', 'Setoran dan evaluasi bersama pengajar'] },
+      murojaah: { intro: "Untuk Anda yang ingin menjaga hafalan agar tetap kuat, benar, dan lancar.", title: 'Fokus pendampingan:', points: ['Mengulang hafalan secara rutin', 'Memperbaiki bacaan, tajwid, dan makhraj', "Menentukan target muroja'ah bersama pembimbing"] }
+    };
+    var data = copy[S.jenis] || copy.pratahsin;
+    var points = data.points.map(function (item) { return '<li>' + item + '</li>'; }).join('');
+    document.getElementById('hariTitle').textContent = titles[S.jenis] || 'Pilih waktu belajar';
+    document.getElementById('hariCopy').innerHTML =
+      '<p>' + data.intro + '</p>' +
+      '<div class="journey-learning"><strong>' + data.title + '</strong><ul>' + points + '</ul></div>' +
+      '<div class="journey-online"><span class="journey-online-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="5" y="12" width="27" height="24" rx="5"/><path d="m32 20 11-6v20l-11-6z"/></svg></span><p><b>Belajar online</b> lewat WhatsApp Call atau Google Meet, dengan jadwal yang disepakati.</p></div>';
+  }
+  function renderKelas() {
+    document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
+      var c = KELAS[k];
+      var tag = k === 'gold' ? '<span class="flow-tag">Paling populer</span>' : '';
+      return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '">' +
+        '<span class="journey-package-copy"><span class="journey-package-heading"><span class="journey-package-name">' + c.nama + '</span>' + tag + '</span>' +
+        '<span class="flow-option-title">' + c.menit + ' menit per pertemuan</span>' +
+        '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></button>';
+    }).join('');
+  }
+  function renderDurasi() {
+    var c = KELAS[S.kelas];
+    document.getElementById('durasiOpts').innerHTML = durasiOpts().map(function (m) {
+      var monthly = perBulan(S.kelas, m);
+      var reference = (paketAktif(m) && awalOn() && !kodeAktif()) ? c.list : c.asli;
+      var savings = Math.max(0, reference - monthly) * m * S.peserta;
+      var meetings = (SESI[S.hari] || 15) * m;
+      var oldPrice = reference > monthly
+        ? '<span class="duration-reference"><span>' + (m === 1 ? 'Harga normal' : 'Harga sebelumnya') + '</span><s>' + rupiah(reference) + '/bulan</s></span>'
+        : '';
+      var savingLine = savings
+        ? '<span class="duration-savings">Hemat ' + rupiah(savings) + '</span>'
+        : '';
+      var savingsBadge = m > 1 && savings
+        ? '<span class="duration-badge">Lebih hemat</span>'
+        : '';
+      var totalLine = m > 1 || S.peserta > 1
+        ? '<span class="duration-total">Total pembayaran <strong>' + rupiah(monthly * m * S.peserta) + '</strong></span>'
+        : '';
+      return '<button type="button" class="flow-option journey-duration" data-pick="durasi" data-value="' + m + '" aria-pressed="' + (Number(S.durasi) === m) + '">' +
+        savingsBadge +
+        '<span class="duration-meta"><span class="duration-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="4"/><path d="M15 5v10M33 5v10M6 20h36"/></svg></span>' +
+        '<span class="duration-meta-copy"><span class="duration-title">' + durasiLabel(m) + '</span><span class="duration-meetings">' + meetings + ' pertemuan</span></span></span>' +
+        '<span class="duration-pricing">' + oldPrice + '<strong class="duration-monthly">' + rupiah(monthly) + '<small>/bulan</small></strong>' +
+        totalLine + savingLine + '</span></button>';
+    }).join('');
+  }
+  function renderJam() {
+    var k = KELAS[S.kelas];
+    document.getElementById('jamInfo').textContent = 'Sesi ' + k.nama + ' ' + k.menit + ' menit. Jam yang sama dipakai di setiap pertemuan (WIB).';
+    var sel = document.getElementById('jamSel');
+    sel.innerHTML = '<option value="">Pilih jam</option>' + slotList().map(function (v) {
+      return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':', '.') + ' WIB</option>';
+    }).join('');
+  }
+  function renderRingkasan() {
+    var k = KELAS[S.kelas], m = S.durasi;
+    var rows = [
+      ['Program', LBL[S.jenis]],
+      ['Kelas', k.nama + ' · ' + k.menit + ' menit per sesi'],
+      ['Hari', HARI[S.hari]],
+      ['Durasi', durasiLabel(m)],
+      ['Jam mulai', (S.jam || '').replace(':', '.') + ' WIB'],
+      ['Peserta', S.peserta + ' orang']
+    ];
+    var box = '<div class="cek-box">' + rows.map(function (r) {
+      return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
+    }).join('') + '</div>';
+
+    var harga = receiptBlock(S.kelas, m);
+
+    var edit = '<div class="cek-edit">' +
+      '<button type="button" data-edit="kelas">Ubah kelas</button>' +
+      '<button type="button" data-edit="durasi">Ubah durasi</button>' +
+      '<button type="button" data-edit="hari">Ubah hari</button>' +
+      '<button type="button" data-edit="jam">Ubah jam</button>' +
+      '</div>' +
+      '<div class="cek-stepper" style="margin:8px 0 4px"><span>Jumlah peserta</span>' +
+      '<button type="button" data-peserta="-1" aria-label="Kurangi peserta">−</button>' +
+      '<strong>' + S.peserta + '</strong>' +
+      '<button type="button" data-peserta="1" aria-label="Tambah peserta">+</button></div>';
+
+    var trust = '<div class="cek-trust"><h4>Yang Anda dapatkan</h4><ul>' +
+      '<li>Privat 1-on-1 lewat WhatsApp Call.</li>' +
+      '<li>Ikhwan dan akhwat dibimbing terpisah.</li>' +
+      '<li>Pengajar hafidz/hafidzah berpengalaman, dan e-sertifikat setelah program.</li>' +
+      '</ul></div>';
+
+    var closing = '<div class="cek-amount" style="font-size:16px">Total: ' + rupiah(totalBayar()) + '</div>' +
+      '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="data">Lanjut isi data</button>' +
+      '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya sebelum mendaftar.\n\n" + ringkas()) + '" data-ask target="_blank" rel="noopener">Tanya admin dulu</a>';
+
+    document.getElementById('ringkasanBox').innerHTML = box + promoSection() + harga + edit + periodeBox(jadwal()) + trust + closing;
+    startKodeTimer();
+  }
+  function renderData() {
+    var radio = function (name, v, t, cur) {
+      return '<label><input type="radio" name="' + name + '" value="' + v + '"' + (cur === v ? ' checked' : '') + '> ' + t + '</label>';
+    };
+    var seg = function (v, t) {
+      return '<label class="cek-jk-pilih"><input type="radio" name="cekJk" value="' + v + '"' + (S.jk === v ? ' checked' : '') + '><span>' + t + '</span></label>';
+    };
+    var sel = NEG_SEMUA.map(function (o) {
+      return '<option value="' + o[0] + '"' + ((S.kodeNeg || 'ID') === o[0] ? ' selected' : '') + '>' + flagOf(o[0]) + ' ' + o[1] + ' (+' + o[2] + ')</option>';
+    }).join('');
+    document.getElementById('dataForm').innerHTML =
+      '<label>Nama peserta<input type="text" name="nama" class="cek-input" autocomplete="name" value="' + esc(S.nama || '') + '"></label>' +
+      '<div class="cek-jk"><span id="cekJkLabel">Jenis kelamin</span><div class="cek-jk-opsi" role="radiogroup" aria-labelledby="cekJkLabel">' +
+        seg('perempuan', 'Perempuan') + seg('laki-laki', 'Laki-laki') + '</div></div>' +
+      '<label>Tanggal lahir<input type="date" name="tgl" class="cek-input" value="' + esc(S.tgl || '') + '"></label>' +
+      '<div class="cek-wa"><span>Nomor WhatsApp</span><div class="cek-wa-row">' +
+        '<select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select>' +
+        '<input type="tel" name="wa" class="cek-input" inputmode="numeric" autocomplete="tel" placeholder="812xxxxxxxx" value="' + esc(waTampil(S.wa)) + '">' +
+      '</div></div>' +
+      '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" autocomplete="off" placeholder="Ketik ulang nomor yang sama" value="' + esc(waTampil(S.wa2)) + '"></label>' +
+      '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>' +
+      '<label class="cek-check"><input type="checkbox" name="cekConfirm"' + (S.confirm ? ' checked' : '') + '><span>Saya memastikan nomor WhatsApp di atas sudah benar dan aktif.</span></label>';
+    updateDataBtn();
+    updateVerify();
+  }
+  function petunjukData() {
+    if (S.email && !emailValid()) return 'Format email belum benar. Contoh: nama@email.com';
+    if (S.tgl) {
+      var t = new Date(S.tgl + 'T00:00:00'), n = new Date();
+      if (isNaN(t) || t > n) return 'Tanggal lahir tidak boleh melebihi hari ini.';
+    }
+    var kurang = [];
+    if (!S.nama) kurang.push('nama');
+    if (!S.jk) kurang.push('jenis kelamin');
+    if (!S.tgl) kurang.push('tanggal lahir');
+    if (!waCocok()) kurang.push('nomor WhatsApp');
+    if (!emailValid()) kurang.push('email');
+    if (!S.confirm) kurang.push('centang konfirmasi nomor');
+    return kurang.length ? 'Lengkapi dahulu: ' + kurang.join(', ') + '.' : '';
+  }
+  function updateDataBtn() {
+    var b = document.getElementById('toBayar');
+    if (!b) return;
+    var tglOk = !S.tgl || (new Date(S.tgl + 'T00:00:00') <= new Date());
+    b.disabled = !(dataValid() && tglOk);
+    var h = document.getElementById('dataHint');
+    if (!h) { h = document.createElement('p'); h.id = 'dataHint'; h.className = 'cek-err'; b.parentNode.insertBefore(h, b); }
+    h.textContent = b.disabled ? petunjukData() : '';
+  }
+  // Verifikasi dua langkah: nomor harus diketik dua kali dengan hasil yang sama.
+  function updateVerify() {
+    var box = document.getElementById('verifyBox');
+    if (!box) return;
+    if (!waValid()) { box.innerHTML = ''; return; }
+    if (!waCocok()) {
+      box.innerHTML = S.wa2 ? '<p class="cek-err">' + esc(jelasBedaWa()) + '</p>' : '';
+      return;
+    }
+    box.innerHTML = '<div class="cek-verify">' +
+      '<p>Nomor WhatsApp Anda: <strong>+' + esc(waFull()) + '</strong></p>' +
+      '<p>Nomor ini belum diverifikasi oleh sistem. Admin akan mengonfirmasi lewat WhatsApp setelah pendaftaran masuk.</p>' +
+      '</div>';
+  }
+  /* ---------- pendaftaran tersimpan dan batas waktu bayar ---------- */
+  var SB_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
+  var SB_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
+  var SB_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+  var sbKlien = null;
+  function sbSiap(cb) {
+    if (sbKlien) return cb(sbKlien);
+    if (window.supabase) { sbKlien = window.supabase.createClient(SB_URL, SB_KEY); return cb(sbKlien); }
+    var s = document.createElement('script');
+    s.src = SB_JS;
+    s.onload = function () { sbKlien = window.supabase.createClient(SB_URL, SB_KEY); cb(sbKlien); };
+    document.head.appendChild(s);
+  }
+  // Data disimpan sekali per sesi isian: saat "Lanjut ke pembayaran" ditekan.
+  function simpanPendaftaran(cb) {
+    if (S.pid) return cb(null);
+    sbSiap(function (sb) {
+      sb.rpc('daftar_pendaftaran', { p: {
+        email: S.email, nama: S.nama, jk: S.jk, tgl: S.tgl || null, kota: null,
+        wa: waFull(), kelas: S.kelas, durasi: S.durasi, peserta: S.peserta,
+        total: totalBayar(), ringkasan: ringkas(), hari: S.hari, jam: S.jam
+      } }).then(function (r) {
+        if (r.error || !r.data) return cb((r.error && r.error.message) || 'Pendaftaran belum tersimpan. Coba lagi.');
+        S.pid = r.data.id;
+        S.batas = r.data.batas_bayar;
+        cb(null);
+      });
+    });
+  }
+  function copy(text, btn) {
+    if (!navigator.clipboard) return;
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      btn.textContent = 'Tersalin';
+      setTimeout(function () { btn.textContent = btn.dataset.label; }, 1500);
+    }, function () { btn.textContent = 'Gagal, salin manual'; });
+  }
+
+  /* ---------- pintu masuk dan kendali ---------- */
+  document.querySelectorAll('[data-daftar]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      // Buka pendaftaran sebagai halaman penuh dan bawa pilihan dari tombol paket/program.
+      var tujuan = new URL('/interaktif/', window.location.href);
+      tujuan.searchParams.set('embed', '1');
+      tujuan.searchParams.set('daftar', '1');
+      ['program', 'jenis', 'tier'].forEach(function (k) {
+        if (el.dataset[k]) tujuan.searchParams.set(k, el.dataset[k]);
+        else tujuan.searchParams.delete(k);
+      });
+      window.location.assign(tujuan.pathname + tujuan.search);
+    });
+  });
+  // Dibuka dari profil peserta (/interaktif/?daftar=1): langsung tampil alur pendaftaran yang sama.
+  try {
+    var qs = new URLSearchParams(location.search);
+    if (qs.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (qs.get('daftar') === '1') openFlow({
+      mode: 'daftar',
+      program: qs.get('program') || null,
+      jenis: qs.get('jenis') || null,
+      tier: qs.get('tier') || null
+    });
+  } catch (err) { /* abaikan */ }
+  document.getElementById('cekOpen').addEventListener('click', function () { openFlow({ mode: 'cek' }); });
+  document.getElementById('cekClose').addEventListener('click', close);
+  backBtn.addEventListener('click', back);
+  document.getElementById('jamNext').addEventListener('click', function () {
+    var sel = document.getElementById('jamSel');
+    if (!sel.value) { sel.focus(); return; }
+    S.jam = sel.value;
+    done('jam');
+  });
+
+  cek.addEventListener('click', function (e) {
+    var t = e.target, b;
+    if (t === cek) { close(); return; }
+    if ((b = t.closest('[data-pick]'))) { pick(b.dataset.pick, b.dataset.value); return; }
+    if (t.closest('[data-go-cek]')) {
+      S = { peserta: 1, mode: 'cek', periode: null, editing: false };
+      P = {};
+      hist = [];
+      go('untuk');
+      return;
+    }
+    if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
+    if (t.closest('[data-kode-apply]')) { applyKode(); return; }
+    if (t.closest('[data-kode-x]')) { S.kodeIn = ''; S.kodeMsg = ''; renderRingkasan(); var ki = document.getElementById('kodeInput'); if (ki) ki.focus(); return; }
+    if (t.closest('[data-kode-clear]')) { S.kode = null; S.kodeMsg = ''; S.kodeIn = ''; renderRingkasan(); return; }
+    if ((b = t.closest('[data-toggle]'))) { var key = b.dataset.toggle, on = S[key] !== false; S[key] = !on; renderRingkasan(); return; }
+    if ((b = t.closest('[data-set-durasi]'))) { S.durasi = Number(b.dataset.setDurasi); renderRingkasan(); return; }
+    if ((b = t.closest('[data-peserta]'))) { S.peserta = Math.min(10, Math.max(1, S.peserta + Number(b.dataset.peserta))); renderRingkasan(); return; }
+    if ((b = t.closest('[data-periode]'))) { S.periode = b.dataset.periode; renderRingkasan(); return; }
+    if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
+    if ((b = t.closest('[data-act]'))) {
+      if (b.dataset.act === 'data') advance('ringkasan');
+      return;
+    }
+    if (t.closest('#rekomNext')) { advance('rekom'); return; }
+    if (t.closest('#toBayar')) {
+      if (!dataValid()) return;
+      simpanPendaftaran(function (err) {
+        if (err) { document.getElementById('verifyBox').innerHTML = '<p class="cek-err">' + esc(err) + '</p>'; return; }
+        if (window.mtoTrack) window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran tersimpan' }, { phone: waFull(), email: S.email });
+        try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
+        window.location.href = 'pembayaran';
+      });
+      return;
+    }
+  });
+
+  cek.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.name === 'kode') { e.preventDefault(); applyKode(); }
+  });
+
+  cek.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.name === 'kode') { S.kodeIn = t.value; syncKodeUi(); }
+    if (t.name === 'nama') S.nama = t.value.trim();
+    if (t.name === 'tgl') S.tgl = t.value;
+    if (t.name === 'wa') { S.wa = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa)) t.value = waTampil(S.wa); }
+    if (t.name === 'wa2') { S.wa2 = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa2)) t.value = waTampil(S.wa2); }
+    if (t.name === 'email') S.email = t.value.trim();
+    if (t.name) { updateDataBtn(); updateVerify(); }
+  });
+  cek.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.name === 'cekJk') S.jk = t.value;
+    if (t.name === 'cekConfirm') S.confirm = t.checked;
+    if (t.name === 'kodeNeg') {
+      S.kodeNeg = t.value;
+      var kw = cek.querySelector('[name=wa]'), kw2 = cek.querySelector('[name=wa2]');
+      if (kw) kw.value = waTampil(S.wa);
+      if (kw2) kw2.value = waTampil(S.wa2);
+    }
+    updateDataBtn();
+    updateVerify();
+  });
+  cek.addEventListener('submit', function (e) { e.preventDefault(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && cek.classList.contains('open')) close();
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function fmt(n) { return Math.round(n).toLocaleString('id-ID'); }
+  function run(el) {
+    var target = Number(el.getAttribute('data-count')), suf = el.getAttribute('data-suffix') || '', t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / 1400, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(target * e) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
+  }, { threshold: 0.5 });
+  els.forEach(function (el) { el.textContent = '0' + (el.getAttribute('data-suffix') || ''); io.observe(el); });
+})();
+(function () {
+  var box = document.getElementById('waveTimer');
+  if (!box) return;
+  var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  // Gelombang dimulai tanggal 12 dan 27, tengah malam WIB (UTC+7).
+  function wib(y, m, d) { return Date.UTC(y, m, d) - 7 * 3600000; }
+  function nextStart(now) {
+    var d = new Date(now + 7 * 3600000), y = d.getUTCFullYear(), m = d.getUTCMonth();
+    for (var o = 0; o <= 2; o++) {
+      var a = wib(y, m + o, 12), b = wib(y, m + o, 27);
+      if (a > now) return a;
+      if (b > now) return b;
+    }
+  }
+  var target = nextStart(Date.now());
+  var lbl = document.getElementById('waveDate');
+  function setDate(t) { var d = new Date(t + 7 * 3600000); lbl.textContent = d.getUTCDate() + ' ' + BULAN[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+  setDate(target);
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    var ms = target - Date.now();
+    if (ms <= 0) { target = nextStart(Date.now()); setDate(target); ms = target - Date.now(); }
+    var s = Math.floor(ms / 1000);
+    document.getElementById('wD').textContent = Math.floor(s / 86400);
+    document.getElementById('wH').textContent = pad(Math.floor(s % 86400 / 3600));
+    document.getElementById('wM').textContent = pad(Math.floor(s % 3600 / 60));
+    document.getElementById('wS').textContent = pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+<script src="js/main.js?v=20261119"></script>
+<script src="js/notifikasi.js?v=20261119"></script>
+<div class="ask-backdrop" id="askModal" hidden>
+  <div class="ask-panel" role="dialog" aria-modal="true" aria-labelledby="askTitle">
+    <div class="ask-top">
+      <button type="button" class="ask-nav" id="askBack" aria-label="Kembali" hidden>&#8249;</button>
+      <h3 id="askTitle">Tanya Admin</h3>
+      <button type="button" class="ask-nav" id="askClose" aria-label="Tutup">&times;</button>
+    </div>
+    <div class="ask-body" id="askBody"></div>
+  </div>
+</div>
+<script>
+(function () {
+  var WA = '6285727533000';
+  var SB_REST = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
+  var SB_ANON = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
+  var WA_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+  var KELAS = {
+    silver: { n: 'Silver', menit: 10, d: 'Langkah awal yang ringan', asli: 350000, list: 199000, paket: 175000 },
+    gold: { n: 'Gold', menit: 20, d: 'Waktu ideal untuk progres stabil', asli: 580000, list: 349000, paket: 307000 },
+    platinum: { n: 'Platinum', menit: 30, d: 'Untuk target yang lebih besar', asli: 875000, list: 499000, paket: 439000 }
+  };
+  var PROG = {
+    tahsin: { lbl: 'Tahsin', kelas: ['silver', 'gold', 'platinum'], dur: [1, 3], t: 'Saya ingin menanyakan kelas Tahsin' },
+    pratahsin: { lbl: 'Pra Tahsin', kelas: ['gold', 'platinum'], dur: [1, 3], t: 'Saya ingin menanyakan kelas Pra Tahsin' },
+    ziyadah: { lbl: 'Ziyadah', kelas: ['silver', 'gold', 'platinum'], dur: [1, 3], t: 'Saya ingin menanyakan kelas Ziyadah' },
+    murojaah: { lbl: "Muroja'ah", kelas: ['silver', 'gold', 'platinum'], dur: [1, 3], t: "Saya ingin menanyakan kelas Muroja'ah" }
+  };
+  var modal = document.getElementById('askModal'), body = document.getElementById('askBody');
+  var title = document.getElementById('askTitle'), back = document.getElementById('askBack');
+  var hist = [];
+  var pic = null, lead = null;
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function rb(n) { return 'Rp' + Math.round(n / 1000) + 'rb'; }
+  function pct(a, b) { return Math.round((a - b) / a * 100); }
+  function monthly(k, m) { return m >= 3 ? KELAS[k].paket : KELAS[k].list; }
+  // Tombol WhatsApp mengarah ke PIC yang ditugaskan kepada peserta ini (cadangan: nomor admin umum).
+  function waLink(msg) { return 'https://wa.me/' + ((pic && pic.wa) || WA) + '?text=' + encodeURIComponent(msg); }
+  function priceHtml(k, m) {
+    var c = KELAS[k], mo = monthly(k, m);
+    return '<span class="ask-price"><s>' + rb(c.asli) + '</s> <strong>' + rb(mo) + '</strong> <small>per bulan</small></span>' +
+      '<span class="ask-pct">' + pct(c.asli, mo) + '%</span>';
+  }
+  function draw(s) {
+    back.hidden = hist.length < 2;
+    if (s.k === 'list') {
+      title.textContent = 'Apa yang ingin Anda tanyakan?';
+      var progs = Object.keys(PROG).map(function (p) {
+        return '<button type="button" class="ask-opt" data-prog="' + p + '"><span>' + esc(PROG[p].t) + '</span></button>';
+      });
+      body.innerHTML = progs.join('');
+    } else if (s.k === 'kelas') {
+      var pg = PROG[s.p], m0 = pg.dur[0];
+      title.textContent = 'Pilih kelas ' + pg.lbl;
+      body.innerHTML = pg.kelas.map(function (k) {
+        var c = KELAS[k];
+        return '<button type="button" class="ask-opt ask-opt-col" data-kelas="' + k + '">' +
+          '<span class="ask-name">' + c.n + ' · ' + c.menit + ' menit<small>' + c.d + '</small></span>' +
+          '<span class="ask-right">' + priceHtml(k, m0) + '<small class="ask-m">mulai ' + m0 + ' bulan</small></span></button>';
+      }).join('');
+    } else if (s.k === 'durasi') {
+      var pg2 = PROG[s.p];
+      title.textContent = 'Berapa lama?';
+      body.innerHTML = pg2.dur.map(function (m) {
+        return '<button type="button" class="ask-opt ask-opt-col" data-dur="' + m + '">' +
+          '<span class="ask-name">' + m + ' bulan</span>' +
+          '<span class="ask-right">' + priceHtml(s.k2, m) + '</span></button>';
+      }).join('');
+    } else if (s.k === 'ringkas') {
+      var c2 = KELAS[s.k2], mo = monthly(s.k2, s.m);
+      title.textContent = 'Ringkasan pilihan Anda';
+      var ringkasTeks = 'saya ingin menanyakan program ' + PROG[s.p].lbl + ', durasi ' + s.m + ' bulan, kelas ' + c2.n + ' (' + c2.menit + ' menit per sesi).';
+      body.innerHTML = '<p class="ask-sum">' + esc(ringkasTeks.charAt(0).toUpperCase() + ringkasTeks.slice(1)) + '</p>' +
+        '<div class="ask-harga"><div class="ask-harga-utama"><strong>' + rb(mo) + '</strong><span>/ bulan</span></div>' +
+        '<div class="ask-harga-sub"><s>' + rb(c2.asli) + '</s><span class="ask-hemat">Hemat ' + pct(c2.asli, mo) + '%</span></div></div>' +
+        '<form class="ask-form" id="askKontak" novalidate>' +
+        '<p class="ask-kecil">Isi nama dan nomor WhatsApp agar admin bisa membalas pertanyaan Anda. Ini hanya untuk bertanya. Jika ingin langsung mendaftar, tutup panel ini lalu pilih Daftar.</p>' +
+        '<label>Nama<input name="nama" autocomplete="name" maxlength="100" placeholder="Nama lengkap"></label>' +
+        '<label>Nomor WhatsApp<input name="wa" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>' +
+        '<p class="ask-err" id="askErr" role="alert"></p>' +
+        '<button type="submit" class="ask-btn ask-btn-wa">' + WA_ICON + 'Tanya admin dulu (belum mendaftar)</button>' +
+        '<p class="ask-kecil">Data Anda hanya dipakai admin untuk menghubungi Anda terkait program ini.</p></form>';
+    }
+  }
+  function go(s) { hist.push(s); draw(s); }
+  function open() { hist = []; pic = null; lead = null; go({ k: 'list' }); modal.hidden = false; modal.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  function close() { modal.hidden = true; }
+  // Tautan "Chat WhatsApp" dari halaman lain membuka panel ini: /interaktif/?ask=1
+  document.addEventListener('DOMContentLoaded', function () {
+    try { if (new URLSearchParams(location.search).get('ask') === '1') open(); } catch (e) {}
+  });
+  body.addEventListener('click', function (e) {
+    var t = e.target.closest('button'); if (!t) return;
+    var cur = hist[hist.length - 1];
+    if (t.dataset.prog) go({ k: 'kelas', p: t.dataset.prog });
+    else if (t.dataset.kelas) go({ k: 'durasi', p: cur.p, k2: t.dataset.kelas });
+    else if (t.dataset.dur) go({ k: 'ringkas', p: cur.p, k2: cur.k2, m: +t.dataset.dur });
+  });
+  body.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (!f || f.id !== 'askKontak') return;
+    e.preventDefault();
+    var cur = hist[hist.length - 1];
+    var err = document.getElementById('askErr'), btn = f.querySelector('button');
+    var nama = f.nama.value.trim(), wa = f.wa.value.replace(/\D/g, '');
+    if (nama.length < 2) { err.textContent = 'Mohon isi nama Anda.'; return; }
+    if (wa.length < 9 || wa.length > 15) { err.textContent = 'Mohon isi nomor WhatsApp yang aktif.'; return; }
+    err.textContent = '';
+    // Jendela dibuka saat klik supaya tidak diblokir browser; alamatnya diisi setelah data tersimpan.
+    var jendela = window.open('', '_blank');
+    btn.disabled = true; btn.textContent = 'Menyimpan…';
+    fetch(SB_REST + '/rest/v1/rpc/daftar_kontak', {
+      method: 'POST',
+      headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_nama: nama, p_wa: wa, p_program: PROG[cur.p].lbl, p_kelas: KELAS[cur.k2].n, p_durasi: cur.m })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
+    }).then(function (x) {
+      if (!x.ok) throw new Error((x.j && x.j.message) || 'gagal');
+      pic = { wa: String(x.j.wa_admin || WA), nama: x.j.pic_nama || '' };
+      lead = { nama: nama, program: cur.p };
+      var q = 'nama saya ' + nama + ', saya ingin menanyakan program ' + PROG[cur.p].lbl + ', durasi ' + cur.m + ' bulan, kelas ' + KELAS[cur.k2].n + ' (' + KELAS[cur.k2].menit + ' menit per sesi).';
+      var url = waLink("Assalamu'alaikum, " + q + ' Mohon info lebih lanjut.');
+      if (window.mtoTrack) window.mtoTrack('Lead', { content_name: PROG[cur.p].lbl + ' ' + KELAS[cur.k2].n + ' ' + cur.m + ' bulan' }, { phone: wa });
+      if (window.mtoTrack) window.mtoTrack('Contact', { content_name: 'WhatsApp dari panel tanya' }, { phone: wa });
+      if (jendela) jendela.location.href = url; else window.location.href = url;
+      btn.textContent = 'Pertanyaan sudah terkirim'; btn.disabled = true;
+      err.innerHTML = '';
+      var ulang = document.createElement('a'); ulang.href = url; ulang.target = '_blank'; ulang.rel = 'noopener';
+      ulang.className = 'ask-btn ask-btn-wa'; ulang.textContent = 'Buka WhatsApp lagi';
+      err.appendChild(ulang);
+    }).catch(function (x) {
+      if (jendela) jendela.close();
+      btn.disabled = false; btn.textContent = 'Tanya admin dulu (belum mendaftar)';
+      var pesanGalat = x && x.message;
+      err.textContent = (pesanGalat && pesanGalat !== 'gagal' && pesanGalat.indexOf('Failed') === -1 && pesanGalat.indexOf('fetch') === -1) ? pesanGalat : 'Data belum tersimpan, jadi WhatsApp belum dibuka. Periksa koneksi, lalu coba lagi.';
+    });
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-ask]');
+    if (t) { e.preventDefault(); open(); }
+  });
+  document.getElementById('askClose').addEventListener('click', close);
+  back.addEventListener('click', function () { if (hist.length > 1) { hist.pop(); draw(hist[hist.length - 1]); } });
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+})();
+</script>
+<script>
+(function () {
+  var SUPABASE_URL = 'https://bvltmjurkgnzmwtgdaic.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_F4qsCGTEYFcxgJmqJd0TZg_yas0Ho1g';
+  var SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+  var s = document.createElement('script');
+  s.src = SUPABASE_JS;
+  s.onload = function () {
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sb.auth.getSession().then(function (r) {
+      var u = r.data && r.data.session && r.data.session.user;
+      if (!u) return;
+      var meta = u.user_metadata || {};
+      var nama = (meta.nama || '').trim();
+      var kata = nama.split(/\s+/).filter(Boolean);
+      var depan = kata.length ? kata[0] : 'Profil saya';
+      var inis = kata.length
+        ? (kata[0].charAt(0) + (kata.length > 1 ? kata[kata.length - 1].charAt(0) : '')).toUpperCase()
+        : (u.email || '?').charAt(0).toUpperCase();
+
+      var link = document.getElementById('navMasuk');
+      if (link) {
+        link.href = 'profil.html';
+        link.className = 'nav-user';
+        link.textContent = '';
+        var av = document.createElement('span');
+        av.className = 'nav-avatar';
+        av.textContent = inis;
+        var nm = document.createElement('span');
+        nm.className = 'nav-nama';
+        nm.textContent = depan;
+        link.appendChild(av);
+        link.appendChild(nm);
+        if (meta.avatar_path) {
+          sb.storage.from('avatars').createSignedUrl(meta.avatar_path, 3600).then(function (x) {
+            if (x.error || !x.data) return;
+            var img = document.createElement('img');
+            img.alt = '';
+            img.src = x.data.signedUrl;
+            av.textContent = '';
+            av.appendChild(img);
+          });
+        }
+      }
+      var m = document.getElementById('navMasukMobile');
+      if (m) { m.href = 'profil.html'; m.textContent = 'Profil saya'; }
+    });
+  };
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>

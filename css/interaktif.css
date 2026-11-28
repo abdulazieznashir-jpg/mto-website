@@ -1,0 +1,172 @@
+/* Experimental registration presentation for /interaktif/.
+   Shared copy and registration logic remain in the original homepage. */
+html.interactive-variant {
+  --interactive-ink: #171614;
+  --interactive-muted: #69645c;
+  --interactive-gold: #b98527;
+  --interactive-gold-soft: #fff6df;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+}
+html.interactive-variant.registration-active,
+html.interactive-variant.registration-active body {
+  background: #f7f3ed;
+}
+html.interactive-variant.registration-active #cek.flow-backdrop {
+  align-items: flex-start;
+  padding: clamp(14px, 3vh, 32px) 16px;
+  background:
+    radial-gradient(ellipse at 78% 8%, rgba(222,198,154,.22), transparent 30%),
+    linear-gradient(180deg, #fbf8f2 0%, #f4efe6 100%);
+}
+html.interactive-variant.registration-active .flow {
+  width: min(100%, 1040px);
+  max-width: 1040px;
+  margin: auto;
+  padding: clamp(20px, 4vw, 44px) clamp(20px, 6vw, 72px) clamp(28px, 5vw, 56px);
+  border: 1px solid rgba(181, 153, 107, .2);
+  border-radius: 32px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 26px 80px rgba(51,39,21,.12);
+  backdrop-filter: blur(18px);
+}
+html.interactive-variant.registration-active .flow-top {
+  min-height: 58px;
+  margin: 0 auto 18px;
+  grid-template-columns: 48px 1fr 48px;
+}
+html.interactive-variant.registration-active .flow-back,
+html.interactive-variant.registration-active .flow-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(52,43,30,.07);
+}
+html.interactive-variant.registration-active .flow-hero {
+  min-height: 168px;
+  margin: 0 0 20px;
+  padding: 25px clamp(18px, 4vw, 38px);
+  border: 1px solid rgba(204,178,133,.24);
+  border-radius: 24px;
+  background: linear-gradient(105deg,#fffefa 0%,#fbf6ec 72%,#f3e8d2 100%);
+}
+html.interactive-variant.registration-active .flow-hero-copy { max-width: 70%; }
+html.interactive-variant.registration-active .flow-hero-copy strong {
+  font-size: clamp(30px, 4.4vw, 48px);
+  letter-spacing: -.045em;
+}
+html.interactive-variant.registration-active .flow-hero-art { opacity: .7; }
+html.interactive-variant.registration-active .journey-head { margin-bottom: 38px; }
+html.interactive-variant.registration-active .journey-progress {
+  padding: 18px 14px 15px;
+  border: 1px solid #eee6d8;
+  border-radius: 22px;
+  background: #fffefa;
+  box-shadow: 0 10px 26px rgba(58,45,25,.06);
+}
+html.interactive-variant.registration-active .journey-progress i {
+  width: 38px;
+  height: 38px;
+}
+html.interactive-variant.registration-active .journey-progress li:not(:last-child):after { top: 19px; }
+html.interactive-variant.registration-active .journey-progress small {
+  font-size: 12px;
+  font-weight: 600;
+}
+html.interactive-variant.registration-active .flow-step { animation: interactive-step-in .28s ease both; }
+@keyframes interactive-step-in {
+  from { opacity: .45; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+html.interactive-variant.registration-active .flow-step h3 {
+  font-size: clamp(27px, 4vw, 40px);
+  letter-spacing: -.045em;
+}
+html.interactive-variant.registration-active .flow-step > p {
+  font-size: 17px;
+  line-height: 1.55;
+}
+html.interactive-variant.registration-active .flow-option-icon { display: none !important; }
+html.interactive-variant.registration-active .flow-options {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+html.interactive-variant.registration-active .flow-option {
+  min-height: 126px;
+  justify-content: flex-start;
+  padding: 22px 24px;
+  border-radius: 22px;
+  text-align: left;
+  transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+html.interactive-variant.registration-active .flow-option:hover { transform: translateY(-2px); }
+html.interactive-variant.registration-active .flow-option-title {
+  font-size: 22px;
+  letter-spacing: -.025em;
+}
+html.interactive-variant.registration-active .flow-option-desc {
+  max-width: 42em;
+  font-size: 15px;
+  line-height: 1.5;
+}
+html.interactive-variant.registration-active #durasiOpts { gap: 16px; }
+html.interactive-variant.registration-active .journey-duration {
+  min-height: 0;
+  padding: clamp(18px, 2.8vw, 28px);
+  border-radius: 24px;
+  box-shadow: 0 8px 25px rgba(55,43,23,.065);
+}
+html.interactive-variant.registration-active .journey-duration[aria-pressed="true"] {
+  border-width: 2px;
+  background: #fffaf0;
+}
+html.interactive-variant.registration-active .cek-form { max-width: 760px; margin-left: auto; margin-right: auto; }
+html.interactive-variant.registration-active .cek-full { border-radius: 999px; }
+@media (max-width: 680px) {
+  html.interactive-variant.registration-active #cek.flow-backdrop {
+    align-items: flex-start;
+    padding: max(8px,env(safe-area-inset-top)) 8px max(10px,env(safe-area-inset-bottom));
+  }
+  html.interactive-variant.registration-active .flow {
+    width: 100%;
+    margin: 0 auto;
+    padding: 14px 16px 28px;
+    border-radius: 24px;
+  }
+  html.interactive-variant.registration-active .flow-top {
+    min-height: 50px;
+    margin-bottom: 12px;
+    grid-template-columns: 42px 1fr 42px;
+  }
+  html.interactive-variant.registration-active .flow-back,
+  html.interactive-variant.registration-active .flow-close { width: 40px; height: 40px; }
+  html.interactive-variant.registration-active .flow-hero {
+    min-height: 132px;
+    margin-bottom: 14px;
+    padding: 16px 14px;
+    border-radius: 20px;
+  }
+  html.interactive-variant.registration-active .flow-hero-copy { max-width: 73%; }
+  html.interactive-variant.registration-active .flow-hero-copy strong { font-size: clamp(28px,8vw,38px); }
+  html.interactive-variant.registration-active .flow-hero-art { right: -18px; width: 42%; opacity: .5; }
+  html.interactive-variant.registration-active .journey-head { margin-bottom: 26px; }
+  html.interactive-variant.registration-active .journey-progress {
+    padding: 12px 4px 10px;
+    border-radius: 18px;
+  }
+  html.interactive-variant.registration-active .journey-progress i { width: 30px; height: 30px; }
+  html.interactive-variant.registration-active .journey-progress li:not(:last-child):after { top: 15px; }
+  html.interactive-variant.registration-active .journey-progress small { font-size: 10px; }
+  html.interactive-variant.registration-active .flow-step h3 { font-size: clamp(24px,7vw,30px); }
+  html.interactive-variant.registration-active .flow-step > p { font-size: 15px; }
+  html.interactive-variant.registration-active .flow-options { grid-template-columns: 1fr; gap: 12px; }
+  html.interactive-variant.registration-active .flow-option { min-height: 100px; padding: 17px 18px; border-radius: 19px; }
+  html.interactive-variant.registration-active .flow-option-title { font-size: 20px; }
+  html.interactive-variant.registration-active .flow-option-desc { font-size: 14px; }
+  html.interactive-variant.registration-active .journey-duration { padding: 17px; border-radius: 20px; }
+  html.interactive-variant.registration-active .duration-monthly { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.interactive-variant.registration-active .flow-step { animation: none; }
+  html.interactive-variant.registration-active .flow-option { transition: none; }
+}
