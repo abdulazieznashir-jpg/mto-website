@@ -297,7 +297,11 @@
   .program-admin-link { display:block; width:100%; box-sizing:border-box; margin:12px auto 0; padding:14px 18px; border:1px solid #e8dfd1; border-radius:999px; background:#fff; color:#80602f; text-align:center; text-decoration:none; font-size:15px; font-weight:600; }
   .program-admin-link:focus-visible { outline:2px solid #BE966A; outline-offset:3px; }
   #programNext { display:block; width:100%; margin-top:22px; padding:16px 22px; border:0; border-radius:999px; background:#b88b32; color:#fff; font:inherit; font-weight:700; cursor:pointer; }
-  #programNext:disabled { background:#c9bba7; color:#fff; cursor:not-allowed; opacity:1; }
+  #programNext:disabled, [data-step-next]:disabled { background:#c9bba7; color:#fff; cursor:not-allowed; opacity:1; }
+  .flow-step .step-admin-link { display:block; box-sizing:border-box; width:100%; margin:12px auto 0; padding:15px 18px; border:1px solid #e8dfd1; border-radius:999px; background:#fff; color:#80602f; text-align:center; text-decoration:none; font-size:15px; font-weight:600; }
+  .flow-step .step-admin-link:focus-visible { outline:2px solid #BE966A; outline-offset:3px; }
+  .flow-step [data-step-next] { display:block; width:100%; margin-top:22px; padding:16px 22px; border:0; border-radius:999px; background:#b88b32; color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+  .flow-step [data-pick].is-selected { border-color:#b88b32; background:#fff9ed; box-shadow:0 0 0 1px #b88b32; }
   [data-step="program"] .flow-option.is-selected { border-color:#b88b32; background:#fff9ed; box-shadow:0 0 0 1px #b88b32; }
   .cek-rekom { border: 1px solid #d2d2d7; border-radius: 18px; padding: 18px; background: #fff; margin: 16px 0; }
   .cek-rekom h4 { margin: 10px 0 6px; font-size: 18px; color: var(--text-primary); }
@@ -1258,12 +1262,11 @@
     <!-- Tahap 1 (pintu Daftar): program -->
     <div class="flow-step" data-step="program">
       <h3>Program apa yang ingin Anda ikuti?</h3>
-      <p>Pilih satu. Belum yakin? Jawab tiga pertanyaan singkat, lalu kami sarankan programnya.</p>
+      <p>Pilih program yang ingin dipelajari. Pada langkah berikutnya, kami bantu arahkan fokus belajar yang paling sesuai.</p>
       <div class="flow-options">
         <button type="button" class="flow-option" data-pick="program" data-value="tahsin"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 10c7-2 13 0 19 4v25c-6-4-12-6-19-4zM43 10c-7-2-13 0-19 4v25c6-4 12-6 19-4z"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahsin</span><span class="flow-option-desc">Memperbaiki bacaan: makhraj, sifat huruf, dan tajwid.</span></span></button>
         <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 12c6-2 12 0 17 4v25c-5-4-11-6-17-4zM41 12c-6-2-12 0-17 4v25c5-4 11-6 17-4zM13 8h22"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
       </div>
-      <button type="button" class="cek-link" data-go-cek>Belum yakin? Cek program yang cocok</button>
       <button type="button" class="btn btn-primary btn-lg cek-full" id="programNext" disabled>Lanjutkan</button>
       <a class="program-admin-link" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Ada pertanyaan? Chat Admin</a>
     </div>
@@ -1374,6 +1377,31 @@
   var cek = document.getElementById('cek');
   if (!cek) return;
 
+  // Tombol bantuan admin tersedia konsisten di setiap tahap pendaftaran.
+  cek.querySelectorAll('.flow-step').forEach(function (step) {
+    if (!step.querySelector('.step-admin-link')) {
+      var admin = document.createElement('a');
+      admin.className = 'step-admin-link';
+      admin.href = 'https://wa.me/6285727533000';
+      admin.target = '_blank';
+      admin.rel = 'noopener';
+      admin.textContent = 'Ada pertanyaan? Hubungi Admin via WhatsApp';
+      step.appendChild(admin);
+    }
+  });
+  ['jenisTahsin','jenisTahfidz','untuk','kondisi','harapan'].forEach(function (key) {
+    var step = cek.querySelector('[data-step="' + key + '"]');
+    if (step && !step.querySelector('[data-step-next]')) {
+      var next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'btn btn-primary btn-lg cek-full';
+      next.dataset.stepNext = key;
+      next.textContent = 'Lanjutkan';
+      next.disabled = true;
+      var admin = step.querySelector('.step-admin-link');
+      step.insertBefore(next, admin || null);
+    }
+  });
   var WA = '6285727533000';
   var LBL = { pratahsin: 'Tahsin · Pra Tahsin', reguler: 'Tahsin · Reguler', ziyadah: 'Tahfidz · Ziyadah', murojaah: "Tahfidz · Muroja'ah" };
   var KELAS = {
@@ -1773,6 +1801,15 @@
     if (S.durasi && durasiOpts().indexOf(S.durasi) < 0) S.durasi = null;
     if (S.jam && slotList().indexOf(S.jam) < 0) S.jam = null;
   }
+  function markPicked(key, value) {
+    cek.querySelectorAll('[data-pick="' + key + '"]').forEach(function (option) {
+      var selected = option.dataset.value === value;
+      option.classList.toggle('is-selected', selected);
+      option.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+    var next = cek.querySelector('[data-step-next="' + key + '"]');
+    if (next) next.disabled = !value;
+  }
   function pick(key, v) {
     if (key === 'program') {
       S.program = v;
@@ -1790,11 +1827,12 @@
     if (key === 'jenisTahsin' || key === 'jenisTahfidz') {
       S.jenis = v;
       if (P.tier && S.kelas && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
-      return done(key);
+      markPicked(key, v);
+      return;
     }
-    if (key === 'untuk') { S.untuk = v; return advance('untuk'); }
-    if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; return advance('kondisi'); }
-    if (key === 'harapan') { S.harapan = v; return advance('harapan'); }
+    if (key === 'untuk') { S.untuk = v; markPicked(key, v); return; }
+    if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; markPicked(key, v); return; }
+    if (key === 'harapan') { S.harapan = v; markPicked(key, v); return; }
     if (key === 'kelas') { S.kelas = v; cleanup(); if (S.mode === 'daftar' && !S.editing) { renderKelas(); return; } return done('kelas'); }
     if (key === 'hari') {
       S.hari = v;
@@ -1991,7 +2029,7 @@
   function renderInteractiveDurationTime() {
     var box = document.getElementById('interactiveDurationTime');
     if (!box) return;
-    if (!S.durasi) { box.innerHTML = '<p class="interactive-time-note">Pilih durasi untuk melihat harga dan memilih jam mulai sesi.</p>'; return; }
+    if (!S.durasi) { box.innerHTML = '<p class="interactive-time-note">Pilih durasi untuk melihat harga dan memilih jam mulai sesi.</p><button type="button" class="btn btn-primary btn-lg cek-full profile-next" id="durationNext" disabled>Lanjutkan</button>'; return; }
     var options = '<option value="">Pilih jam mulai</option>' + slotList().map(function(v) {
       return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':','.') + ' WIB</option>';
     }).join('');
@@ -2226,6 +2264,14 @@
       updateProfileStage(profileStep);
       if (profileStepMessage(profileStep)) return;
       done(profileStep);
+      return;
+    }
+    if ((b = t.closest('[data-step-next]'))) {
+      var nextKey = b.dataset.stepNext;
+      var selectedValue = nextKey === 'jenisTahsin' || nextKey === 'jenisTahfidz' ? S.jenis : S[nextKey];
+      if (!selectedValue) return;
+      if (nextKey === 'jenisTahsin' || nextKey === 'jenisTahfidz') done(nextKey);
+      else advance(nextKey);
       return;
     }
     if (t.closest('#programNext')) { if (S.program) advance('program'); return; }
