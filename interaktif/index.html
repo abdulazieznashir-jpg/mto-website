@@ -1331,6 +1331,7 @@
       <h3>Pilih paket belajar yang paling cocok untuk Anda</h3>
       <p>Semua paket mendapat bimbingan privat 1-on-1. Pilih durasi sesi sesuai kebutuhan Anda.</p>
       <div class="flow-options journey-packages" id="kelasOpts"></div>
+      <button type="button" class="btn btn-primary btn-lg cek-full interactive-day-next" id="packageNext" disabled>Lanjutkan</button>
     </div>
 
     <div class="flow-step" data-step="durasi">
@@ -1775,7 +1776,7 @@
     if (key === 'untuk') { S.untuk = v; return advance('untuk'); }
     if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; return advance('kondisi'); }
     if (key === 'harapan') { S.harapan = v; return advance('harapan'); }
-    if (key === 'kelas') { S.kelas = v; cleanup(); return done('kelas'); }
+    if (key === 'kelas') { S.kelas = v; cleanup(); if (S.mode === 'daftar' && !S.editing) { renderKelas(); return; } return done('kelas'); }
     if (key === 'hari') {
       S.hari = v;
       if (S.mode === 'daftar' && !S.editing) { renderHari(); return; }
@@ -1939,6 +1940,8 @@
         '<span class="flow-option-title">' + c.menit + ' menit per pertemuan</span>' +
         '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></button>';
     }).join('');
+    var next = document.getElementById('packageNext');
+    if (next) next.disabled = !S.kelas;
   }
   function renderDurasi() {
     var c = KELAS[S.kelas];
@@ -2204,6 +2207,7 @@
       return;
     }
     if (t.closest('#dayNext')) { if (S.hari) done('hari'); return; }
+    if (t.closest('#packageNext')) { if (S.kelas) done('kelas'); return; }
     if (t.closest('#durationNext')) { if (S.durasi && S.jam) done('durasi'); return; }
     if (t.closest('[data-go-cek]')) {
       S = { peserta: 1, mode: 'cek', periode: null, editing: false };
