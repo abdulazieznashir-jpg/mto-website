@@ -294,6 +294,11 @@
   .flow-tag { display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 11px; font-weight: 600; color: #8a6a3f; background: #fbf5ec; border-radius: 999px; padding: 2px 8px; }
   .cek-link { all: unset; display: block; box-sizing: border-box; margin: 18px auto 0; font-size: 15px; font-weight: 500; color: #8a6a3f; text-align: center; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
   .cek-link:focus-visible { outline: 2px solid #BE966A; outline-offset: 2px; }
+  .program-admin-link { display:block; width:100%; box-sizing:border-box; margin:12px auto 0; padding:14px 18px; border:1px solid #e8dfd1; border-radius:999px; background:#fff; color:#80602f; text-align:center; text-decoration:none; font-size:15px; font-weight:600; }
+  .program-admin-link:focus-visible { outline:2px solid #BE966A; outline-offset:3px; }
+  #programNext { display:block; width:100%; margin-top:22px; padding:16px 22px; border:0; border-radius:999px; background:#b88b32; color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+  #programNext:disabled { background:#c9bba7; color:#fff; cursor:not-allowed; opacity:1; }
+  [data-step="program"] .flow-option.is-selected { border-color:#b88b32; background:#fff9ed; box-shadow:0 0 0 1px #b88b32; }
   .cek-rekom { border: 1px solid #d2d2d7; border-radius: 18px; padding: 18px; background: #fff; margin: 16px 0; }
   .cek-rekom h4 { margin: 10px 0 6px; font-size: 18px; color: var(--text-primary); }
   .cek-rekom p { margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 15px; }
@@ -1259,6 +1264,8 @@
         <button type="button" class="flow-option" data-pick="program" data-value="tahfidz"><span class="flow-option-icon" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 12c6-2 12 0 17 4v25c-5-4-11-6-17-4zM41 12c-6-2-12 0-17 4v25c5-4 11-6 17-4zM13 8h22"/></svg></span><span class="flow-option-body"><span class="flow-option-title">Tahfidz</span><span class="flow-option-desc">Setoran hafalan harian, baru maupun muroja'ah.</span></span></button>
       </div>
       <button type="button" class="cek-link" data-go-cek>Belum yakin? Cek program yang cocok</button>
+      <button type="button" class="btn btn-primary btn-lg cek-full" id="programNext" disabled>Lanjutkan</button>
+      <a class="program-admin-link" href="https://wa.me/6285727533000" target="_blank" rel="noopener">Ada pertanyaan? Chat Admin</a>
     </div>
 
     <div class="flow-step" data-step="jenisTahsin">
@@ -1767,7 +1774,19 @@
     if (S.jam && slotList().indexOf(S.jam) < 0) S.jam = null;
   }
   function pick(key, v) {
-    if (key === 'program') { S.program = v; S.jenis = P.jenis || null; return advance('program'); }
+    if (key === 'program') {
+      S.program = v;
+      S.jenis = P.jenis || null;
+      var programOptions = cek.querySelectorAll('[data-pick="program"]');
+      programOptions.forEach(function (option) {
+        var selected = option.dataset.value === v;
+        option.classList.toggle('is-selected', selected);
+        option.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+      var programNext = document.getElementById('programNext');
+      if (programNext) programNext.disabled = !S.program;
+      return;
+    }
     if (key === 'jenisTahsin' || key === 'jenisTahfidz') {
       S.jenis = v;
       if (P.tier && S.kelas && kelasList().indexOf(S.kelas) < 0) { P.tier = null; S.kelas = null; }
@@ -2209,6 +2228,7 @@
       done(profileStep);
       return;
     }
+    if (t.closest('#programNext')) { if (S.program) advance('program'); return; }
     if (t.closest('#dayNext')) { if (S.hari) done('hari'); return; }
     if (t.closest('#packageNext')) { if (S.kelas) done('kelas'); return; }
     if (t.closest('#durationNext')) { if (S.durasi && S.jam) done('durasi'); return; }
