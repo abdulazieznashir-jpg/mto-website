@@ -1935,7 +1935,7 @@
     document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
       var c = KELAS[k];
       var tag = k === 'gold' ? '<span class="flow-tag">Paling populer</span>' : '';
-      return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '">' +
+      return '<button type="button" class="flow-option journey-package ' + (k === 'gold' ? 'recommended' : '') + '" data-pick="kelas" data-value="' + k + '" aria-pressed="' + (S.kelas === k) + '">' +
         '<span class="journey-package-copy"><span class="journey-package-heading"><span class="journey-package-name">' + c.nama + '</span>' + tag + '</span>' +
         '<span class="flow-option-title">' + c.menit + ' menit per pertemuan</span>' +
         '<span class="flow-option-desc">' + GAYA_DESC[k] + '</span></span></button>';
