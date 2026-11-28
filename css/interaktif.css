@@ -264,3 +264,12 @@ html.interactive-variant.registration-active .journey-package[aria-pressed="true
     max-width: none;
   }
 }
+
+/* Tombol perkenalan mengikuti lebar bidang nama di desktop. */
+html.interactive-variant.registration-active .flow-step[data-step="nama"] .profile-next {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  margin: 22px auto 0;
+  box-sizing: border-box;
+}
