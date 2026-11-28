@@ -7,6 +7,10 @@ html.interactive-variant {
   --interactive-gold-soft: #fff6df;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
 }
+html.interactive-variant .hero { padding-bottom: 64px; }
+@media (max-width: 640px) {
+  html.interactive-variant .hero { padding-bottom: 48px; }
+}
 html.interactive-variant.registration-active,
 html.interactive-variant.registration-active body {
   background: #f7f3ed;
