@@ -1169,3 +1169,6 @@ html.registration-active .duration-total {
   html.registration-active .duration-total { font-size: 14px; }
   html.registration-active .duration-total strong { font-size: 17px; }
 }
+
+/* Form data remains balanced after removing the duplicate section heading. */
+html.registration-active .flow-step[data-step="data"] .cek-form { margin-top: 20px; }
