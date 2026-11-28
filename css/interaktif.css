@@ -224,3 +224,39 @@ html.interactive-variant.registration-active .journey-day[aria-pressed="true"] {
 html.interactive-variant.registration-active #durationNext:disabled,
 html.interactive-variant.registration-active .profile-next:disabled { opacity:.52; cursor:not-allowed; }
 html.interactive-variant.registration-active #summarySubmitError:empty { display:none; }
+
+/* Align registration controls to one shared axis and give each choice step a clear CTA. */
+html.interactive-variant.registration-active #interactiveDurationTime {
+  width: min(100%, 760px);
+  margin: 18px auto 0;
+}
+html.interactive-variant.registration-active .interactive-time-picker {
+  width: 100%;
+}
+html.interactive-variant.registration-active #durationNext {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 18px auto 0;
+}
+html.interactive-variant.registration-active #packageNext {
+  display: block;
+  width: min(100%, 560px);
+  margin: 22px auto 0;
+  border-radius: 999px;
+}
+html.interactive-variant.registration-active #packageNext:disabled {
+  opacity: .52;
+  cursor: not-allowed;
+}
+html.interactive-variant.registration-active .journey-package[aria-pressed="true"] {
+  border-color: #b98527;
+  background: #fff8e9;
+  box-shadow: 0 8px 22px rgba(129,94,37,.1);
+}
+@media (max-width: 680px) {
+  html.interactive-variant.registration-active #packageNext {
+    width: 100%;
+    max-width: none;
+  }
+}
