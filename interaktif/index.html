@@ -1690,9 +1690,9 @@
       r.push('nama');
       if (!P.program) r.push('program');
       if (!P.jenis) r.push(S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin');
-      r.push('profil', 'kontak', 'hari');
+      r.push('hari');
       if (!P.tier) r.push('kelas');
-      r.push('durasi', 'ringkasan');
+      r.push('durasi', 'profil', 'kontak', 'ringkasan');
     }
     return r;
   }
@@ -1821,9 +1821,12 @@
       if (!namaValid()) return 'nama';
       if (!S.program) return 'program';
       if (!S.jenis) return S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin';
+      if (!S.hari) return 'hari';
+      if (!S.kelas) return 'kelas';
+      if (!S.durasi || !S.jam) return 'durasi';
       if (!profilValid()) return 'profil';
       if (!kontakValid()) return 'kontak';
-      return !S.hari ? 'hari' : (!S.kelas ? 'kelas' : (!S.durasi || !S.jam ? 'durasi' : null));
+      return null;
     }
     return !S.kelas ? 'kelas' : (!S.hari ? 'hari' : (!S.durasi ? 'durasi' : (!S.jam ? 'jam' : null)));
   }
