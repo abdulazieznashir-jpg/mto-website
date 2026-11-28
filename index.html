@@ -345,15 +345,22 @@
   .pricing-was { font-size: 15px; color: #86868b; text-decoration: line-through; margin-bottom: 4px; }
   .pricing-price .rb { font-size: 22px; font-weight: 700; color: var(--text-primary); align-self: baseline; }
   .pricing-price .harga-pct { align-self: center; margin-left: 6px; }
-  /* Panel tanya admin juga mengikuti alur dokumen, tanpa backdrop melayang. */
-  .ask-backdrop { display: block; width: 100%; padding: 24px 22px; background: #FBFBFD; }
+  /* Panel bantuan tampil sebagai modal, tidak menambah ruang setelah footer. */
+  .ask-backdrop { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 24px; padding-bottom: max(24px, env(safe-area-inset-bottom)); background: rgba(26, 24, 20, .42); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); overscroll-behavior: contain; }
   .ask-backdrop[hidden] { display: none; }
-  .ask-panel { width: 100%; max-width: 760px; margin: 0 auto; background: #fff; color: #1d1d1f; border: 1px solid #e5e5ea; border-radius: 18px; overflow: visible; }
-  .ask-top { position: static; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e5ea; }
+  .ask-panel { display: flex; flex-direction: column; width: min(100%, 600px); max-height: min( min(84vh, 760px), calc(100dvh - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); margin: auto; background: #fffdfa; color: #1d1d1f; border: 1px solid #eee7dc; border-radius: 22px; overflow: hidden; box-shadow: 0 24px 80px rgba(40, 31, 15, .2); }
+  .ask-top { position: relative; flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: #fffdfa; border-bottom: 1px solid #eee7dc; }
   .ask-top h3 { margin: 0; flex: 1; font-size: 17px; }
-  .ask-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d2d2d7; background: #fff; font-size: 20px; line-height: 1; cursor: pointer; color: #1d1d1f; }
+  .ask-nav { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 50%; border: 1px solid #e5dfd6; background: #fff; font-size: 20px; line-height: 1; cursor: pointer; color: #1d1d1f; }
   .ask-nav[hidden] { display: none; }
-  .ask-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .ask-body { min-height: 0; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  body.ask-open { overflow: hidden; }
+  @media (max-width: 600px) {
+    .ask-backdrop { place-items: end center; padding: 12px 12px max(12px, env(safe-area-inset-bottom)); }
+    .ask-panel { width: 100%; max-height: min(82vh, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); border-radius: 22px; }
+    .ask-top { padding: 13px 15px; }
+    .ask-body { padding: 14px; }
+  }
   .ask-opt { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid #d2d2d7; border-radius: 14px; background: #fff; font: inherit; font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; }
   .ask-opt:hover { border-color: #BE966A; }
   .ask-opt small { display: block; font-size: 13px; font-weight: 400; color: #6e6e73; margin-top: 2px; }
@@ -2214,8 +2221,21 @@
     }
   }
   function go(s) { hist.push(s); draw(s); }
-  function open() { hist = []; pic = null; lead = null; go({ k: 'list' }); modal.hidden = false; modal.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  function close() { modal.hidden = true; }
+  var lastAskFocus = null;
+  function open() {
+    lastAskFocus = document.activeElement;
+    hist = []; pic = null; lead = null; go({ k: 'list' });
+    modal.hidden = false;
+    document.body.classList.add('ask-open');
+    var closeButton = document.getElementById('askClose');
+    if (closeButton) closeButton.focus({ preventScroll: true });
+  }
+  function close() {
+    modal.hidden = true;
+    document.body.classList.remove('ask-open');
+    if (lastAskFocus && typeof lastAskFocus.focus === 'function') lastAskFocus.focus({ preventScroll: true });
+    lastAskFocus = null;
+  }
   // Tautan "Chat WhatsApp" dari halaman lain membuka panel ini: index.html?ask=1
   document.addEventListener('DOMContentLoaded', function () {
     try { if (new URLSearchParams(location.search).get('ask') === '1') open(); } catch (e) {}
