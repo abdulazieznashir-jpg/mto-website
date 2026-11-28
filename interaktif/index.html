@@ -670,7 +670,7 @@
   @media(max-width:540px) { html.registration-active .flow { padding: max(14px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom)); } html.registration-active [data-step="program"] .flow-options, html.registration-active [data-step^="jenis"] .flow-options { grid-template-columns:1fr; } .journey-progress { padding-left:4px; padding-right:4px; } .journey-progress small { font-size:9px; } .journey-banner { min-height:100px; } }
 </style>
   <link rel="stylesheet" href="css/premium-ui.css?v=20261128-5">
-  <link rel="stylesheet" href="css/interaktif.css?v=1">
+  <link rel="stylesheet" href="css/interaktif.css?v=2">
 </head>
 <body>
 <a href="/interaktif/#konten" class="skip-link">Lewati ke konten utama</a>
@@ -1216,7 +1216,39 @@
       <div class="flow-hero-copy"><span class="flow-hero-kicker">PENDAFTARAN</span><strong id="journeyTitle">Pilih Program</strong></div>
       <div class="flow-hero-art" aria-hidden="true"><svg viewBox="0 0 320 280" role="img" aria-label="Ornamen mandala Islami berwarna emas" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#C88D22" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".72"><circle cx="252" cy="157" r="112"/><circle cx="252" cy="157" r="92"/><circle cx="252" cy="157" r="61"/><circle cx="252" cy="157" r="29"/><g opacity=".78"><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(30 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(60 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(90 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(120 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(150 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(180 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(210 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(240 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(270 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(300 252 157)"/><path d="M252 157C217 143 207 113 252 39c45 74 35 104 0 118Z" transform="rotate(330 252 157)"/></g><path d="m252 17 5 11 11 5-11 5-5 11-5-11-11-5 11-5 5-11Z" fill="#D49B2F" stroke="none"/><path d="m252 135 4 9 9 4-9 4-4 9-4-9-9-4 9-4 4-9Z" fill="#D49B2F" stroke="none"/></g></svg></div>
     </div>
-    <div class="journey-head" aria-live="polite"><ol class="journey-progress" aria-label="Tahapan pendaftaran"><li data-journey="0"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c3.4-.9 6.1-.3 8 1.6v12c-1.9-1.9-4.6-2.5-8-1.6zM20 5.5c-3.4-.9-6.1-.3-8 1.6v12c1.9-1.9 4.6-2.5 8-1.6z"/></svg></i><small>Program</small></li><li data-journey="1"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M4 9.5h16"/></svg></i><small>Hari</small></li><li data-journey="2"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></i><small>Paket</small></li><li data-journey="3"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></i><small>Durasi</small></li><li data-journey="4"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></i><small>Daftar</small></li></ol></div>
+    <div class="journey-context" aria-live="polite">
+      <strong id="journeyGreeting">Assalamu'alaikum. Mari mulai pendaftaran.</strong>
+      <p id="journeyContextCopy">Saya pandu tahap demi tahap supaya pilihan program dan informasi pendaftaran terasa jelas.</p>
+    </div>
+    <div class="journey-head">
+      <ol class="journey-progress" id="journeyProgress" aria-label="Progres pendaftaran"></ol>
+      <span class="journey-count" id="journeyCount">1 dari 9</span>
+    </div>
+
+    <div class="flow-step" data-step="nama">
+      <h3>Kenalan dulu, ya</h3>
+      <p>Nama panggilan membuat sapaan terasa lebih dekat. Nama lengkap akan digunakan pada sertifikat.</p>
+      <div class="cek-form" id="nameFields"></div>
+      <p class="profile-hint" id="nameHint"></p>
+      <button type="button" class="btn btn-primary btn-lg cek-full profile-next" data-profile-next="nama" disabled>Lanjutkan</button>
+    </div>
+
+    <div class="flow-step" data-step="profil">
+      <h3>Sedikit tentang peserta</h3>
+      <p>Informasi ini membantu kami menyiapkan pengajar dan pendekatan belajar yang sesuai.</p>
+      <div class="cek-form" id="profileFields"></div>
+      <p class="profile-hint" id="profileHint"></p>
+      <button type="button" class="btn btn-primary btn-lg cek-full profile-next" data-profile-next="profil" disabled>Lanjutkan</button>
+    </div>
+
+    <div class="flow-step" data-step="kontak">
+      <h3>Ke mana kami bisa menghubungi?</h3>
+      <p>WhatsApp digunakan untuk konfirmasi dan koordinasi jadwal. Masukkan email aktif agar informasi pendaftaran tercatat dengan benar.</p>
+      <div class="cek-form" id="contactFields"></div>
+      <div id="contactVerifyBox"></div>
+      <p class="profile-hint" id="contactHint"></p>
+      <button type="button" class="btn btn-primary btn-lg cek-full profile-next" data-profile-next="kontak" disabled>Lanjutkan</button>
+    </div>
 
     <!-- Tahap 1 (pintu Daftar): program -->
     <div class="flow-step" data-step="program">
@@ -1292,6 +1324,7 @@
         <button type="button" class="journey-day" data-pick="hari" data-value="weekday"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekdays</strong><span>Senin–Jumat</span><small>Cocok untuk Anda yang ingin rutin belajar di hari kerja.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="journey-day" data-pick="hari" data-value="weekend"><span class="journey-day-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="11" width="34" height="31" rx="5"/><path d="M15 6v10M33 6v10M8 20h32"/></svg></span><span class="journey-day-copy"><strong>Weekend</strong><span>Sabtu &amp; Ahad</span><small>Cocok untuk Anda yang ingin belajar di akhir pekan.</small></span><span class="journey-day-arrow" aria-hidden="true">›</span></button>
       </div>
+      <button type="button" class="btn btn-primary btn-lg cek-full interactive-day-next" id="dayNext" hidden>Lanjutkan</button>
     </div>
 
     <div class="flow-step" data-step="kelas">
@@ -1304,6 +1337,7 @@
       <h3>Berapa lama Anda ingin belajar?</h3>
       <p>Semakin panjang durasi belajar, semakin hemat biaya yang Anda keluarkan.</p>
       <div class="flow-options" id="durasiOpts"></div>
+      <div class="interactive-duration-time" id="interactiveDurationTime"></div>
     </div>
 
     <div class="flow-step" data-step="jam">
@@ -1369,9 +1403,9 @@
   function dialOf(iso) { for (var i = 0; i < NEG_SEMUA.length; i++) { if (NEG_SEMUA[i][0] === iso) return NEG_SEMUA[i][2]; } return '62'; }
   var STAGE_NAME = { 1: 'Kenali kebutuhan', 2: 'Atur jadwal', 3: 'Daftar' };
   var STAGE_OF = {
-    program: 1, jenisTahsin: 1, jenisTahfidz: 1, untuk: 1, kondisi: 1, harapan: 1, rekom: 1,
-    kelas: 2, hari: 2, durasi: 2, jam: 2,
-    ringkasan: 3, data: 3, bayar: 3, kirim: 3
+    nama: 1, program: 1, jenisTahsin: 1, jenisTahfidz: 1, profil: 2, kontak: 2,
+    untuk: 1, kondisi: 1, harapan: 1, rekom: 1, kelas: 2, hari: 2, durasi: 2,
+    jam: 2, ringkasan: 3, data: 3, bayar: 3, kirim: 3
   };
 
   var steps = {};
@@ -1637,27 +1671,80 @@
   }
   function ringkas() {
     var k = KELAS[S.kelas];
-    return 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
+    var identitas = S.mode === 'daftar'
+      ? 'Nama panggilan: ' + (S.sapaan || '-') + '\nNama pada sertifikat: ' + (S.nama || '-') + '\nJenis kelamin: ' + (S.jk || '-') + '\nTanggal lahir: ' + (S.tgl || '-') + '\nWhatsApp: +' + (waFull() || '-') + '\nEmail: ' + (S.email || '-') + '\n'
+      : '';
+    return identitas + 'Untuk: ' + (S.untuk || '-') + '\nProgram: ' + LBL[S.jenis] + '\nKelas: ' + k.nama + ' (' + k.menit + ' menit per sesi)\n' +
       'Hari: ' + HARI[S.hari] + '\nDurasi: ' + durasiLabel(S.durasi) + '\nJam mulai: ' + (S.jam || '').replace(':', '.') + ' WIB\nPeriode: ' + periodeLabel() + '\n' +
       'Promo: ' + promoText() + '\nPeserta: ' + S.peserta + '\nTotal: ' + rupiah(totalBayar()) + '\n';
   }
-
   /* ---------- alur: satu urutan untuk semua pintu masuk ---------- */
   // Urutan langkah bergantung pada pintu masuk dan pilihan yang sudah diisi lewat tautan.
   function route() {
     var r = [];
     if (S.mode === 'cek') {
       r.push('untuk', 'kondisi', 'harapan', 'rekom');
-      if (!P.tier) r.push('kelas');
-      r.push('hari', 'durasi', 'jam', 'ringkasan', 'data');
+      return r;
     } else {
+      r.push('nama');
       if (!P.program) r.push('program');
       if (!P.jenis) r.push(S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin');
-      r.push('hari');
+      r.push('profil', 'kontak', 'hari');
       if (!P.tier) r.push('kelas');
-      r.push('durasi', 'jam', 'ringkasan', 'data');
+      r.push('durasi', 'ringkasan');
     }
     return r;
+  }
+  function namaValid() { return !!(S.sapaan && S.sapaan.trim().length >= 2 && S.nama && S.nama.trim().length >= 3); }
+  function tglValid() {
+    if (!S.tgl) return false;
+    var d = new Date(S.tgl + 'T00:00:00');
+    return !isNaN(d.getTime()) && d <= new Date();
+  }
+  function profilValid() { return !!(S.jk && tglValid()); }
+  function kontakValid() { return !!(waCocok() && emailValid() && S.confirm); }
+  function registrationValid() {
+    return namaValid() && profilValid() && kontakValid() && !!(S.program && S.jenis && S.hari && S.kelas && S.durasi && S.jam);
+  }
+  function profileStepMessage(step) {
+    if (step === 'nama') return namaValid() ? '' : (!S.sapaan || S.sapaan.trim().length < 2 ? 'Isi nama panggilan agar kami bisa menyapa Anda.' : 'Isi nama lengkap yang ingin dicantumkan pada sertifikat.');
+    if (step === 'profil') return !S.jk ? 'Pilih jenis kelamin.' : (!tglValid() ? 'Isi tanggal lahir yang benar dan tidak melebihi hari ini.' : '');
+    if (step === 'kontak') return !waValid() ? 'Isi nomor WhatsApp yang aktif.' : (!waCocok() ? (S.wa2 ? jelasBedaWa() : 'Ketik ulang nomor WhatsApp untuk memastikan tidak salah.') : (!emailValid() ? 'Isi alamat email dengan format yang benar.' : (!S.confirm ? 'Centang konfirmasi bahwa nomor WhatsApp sudah benar.' : '')));
+    return '';
+  }
+  function updateProfileStage(step) {
+    var b = cek.querySelector('[data-profile-next="' + step + '"]');
+    var h = document.getElementById(step === 'nama' ? 'nameHint' : step === 'profil' ? 'profileHint' : 'contactHint');
+    if (!b) return;
+    var msg = profileStepMessage(step);
+    b.disabled = !!msg;
+    if (h) h.textContent = msg;
+  }
+  function renderRegistrationFields(step) {
+    var target = document.getElementById(step === 'nama' ? 'nameFields' : step === 'profil' ? 'profileFields' : 'contactFields');
+    if (!target) return;
+    if (step === 'nama') {
+      target.innerHTML =
+        '<label>Nama panggilan<input class="cek-input" type="text" name="sapaan" autocomplete="nickname" maxlength="60" placeholder="Contoh: Firdaus" value="' + esc(S.sapaan || '') + '"></label>' +
+        '<p class="interactive-field-help">Dipakai untuk sapaan yang muncul selama proses pendaftaran.</p>' +
+        '<label>Nama lengkap untuk sertifikat<input class="cek-input" type="text" name="nama" autocomplete="name" maxlength="120" placeholder="Tulis sesuai penulisan yang diinginkan" value="' + esc(S.nama || '') + '"></label>' +
+        '<p class="interactive-field-help">Periksa ejaan nama ini; nama tersebut akan dicetak pada sertifikat.</p>';
+    } else if (step === 'profil') {
+      var seg = function(v,t) { return '<label class="cek-jk-pilih"><input type="radio" name="cekJk" value="' + v + '"' + (S.jk === v ? ' checked' : '') + '><span>' + t + '</span></label>'; };
+      target.innerHTML =
+        '<div class="cek-jk"><span id="profileJkLabel">Jenis kelamin</span><div class="cek-jk-opsi" role="radiogroup" aria-labelledby="profileJkLabel">' + seg('perempuan','Perempuan') + seg('laki-laki','Laki-laki') + '</div></div>' +
+        '<label>Tanggal lahir<input type="date" name="tgl" class="cek-input" autocomplete="bday" value="' + esc(S.tgl || '') + '"></label>';
+    } else {
+      var sel = NEG_SEMUA.map(function(o) {
+        return '<option value="' + o[0] + '"' + ((S.kodeNeg || 'ID') === o[0] ? ' selected' : '') + '>' + flagOf(o[0]) + ' ' + o[1] + ' (+' + o[2] + ')</option>';
+      }).join('');
+      target.innerHTML =
+        '<div class="cek-wa"><label for="interactiveWa">Nomor WhatsApp</label><div class="cek-wa-row"><select name="kodeNeg" class="cek-input cek-kode" aria-label="Kode negara">' + sel + '</select><input id="interactiveWa" type="tel" name="wa" class="cek-input" inputmode="numeric" autocomplete="tel" placeholder="812xxxxxxxx" value="' + esc(waTampil(S.wa)) + '"></div></div>' +
+        '<label>Ulangi nomor WhatsApp<input type="tel" name="wa2" class="cek-input" inputmode="numeric" autocomplete="off" placeholder="Ketik ulang nomor yang sama" value="' + esc(waTampil(S.wa2)) + '"></label>' +
+        '<label>Email<input type="email" name="email" class="cek-input" autocomplete="email" placeholder="nama@email.com" value="' + esc(S.email || '') + '"></label>' +
+        '<label class="cek-check"><input type="checkbox" name="cekConfirm"' + (S.confirm ? ' checked' : '') + '><span>Saya memastikan nomor WhatsApp di atas sudah benar dan aktif.</span></label>';
+    }
+    updateProfileStage(step);
   }
   function advance(cur) {
     var r = route(), i = r.indexOf(cur);
@@ -1689,8 +1776,16 @@
     if (key === 'kondisi') { S.kondisi = v; S.jenis = REKOM[v]; return advance('kondisi'); }
     if (key === 'harapan') { S.harapan = v; return advance('harapan'); }
     if (key === 'kelas') { S.kelas = v; cleanup(); return done('kelas'); }
-    if (key === 'hari') { S.hari = v; return done('hari'); }
-    if (key === 'durasi') { S.durasi = Number(v); return done('durasi'); }
+    if (key === 'hari') {
+      S.hari = v;
+      if (S.mode === 'daftar' && !S.editing) { renderHari(); return; }
+      return done('hari');
+    }
+    if (key === 'durasi') {
+      S.durasi = Number(v);
+      if (S.mode === 'daftar') { renderDurasi(); return; }
+      return done('durasi');
+    }
   }
 
   function openFlow(opts) {
@@ -1721,35 +1816,80 @@
   }
   // Jika pilihan jadwal ada yang kosong (mis. jam terhapus setelah ganti kelas lalu menekan kembali), arahkan ke langkah yang kurang.
   function langkahKurang() {
+    if (S.mode === 'daftar') {
+      if (!namaValid()) return 'nama';
+      if (!S.program) return 'program';
+      if (!S.jenis) return S.program === 'tahfidz' ? 'jenisTahfidz' : 'jenisTahsin';
+      if (!profilValid()) return 'profil';
+      if (!kontakValid()) return 'kontak';
+      return !S.hari ? 'hari' : (!S.kelas ? 'kelas' : (!S.durasi || !S.jam ? 'durasi' : null));
+    }
     return !S.kelas ? 'kelas' : (!S.hari ? 'hari' : (!S.durasi ? 'durasi' : (!S.jam ? 'jam' : null)));
   }
   function show(step) {
-    if (step === 'ringkasan' || step === 'data') {
+    if ((step === 'ringkasan' || step === 'data') && (S.mode !== 'daftar' || step === 'ringkasan')) {
       var kurang = langkahKurang();
       if (kurang) { S.editing = true; hist[hist.length - 1] = kurang; step = kurang; }
     }
-    if (window.mtoTrack && step === 'data') window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
+    if (S.mode === 'daftar' && step === 'nama' && !S.initiateTracked && window.mtoTrack) {
+      window.mtoTrack('InitiateCheckout', { content_name: 'Pendaftaran interaktif' });
+      S.initiateTracked = true;
+    } else if (window.mtoTrack && step === 'data') {
+      window.mtoTrack('InitiateCheckout', { content_name: 'Form data pendaftaran' });
+    }
     Object.keys(steps).forEach(function (k) { steps[k].classList.toggle('active', k === step); });
     var flowPanel = cek.querySelector('.flow');
     if (flowPanel) flowPanel.scrollTop = 0;
     backBtn.hidden = hist.length <= 1;
     var n = STAGE_OF[step];
-    var label = n === 1 ? (S.mode === 'daftar' ? 'Pilih program' : STAGE_NAME[1]) : STAGE_NAME[n];
+    var label = n === 1 ? (S.mode === 'daftar' ? 'Pendaftaran' : STAGE_NAME[1]) : STAGE_NAME[n];
     var legacy = document.getElementById('legacyFlowStage');
     legacy.hidden = S.mode === 'daftar';
+    var journeyHead = document.querySelector('.journey-head');
+    if (journeyHead) journeyHead.hidden = S.mode !== 'daftar';
     if (S.mode === 'daftar') {
-      var idx = step === 'hari' ? 1 : step === 'kelas' ? 2 : (step === 'durasi' || step === 'jam') ? 3 : (step === 'ringkasan' || step === 'data') ? 4 : 0;
-      document.getElementById('journeyTitle').textContent = step === 'program' ? 'Pilih Program' :
-        step === 'jenisTahsin' ? 'Kelas Tahsin' : step === 'jenisTahfidz' ? 'Kelas Tahfidz' :
-        (step === 'hari' ? (LBL[S.jenis] || 'PILIH PROGRAM') : (step === 'ringkasan' || step === 'data' ? 'Data Pendaftaran' : (LBL[S.jenis] || 'PROGRAM')));
-
-      document.querySelectorAll('.journey-progress li').forEach(function (el, i) { el.classList.toggle('done', i < idx); el.classList.toggle('current', i === idx); });
+      var routeSteps = route(), idx = routeSteps.indexOf(step);
+      var progress = document.getElementById('journeyProgress');
+      var count = document.getElementById('journeyCount');
+      var titles = {
+        nama: 'Kenalan dulu', program: 'Pilih program', jenisTahsin: 'Kelas Tahsin',
+        jenisTahfidz: 'Kelas Tahfidz', profil: 'Profil peserta', kontak: 'Kontak peserta',
+        hari: 'Jadwal belajar', kelas: 'Paket belajar', durasi: 'Durasi belajar',
+        ringkasan: 'Konfirmasi pendaftaran'
+      };
+      if (progress) progress.innerHTML = routeSteps.map(function (_, i) {
+        var cls = i < idx ? 'done' : (i === idx ? 'current' : '');
+        return '<li class="' + cls + '"' + (i === idx ? ' aria-current="step"' : '') + '><i aria-hidden="true"></i></li>';
+      }).join('');
+      if (count) count.textContent = (idx + 1) + ' dari ' + routeSteps.length;
+      document.getElementById('journeyTitle').textContent = titles[step] || 'Pendaftaran';
+      var greetings = {
+        nama: ['Assalamu’alaikum. Mari kenalan dulu.', 'Nama panggilan dipakai untuk sapaan; nama lengkap Anda akan dicetak pada sertifikat.'],
+        program: ['Baik, Kak ' + (S.sapaan || '') + '.', 'Tahsin berfokus pada perbaikan bacaan. Tahfidz mendampingi setoran hafalan dan muroja’ah.'],
+        jenisTahsin: ['Mari pilih fokus belajar, Kak ' + (S.sapaan || '') + '.', 'Kelas Pra Tahsin dimulai dari huruf dan makhraj; kelas Reguler berfokus memperbaiki bacaan dan tajwid.'],
+        jenisTahfidz: ['Mari tentukan target belajar, Kak ' + (S.sapaan || '') + '.', 'Ziyadah untuk menambah hafalan; Muroja’ah untuk menjaga dan menguatkan hafalan yang sudah dimiliki.'],
+        profil: ['Terima kasih, Kak ' + (S.sapaan || '') + '.', 'Kami menyiapkan pendampingan yang sesuai untuk peserta ikhwan maupun akhwat.'],
+        kontak: ['Sebentar lagi selesai, Kak ' + (S.sapaan || '') + '.', 'WhatsApp membantu admin mengonfirmasi pendaftaran dan jadwal. Email melengkapi informasi kontak Anda.'],
+        hari: ['Pilih waktu yang nyaman, Kak ' + (S.sapaan || '') + '.', 'Belajar berlangsung privat secara online melalui WhatsApp Call atau Google Meet.'],
+        kelas: ['Sekarang pilih waktu per sesi, Kak ' + (S.sapaan || '') + '.', 'Semua pilihan adalah bimbingan privat 1-on-1. Anda dapat menyesuaikan paket dengan kebutuhan belajar.'],
+        durasi: ['Atur rencana belajar, Kak ' + (S.sapaan || '') + '.', 'Pilih durasi 1 atau 3 bulan. Harga dan penghematan ditampilkan sebelum Anda memilih.'],
+        ringkasan: ['Hampir selesai, Kak ' + (S.sapaan || '') + '.', 'Periksa data, pilihan program, dan total pembayaran. Bagian yang perlu diperbaiki bisa diubah.']
+      };
+      var context = greetings[step] || greetings.nama;
+      var greeting = document.getElementById('journeyGreeting'), copy = document.getElementById('journeyContextCopy');
+      if (greeting) greeting.textContent = context[0];
+      if (copy) copy.textContent = context[1];
     } else {
       stageEl.textContent = 'Tahap ' + n + ' dari 3 · ' + label;
       barEl.style.width = (n / 3 * 100) + '%';
     }
-    var R = { harapan: renderHarapan, rekom: renderRekom, hari: renderHari, kelas: renderKelas, durasi: renderDurasi, jam: renderJam,
-      ringkasan: renderRingkasan, data: renderData };
+    var R = {
+      nama: function(){ renderRegistrationFields('nama'); },
+      profil: function(){ renderRegistrationFields('profil'); },
+      kontak: function(){ renderRegistrationFields('kontak'); },
+      harapan: renderHarapan, rekom: renderRekom, hari: renderHari, kelas: renderKelas,
+      durasi: renderDurasi, jam: renderJam, ringkasan: renderRingkasan, data: renderData
+    };
     if (R[step]) R[step]();
     var first = steps[step].querySelector('button, input, select');
     if (first && step !== 'data') setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
@@ -1784,6 +1924,11 @@
       '<p>' + data.intro + '</p>' +
       '<div class="journey-learning"><strong>' + data.title + '</strong><ul>' + points + '</ul></div>' +
       '<div class="journey-online"><span class="journey-online-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="5" y="12" width="27" height="24" rx="5"/><path d="m32 20 11-6v20l-11-6z"/></svg></span><p><b>Belajar online</b> lewat WhatsApp Call atau Google Meet, dengan jadwal yang disepakati.</p></div>';
+    cek.querySelectorAll('[data-pick="hari"]').forEach(function(btn) {
+      btn.setAttribute('aria-pressed', String(btn.dataset.value === S.hari));
+    });
+    var next = document.getElementById('dayNext');
+    if (next) { next.hidden = S.mode !== 'daftar'; next.disabled = !S.hari; }
   }
   function renderKelas() {
     document.getElementById('kelasOpts').innerHTML = kelasList().map(function (k) {
@@ -1805,15 +1950,10 @@
       var oldPrice = reference > monthly
         ? '<span class="duration-reference"><span>' + (m === 1 ? 'Harga normal' : 'Harga sebelumnya') + '</span><s>' + rupiah(reference) + '/bulan</s></span>'
         : '';
-      var savingLine = savings
-        ? '<span class="duration-savings">Hemat ' + rupiah(savings) + '</span>'
-        : '';
-      var savingsBadge = m > 1 && savings
-        ? '<span class="duration-badge">Lebih hemat</span>'
-        : '';
+      var savingLine = savings ? '<span class="duration-savings">Hemat ' + rupiah(savings) + '</span>' : '';
+      var savingsBadge = m > 1 && savings ? '<span class="duration-badge">Lebih hemat</span>' : '';
       var totalLine = m > 1 || S.peserta > 1
-        ? '<span class="duration-total">Total pembayaran <strong>' + rupiah(monthly * m * S.peserta) + '</strong></span>'
-        : '';
+        ? '<span class="duration-total">Total pembayaran <strong>' + rupiah(monthly * m * S.peserta) + '</strong></span>' : '';
       return '<button type="button" class="flow-option journey-duration" data-pick="durasi" data-value="' + m + '" aria-pressed="' + (Number(S.durasi) === m) + '">' +
         savingsBadge +
         '<span class="duration-meta"><span class="duration-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="4"/><path d="M15 5v10M33 5v10M6 20h36"/></svg></span>' +
@@ -1821,6 +1961,19 @@
         '<span class="duration-pricing">' + oldPrice + '<strong class="duration-monthly">' + rupiah(monthly) + '<small>/bulan</small></strong>' +
         totalLine + savingLine + '</span></button>';
     }).join('');
+    if (S.mode === 'daftar') renderInteractiveDurationTime();
+  }
+  function renderInteractiveDurationTime() {
+    var box = document.getElementById('interactiveDurationTime');
+    if (!box) return;
+    if (!S.durasi) { box.innerHTML = '<p class="interactive-time-note">Pilih durasi untuk melihat harga dan memilih jam mulai sesi.</p>'; return; }
+    var options = '<option value="">Pilih jam mulai</option>' + slotList().map(function(v) {
+      return '<option value="' + v + '"' + (S.jam === v ? ' selected' : '') + '>' + v.replace(':','.') + ' WIB</option>';
+    }).join('');
+    box.innerHTML = '<div class="interactive-time-picker"><label for="durasiJamSel">Jam mulai sesi</label>' +
+      '<select id="durasiJamSel" class="cek-input" aria-describedby="durationTimeNote">' + options + '</select>' +
+      '<p class="interactive-time-note" id="durationTimeNote">Waktu menggunakan WIB. Jam pilihan ini dipakai untuk setiap pertemuan.</p></div>' +
+      '<button type="button" class="btn btn-primary btn-lg cek-full profile-next" id="durationNext"' + (S.jam ? '' : ' disabled') + '>Lanjutkan</button>';
   }
   function renderJam() {
     var k = KELAS[S.kelas];
@@ -1840,33 +1993,42 @@
       ['Jam mulai', (S.jam || '').replace(':', '.') + ' WIB'],
       ['Peserta', S.peserta + ' orang']
     ];
+    if (S.mode === 'daftar') {
+      rows.unshift(
+        ['Nama panggilan', esc(S.sapaan || '-')],
+        ['Nama pada sertifikat', esc(S.nama || '-')],
+        ['Jenis kelamin', S.jk === 'perempuan' ? 'Perempuan' : 'Laki-laki'],
+        ['Tanggal lahir', S.tgl ? tgl(new Date(S.tgl + 'T00:00:00')) : '-'],
+        ['WhatsApp', '+' + esc(waFull())],
+        ['Email', esc(S.email || '-')]
+      );
+    }
     var box = '<div class="cek-box">' + rows.map(function (r) {
       return '<div class="cek-row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
     }).join('') + '</div>';
-
     var harga = receiptBlock(S.kelas, m);
-
     var edit = '<div class="cek-edit">' +
+      (S.mode === 'daftar' ?
+        '<button type="button" data-edit="nama">Ubah nama</button><button type="button" data-edit="profil">Ubah profil</button><button type="button" data-edit="kontak">Ubah kontak</button>' : '') +
       '<button type="button" data-edit="kelas">Ubah kelas</button>' +
-      '<button type="button" data-edit="durasi">Ubah durasi</button>' +
+      '<button type="button" data-edit="durasi">Ubah durasi &amp; jam</button>' +
       '<button type="button" data-edit="hari">Ubah hari</button>' +
-      '<button type="button" data-edit="jam">Ubah jam</button>' +
+      (S.mode !== 'daftar' ? '<button type="button" data-edit="jam">Ubah jam</button>' : '') +
       '</div>' +
       '<div class="cek-stepper" style="margin:8px 0 4px"><span>Jumlah peserta</span>' +
       '<button type="button" data-peserta="-1" aria-label="Kurangi peserta">−</button>' +
       '<strong>' + S.peserta + '</strong>' +
       '<button type="button" data-peserta="1" aria-label="Tambah peserta">+</button></div>';
-
     var trust = '<div class="cek-trust"><h4>Yang Anda dapatkan</h4><ul>' +
       '<li>Privat 1-on-1 lewat WhatsApp Call.</li>' +
       '<li>Ikhwan dan akhwat dibimbing terpisah.</li>' +
       '<li>Pengajar hafidz/hafidzah berpengalaman, dan e-sertifikat setelah program.</li>' +
       '</ul></div>';
-
     var closing = '<div class="cek-amount" style="font-size:16px">Total: ' + rupiah(totalBayar()) + '</div>' +
-      '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="data">Lanjut isi data</button>' +
+      (S.mode === 'daftar'
+        ? '<p id="summarySubmitError" class="cek-err" role="alert"></p><button type="button" class="btn btn-primary btn-lg cek-full" data-act="submit">Konfirmasi &amp; lanjut ke pembayaran</button>'
+        : '<button type="button" class="btn btn-primary btn-lg cek-full" data-act="data">Lanjutkan</button>') +
       '<a class="btn btn-secondary btn-lg cek-full" href="' + waLink("Assalamu'alaikum Admin Mahkota, saya ingin bertanya sebelum mendaftar.\n\n" + ringkas()) + '" data-ask target="_blank" rel="noopener">Tanya admin dulu</a>';
-
     document.getElementById('ringkasanBox').innerHTML = box + promoSection() + harga + edit + periodeBox(jadwal()) + trust + closing;
     startKodeTimer();
   }
@@ -1921,7 +2083,7 @@
   }
   // Verifikasi dua langkah: nomor harus diketik dua kali dengan hasil yang sama.
   function updateVerify() {
-    var box = document.getElementById('verifyBox');
+    var box = document.getElementById(S.mode === 'daftar' ? 'contactVerifyBox' : 'verifyBox');
     if (!box) return;
     if (!waValid()) { box.innerHTML = ''; return; }
     if (!waCocok()) {
@@ -1960,6 +2122,22 @@
         S.batas = r.data.batas_bayar;
         cb(null);
       });
+    });
+  }
+  function submitRegistration() {
+    if (!registrationValid()) return;
+    var button = cek.querySelector('[data-act="submit"]');
+    var error = document.getElementById('summarySubmitError');
+    if (button) { button.disabled = true; button.textContent = 'Menyimpan pendaftaran…'; }
+    simpanPendaftaran(function (err) {
+      if (err) {
+        if (error) error.textContent = esc(err);
+        if (button) { button.disabled = false; button.textContent = 'Konfirmasi & lanjut ke pembayaran'; }
+        return;
+      }
+      if (window.mtoTrack) window.mtoTrack('CompleteRegistration', { content_name: 'Pendaftaran tersimpan' }, { phone: waFull(), email: S.email });
+      try { localStorage.setItem('mtoDaftar', JSON.stringify({ id: S.pid, email: S.email })); } catch (e) {}
+      window.location.href = '/pembayaran';
     });
   }
   function copy(text, btn) {
@@ -2006,11 +2184,27 @@
     S.jam = sel.value;
     done('jam');
   });
+  cek.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'durasiJamSel') {
+      S.jam = e.target.value;
+      var next = document.getElementById('durationNext');
+      if (next) next.disabled = !(S.durasi && S.jam);
+    }
+  });
 
   cek.addEventListener('click', function (e) {
     var t = e.target, b;
     if (t === cek) { close(); return; }
     if ((b = t.closest('[data-pick]'))) { pick(b.dataset.pick, b.dataset.value); return; }
+    if ((b = t.closest('[data-profile-next]'))) {
+      var profileStep = b.dataset.profileNext;
+      updateProfileStage(profileStep);
+      if (profileStepMessage(profileStep)) return;
+      done(profileStep);
+      return;
+    }
+    if (t.closest('#dayNext')) { if (S.hari) done('hari'); return; }
+    if (t.closest('#durationNext')) { if (S.durasi && S.jam) done('durasi'); return; }
     if (t.closest('[data-go-cek]')) {
       S = { peserta: 1, mode: 'cek', periode: null, editing: false };
       P = {};
@@ -2018,7 +2212,12 @@
       go('untuk');
       return;
     }
-    if ((b = t.closest('[data-edit]'))) { S.editing = true; go(b.dataset.edit); return; }
+    if ((b = t.closest('[data-edit]'))) {
+      S.editing = true;
+      if (b.dataset.edit === 'kelas') P.tier = null;
+      go(b.dataset.edit);
+      return;
+    }
     if (t.closest('[data-kode-apply]')) { applyKode(); return; }
     if (t.closest('[data-kode-x]')) { S.kodeIn = ''; S.kodeMsg = ''; renderRingkasan(); var ki = document.getElementById('kodeInput'); if (ki) ki.focus(); return; }
     if (t.closest('[data-kode-clear]')) { S.kode = null; S.kodeMsg = ''; S.kodeIn = ''; renderRingkasan(); return; }
@@ -2029,9 +2228,21 @@
     if ((b = t.closest('[data-copy]'))) { copy(b.dataset.copy, b); return; }
     if ((b = t.closest('[data-act]'))) {
       if (b.dataset.act === 'data') advance('ringkasan');
+      if (b.dataset.act === 'submit' && S.mode === 'daftar') submitRegistration();
       return;
     }
-    if (t.closest('#rekomNext')) { advance('rekom'); return; }
+    if (t.closest('#rekomNext')) {
+      if (S.mode === 'cek') {
+        S.program = (S.jenis === 'pratahsin' || S.jenis === 'reguler') ? 'tahsin' : 'tahfidz';
+        P = { program: S.program, jenis: S.jenis, tier: null };
+        S.mode = 'daftar';
+        S.editing = false;
+        hist = [];
+        document.documentElement.classList.add('registration-active');
+        go('nama');
+      } else advance('rekom');
+      return;
+    }
     if (t.closest('#toBayar')) {
       if (!dataValid()) return;
       simpanPendaftaran(function (err) {
@@ -2052,11 +2263,16 @@
     var t = e.target;
     if (t.name === 'kode') { S.kodeIn = t.value; syncKodeUi(); }
     if (t.name === 'nama') S.nama = t.value.trim();
+    if (t.name === 'sapaan') {
+      S.sapaan = t.value.trim();
+      var greeting = document.getElementById('journeyGreeting');
+      if (greeting) greeting.textContent = S.sapaan ? 'Baik, Kak ' + S.sapaan + '.' : 'Assalamu’alaikum. Mari kenalan dulu.';
+    }
     if (t.name === 'tgl') S.tgl = t.value;
     if (t.name === 'wa') { S.wa = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa)) t.value = waTampil(S.wa); }
     if (t.name === 'wa2') { S.wa2 = waBersih(t.value, S.kodeNeg || 'ID'); if (t.value !== waTampil(S.wa2)) t.value = waTampil(S.wa2); }
     if (t.name === 'email') S.email = t.value.trim();
-    if (t.name) { updateDataBtn(); updateVerify(); }
+    if (t.name) { updateDataBtn(); updateVerify(); updateProfileStage('nama'); updateProfileStage('profil'); updateProfileStage('kontak'); }
   });
   cek.addEventListener('change', function (e) {
     var t = e.target;
@@ -2070,6 +2286,9 @@
     }
     updateDataBtn();
     updateVerify();
+    updateProfileStage('nama');
+    updateProfileStage('profil');
+    updateProfileStage('kontak');
   });
   cek.addEventListener('submit', function (e) { e.preventDefault(); });
   document.addEventListener('keydown', function (e) {

@@ -170,3 +170,57 @@ html.interactive-variant.registration-active .cek-full { border-radius: 999px; }
   html.interactive-variant.registration-active .flow-step { animation: none; }
   html.interactive-variant.registration-active .flow-option { transition: none; }
 }
+/* Progressive, educational registration framework on /interaktif/ */
+html.interactive-variant.registration-active .journey-context {
+  display:grid; gap:5px; margin:0 0 14px; padding:16px 20px;
+  border:1px solid #f0e2c9; border-radius:18px; background:#fff7e8;
+}
+html.interactive-variant.registration-active .journey-context strong { color:#2b261e; font-size:15px; font-weight:700; }
+html.interactive-variant.registration-active .journey-context p { margin:0; color:#655d50; font-size:14px; line-height:1.45; }
+html.interactive-variant.registration-active .journey-head { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
+html.interactive-variant.registration-active .journey-progress { flex:1; display:flex; gap:5px; margin:0; padding:0; border:0; background:transparent; box-shadow:none; }
+html.interactive-variant.registration-active .journey-progress li { flex:1; display:block; min-width:0; }
+html.interactive-variant.registration-active .journey-progress li::after { display:none; }
+html.interactive-variant.registration-active .journey-progress i { display:block; width:100%; height:8px; border:0; border-radius:99px; background:#ebe5dc; box-shadow:none; }
+html.interactive-variant.registration-active .journey-progress li.done i,
+html.interactive-variant.registration-active .journey-progress li.current i { background:linear-gradient(90deg,#bd8420,#d9a63d); }
+html.interactive-variant.registration-active .journey-count { color:#554c3e; font-size:13px; font-weight:650; white-space:nowrap; }
+html.interactive-variant.registration-active .profile-next,
+html.interactive-variant.registration-active .interactive-day-next { max-width:560px; margin:22px auto 0; border-radius:999px; }
+html.interactive-variant.registration-active .profile-hint { min-height:1em; margin:10px auto 0; color:#8a6427; font-size:13px; text-align:center; }
+html.interactive-variant.registration-active .interactive-field-help { margin:-8px 0 8px; color:#756e63; font-size:13px; line-height:1.45; }
+html.interactive-variant.registration-active #interactiveDurationTime { max-width:760px; margin:18px auto 0; }
+html.interactive-variant.registration-active #interactiveDurationTime:empty { display:none; }
+html.interactive-variant.registration-active .interactive-time-picker { display:grid; gap:8px; margin:16px 0 0; }
+html.interactive-variant.registration-active .interactive-time-picker label { color:#342d23; font-size:15px; font-weight:650; }
+html.interactive-variant.registration-active #durasiJamSel { width:100%; }
+html.interactive-variant.registration-active .interactive-time-note { margin:0; padding:14px 16px; border-radius:14px; background:#faf6ef; color:#756e63; font-size:14px; line-height:1.45; }
+html.interactive-variant.registration-active .cek-form label { display:grid; gap:8px; }
+html.interactive-variant.registration-active .cek-form .cek-wa-row { display:grid; grid-template-columns:minmax(120px,.65fr) minmax(0,1.35fr); gap:10px; }
+html.interactive-variant.registration-active .cek-form .cek-jk { display:grid; gap:9px; }
+html.interactive-variant.registration-active .cek-form .cek-check { display:flex; align-items:flex-start; gap:10px; }
+html.interactive-variant.registration-active .cek-form .cek-check input { margin-top:3px; }
+@media(max-width:680px) {
+ html.interactive-variant.registration-active .journey-head { gap:9px; margin-bottom:23px; }
+ html.interactive-variant.registration-active .journey-progress { gap:3px; }
+ html.interactive-variant.registration-active .journey-progress i { height:6px; }
+ html.interactive-variant.registration-active .journey-count { font-size:11px; }
+ html.interactive-variant.registration-active .journey-context { padding:13px 15px; border-radius:16px; }
+ html.interactive-variant.registration-active .journey-context p { font-size:13px; }
+ html.interactive-variant.registration-active .cek-form .cek-wa-row { grid-template-columns:1fr; }
+ html.interactive-variant.registration-active .profile-next,
+ html.interactive-variant.registration-active .interactive-day-next { width:100%; max-width:none; }
+}
+
+.journey-context { display:none; }
+html.interactive-variant.registration-active .cek-form > label,
+html.interactive-variant.registration-active .cek-form > div { margin-bottom:16px; }
+html.interactive-variant.registration-active .cek-form input:not([type=radio]):not([type=checkbox]),
+html.interactive-variant.registration-active .cek-form select { min-height:52px; padding:12px 14px; border-radius:14px; }
+html.interactive-variant.registration-active .cek-form .cek-jk-pilih { min-height:54px; }
+html.interactive-variant.registration-active .journey-day[aria-pressed="true"] {
+  border-color:#b98527; background:#fff8e9; box-shadow:0 8px 22px rgba(129,94,37,.1);
+}
+html.interactive-variant.registration-active #durationNext:disabled,
+html.interactive-variant.registration-active .profile-next:disabled { opacity:.52; cursor:not-allowed; }
+html.interactive-variant.registration-active #summarySubmitError:empty { display:none; }
